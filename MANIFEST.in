@@ -1,0 +1,9 @@
+include LICENSE
+include Makefile
+recursive-include configs *.yaml
+recursive-include deploy Dockerfile *.sbatch
+recursive-include docs *.md
+recursive-include native CMakeLists.txt *.hpp *.cpp
+recursive-include requirements *.lock
+recursive-include src/aeolus/resources *.npz
+recursive-include tools *.py
