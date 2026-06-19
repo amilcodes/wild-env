@@ -1,0 +1,32 @@
+scenario:
+  seed: 20260726
+  width: 48
+  height: 48
+  cell_size_m: 60.0
+  horizon_min: 90
+  decision_interval_min: 3
+  max_tasks: 24
+  observation_delay_min: 2
+  wind_speed_m_s: 5.0
+  wind_direction_deg: 25.0
+  wind_variability: 0.20
+  spotting_rate: 0.005
+  ground_arrival_min: 20
+  reward_loss_scale: 0.05
+  escape_penalty: 12.0
+  containment_bonus: 12.0
+training:
+  seed: 20260726
+  device: auto
+  num_envs: 16
+  rollout_steps: 64
+  updates: 20
+  epochs_per_update: 4
+  minibatch_size: 256
+  learning_rate: 0.0003
+  hidden_dim: 192
+  checkpoint_dir: runs/local_research_mappo_v5
+  checkpoint_every: 10
+  use_amp: true
+  expert_warmstart_steps: 120
+  expert_policy: nearest
