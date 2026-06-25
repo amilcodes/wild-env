@@ -1,0 +1,17 @@
+{
+  "active_or_burned_cells": 2473,
+  "batch": 64,
+  "device": "mps",
+  "elapsed_s": 7.4168555829674006,
+  "environment_steps_s": 172.5798737324054,
+  "grid": [
+    128,
+    128
+  ],
+  "million_cell_steps_s": 2.82754865123173,
+  "resident_state_mib": 77.0,
+  "simulated_fire_minutes_s": 172.5798737324054,
+  "spotting": false,
+  "steps": 20,
+  "torch_version": "2.13.0"
+}
