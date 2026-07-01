@@ -1,0 +1,76 @@
+scenario:
+  seed: 24017
+  width: 128
+  height: 128
+  cell_size_m: 60.0
+  horizon_min: 360
+  decision_interval_min: 3
+  max_tasks: 64
+  observation_delay_min: 4
+  wind_speed_m_s: 8.0
+  wind_direction_deg: 35.0
+  wind_variability: 0.35
+  spotting_rate: 0.012
+  ground_arrival_min: 30
+  resources:
+    - resource_id: tanker_12
+      kind: retardant
+      cruise_speed_m_s: 70.0
+      payload_l: 11000.0
+      reload_min: 14
+      dispatch_latency_min: 3
+      endurance_min: 210
+    - resource_id: tanker_21
+      kind: retardant
+      cruise_speed_m_s: 66.0
+      payload_l: 9000.0
+      reload_min: 15
+      dispatch_latency_min: 4
+      endurance_min: 220
+    - resource_id: seat_03
+      kind: retardant
+      cruise_speed_m_s: 58.0
+      payload_l: 3000.0
+      reload_min: 10
+      dispatch_latency_min: 2
+      endurance_min: 180
+    - resource_id: heli_07
+      kind: water
+      cruise_speed_m_s: 48.0
+      payload_l: 2800.0
+      reload_min: 8
+      dispatch_latency_min: 2
+      endurance_min: 150
+    - resource_id: heli_14
+      kind: water
+      cruise_speed_m_s: 44.0
+      payload_l: 2200.0
+      reload_min: 7
+      dispatch_latency_min: 2
+      endurance_min: 145
+    - resource_id: ir_scout
+      kind: sensor
+      cruise_speed_m_s: 38.0
+      payload_l: 0.0
+      reload_min: 0
+      dispatch_latency_min: 1
+      endurance_min: 120
+    - resource_id: uas_mapper
+      kind: sensor
+      cruise_speed_m_s: 27.0
+      payload_l: 0.0
+      reload_min: 0
+      dispatch_latency_min: 1
+      endurance_min: 105
+training:
+  seed: 24017
+  device: cuda
+  num_envs: 32
+  rollout_steps: 128
+  updates: 1000
+  epochs_per_update: 4
+  minibatch_size: 2048
+  learning_rate: 0.0002
+  checkpoint_dir: runs/cluster_swarm_mappo
+  checkpoint_every: 25
+  use_amp: true
