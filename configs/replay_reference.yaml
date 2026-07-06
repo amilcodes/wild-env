@@ -1,0 +1,163 @@
+scenario:
+  scenario_id: foothill-operations-reference
+  title: Foothill Operations Reference
+  location_name: Synthetic foothill domain; local metric grid
+  time_origin: "2026-08-17T14:00:00-07:00"
+  seed: 260817
+  width: 112
+  height: 96
+  cell_size_m: 45.0
+  horizon_min: 150
+  decision_interval_min: 3
+  max_tasks: 72
+  observation_delay_min: 3
+  wind_speed_m_s: 7.2
+  wind_direction_deg: 38.0
+  wind_variability: 0.24
+  air_temperature_c: 32.0
+  relative_humidity_pct: 19.0
+  precipitation_rate_mm_h: 0.0
+  spotting_rate: 0.008
+  ground_arrival_min: 18
+  terminate_on_escape: false
+  initial_perimeter_radius_cells: 3.0
+  suppression:
+    water_half_life_min: 8.0
+    retardant_half_life_min: 720.0
+    retardant_rain_wash_fraction_per_mm: 0.08
+    line_production_cv: 0.30
+    base_reload_bays: 2
+    aviation_max_wind_m_s: 18.0
+    minimum_dispatch_payload_fraction: 0.75
+    minimum_reserve_endurance_min: 15.0
+  service_sites:
+    - site_id: west_airport
+      kind: airport
+      x: 12
+      y: 82
+      services: [water, fuel, charge]
+      service_mode: land
+      bays: 4
+      approach_capacity: 3
+      refill_rate_l_min: 3000.0
+      fixed_turnaround_min: 3.0
+      manually_verified: false
+    - site_id: retardant_base
+      kind: retardant_base
+      x: 21
+      y: 76
+      services: [retardant, fuel]
+      service_mode: land
+      bays: 3
+      approach_capacity: 2
+      refill_rate_l_min: 2400.0
+      fixed_turnaround_min: 5.0
+      available_volume_l: 180000.0
+      manually_verified: false
+    - site_id: north_helibase
+      kind: helibase
+      x: 83
+      y: 13
+      services: [water, fuel, charge]
+      service_mode: land
+      bays: 3
+      approach_capacity: 2
+      refill_rate_l_min: 2200.0
+      fixed_turnaround_min: 2.5
+      manually_verified: false
+    - site_id: reservoir_alpha
+      kind: dip_site
+      x: 74
+      y: 66
+      services: [water]
+      service_mode: hover_fill
+      bays: 2
+      approach_capacity: 2
+      refill_rate_l_min: 5200.0
+      fixed_turnaround_min: 0.8
+      available_volume_l: 280000.0
+      minimum_depth_m: 2.0
+      minimum_length_m: 160.0
+      manually_verified: false
+  resources:
+    - &water_uav
+      resource_id: water_uav_00
+      kind: water
+      cruise_speed_m_s: 48.0
+      payload_l: 1400.0
+      reload_min: 3
+      dispatch_latency_min: 1
+      endurance_min: 125
+      reserve_endurance_min: 18.0
+      home_site_id: west_airport
+      service_modes: [land, hover_fill]
+      max_operating_wind_m_s: 16.0
+      water_radius_m: 55.0
+      minimum_drop_length_m: 180.0
+      maximum_drop_length_m: 700.0
+    - <<: *water_uav
+      resource_id: water_uav_01
+    - <<: *water_uav
+      resource_id: water_uav_02
+      home_site_id: north_helibase
+    - <<: *water_uav
+      resource_id: water_uav_03
+      home_site_id: north_helibase
+    - &retardant_uav
+      resource_id: retardant_uav_00
+      kind: retardant
+      cruise_speed_m_s: 64.0
+      payload_l: 5200.0
+      reload_min: 9
+      dispatch_latency_min: 2
+      endurance_min: 190
+      reserve_endurance_min: 25.0
+      home_site_id: retardant_base
+      service_modes: [land]
+      max_operating_wind_m_s: 18.0
+      retardant_length_m: 700.0
+      retardant_width_m: 75.0
+      minimum_drop_length_m: 300.0
+      maximum_drop_length_m: 1100.0
+      target_coverage_level_gpc: 2.0
+    - <<: *retardant_uav
+      resource_id: retardant_uav_01
+    - resource_id: ir_scout_00
+      kind: sensor
+      cruise_speed_m_s: 42.0
+      payload_l: 0.0
+      reload_min: 0
+      dispatch_latency_min: 1
+      endurance_min: 140
+      reserve_endurance_min: 18.0
+      home_site_id: west_airport
+      service_modes: [land]
+      max_operating_wind_m_s: 20.0
+    - resource_id: crew_31
+      kind: crew
+      cruise_speed_m_s: 1.25
+      payload_l: 0.0
+      reload_min: 0
+      dispatch_latency_min: 18
+      endurance_min: 720
+      reserve_endurance_min: 15.0
+      line_length_m: 700.0
+      line_width_m: 1.2
+      line_production_m_min: 5.5
+      max_operating_wind_m_s: 30.0
+      max_direct_intensity_kw_m: 2100.0
+
+training:
+  seed: 260817
+  device: cuda
+  environment_backend: canonical
+  policy_architecture: entity_attention
+  num_envs: 256
+  rollout_steps: 128
+  updates: 2000
+  minibatch_size: 4096
+  hidden_dim: 256
+  attention_heads: 8
+  attention_layers: 3
+  checkpoint_dir: runs/replay-reference
+  use_amp: true
