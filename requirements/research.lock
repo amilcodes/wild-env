@@ -1,0 +1,15 @@
+# Direct geospatial and rendering pins verified by the incident/replay suite.
+pyshp==2.3.1
+rasterio==1.4.4
+shapely==2.1.2
+pyproj==3.7.1
+xarray==2025.6.1
+scipy==1.15.3
+pandas==2.3.3
+pyarrow==23.0.1
+zarr==2.18.3
+matplotlib==3.10.9
+pillow==12.3.0
+imageio==2.37.4
+imageio-ffmpeg==0.6.0
+reportlab==4.4.9
