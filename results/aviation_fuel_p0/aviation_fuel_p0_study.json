@@ -1,0 +1,264 @@
+{
+  "schema_version": 1,
+  "study": "operational aviation closure and historical-fuel P0",
+  "seed": 20260730,
+  "aviation_catalog": {
+    "catalog_id": "us-wildfire-reference-fleet-v1",
+    "profile_count": 9,
+    "autonomy_counts": {
+      "crewed": 6,
+      "remotely_piloted": 2,
+      "supervised_autonomy": 1
+    },
+    "role_counts": {
+      "aerial_ignition": 2,
+      "aerial_intelligence": 1,
+      "air_tactical_supervision": 1,
+      "airborne_command": 1,
+      "atgs_training": 1,
+      "helitack": 2,
+      "infrared_mapping": 3,
+      "initial_attack": 1,
+      "inspection": 1,
+      "large_retardant_line": 1,
+      "lead_operations": 1,
+      "mapping": 1,
+      "night_operations": 1,
+      "rapid_initial_attack": 3,
+      "rescue": 2,
+      "retardant_line": 1,
+      "situational_awareness": 3,
+      "water_drop": 2
+    },
+    "parameter_basis_counts": {
+      "modeling_assumption": 66,
+      "published": 3,
+      "role_mapping": 10,
+      "unit_conversion": 13
+    },
+    "profiles_with_modeling_assumptions": [
+      "calfire-c130h-retardant",
+      "calfire-king-air-200-intelligence",
+      "calfire-ov10a-air-tactical",
+      "calfire-s2t-retardant",
+      "calfire-s70i-water",
+      "calfire-uh1h-water",
+      "interagency-freefly-alta-x-ignition",
+      "interagency-parrot-anafi-usa",
+      "interagency-skydio-x10"
+    ],
+    "field_performance_ready_profiles": [],
+    "field_performance_ready_count": 0,
+    "interpretation": "Current-use identity and nominal public specifications are separate from flight-manual or engineering-validated performance."
+  },
+  "reference_scenario": {
+    "config": "/Users/AmilAgrawal/Documents/Codex/2026-07-26/le/aeolus_py/configs/aviation/us_wildfire_reference_operations.yaml",
+    "resource_count": 9,
+    "resource_kind_counts": {
+      "retardant": 3,
+      "sensor": 4,
+      "water": 2
+    },
+    "autonomy_counts": {
+      "crewed": 7,
+      "remotely_piloted": 1,
+      "supervised_autonomy": 1
+    },
+    "missing_catalog_profiles": [],
+    "all_resources_traceable": true,
+    "field_performance_ready": false
+  },
+  "historical_fuel_reconstruction": {
+    "manifest": "/Users/AmilAgrawal/Documents/Codex/2026-07-26/le/outputs/historical-validation-v5-time-admissible/fuel_rebuild_manifest.json",
+    "incident_count": 6,
+    "gate_passes": true,
+    "mean_fuel_model_changed_fraction": 0.7633870442708334,
+    "mean_burnability_changed_fraction": 0.060231526692708336,
+    "archive_substitutions_remaining": 5,
+    "incidents": [
+      {
+        "incident_id": "nirops-az-sca-001418-drylake",
+        "fuel_model_changed_fraction": 0.761474609375,
+        "burnability_changed_fraction": 0.0301513671875,
+        "preferred_version": "lf2016-remap",
+        "selected_version": "lf2016-remap",
+        "archive_substitution_remaining": false
+      },
+      {
+        "incident_id": "nirops-ca-aeu-017769-electra",
+        "fuel_model_changed_fraction": 0.87249755859375,
+        "burnability_changed_fraction": 0.081787109375,
+        "preferred_version": "lf2020",
+        "selected_version": "lf2016-remap",
+        "archive_substitution_remaining": true
+      },
+      {
+        "incident_id": "nirops-id-ipf-000447-ridgecreek",
+        "fuel_model_changed_fraction": 0.68963623046875,
+        "burnability_changed_fraction": 0.00604248046875,
+        "preferred_version": "lf2020",
+        "selected_version": "lf2016-remap",
+        "archive_substitution_remaining": true
+      },
+      {
+        "incident_id": "nirops-nm-gnf-000382-davis",
+        "fuel_model_changed_fraction": 0.621337890625,
+        "burnability_changed_fraction": 0.08599853515625,
+        "preferred_version": "lf2020",
+        "selected_version": "lf2016-remap",
+        "archive_substitution_remaining": true
+      },
+      {
+        "incident_id": "nirops-or-maf-022199-crocketsknob",
+        "fuel_model_changed_fraction": 0.9052734375,
+        "burnability_changed_fraction": 0.026123046875,
+        "preferred_version": "lf2020",
+        "selected_version": "lf2016-remap",
+        "archive_substitution_remaining": true
+      },
+      {
+        "incident_id": "nirops-ut-vld-000127-bear",
+        "fuel_model_changed_fraction": 0.7301025390625,
+        "burnability_changed_fraction": 0.13128662109375,
+        "preferred_version": "lf2019l",
+        "selected_version": "lf2016-remap",
+        "archive_substitution_remaining": true
+      }
+    ]
+  },
+  "paired_hindcast_comparison": {
+    "design": "Paired by incident, method, start perimeter, and target perimeter. The manifest, code, weather, observations, and random seeds are held fixed; the landscape fuel/canopy vintage changes.",
+    "front_solver": "adaptive_huygens",
+    "calibration_semantics": "read from source result",
+    "methods": {
+      "raw_physics": {
+        "paired_forecasts": 24,
+        "metrics": {
+          "perimeter_iou": {
+            "path": "metrics.iou",
+            "direction": "higher_is_better",
+            "paired_forecasts": 24,
+            "before_mean": 0.32467371971502207,
+            "after_mean": 0.3901310998997168,
+            "mean_delta_after_minus_before": 0.06545738018469476,
+            "paired_improvement_fraction": 0.6666666666666666,
+            "paired_delta_ci95": [
+              0.012228174306396836,
+              0.12211994733125345
+            ]
+          },
+          "growth_tolerance_f1": {
+            "path": "growth_tolerance_1_cell.f1",
+            "direction": "higher_is_better",
+            "paired_forecasts": 24,
+            "before_mean": 0.12049934462170653,
+            "after_mean": 0.1435504047345791,
+            "mean_delta_after_minus_before": 0.02305106011287256,
+            "paired_improvement_fraction": 0.5833333333333334,
+            "paired_delta_ci95": [
+              -0.0010367459613035946,
+              0.04850509683428199
+            ]
+          },
+          "boundary_mean_distance_m": {
+            "path": "boundary.mean_symmetric_distance_m",
+            "direction": "lower_is_better",
+            "paired_forecasts": 24,
+            "before_mean": 1913.0965485251988,
+            "after_mean": 1506.936794886713,
+            "mean_delta_after_minus_before": -406.1597536384861,
+            "paired_improvement_fraction": 0.7083333333333334,
+            "paired_delta_ci95": [
+              -627.52974461086,
+              -181.54252950408207
+            ]
+          },
+          "symmetric_difference_km2": {
+            "path": "metrics.symmetric_difference_km2",
+            "direction": "lower_is_better",
+            "paired_forecasts": 24,
+            "before_mean": 90.23963288290987,
+            "after_mean": 67.35573017039714,
+            "mean_delta_after_minus_before": -22.883902712512747,
+            "paired_improvement_fraction": 0.6666666666666666,
+            "paired_delta_ci95": [
+              -42.57286463932604,
+              -2.557644077111522
+            ]
+          }
+        }
+      },
+      "fixed_calibrated_physics": {
+        "paired_forecasts": 24,
+        "metrics": {
+          "perimeter_iou": {
+            "path": "metrics.iou",
+            "direction": "higher_is_better",
+            "paired_forecasts": 24,
+            "before_mean": 0.22098094073948019,
+            "after_mean": 0.2807907620495546,
+            "mean_delta_after_minus_before": 0.0598098213100744,
+            "paired_improvement_fraction": 0.6666666666666666,
+            "paired_delta_ci95": [
+              0.02917944007973011,
+              0.09556557929031591
+            ]
+          },
+          "growth_tolerance_f1": {
+            "path": "growth_tolerance_1_cell.f1",
+            "direction": "higher_is_better",
+            "paired_forecasts": 24,
+            "before_mean": 0.07174171788171102,
+            "after_mean": 0.09477145861701074,
+            "mean_delta_after_minus_before": 0.023029740735299717,
+            "paired_improvement_fraction": 0.5833333333333334,
+            "paired_delta_ci95": [
+              0.008160062121402457,
+              0.03972200192585487
+            ]
+          },
+          "boundary_mean_distance_m": {
+            "path": "boundary.mean_symmetric_distance_m",
+            "direction": "lower_is_better",
+            "paired_forecasts": 24,
+            "before_mean": 2737.3506393004204,
+            "after_mean": 2230.4361280378803,
+            "mean_delta_after_minus_before": -506.9145112625395,
+            "paired_improvement_fraction": 0.6666666666666666,
+            "paired_delta_ci95": [
+              -755.4558415252188,
+              -271.7248722158551
+            ]
+          },
+          "symmetric_difference_km2": {
+            "path": "metrics.symmetric_difference_km2",
+            "direction": "lower_is_better",
+            "paired_forecasts": 24,
+            "before_mean": 165.591422652989,
+            "after_mean": 134.90160826644635,
+            "mean_delta_after_minus_before": -30.689814386542704,
+            "paired_improvement_fraction": 0.6666666666666666,
+            "paired_delta_ci95": [
+              -52.853412856974046,
+              -8.587668229761555
+            ]
+          }
+        }
+      }
+    }
+  },
+  "claim_boundary": {
+    "supported": [
+      "selected aircraft and UAS are tied to current public operator or interagency sources",
+      "nominal published values and modeling assumptions are separable",
+      "the reference scenario exercises crewed, remotely piloted, and supervised-autonomy resources",
+      "historical fuels pass a pre-incident disturbance-cutoff gate"
+    ],
+    "not_supported": [
+      "vehicle dispatch or payload feasibility under field conditions",
+      "approval of autonomous suppressant-dropping aircraft",
+      "causal attribution of observed historical spread to fuels alone",
+      "operational validation of a learned policy"
+    ]
+  }
+}

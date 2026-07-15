@@ -1,0 +1,404 @@
+{
+  "schema_version": 1,
+  "study": "aviation closure and historical-fuel validity",
+  "created_at": "2026-07-31T07:43:15.305751+00:00",
+  "source_revision": "c395e189252a4803c6910e3e5204e44a8c3741ae",
+  "source_worktree_dirty": true,
+  "verification": {
+    "pytest": "100 passed",
+    "ruff": "passed",
+    "shell_syntax": "passed",
+    "vehicle_profiles": 9,
+    "field_performance_ready_profiles": 0,
+    "historical_incidents": 6,
+    "historical_provenance_gate_passes": 6,
+    "paired_forecasts_per_fixed_branch": 24
+  },
+  "roots": {
+    "repository": "/Users/AmilAgrawal/Documents/Codex/2026-07-26/le/aeolus_py",
+    "results": "/Users/AmilAgrawal/Documents/Codex/2026-07-26/le/aeolus_py/results/aviation_fuel_p0",
+    "prepared_corpus": "/Users/AmilAgrawal/Documents/Codex/2026-07-26/le/outputs/historical-validation-v5-time-admissible"
+  },
+  "source_files": {
+    "configs/aviation/us_wildfire_reference_fleet_v1.json": {
+      "sha256": "12fa4dd0ac305ebe7ce93ddfc9fd2ff9c05b213973164b739b9fd03caf6332bc",
+      "bytes": 23726
+    },
+    "configs/aviation/us_wildfire_reference_operations.yaml": {
+      "sha256": "70c5a415042695e0035fd977fbe32316b601d6b9ce33d32589c0063f5ce61d02",
+      "bytes": 8393
+    },
+    "configs/historical_validation.yaml": {
+      "sha256": "9e8bb2e3ce9887a3405f282b5f8603e721b592e6fca8f7aca91d223b1a2ca53f",
+      "bytes": 1651
+    },
+    "deploy/slurm/historical_fuel_weno.sbatch": {
+      "sha256": "d6d564f885b9eb8eb4cce415d3d2a6dd948500abdc920b407db8cee6fcf307f1",
+      "bytes": 1529
+    },
+    "docs/aviation_vehicle_closure.md": {
+      "sha256": "6d7f8a37e449213033fdc97d6686675abbcdb9b9d86d8b41360fdaf4c557134f",
+      "bytes": 7543
+    },
+    "docs/historical_fuel_p0.md": {
+      "sha256": "387cd2f62b1bd0a9764fad993e4f5995e7289d198ed5c82b5b8911c52103f4ca",
+      "bytes": 7419
+    },
+    "src/aeolus/config.py": {
+      "sha256": "cbce5c4bea7c3352ea8d89ef74bfc0531dd71fb83db31d8f1ea1cf23068ecce3",
+      "bytes": 22324
+    },
+    "src/aeolus/core/aviation.py": {
+      "sha256": "57f7740b4a458874b563d0a171547175a7892789ef48329b9704ec2f641f011d",
+      "bytes": 15570
+    },
+    "src/aeolus/data/aviation_catalog.py": {
+      "sha256": "e443045e8d3c971c26d8379e0cf98601b18490054a5fad84574d32b21ed6114b",
+      "bytes": 11635
+    },
+    "src/aeolus/data/historical_fuels.py": {
+      "sha256": "858f1e55b51e3be196a77d1287ee934637aa7c81c3f182e41a4d83e4100bfdf8",
+      "bytes": 14301
+    },
+    "src/aeolus/evaluation/study.py": {
+      "sha256": "27c4f01ed81b09a68675d0f5db6305c24c2fdd5bd054125685e7533c84bcb4d8",
+      "bytes": 36570
+    },
+    "src/aeolus/evaluation/validity.py": {
+      "sha256": "61211db8a302a6d7e4903179b8791dac396f7a5b9ac8fd3f95a8096e4d7f21dd",
+      "bytes": 8181
+    },
+    "tests/test_aviation.py": {
+      "sha256": "fa49370729e6d317d384a2e30e634b2be8907f0adcf8f8a4c044a0e05f9fdf34",
+      "bytes": 6516
+    },
+    "tests/test_aviation_catalog.py": {
+      "sha256": "937025b03fed342d3e7c3e1028cf94f1e2261b89f6bd0c9271b92dc4bff5d9f4",
+      "bytes": 2345
+    },
+    "tests/test_historical_fuels.py": {
+      "sha256": "3f6f0d3ad58155e23f3e9ea48655a2ddcfd0fca5a58576c6f59da132a41d72e4",
+      "bytes": 4695
+    },
+    "tests/test_reference_operations.py": {
+      "sha256": "3d59f8b56cfaa6feee4bd7ad3576d20983b2463c07df8793df1f061030036035",
+      "bytes": 927
+    },
+    "tests/test_validity.py": {
+      "sha256": "b7de0a29b78dd8a6f62fefe874fb6c9a41ab59bd286e0d38ac81d299259b8020",
+      "bytes": 3509
+    },
+    "tools/rebuild_historical_fuels.py": {
+      "sha256": "21f8cc2427a1e964de21a04b6f74eb924a376bd90f5cbe8f54cbb5721070e1e1",
+      "bytes": 7224
+    },
+    "tools/freeze_aviation_fuel_artifacts.py": {
+      "sha256": "61aec57ecef86ad4c1476493eea38f9fd1d49f2c444c97912f5007144157e896",
+      "bytes": 4055
+    },
+    "tools/run_aviation_fuel_p0_study.py": {
+      "sha256": "79416d768f18dc31ee7f7dbe9b384dc76104b3828eabd251e115c1bfb507587e",
+      "bytes": 14789
+    },
+    "tools/run_historical_fuel_ablation.py": {
+      "sha256": "6d06db4684fa3e50554df4f22db087ebde2b98e397699653c8ce54775c1b4990",
+      "bytes": 10968
+    }
+  },
+  "result_artifacts": {
+    "aviation_fuel_p0_study.json": {
+      "sha256": "07b277d397b03a8ef3c537a234b9742a7f7c64c2c90e8e151351bbd3eda45068",
+      "bytes": 9813
+    },
+    "aviation_fuel_p0_study.png": {
+      "sha256": "b4e7a75709f0ebacd1f14cfd3a4699e4c19be4886fdd0df39002dc7c4d446886",
+      "bytes": 270934
+    },
+    "fuel_ablation/after_results.json": {
+      "sha256": "4d834538fb7ce9f77bb2f6fab9ed1150b6ce001423c0d9d742503e79f6078ea9",
+      "bytes": 14991116
+    },
+    "fuel_ablation/before_results.json": {
+      "sha256": "20560e0042ceffcacab3484d6cdc33cb0187a2d209ee4cacfa83262b0f5fcf79",
+      "bytes": 15233697
+    },
+    "fuel_ablation/paired_results.json": {
+      "sha256": "6bca7167258963f89a450baa32c67c8b25efa1becbe85eccdc102454f9bdb7ba",
+      "bytes": 5590
+    }
+  },
+  "prepared_corpus_artifacts": {
+    "az-sca-001418-drylake/forcing/weather.nc": {
+      "sha256": "cd8f3444ee83ef93ab8610507a3bdd1f19d36efd1a9eee6a835412679abb16f4",
+      "bytes": 26460
+    },
+    "az-sca-001418-drylake/item.json": {
+      "sha256": "7eef803d61b0a3f765aeb368e35097e5dc9dd3114350d02e2ae6947e1a423618",
+      "bytes": 3185
+    },
+    "az-sca-001418-drylake/landscape/landscape.tif": {
+      "sha256": "4235343a1a97d5c5003a14f5883e1366049f82a250438611245fac3b724406fe",
+      "bytes": 129192
+    },
+    "az-sca-001418-drylake/landscape/simulator.npz": {
+      "sha256": "705d387037470fb395fda6a1da1596e7c7230470303d66f0d916c375b03b8159",
+      "bytes": 141284
+    },
+    "az-sca-001418-drylake/observations/perimeters.geojson": {
+      "sha256": "0c9e617042a1c629c5f1b5fdd84d0cebc8c2e517d514eba87c42e6cf7390449a",
+      "bytes": 1109646
+    },
+    "az-sca-001418-drylake/provenance/lf2016-remap/landscape.tif": {
+      "sha256": "4235343a1a97d5c5003a14f5883e1366049f82a250438611245fac3b724406fe",
+      "bytes": 129192
+    },
+    "az-sca-001418-drylake/provenance/lf2016-remap/lf2016-remap_canopy_base_height.tif": {
+      "sha256": "0744aa49d139e6d5a6aceedaa59be3bee4951264349a0407ec09e594acb203ac",
+      "bytes": 33938
+    },
+    "az-sca-001418-drylake/provenance/lf2016-remap/lf2016-remap_canopy_bulk_density.tif": {
+      "sha256": "06bd4239e2adf1d4b66e37975176c78aaab4d47be94f900f9a1cbccaee98525b",
+      "bytes": 33938
+    },
+    "az-sca-001418-drylake/provenance/lf2016-remap/lf2016-remap_canopy_cover.tif": {
+      "sha256": "8ca527831a510bbf961a4d603c051135adfc4b4e6e4ddcfc2441268fb301cd8e",
+      "bytes": 33938
+    },
+    "az-sca-001418-drylake/provenance/lf2016-remap/lf2016-remap_canopy_height.tif": {
+      "sha256": "aba0d819dcbe942c35d014047bfad33c9097c670e36da75be10771af9d67ed6f",
+      "bytes": 33938
+    },
+    "az-sca-001418-drylake/provenance/lf2016-remap/lf2016-remap_fuel_model.tif": {
+      "sha256": "51ef96aea9e4172524aff6e7d59418fa25176516f94d3fa75ca601f8f815e666",
+      "bytes": 33938
+    },
+    "ca-aeu-017769-electra/forcing/weather.nc": {
+      "sha256": "5ea85256fabc518edc56afb520beeff95caf74c8fdd1d63ee082989bdbb22c4d",
+      "bytes": 97653876
+    },
+    "ca-aeu-017769-electra/item.json": {
+      "sha256": "d7ffddd53bf7fd39213eaebb3d1dfd1df27ddcdee7e189484c9bf6d72aa3308f",
+      "bytes": 3174
+    },
+    "ca-aeu-017769-electra/landscape/landscape.tif": {
+      "sha256": "e069d0b7e5f83164712548ceda9b639ae60a59588a82dced067c63e6d4bcb969",
+      "bytes": 144494
+    },
+    "ca-aeu-017769-electra/landscape/simulator.npz": {
+      "sha256": "67674122f8a7813460679d505f96638bcc01566edae742fa72cb15b79ec1b85c",
+      "bytes": 158814
+    },
+    "ca-aeu-017769-electra/observations/perimeters.geojson": {
+      "sha256": "c33d04e27880f8d828691c0f5e869a96aa985815294d6b5a11d9d2689f1652c2",
+      "bytes": 2789330
+    },
+    "ca-aeu-017769-electra/provenance/lf2016-remap/landscape.tif": {
+      "sha256": "e069d0b7e5f83164712548ceda9b639ae60a59588a82dced067c63e6d4bcb969",
+      "bytes": 144494
+    },
+    "ca-aeu-017769-electra/provenance/lf2016-remap/lf2016-remap_canopy_base_height.tif": {
+      "sha256": "926ed5ba9c5416c94e10b75afd5638fe312c62c5a7bddb81a3b2a08c539d1bac",
+      "bytes": 33938
+    },
+    "ca-aeu-017769-electra/provenance/lf2016-remap/lf2016-remap_canopy_bulk_density.tif": {
+      "sha256": "ae7b8de86309174c952af6d59dc7cc8df4a34ed8cd08447023484a5918edd8ce",
+      "bytes": 33938
+    },
+    "ca-aeu-017769-electra/provenance/lf2016-remap/lf2016-remap_canopy_cover.tif": {
+      "sha256": "55cb20019db76ba321c188b64a10745cdb162901db363c97a416b717c0057f33",
+      "bytes": 33938
+    },
+    "ca-aeu-017769-electra/provenance/lf2016-remap/lf2016-remap_canopy_height.tif": {
+      "sha256": "3155d71f4fe155c3e7ba7bdeb6ebe51258784d292009ff2d796941a46c623b5b",
+      "bytes": 33938
+    },
+    "ca-aeu-017769-electra/provenance/lf2016-remap/lf2016-remap_fuel_model.tif": {
+      "sha256": "d9223be9abebaf0f969930abf1759c0333dee75f279e4fdc34581c9f48479292",
+      "bytes": 33938
+    },
+    "fuel_rebuild_manifest.json": {
+      "sha256": "0cfd5d834ebeff74c90f0f549d9d0cae2cef55f5b965af1cc0b2cb185d8a84ea",
+      "bytes": 35580
+    },
+    "id-ipf-000447-ridgecreek/forcing/weather.nc": {
+      "sha256": "1dff48c9fe394abe8c285e4534ed3a511e8a28dc1a620063166740e003d8a0ff",
+      "bytes": 42780
+    },
+    "id-ipf-000447-ridgecreek/item.json": {
+      "sha256": "e7e9abdb44d7f321363b04dd5ba3f37ba4f076839757ea8f3d1c17675fe62370",
+      "bytes": 3193
+    },
+    "id-ipf-000447-ridgecreek/landscape/landscape.tif": {
+      "sha256": "62c8a58717b1525a40dd5d0311b5b377971e82f9ba4822e01c63b3789197ab44",
+      "bytes": 132954
+    },
+    "id-ipf-000447-ridgecreek/landscape/simulator.npz": {
+      "sha256": "66296b25ea12c301200cde58ba4d95b0c512ed9915c8da3223c9b45cc9767c99",
+      "bytes": 142156
+    },
+    "id-ipf-000447-ridgecreek/observations/perimeters.geojson": {
+      "sha256": "290ddc4222170f0316a77f3e74191bce1c5a1683cc14804e06416a273a214dd8",
+      "bytes": 7695794
+    },
+    "id-ipf-000447-ridgecreek/provenance/lf2016-remap/landscape.tif": {
+      "sha256": "62c8a58717b1525a40dd5d0311b5b377971e82f9ba4822e01c63b3789197ab44",
+      "bytes": 132954
+    },
+    "id-ipf-000447-ridgecreek/provenance/lf2016-remap/lf2016-remap_canopy_base_height.tif": {
+      "sha256": "c09ce66e3496305b15a81f4b1e652bd0dc3a6c39b15e6bb9fd8d38c27ef69324",
+      "bytes": 33938
+    },
+    "id-ipf-000447-ridgecreek/provenance/lf2016-remap/lf2016-remap_canopy_bulk_density.tif": {
+      "sha256": "0e799ef373d86924ff6657299ff20734b5a42d89fc6ef4f228a16e0fb1e36d83",
+      "bytes": 33938
+    },
+    "id-ipf-000447-ridgecreek/provenance/lf2016-remap/lf2016-remap_canopy_cover.tif": {
+      "sha256": "ec6cb9e74f30d18090829dd91a4702db16c5ab73cec6aa9c6b4a856302a7acd6",
+      "bytes": 33938
+    },
+    "id-ipf-000447-ridgecreek/provenance/lf2016-remap/lf2016-remap_canopy_height.tif": {
+      "sha256": "6965f459340bd55b564b083f9f30809ce9bae64cf25dbf1dd0aeaef8fc67dd6d",
+      "bytes": 33938
+    },
+    "id-ipf-000447-ridgecreek/provenance/lf2016-remap/lf2016-remap_fuel_model.tif": {
+      "sha256": "0835e95880fde91d02042ce6d8934844a6dcf85291eb030e66d97925b5a79646",
+      "bytes": 33938
+    },
+    "nm-gnf-000382-davis/forcing/weather.nc": {
+      "sha256": "80c23abff07a6aaadd90b253904dde892bf75757f5fb302a7633e72f2471b77f",
+      "bytes": 27420
+    },
+    "nm-gnf-000382-davis/item.json": {
+      "sha256": "ebf188c77fea2fcc7c07fa1d6e9f09cc3284ee382375429e38896e0f9e0d837d",
+      "bytes": 3178
+    },
+    "nm-gnf-000382-davis/landscape/landscape.tif": {
+      "sha256": "65cfe1215d785bc3ce305986fe3503514b19e9f79e1710414563f7c1dfaf96d7",
+      "bytes": 115420
+    },
+    "nm-gnf-000382-davis/landscape/simulator.npz": {
+      "sha256": "66e4efc0b4148207a954800fbe0287aed03ece941b11443992ef0d551927b1e4",
+      "bytes": 126216
+    },
+    "nm-gnf-000382-davis/observations/perimeters.geojson": {
+      "sha256": "d20347ca54de4c30edff8e061a1cb7c94eebd7c65e9acc484a0daf9d74ccd315",
+      "bytes": 1280321
+    },
+    "nm-gnf-000382-davis/provenance/lf2016-remap/landscape.tif": {
+      "sha256": "65cfe1215d785bc3ce305986fe3503514b19e9f79e1710414563f7c1dfaf96d7",
+      "bytes": 115420
+    },
+    "nm-gnf-000382-davis/provenance/lf2016-remap/lf2016-remap_canopy_base_height.tif": {
+      "sha256": "1eaeaf17dea5d2d2cb229a4f09ef5a5a0871544d240b963fd2bdf5efbc639825",
+      "bytes": 33938
+    },
+    "nm-gnf-000382-davis/provenance/lf2016-remap/lf2016-remap_canopy_bulk_density.tif": {
+      "sha256": "72f4cab0f8252c81ac4b92751752bd2d53fcc2562a399f18e82a4c57ba2494ff",
+      "bytes": 33938
+    },
+    "nm-gnf-000382-davis/provenance/lf2016-remap/lf2016-remap_canopy_cover.tif": {
+      "sha256": "cebf3926a76c137b95e73272172abe5dc781c5844db6f1f3d3c1f77702e807fa",
+      "bytes": 33938
+    },
+    "nm-gnf-000382-davis/provenance/lf2016-remap/lf2016-remap_canopy_height.tif": {
+      "sha256": "b9d0e6790d655b36a7f958a34e5ea30254d92baeae584cca537af7af5bf7093b",
+      "bytes": 33938
+    },
+    "nm-gnf-000382-davis/provenance/lf2016-remap/lf2016-remap_fuel_model.tif": {
+      "sha256": "3f7f90d9cd808bfdad16bbd3f3c008c0ba73aded5a48196c9f68fddfb1e9777b",
+      "bytes": 33938
+    },
+    "or-maf-022199-crocketsknob/forcing/weather.nc": {
+      "sha256": "239158b50956aeb30dfc4c56979b6cbb8de3eb6e67d9c4f92656004fdbd39c68",
+      "bytes": 31260
+    },
+    "or-maf-022199-crocketsknob/item.json": {
+      "sha256": "cb47358d5f77d92740c43f6b15d3a0bad8b85b83e802126dda12ca0b880b742b",
+      "bytes": 3196
+    },
+    "or-maf-022199-crocketsknob/landscape/landscape.tif": {
+      "sha256": "9e34eafbfd8fd78f468f69f7c054cd7e9a4799192d3f720e90f3965ce6c5d523",
+      "bytes": 127646
+    },
+    "or-maf-022199-crocketsknob/landscape/simulator.npz": {
+      "sha256": "e79f71d4406ee139293bb3f590e7585f10fa6df27f072ffc8bf4fdb23460da84",
+      "bytes": 138560
+    },
+    "or-maf-022199-crocketsknob/observations/perimeters.geojson": {
+      "sha256": "23dae7c05f38c8fff35c4368965326e80918626853bbaf241a2fe3512bfa2826",
+      "bytes": 6358740
+    },
+    "or-maf-022199-crocketsknob/provenance/lf2016-remap/landscape.tif": {
+      "sha256": "9e34eafbfd8fd78f468f69f7c054cd7e9a4799192d3f720e90f3965ce6c5d523",
+      "bytes": 127646
+    },
+    "or-maf-022199-crocketsknob/provenance/lf2016-remap/lf2016-remap_canopy_base_height.tif": {
+      "sha256": "ad7e8191635657b1605cd429d5356a634c39f4d1c36400c7eb47c4879fa9f7fb",
+      "bytes": 33938
+    },
+    "or-maf-022199-crocketsknob/provenance/lf2016-remap/lf2016-remap_canopy_bulk_density.tif": {
+      "sha256": "89c342c1c12812f43cfa5864c03e7703e270a51d4c4ec677988ff29fc7996395",
+      "bytes": 33938
+    },
+    "or-maf-022199-crocketsknob/provenance/lf2016-remap/lf2016-remap_canopy_cover.tif": {
+      "sha256": "cea014b6726f82f73323f5036d72707240f10cb9390890087b69f985c5ed50e1",
+      "bytes": 33938
+    },
+    "or-maf-022199-crocketsknob/provenance/lf2016-remap/lf2016-remap_canopy_height.tif": {
+      "sha256": "1d409d34071ac50e2bea39d49250f2bb52edb79ec14f9ce7f0e1c3a6c565834f",
+      "bytes": 33938
+    },
+    "or-maf-022199-crocketsknob/provenance/lf2016-remap/lf2016-remap_fuel_model.tif": {
+      "sha256": "b638c29cd0908c6e23598914a1af2f1e2218f274ab35b9298928d76d4c2e3c8c",
+      "bytes": 33938
+    },
+    "prepared.json": {
+      "sha256": "398e68e6a41c59c29859d37ba6001dd003746a1bea9e4271a1f8db662164393a",
+      "bytes": 1395
+    },
+    "ut-vld-000127-bear/forcing/weather.nc": {
+      "sha256": "4545b8541b3bd621eaf65f18f5b82a18e30e79177e9c22eab78da6eb6368aa8f",
+      "bytes": 29340
+    },
+    "ut-vld-000127-bear/item.json": {
+      "sha256": "ad20608c5e2449cda2b56db8394fd79b626abf0aa148f3a506d3f9c2a255b4eb",
+      "bytes": 3175
+    },
+    "ut-vld-000127-bear/landscape/landscape.tif": {
+      "sha256": "fb37d1533579f43957e42bc62e38830ef5ec8e8951ff6aa12e9058b6e913e818",
+      "bytes": 119962
+    },
+    "ut-vld-000127-bear/landscape/simulator.npz": {
+      "sha256": "4decd551cf56ce3fd52ac0a18a8b4ad8471aa071326a92874cb1377ade47202b",
+      "bytes": 132347
+    },
+    "ut-vld-000127-bear/observations/perimeters.geojson": {
+      "sha256": "06c73f1f62f31819af8ea10b8d86569b9e3f6e5976e91c77a0b0517f89d170ed",
+      "bytes": 4477681
+    },
+    "ut-vld-000127-bear/provenance/lf2016-remap/landscape.tif": {
+      "sha256": "fb37d1533579f43957e42bc62e38830ef5ec8e8951ff6aa12e9058b6e913e818",
+      "bytes": 119962
+    },
+    "ut-vld-000127-bear/provenance/lf2016-remap/lf2016-remap_canopy_base_height.tif": {
+      "sha256": "916d51882089f0f495d37c409e7fc5c4515a14ce12bed7be2e184ca6e3442849",
+      "bytes": 33938
+    },
+    "ut-vld-000127-bear/provenance/lf2016-remap/lf2016-remap_canopy_bulk_density.tif": {
+      "sha256": "149dcabfe4f49d3a97eb15fbf961b90108b0e04a21e0ac933219a39bbf9e9b46",
+      "bytes": 33938
+    },
+    "ut-vld-000127-bear/provenance/lf2016-remap/lf2016-remap_canopy_cover.tif": {
+      "sha256": "fe28ebadd520cdc4630ebadf5be9085e40caf0643aeb9060d81cc73154bffd75",
+      "bytes": 33938
+    },
+    "ut-vld-000127-bear/provenance/lf2016-remap/lf2016-remap_canopy_height.tif": {
+      "sha256": "97c44aa982d33601a394b6b1076d976d3af6507652d253203b885e4c66fc70e9",
+      "bytes": 33938
+    },
+    "ut-vld-000127-bear/provenance/lf2016-remap/lf2016-remap_fuel_model.tif": {
+      "sha256": "070d93b56bd3d5949081ab32f3d13ce794334f68e93e1cf6398d0fd16b7e43df",
+      "bytes": 33938
+    }
+  }
+}

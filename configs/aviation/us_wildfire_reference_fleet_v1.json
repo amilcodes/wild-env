@@ -1,0 +1,723 @@
+{
+  "schema_version": 1,
+  "catalog_id": "us-wildfire-reference-fleet-v1",
+  "researched_at": "2026-07-30",
+  "profiles": [
+    {
+      "profile_id": "calfire-s2t-retardant",
+      "display_name": "CAL FIRE Grumman S-2T airtanker",
+      "operator_reference": "CAL FIRE",
+      "resource_kind": "retardant",
+      "autonomy_level": "crewed",
+      "operational_roles": [
+        "rapid_initial_attack",
+        "retardant_line"
+      ],
+      "operational_status": "Current CAL FIRE initial-attack airtanker",
+      "identity_sources": [
+        "https://www.fire.ca.gov/what-we-do/fire-protection/aviation-program/cal-fire-s2t"
+      ],
+      "simulation_evidence_grade": "scenario_assumption",
+      "performance_surface_path": null,
+      "delivery_evidence_grade": "engineering_validated",
+      "delivery_surface_path": "configs/aviation/delivery_surfaces/calfire_s2t_mtdc_2006_gum_v1.json",
+      "simulator_parameters": {
+        "cruise_speed_m_s": {
+          "value": 96.56,
+          "unit": "m/s",
+          "basis": "modeling_assumption",
+          "source_url": "https://www.fire.ca.gov/what-we-do/fire-protection/aviation-program/cal-fire-s2t",
+          "source_value": "270 mph maximum operating speed",
+          "note": "Research cruise set to 80 percent of the published maximum; replace with an approved flight-manual schedule."
+        },
+        "payload_l": {
+          "value": 4542.494141,
+          "unit": "L",
+          "basis": "unit_conversion",
+          "source_url": "https://www.fire.ca.gov/what-we-do/fire-protection/aviation-program/cal-fire-s2t",
+          "source_value": "1,200 US gallons long-term retardant"
+        },
+        "target_coverage_level_gpc": {
+          "value": 3.0,
+          "unit": "gal/100 ft^2",
+          "basis": "published",
+          "source_url": "https://www.fs.usda.gov/t-d/pubs/pdfpubs/pdf06572848/pdf06572848dpi72.pdf",
+          "source_value": "Table 3 includes controller settings and longest measured line lengths across coverage levels 0.5-10."
+        },
+        "reload_min": {
+          "value": 14,
+          "unit": "min",
+          "basis": "modeling_assumption",
+          "note": "Base-cycle parameter pending tanker-base records."
+        },
+        "dispatch_latency_min": {
+          "value": 3,
+          "unit": "min",
+          "basis": "modeling_assumption"
+        },
+        "endurance_min": {
+          "value": 270,
+          "unit": "min",
+          "basis": "unit_conversion",
+          "source_url": "https://www.fire.ca.gov/what-we-do/fire-protection/aviation-program/cal-fire-s2t",
+          "source_value": "4.5 hours"
+        },
+        "reserve_endurance_min": {
+          "value": 30,
+          "unit": "min",
+          "basis": "modeling_assumption"
+        },
+        "cruise_altitude_agl_m": {
+          "value": 300,
+          "unit": "m",
+          "basis": "modeling_assumption"
+        },
+        "minimum_terrain_clearance_m": {
+          "value": 150,
+          "unit": "m",
+          "basis": "modeling_assumption"
+        },
+        "maximum_operating_altitude_m_msl": {
+          "value": 4500,
+          "unit": "m",
+          "basis": "modeling_assumption"
+        },
+        "maximum_crosswind_m_s": {
+          "value": 12,
+          "unit": "m/s",
+          "basis": "modeling_assumption"
+        }
+      }
+    },
+    {
+      "profile_id": "calfire-c130h-retardant",
+      "display_name": "CAL FIRE C-130H airtanker",
+      "operator_reference": "CAL FIRE",
+      "resource_kind": "retardant",
+      "autonomy_level": "crewed",
+      "operational_roles": [
+        "rapid_initial_attack",
+        "large_retardant_line"
+      ],
+      "operational_status": "Current CAL FIRE large airtanker; first aircraft entered service in August 2024",
+      "identity_sources": [
+        "https://www.fire.ca.gov/what-we-do/fire-protection/aviation-program/cal-fire-c-130"
+      ],
+      "simulation_evidence_grade": "scenario_assumption",
+      "performance_surface_path": null,
+      "simulator_parameters": {
+        "cruise_speed_m_s": {
+          "value": 131.609,
+          "unit": "m/s",
+          "basis": "modeling_assumption",
+          "source_url": "https://www.fire.ca.gov/what-we-do/fire-protection/aviation-program/cal-fire-c-130",
+          "source_value": "368 mph maximum operating speed",
+          "note": "Research cruise set to 80 percent of the published maximum."
+        },
+        "payload_l": {
+          "value": 15141.647136,
+          "unit": "L",
+          "basis": "unit_conversion",
+          "source_url": "https://www.fire.ca.gov/what-we-do/fire-protection/aviation-program/cal-fire-c-130",
+          "source_value": "4,000 US gallons long-term retardant"
+        },
+        "reload_min": {
+          "value": 20,
+          "unit": "min",
+          "basis": "modeling_assumption"
+        },
+        "dispatch_latency_min": {
+          "value": 10,
+          "unit": "min",
+          "basis": "modeling_assumption"
+        },
+        "endurance_min": {
+          "value": 480,
+          "unit": "min",
+          "basis": "unit_conversion",
+          "source_url": "https://www.fire.ca.gov/what-we-do/fire-protection/aviation-program/cal-fire-c-130",
+          "source_value": "8 hours"
+        },
+        "reserve_endurance_min": {
+          "value": 45,
+          "unit": "min",
+          "basis": "modeling_assumption"
+        },
+        "cruise_altitude_agl_m": {
+          "value": 450,
+          "unit": "m",
+          "basis": "modeling_assumption"
+        },
+        "minimum_terrain_clearance_m": {
+          "value": 200,
+          "unit": "m",
+          "basis": "modeling_assumption"
+        },
+        "maximum_operating_altitude_m_msl": {
+          "value": 6000,
+          "unit": "m",
+          "basis": "modeling_assumption"
+        },
+        "maximum_crosswind_m_s": {
+          "value": 15,
+          "unit": "m/s",
+          "basis": "modeling_assumption"
+        }
+      }
+    },
+    {
+      "profile_id": "calfire-s70i-water",
+      "display_name": "CAL FIRE S-70i FIREHAWK",
+      "operator_reference": "CAL FIRE",
+      "resource_kind": "water",
+      "autonomy_level": "crewed",
+      "operational_roles": [
+        "rapid_initial_attack",
+        "helitack",
+        "water_drop",
+        "night_operations",
+        "rescue"
+      ],
+      "operational_status": "Current CAL FIRE Type 1 initial-attack and night-capable helicopter",
+      "identity_sources": [
+        "https://www.fire.ca.gov/what-we-do/fire-protection/aviation-program/cal-fire-s-70"
+      ],
+      "simulation_evidence_grade": "scenario_assumption",
+      "performance_surface_path": null,
+      "simulator_parameters": {
+        "cruise_speed_m_s": {
+          "value": 79.739,
+          "unit": "m/s",
+          "basis": "unit_conversion",
+          "source_url": "https://www.fire.ca.gov/what-we-do/fire-protection/aviation-program/cal-fire-s-70",
+          "source_value": "155 knots maximum cruise"
+        },
+        "payload_l": {
+          "value": 3785.411784,
+          "unit": "L",
+          "basis": "unit_conversion",
+          "source_url": "https://www.fire.ca.gov/what-we-do/fire-protection/aviation-program/cal-fire-s-70",
+          "source_value": "1,000 US gallons water"
+        },
+        "reload_min": {
+          "value": 1,
+          "unit": "min",
+          "basis": "unit_conversion",
+          "source_url": "https://www.lockheedmartin.com/content/dam/lockheed-martin/rms/documents/firehawk/9366_Firehawk_SellSheet_2025.pdf",
+          "source_value": "Refill tank in less than 45 seconds",
+          "note": "Rounded upward to one minute because the canonical operations simulator advances resources on one-minute ticks."
+        },
+        "dispatch_latency_min": {
+          "value": 2,
+          "unit": "min",
+          "basis": "modeling_assumption"
+        },
+        "endurance_min": {
+          "value": 150,
+          "unit": "min",
+          "basis": "unit_conversion",
+          "source_url": "https://www.fire.ca.gov/what-we-do/fire-protection/aviation-program/cal-fire-s-70",
+          "source_value": "approximately 2.5 hours fuel duration"
+        },
+        "reserve_endurance_min": {
+          "value": 20,
+          "unit": "min",
+          "basis": "modeling_assumption"
+        },
+        "cruise_altitude_agl_m": {
+          "value": 150,
+          "unit": "m",
+          "basis": "modeling_assumption"
+        },
+        "minimum_terrain_clearance_m": {
+          "value": 75,
+          "unit": "m",
+          "basis": "modeling_assumption"
+        },
+        "maximum_operating_altitude_m_msl": {
+          "value": 4500,
+          "unit": "m",
+          "basis": "modeling_assumption"
+        },
+        "maximum_crosswind_m_s": {
+          "value": 10,
+          "unit": "m/s",
+          "basis": "modeling_assumption"
+        },
+        "minimum_service_depth_m": {
+          "value": 1.5,
+          "unit": "m",
+          "basis": "modeling_assumption"
+        },
+        "minimum_service_length_m": {
+          "value": 20,
+          "unit": "m",
+          "basis": "modeling_assumption"
+        }
+      }
+    },
+    {
+      "profile_id": "calfire-uh1h-water",
+      "display_name": "CAL FIRE UH-1H Super Huey",
+      "operator_reference": "CAL FIRE",
+      "resource_kind": "water",
+      "autonomy_level": "crewed",
+      "operational_roles": [
+        "initial_attack",
+        "helitack",
+        "water_drop",
+        "aerial_ignition",
+        "rescue"
+      ],
+      "operational_status": "Current CAL FIRE utility and initial-attack helicopter during S-70i transition",
+      "identity_sources": [
+        "https://www.fire.ca.gov/what-we-do/fire-protection/aviation-program/cal-fire-uh-1h"
+      ],
+      "simulation_evidence_grade": "scenario_assumption",
+      "performance_surface_path": null,
+      "simulator_parameters": {
+        "cruise_speed_m_s": {
+          "value": 56.327,
+          "unit": "m/s",
+          "basis": "unit_conversion",
+          "source_url": "https://www.fire.ca.gov/what-we-do/fire-protection/aviation-program/cal-fire-uh-1h",
+          "source_value": "126 mph cruise speed"
+        },
+        "payload_l": {
+          "value": 1362.748242,
+          "unit": "L",
+          "basis": "unit_conversion",
+          "source_url": "https://www.fire.ca.gov/what-we-do/fire-protection/aviation-program/cal-fire-uh-1h",
+          "source_value": "360 US gallons fixed tank"
+        },
+        "reload_min": {
+          "value": 3,
+          "unit": "min",
+          "basis": "modeling_assumption"
+        },
+        "dispatch_latency_min": {
+          "value": 2,
+          "unit": "min",
+          "basis": "modeling_assumption"
+        },
+        "endurance_min": {
+          "value": 120,
+          "unit": "min",
+          "basis": "unit_conversion",
+          "source_url": "https://www.fire.ca.gov/what-we-do/fire-protection/aviation-program/cal-fire-uh-1h",
+          "source_value": "2 hours"
+        },
+        "reserve_endurance_min": {
+          "value": 18,
+          "unit": "min",
+          "basis": "modeling_assumption"
+        },
+        "cruise_altitude_agl_m": {
+          "value": 120,
+          "unit": "m",
+          "basis": "modeling_assumption"
+        },
+        "minimum_terrain_clearance_m": {
+          "value": 60,
+          "unit": "m",
+          "basis": "modeling_assumption"
+        },
+        "maximum_operating_altitude_m_msl": {
+          "value": 3500,
+          "unit": "m",
+          "basis": "modeling_assumption"
+        },
+        "maximum_crosswind_m_s": {
+          "value": 9,
+          "unit": "m/s",
+          "basis": "modeling_assumption"
+        }
+      }
+    },
+    {
+      "profile_id": "calfire-king-air-200-intelligence",
+      "display_name": "CAL FIRE King Air 200 Intel 641",
+      "operator_reference": "CAL FIRE",
+      "resource_kind": "sensor",
+      "autonomy_level": "crewed",
+      "operational_roles": [
+        "infrared_mapping",
+        "aerial_intelligence",
+        "atgs_training"
+      ],
+      "operational_status": "Current CAL FIRE intelligence and training platform",
+      "identity_sources": [
+        "https://www.fire.ca.gov/what-we-do/fire-protection/aviation-program/cal-fire-king-air"
+      ],
+      "simulation_evidence_grade": "scenario_assumption",
+      "performance_surface_path": null,
+      "simulator_parameters": {
+        "cruise_speed_m_s": {
+          "value": 118.759,
+          "unit": "m/s",
+          "basis": "modeling_assumption",
+          "source_url": "https://www.fire.ca.gov/what-we-do/fire-protection/aviation-program/cal-fire-king-air",
+          "source_value": "332 mph maximum operating speed",
+          "note": "Research cruise set to 80 percent of the published maximum."
+        },
+        "payload_l": {
+          "value": 0,
+          "unit": "L",
+          "basis": "role_mapping",
+          "note": "Sensor resources do not carry suppressant in the simulator."
+        },
+        "reload_min": {
+          "value": 0,
+          "unit": "min",
+          "basis": "role_mapping"
+        },
+        "dispatch_latency_min": {
+          "value": 5,
+          "unit": "min",
+          "basis": "modeling_assumption"
+        },
+        "endurance_min": {
+          "value": 300,
+          "unit": "min",
+          "basis": "unit_conversion",
+          "source_url": "https://www.fire.ca.gov/what-we-do/fire-protection/aviation-program/cal-fire-king-air",
+          "source_value": "5 hours"
+        },
+        "reserve_endurance_min": {
+          "value": 30,
+          "unit": "min",
+          "basis": "modeling_assumption"
+        },
+        "cruise_altitude_agl_m": {
+          "value": 1200,
+          "unit": "m",
+          "basis": "modeling_assumption"
+        },
+        "minimum_terrain_clearance_m": {
+          "value": 300,
+          "unit": "m",
+          "basis": "modeling_assumption"
+        },
+        "maximum_operating_altitude_m_msl": {
+          "value": 8500,
+          "unit": "m",
+          "basis": "modeling_assumption"
+        },
+        "maximum_crosswind_m_s": {
+          "value": 15,
+          "unit": "m/s",
+          "basis": "modeling_assumption"
+        }
+      }
+    },
+    {
+      "profile_id": "calfire-ov10a-air-tactical",
+      "display_name": "CAL FIRE OV-10A Bronco",
+      "operator_reference": "CAL FIRE",
+      "resource_kind": "sensor",
+      "autonomy_level": "crewed",
+      "operational_roles": [
+        "air_tactical_supervision",
+        "airborne_command",
+        "lead_operations"
+      ],
+      "operational_status": "Current CAL FIRE primary airborne command-and-control platform",
+      "identity_sources": [
+        "https://www.fire.ca.gov/what-we-do/fire-protection/aviation-program/cal-fire-ov10"
+      ],
+      "simulation_evidence_grade": "scenario_assumption",
+      "performance_surface_path": null,
+      "simulator_parameters": {
+        "cruise_speed_m_s": {
+          "value": 92.269,
+          "unit": "m/s",
+          "basis": "modeling_assumption",
+          "source_url": "https://www.fire.ca.gov/what-we-do/fire-protection/aviation-program/cal-fire-ov10",
+          "source_value": "258 mph maximum operating speed for A model",
+          "note": "Research cruise set to 80 percent of the published maximum."
+        },
+        "payload_l": {
+          "value": 0,
+          "unit": "L",
+          "basis": "role_mapping"
+        },
+        "reload_min": {
+          "value": 0,
+          "unit": "min",
+          "basis": "role_mapping"
+        },
+        "dispatch_latency_min": {
+          "value": 4,
+          "unit": "min",
+          "basis": "modeling_assumption"
+        },
+        "endurance_min": {
+          "value": 330,
+          "unit": "min",
+          "basis": "unit_conversion",
+          "source_url": "https://www.fire.ca.gov/what-we-do/fire-protection/aviation-program/cal-fire-ov10",
+          "source_value": "5.5 hours maximum endurance for A model"
+        },
+        "reserve_endurance_min": {
+          "value": 30,
+          "unit": "min",
+          "basis": "modeling_assumption"
+        },
+        "cruise_altitude_agl_m": {
+          "value": 600,
+          "unit": "m",
+          "basis": "modeling_assumption"
+        },
+        "minimum_terrain_clearance_m": {
+          "value": 200,
+          "unit": "m",
+          "basis": "modeling_assumption"
+        },
+        "maximum_operating_altitude_m_msl": {
+          "value": 7000,
+          "unit": "m",
+          "basis": "modeling_assumption"
+        },
+        "maximum_crosswind_m_s": {
+          "value": 14,
+          "unit": "m/s",
+          "basis": "modeling_assumption"
+        }
+      }
+    },
+    {
+      "profile_id": "interagency-skydio-x10",
+      "display_name": "Skydio X10",
+      "operator_reference": "DOI and USFS approved-aircraft reference list",
+      "resource_kind": "sensor",
+      "autonomy_level": "supervised_autonomy",
+      "operational_roles": [
+        "situational_awareness",
+        "infrared_mapping",
+        "inspection"
+      ],
+      "operational_status": "Listed for reference as a DOI/USFS approved UAS on the interagency UAS site",
+      "identity_sources": [
+        "https://uas.nifc.gov/cooperators-and-contractors",
+        "https://www.skydio.com/x10/technical-specs/"
+      ],
+      "simulation_evidence_grade": "scenario_assumption",
+      "performance_surface_path": null,
+      "simulator_parameters": {
+        "cruise_speed_m_s": {
+          "value": 15,
+          "unit": "m/s",
+          "basis": "modeling_assumption",
+          "source_url": "https://www.skydio.com/x10/technical-specs/",
+          "source_value": "20 m/s maximum horizontal speed at sea level"
+        },
+        "payload_l": {
+          "value": 0,
+          "unit": "L",
+          "basis": "role_mapping"
+        },
+        "reload_min": {
+          "value": 0,
+          "unit": "min",
+          "basis": "role_mapping"
+        },
+        "dispatch_latency_min": {
+          "value": 1,
+          "unit": "min",
+          "basis": "modeling_assumption"
+        },
+        "endurance_min": {
+          "value": 40,
+          "unit": "min",
+          "basis": "published",
+          "source_url": "https://www.skydio.com/x10/technical-specs/",
+          "source_value": "40 minutes maximum flight time"
+        },
+        "reserve_endurance_min": {
+          "value": 8,
+          "unit": "min",
+          "basis": "modeling_assumption"
+        },
+        "cruise_altitude_agl_m": {
+          "value": 100,
+          "unit": "m",
+          "basis": "modeling_assumption"
+        },
+        "minimum_terrain_clearance_m": {
+          "value": 30,
+          "unit": "m",
+          "basis": "modeling_assumption"
+        },
+        "maximum_operating_altitude_m_msl": {
+          "value": 4572,
+          "unit": "m density altitude",
+          "basis": "unit_conversion",
+          "source_url": "https://www.skydio.com/x10/technical-specs/",
+          "source_value": "15,000 ft maximum service ceiling without other payload"
+        },
+        "maximum_crosswind_m_s": {
+          "value": 10,
+          "unit": "m/s",
+          "basis": "modeling_assumption",
+          "source_url": "https://www.skydio.com/x10/technical-specs/",
+          "source_value": "12.8 m/s maximum gust handling"
+        }
+      }
+    },
+    {
+      "profile_id": "interagency-parrot-anafi-usa",
+      "display_name": "Parrot ANAFI USA",
+      "operator_reference": "DOI and USFS approved-aircraft reference list",
+      "resource_kind": "sensor",
+      "autonomy_level": "remotely_piloted",
+      "operational_roles": [
+        "situational_awareness",
+        "infrared_mapping"
+      ],
+      "operational_status": "Listed for reference as a DOI/USFS approved UAS on the interagency UAS site",
+      "identity_sources": [
+        "https://uas.nifc.gov/cooperators-and-contractors",
+        "https://www.parrot.com/en/drones/anafi-usa/technical-specifications"
+      ],
+      "simulation_evidence_grade": "scenario_assumption",
+      "performance_surface_path": null,
+      "simulator_parameters": {
+        "cruise_speed_m_s": {
+          "value": 11,
+          "unit": "m/s",
+          "basis": "modeling_assumption",
+          "source_url": "https://www.parrot.com/en/drones/anafi-usa/technical-specifications",
+          "source_value": "14.7 m/s maximum horizontal speed"
+        },
+        "payload_l": {
+          "value": 0,
+          "unit": "L",
+          "basis": "role_mapping"
+        },
+        "reload_min": {
+          "value": 0,
+          "unit": "min",
+          "basis": "role_mapping"
+        },
+        "dispatch_latency_min": {
+          "value": 1,
+          "unit": "min",
+          "basis": "modeling_assumption"
+        },
+        "endurance_min": {
+          "value": 32,
+          "unit": "min",
+          "basis": "published",
+          "source_url": "https://www.parrot.com/en/drones/anafi-usa/technical-specifications",
+          "source_value": "32 minutes maximum flight time"
+        },
+        "reserve_endurance_min": {
+          "value": 7,
+          "unit": "min",
+          "basis": "modeling_assumption"
+        },
+        "cruise_altitude_agl_m": {
+          "value": 100,
+          "unit": "m",
+          "basis": "modeling_assumption"
+        },
+        "minimum_terrain_clearance_m": {
+          "value": 30,
+          "unit": "m",
+          "basis": "modeling_assumption"
+        },
+        "maximum_operating_altitude_m_msl": {
+          "value": 5000,
+          "unit": "m",
+          "basis": "published",
+          "source_url": "https://www.parrot.com/en/drones/anafi-usa/technical-specifications",
+          "source_value": "5,000 m service ceiling above MSL"
+        },
+        "maximum_crosswind_m_s": {
+          "value": 10,
+          "unit": "m/s",
+          "basis": "modeling_assumption",
+          "source_url": "https://www.parrot.com/en/drones/anafi-usa/technical-specifications",
+          "source_value": "14.7 m/s maximum wind resistance"
+        }
+      }
+    },
+    {
+      "profile_id": "interagency-freefly-alta-x-ignition",
+      "display_name": "Freefly Alta X with approved aerial-ignition role",
+      "operator_reference": "Interagency UAS program",
+      "resource_kind": "sensor",
+      "autonomy_level": "remotely_piloted",
+      "operational_roles": [
+        "aerial_ignition",
+        "situational_awareness",
+        "mapping"
+      ],
+      "operational_status": "Alta X is listed for reference as DOI/USFS approved; interagency guidance documents UAS aerial ignition",
+      "identity_sources": [
+        "https://uas.nifc.gov/cooperators-and-contractors",
+        "https://uas.nifc.gov/aerial-ignition",
+        "https://freeflysystems.com/alta-x/specs"
+      ],
+      "simulation_evidence_grade": "scenario_assumption",
+      "performance_surface_path": null,
+      "simulator_parameters": {
+        "cruise_speed_m_s": {
+          "value": 18,
+          "unit": "m/s",
+          "basis": "modeling_assumption",
+          "source_url": "https://docs.freeflysystems.com/products/products/alta-x/introducing-alta-x/features",
+          "source_value": "top speed over 60 mph"
+        },
+        "payload_l": {
+          "value": 0,
+          "unit": "L",
+          "basis": "role_mapping",
+          "note": "Aerial ignition is not yet a simulator task; this profile carries no suppressant."
+        },
+        "reload_min": {
+          "value": 0,
+          "unit": "min",
+          "basis": "role_mapping"
+        },
+        "dispatch_latency_min": {
+          "value": 2,
+          "unit": "min",
+          "basis": "modeling_assumption"
+        },
+        "endurance_min": {
+          "value": 25,
+          "unit": "min",
+          "basis": "modeling_assumption",
+          "source_url": "https://docs.freeflysystems.com/products/products/alta-x/introducing-alta-x/features",
+          "source_value": "25 minutes with a 20 lb payload; more than 40 minutes with smaller payload"
+        },
+        "reserve_endurance_min": {
+          "value": 6,
+          "unit": "min",
+          "basis": "modeling_assumption"
+        },
+        "cruise_altitude_agl_m": {
+          "value": 90,
+          "unit": "m",
+          "basis": "modeling_assumption"
+        },
+        "minimum_terrain_clearance_m": {
+          "value": 30,
+          "unit": "m",
+          "basis": "modeling_assumption"
+        },
+        "maximum_operating_altitude_m_msl": {
+          "value": 2500,
+          "unit": "m",
+          "basis": "modeling_assumption"
+        },
+        "maximum_crosswind_m_s": {
+          "value": 8,
+          "unit": "m/s",
+          "basis": "modeling_assumption"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,166 @@
+{
+  "schema_version": 1,
+  "study": "exact-configuration wildfire aviation public-evidence closure",
+  "created_at": "2026-07-31T15:52:33.221412+00:00",
+  "source_revision": "c395e189252a4803c6910e3e5204e44a8c3741ae",
+  "source_worktree_dirty": true,
+  "verification": {
+    "pytest": "108 passed",
+    "ruff": "all src, tests, and tools passed",
+    "public_documents_checksum_verified": 5,
+    "vehicle_profiles": 9,
+    "field_closed_profiles": 0
+  },
+  "source_files": {
+    "README.md": {
+      "sha256": "f00c81575b52b50f889c2f0a9843b54472206721bc580c85b6f89ed28e9a5577",
+      "bytes": 12930
+    },
+    "configs/aviation/delivery_surfaces/calfire_s2t_mtdc_2006_gum_v1.json": {
+      "sha256": "2e160f9ff0af74c9d79f5c46d7311a4007e07fbf3d03c1f149ea97fc3b8ded74",
+      "bytes": 2268
+    },
+    "configs/aviation/evidence_registry_v1.json": {
+      "sha256": "2b3f228792903e42c6eb37c4673b482c48046ea24a7923835b7b770a7a5b6e98",
+      "bytes": 24212
+    },
+    "configs/aviation/us_wildfire_reference_fleet_v1.json": {
+      "sha256": "8204fb465e53a08e9bf7d91834aeb34a9fbebf28ab7c52629be965e6d8cb0a2e",
+      "bytes": 24594
+    },
+    "configs/aviation/us_wildfire_reference_operations.yaml": {
+      "sha256": "bee7d826813be4dbb5c1e8f70a0c7d3e9b2ac76e781f78b38d5a2e758b913761",
+      "bytes": 8765
+    },
+    "docs/aviation_evidence_acquisition.md": {
+      "sha256": "fddf8a0496f3fbf50248cd3788ab41db8e5514d2971005b0bba484c0b789588c",
+      "bytes": 11406
+    },
+    "docs/aviation_records_request.md": {
+      "sha256": "50aa5b74598c4defe64de8ee68574aa9923a765de86443377ce38bee2ce8c6d2",
+      "bytes": 8756
+    },
+    "docs/aviation_vehicle_closure.md": {
+      "sha256": "dc3ace2b1af694bad8d618906e6249ee10e771af91898160e5888cbbb4e705b8",
+      "bytes": 8245
+    },
+    "docs/noncompute_p1_remaining_work.md": {
+      "sha256": "37bd0ccd7d19b34880da622556dda60bee5c19702afc4799caf9264d7047a304",
+      "bytes": 21428
+    },
+    "docs/system_report_for_students.md": {
+      "sha256": "c5d603706759c90d29059bc29f39353753da661b1bb0363cec21d417ee756726",
+      "bytes": 28237
+    },
+    "src/aeolus/config.py": {
+      "sha256": "d34a4747a7098ca1804bf066619637834cdbfb420ced1e4ae3d22af05c0b6309",
+      "bytes": 22710
+    },
+    "src/aeolus/core/simulator.py": {
+      "sha256": "e86bb24725867dd840742a052e6cd0dc984a505c6e2180f960304b108e246383",
+      "bytes": 66042
+    },
+    "src/aeolus/core/state.py": {
+      "sha256": "524a8ba5d4163b8bd6c33af2040d68bb1e32b82ecbf3fb999e50fc0108897985",
+      "bytes": 4772
+    },
+    "src/aeolus/core/suppression.py": {
+      "sha256": "064622db46d764105c8e88d6dc87d94864684b69ae2a76eac23c20d01e317247",
+      "bytes": 9464
+    },
+    "src/aeolus/data/aerial_delivery.py": {
+      "sha256": "8dcd34050dab3832ec8c20f7251e2a72a25a8e397a3f8b05a57963791740df4f",
+      "bytes": 6552
+    },
+    "src/aeolus/data/__init__.py": {
+      "sha256": "11f4d48268a73e37a9689ce0a4391624c2e257a4feb40600ca86052f1436987c",
+      "bytes": 2830
+    },
+    "src/aeolus/data/aviation_catalog.py": {
+      "sha256": "e61f7a1196f0673afa68187cd962ece204555f62a2435ebdbd9414e1cff718c9",
+      "bytes": 13021
+    },
+    "src/aeolus/data/aviation_evidence.py": {
+      "sha256": "234e55419db7937425bdea1333c9a1afd0adc488b4e50fb8d804c910c2e1ab43",
+      "bytes": 9353
+    },
+    "src/aeolus/replay/recorder.py": {
+      "sha256": "031c7ecdaf2999bd09d82a42e74dae8da50a21619034fa5b2683dc1f0e348794",
+      "bytes": 20265
+    },
+    "tests/test_aerial_delivery.py": {
+      "sha256": "2aaf3b4c194a7a2a88bb104a341795caef3a6a7fb69e0af9c851b0a297c538ea",
+      "bytes": 2369
+    },
+    "tests/test_aviation_catalog.py": {
+      "sha256": "5ed65fb5e469a7a4c33da30298d821ee79312c8af3c0fbf09bdcc6fb91b29991",
+      "bytes": 2877
+    },
+    "tests/test_aviation_evidence.py": {
+      "sha256": "737565569fb4d78b3636a0188f94cf4276cc2678f778d1c24bf4355606474620",
+      "bytes": 1775
+    },
+    "tests/test_reference_operations.py": {
+      "sha256": "a325487563f193a9e50b7545e7b14a4a17d1e67c26e238b19683bc37c8a9c840",
+      "bytes": 2377
+    },
+    "tests/test_replay.py": {
+      "sha256": "d3d55ff29f83772dab55ddd03ba06a8cda6b21f5ef2daa2808bca2bec8b4cd9e",
+      "bytes": 2438
+    },
+    "tools/fetch_aviation_evidence.py": {
+      "sha256": "7a2660b2dffa632b5cb869b450b6f91b50674e8b6330934b4ef300ed93da76f7",
+      "bytes": 2491
+    },
+    "tools/freeze_aviation_evidence_artifacts.py": {
+      "sha256": "5c44e96fceda330443fa68e7081f5391d334a37794e316b04cd9771181701488",
+      "bytes": 5095
+    },
+    "tools/run_aviation_evidence_closure.py": {
+      "sha256": "f711504e53a4d4b51d5aff13a75c40cc63e552c904f494b8cf6a0851cf732a9d",
+      "bytes": 6465
+    }
+  },
+  "public_document_cache": {
+    "usfs-s2t-drop-guide-2006": {
+      "path": "tmp/aviation_evidence/usfs_s2t_drop_guide_2006.pdf",
+      "url": "https://www.fs.usda.gov/t-d/pubs/pdfpubs/pdf06572848/pdf06572848dpi72.pdf",
+      "sha256": "b876d555671a4a12429b190ad9c853d660467a61365e82967588ed1b158f1be1",
+      "bytes": 900357
+    },
+    "nwcg-pms514-2026": {
+      "path": "tmp/aviation_evidence/nwcg_pms514_2026.pdf",
+      "url": "https://fs-prod-nwcg.s3.us-gov-west-1.amazonaws.com/s3fs-public/publication/pms514.pdf",
+      "sha256": "2c31a7d98d5fcab17b9d9ea4070ab64a17474d0ae4fd2202646406b1528c6c01",
+      "bytes": 510846
+    },
+    "nwcg-pms514-s2-2026": {
+      "path": "tmp/aviation_evidence/nwcg_pms514_appendix_e_s2_2026.pdf",
+      "url": "https://fs-prod-nwcg.s3.us-gov-west-1.amazonaws.com/s3fs-public/publication/pms514-appendix-e-2026.pdf",
+      "sha256": "be340c97396ed7d7a5d90d76d3634e94bb11f7e592616dbe6416d9587cb89efb",
+      "bytes": 328073
+    },
+    "lockheed-firehawk-2025": {
+      "path": "tmp/aviation_evidence/lockheed_firehawk_2025.pdf",
+      "url": "https://www.lockheedmartin.com/content/dam/lockheed-martin/rms/documents/firehawk/9366_Firehawk_SellSheet_2025.pdf",
+      "sha256": "c8fcf08c6e0abf8f9c48a10bb6b7380b9f7928c670831571b28ba3b4ec0cfb8e",
+      "bytes": 1640235
+    },
+    "usfs-aircraft-inspector-guide-2018": {
+      "path": "tmp/aviation_evidence/usfs_aircraft_inspector_guide_2018.pdf",
+      "url": "https://www.fs.usda.gov/sites/default/files/2020-12/18-278212_aig_final_pre_policy_rev_6_28_2018_spf_letter_reduced.pdf",
+      "sha256": "32134d43071fc439cf74ce5c98bcaf3c74e4a618788360d5cd6c9152ef6c2458",
+      "bytes": 4723724
+    }
+  },
+  "result_artifacts": {
+    "aviation_evidence_closure.json": {
+      "sha256": "077292667859003f97c5bc9d3f7da9280082334cf87b60b87d3b5b1634c9fa31",
+      "bytes": 29043
+    },
+    "aviation_evidence_closure.png": {
+      "sha256": "5036bda8ed9ed22adb642cf0fd164690e0847c348bc1194ba286d81d23449a5d",
+      "bytes": 240194
+    }
+  }
+}

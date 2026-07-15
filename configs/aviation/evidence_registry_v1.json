@@ -1,0 +1,304 @@
+{
+  "schema_version": 1,
+  "registry_id": "us-wildfire-reference-fleet-evidence-v1",
+  "researched_at": "2026-07-31",
+  "documents": [
+    {
+      "document_id": "calfire-s2t-current",
+      "title": "CAL FIRE S2T Airtanker",
+      "publisher": "CAL FIRE",
+      "issued": "current 2026-07-31",
+      "url": "https://www.fire.ca.gov/what-we-do/fire-protection/aviation-program/cal-fire-s2t",
+      "document_class": "operator_public_specification",
+      "local_cache_path": null,
+      "sha256": null,
+      "access_note": "Names the Marsh conversion, TPE331-14GR engines, 29,150 lb gross weight, 1,200-gallon payload, speed, range, and endurance."
+    },
+    {
+      "document_id": "usfs-s2t-drop-guide-2006",
+      "title": "Ground Pattern Performance of the CDF S-2T Turbo Tracker Airtanker",
+      "publisher": "USDA Forest Service, Missoula Technology and Development Center",
+      "issued": "2006-12",
+      "url": "https://www.fs.usda.gov/t-d/pubs/pdfpubs/pdf06572848/pdf06572848dpi72.pdf",
+      "document_class": "controlled_engineering_drop_test",
+      "local_cache_path": "tmp/aviation_evidence/usfs_s2t_drop_guide_2006.pdf",
+      "sha256": "b876d555671a4a12429b190ad9c853d660467a61365e82967588ed1b158f1be1",
+      "access_note": "Cup-grid tests of the CDF Marsh S-2T constant-flow system; exact fleet/system lineage, but current tail-level continuity is unverified."
+    },
+    {
+      "document_id": "nwcg-pms514-2026",
+      "title": "NWCG Standards for Airtanker Operations, PMS 514",
+      "publisher": "National Wildfire Coordinating Group",
+      "issued": "2026-02",
+      "url": "https://fs-prod-nwcg.s3.us-gov-west-1.amazonaws.com/s3fs-public/publication/pms514.pdf",
+      "document_class": "interagency_operating_standard",
+      "local_cache_path": "tmp/aviation_evidence/nwcg_pms514_2026.pdf",
+      "sha256": "2c31a7d98d5fcab17b9d9ea4070ab64a17474d0ae4fd2202646406b1528c6c01",
+      "access_note": "Defines minimum multi-engine drop height, airtanker typing, supervision, spacing, landing-loaded policy, and environmental downloading."
+    },
+    {
+      "document_id": "nwcg-pms514-s2-2026",
+      "title": "PMS 514 Appendix E: S-2 Tactical Flight Procedures",
+      "publisher": "National Wildfire Coordinating Group",
+      "issued": "2026-02",
+      "url": "https://fs-prod-nwcg.s3.us-gov-west-1.amazonaws.com/s3fs-public/publication/pms514-appendix-e-2026.pdf",
+      "document_class": "current_operating_procedure",
+      "local_cache_path": "tmp/aviation_evidence/nwcg_pms514_appendix_e_s2_2026.pdf",
+      "sha256": "be340c97396ed7d7a5d90d76d3634e94bb11f7e592616dbe6416d9587cb89efb",
+      "access_note": "Current S-2 formation, sequencing, communications, and tactical procedures; not an aircraft performance manual."
+    },
+    {
+      "document_id": "calfire-c130-current",
+      "title": "CAL FIRE C-130 Hercules",
+      "publisher": "CAL FIRE",
+      "issued": "current 2026-07-31",
+      "url": "https://www.fire.ca.gov/what-we-do/fire-protection/aviation-program/cal-fire-c-130",
+      "document_class": "operator_public_specification",
+      "local_cache_path": null,
+      "sha256": null,
+      "access_note": "Identifies ex-USCG HC-130H airframes, 4,000-gallon RDS, 155,000 lb gross weight, T56-A-15 engines, range, and endurance."
+    },
+    {
+      "document_id": "afman-c130h-maffs-2018",
+      "title": "AFMAN 11-2C-130H Volume 3 Addendum B, MAFFS",
+      "publisher": "United States Air Force",
+      "issued": "2018-07-30",
+      "url": "https://static.e-publishing.af.mil/production/1/af_a3/publication/afman11-2c-130v3addb/afman11-2c-130hv3addb.pdf",
+      "document_class": "approved_operating_manual",
+      "local_cache_path": null,
+      "sha256": null,
+      "access_note": "Applicable to C-130H/J with the 3,000-gallon MAFFS installation. It is not applicable to CAL FIRE's 4,000-gallon RDS."
+    },
+    {
+      "document_id": "afman-c130h-weight-2021",
+      "title": "AFMAN 11-2C-130H Volume 3 Addendum A",
+      "publisher": "United States Air Force",
+      "issued": "2021-11-15",
+      "url": "https://static.e-publishing.af.mil/production/1/af_a3/publication/afman11-2c-130hv3adda/afman11-2c-130hv3add-a.pdf",
+      "document_class": "approved_operating_manual",
+      "local_cache_path": null,
+      "sha256": null,
+      "access_note": "Public weight-and-balance rules and nominal fuel-burn planning for military C-130H; exact CAL FIRE RDS operating weight and supplements remain absent."
+    },
+    {
+      "document_id": "calfire-firehawk-current",
+      "title": "CAL FIRE HAWK",
+      "publisher": "CAL FIRE",
+      "issued": "current 2026-07-31",
+      "url": "https://www.fire.ca.gov/what-we-do/fire-protection/aviation-program/cal-fire-s-70",
+      "document_class": "operator_public_specification",
+      "local_cache_path": null,
+      "sha256": null,
+      "access_note": "Current CAL FIRE build, internal/external gross weights, tank capacity, max cruise, endurance, roles, and builder."
+    },
+    {
+      "document_id": "lockheed-firehawk-2025",
+      "title": "Sikorsky S-70 FIREHAWK Helicopter",
+      "publisher": "Sikorsky, a Lockheed Martin company",
+      "issued": "2025-02",
+      "url": "https://www.lockheedmartin.com/content/dam/lockheed-martin/rms/documents/firehawk/9366_Firehawk_SellSheet_2025.pdf",
+      "document_class": "manufacturer_public_specification",
+      "local_cache_path": "tmp/aviation_evidence/lockheed_firehawk_2025.pdf",
+      "sha256": "c8fcf08c6e0abf8f9c48a10bb6b7380b9f7928c670831571b28ba3b4ec0cfb8e",
+      "access_note": "States 1,000-gallon tank, refill under 45 seconds, 155-knot dash speed, and operational roles; no hover or payload charts."
+    },
+    {
+      "document_id": "sikorsky-ifly-2019",
+      "title": "Sikorsky Expands iFly Performance Calculator to S-70i Operators",
+      "publisher": "Sikorsky, a Lockheed Martin company",
+      "issued": "2019-03-05",
+      "url": "https://news.lockheedmartin.com/2019-03-05-Sikorsky-Expands-iFly-Performance-Calculator-to-S-70i-Black-Hawk-Helicopter-Operators",
+      "document_class": "manufacturer_tool_description",
+      "local_cache_path": null,
+      "sha256": null,
+      "access_note": "Confirms an operator calculator accounts for Firehawk tank drag and installed options; calculator data are not public."
+    },
+    {
+      "document_id": "calfire-uh1h-current",
+      "title": "CAL FIRE UH-1H Super Huey",
+      "publisher": "CAL FIRE",
+      "issued": "current 2026-07-31",
+      "url": "https://www.fire.ca.gov/what-we-do/fire-protection/aviation-program/cal-fire-uh-1h",
+      "document_class": "operator_public_specification",
+      "local_cache_path": null,
+      "sha256": null,
+      "access_note": "Identifies the modified UH-1H, derated T53-L-703 engine, gross weight, tank/bucket capacity, cruise, range, and endurance."
+    },
+    {
+      "document_id": "usfs-aircraft-inspector-guide-2018",
+      "title": "USDA Forest Service Aircraft Inspector Guide",
+      "publisher": "USDA Forest Service",
+      "issued": "2018-06",
+      "url": "https://www.fs.usda.gov/sites/default/files/2020-12/18-278212_aig_final_pre_policy_rev_6_28_2018_spf_letter_reduced.pdf",
+      "document_class": "government_engineering_inspection_guide",
+      "local_cache_path": "tmp/aviation_evidence/usfs_aircraft_inspector_guide_2018.pdf",
+      "sha256": "32134d43071fc439cf74ce5c98bcaf3c74e4a618788360d5cd6c9152ef6c2458",
+      "access_note": "Documents multiple UH-1H -703 STCs and configuration effects; warns military charts do not account for the airframe/engine combination."
+    },
+    {
+      "document_id": "army-uh1h-manual",
+      "title": "TM 55-1520-210-10, UH-1H/V Operator's Manual",
+      "publisher": "United States Army",
+      "issued": "1988 with changes through 1998 translation",
+      "url": "https://rdl.train.army.mil/catalog-ws/view/100.ATSC/F6F201FE-78E6-481C-9DE4-C7617F09579F-1275122645994/uh-1/cap1.pdf",
+      "document_class": "approved_base_configuration_flight_manual",
+      "local_cache_path": null,
+      "sha256": null,
+      "access_note": "Performance charts are for the T53-L-13 UH-1H/V, not CAL FIRE's modified -703 Super Huey."
+    },
+    {
+      "document_id": "calfire-kingair-current",
+      "title": "CAL FIRE King Air 200",
+      "publisher": "CAL FIRE",
+      "issued": "current 2026-07-31",
+      "url": "https://www.fire.ca.gov/what-we-do/fire-protection/aviation-program/cal-fire-king-air",
+      "document_class": "operator_public_specification",
+      "local_cache_path": null,
+      "sha256": null,
+      "access_note": "Nominal platform and intelligence role only."
+    },
+    {
+      "document_id": "calfire-ov10-current",
+      "title": "CAL FIRE OV-10 Air Tactical Aircraft",
+      "publisher": "CAL FIRE",
+      "issued": "current 2026-07-31",
+      "url": "https://www.fire.ca.gov/what-we-do/fire-protection/aviation-program/cal-fire-ov10",
+      "document_class": "operator_public_specification",
+      "local_cache_path": null,
+      "sha256": null,
+      "access_note": "Nominal platform and aerial-supervision role only."
+    },
+    {
+      "document_id": "nifc-uas-ordering-2026",
+      "title": "Interagency Fire UAS Ordering",
+      "publisher": "National Interagency Fire Center",
+      "issued": "2026",
+      "url": "https://uas.nifc.gov/interagency-fire-uas-ordering",
+      "document_class": "interagency_operating_standard",
+      "local_cache_path": null,
+      "sha256": null,
+      "access_note": "Defines current operational UAS ordering around sensing, mapping, aerial ignition, and staffed Type 1 support."
+    },
+    {
+      "document_id": "skydio-x10-spec",
+      "title": "Skydio X10 Technical Specifications",
+      "publisher": "Skydio",
+      "issued": "current 2026-07-31",
+      "url": "https://www.skydio.com/x10/technical-specs/",
+      "document_class": "manufacturer_public_specification",
+      "local_cache_path": null,
+      "sha256": null,
+      "access_note": "Nominal aircraft, environmental, endurance, and sensor limits; no incident-cycle validation."
+    },
+    {
+      "document_id": "parrot-anafi-spec",
+      "title": "ANAFI USA Technical Specifications",
+      "publisher": "Parrot",
+      "issued": "current 2026-07-31",
+      "url": "https://www.parrot.com/en/drones/anafi-usa/technical-specifications",
+      "document_class": "manufacturer_public_specification",
+      "local_cache_path": null,
+      "sha256": null,
+      "access_note": "Nominal aircraft, environmental, endurance, and sensor limits; no incident-cycle validation."
+    },
+    {
+      "document_id": "freefly-alta-x-spec",
+      "title": "Alta X Specifications",
+      "publisher": "Freefly Systems",
+      "issued": "current 2026-07-31",
+      "url": "https://freeflysystems.com/alta-x/specs",
+      "document_class": "manufacturer_public_specification",
+      "local_cache_path": null,
+      "sha256": null,
+      "access_note": "Nominal aircraft and payload/endurance examples; aerial-ignition integration and incident cycle remain configuration-specific."
+    }
+  ],
+  "profiles": [
+    {
+      "profile_id": "calfire-s2t-retardant",
+      "domains": {
+        "configuration_identity": {"status": "partial", "evidence_grade": "public_specification", "applicability": "exact_current_configuration", "document_ids": ["calfire-s2t-current", "nwcg-pms514-s2-2026"], "finding": "Current fleet, engine, gross weight, role, and S-2 procedures are identified; tail equipment lists and weight-and-balance records are absent."},
+        "mission_mobility": {"status": "partial", "evidence_grade": "public_specification", "applicability": "exact_current_configuration", "document_ids": ["calfire-s2t-current"], "finding": "Maximum speed and loaded/empty range are public; cruise, climb, reserve, and diversion schedules are absent."},
+        "delivery_system": {"status": "partial", "evidence_grade": "engineering_validated", "applicability": "exact_historical_configuration", "document_ids": ["usfs-s2t-drop-guide-2006"], "finding": "Controlled testing covers the Marsh 1,200-gallon constant-flow system; current tail-level continuity is not established."},
+        "delivery_pattern": {"status": "partial", "evidence_grade": "engineering_validated", "applicability": "exact_historical_configuration", "document_ids": ["usfs-s2t-drop-guide-2006"], "finding": "Measured line lengths and controller settings now drive the simulator; terrain, wind, and current configuration validation remain open."},
+        "environmental_performance": {"status": "proxy", "evidence_grade": "public_specification", "applicability": "operational_standard", "document_ids": ["nwcg-pms514-2026"], "finding": "Current minimum drop height and operational downloading rules are known; aircraft performance charts are not public."}
+      }
+    },
+    {
+      "profile_id": "calfire-c130h-retardant",
+      "domains": {
+        "configuration_identity": {"status": "partial", "evidence_grade": "public_specification", "applicability": "exact_current_configuration", "document_ids": ["calfire-c130-current"], "finding": "Ex-USCG HC-130H airframe, T56-A-15 engines, gross weight, and 4,000-gallon RDS are identified; tail configuration lists are absent."},
+        "mission_mobility": {"status": "partial", "evidence_grade": "public_specification", "applicability": "exact_current_configuration", "document_ids": ["calfire-c130-current", "afman-c130h-weight-2021"], "finding": "Public range/endurance and base-airframe planning factors exist; RDS drag and exact operating weight are absent."},
+        "mass_balance": {"status": "proxy", "evidence_grade": "flight_manual", "applicability": "base_airframe_only", "document_ids": ["afman-c130h-weight-2021"], "finding": "Military C-130H limits and planning rules cannot close CAL FIRE RDS weight and balance."},
+        "environmental_performance": {"status": "proxy", "evidence_grade": "flight_manual", "applicability": "base_airframe_only", "document_ids": ["afman-c130h-maffs-2018"], "finding": "MAFFS high/hot and engine-out rules demonstrate required axes but are inapplicable to the CAL FIRE RDS installation."},
+        "delivery_system": {"status": "open", "evidence_grade": "scenario_assumption", "applicability": "none", "document_ids": [], "finding": "No public CAL FIRE 4,000-gallon RDS flight-manual supplement or engineering envelope was located."},
+        "delivery_pattern": {"status": "open", "evidence_grade": "scenario_assumption", "applicability": "none", "document_ids": [], "finding": "No public cup-grid or IAB test table for the CAL FIRE RDS was located."}
+      }
+    },
+    {
+      "profile_id": "calfire-s70i-water",
+      "domains": {
+        "configuration_identity": {"status": "partial", "evidence_grade": "public_specification", "applicability": "exact_current_configuration", "document_ids": ["calfire-firehawk-current"], "finding": "CAL FIRE build, builder, gross weights, tank, crew, and roles are identified; tail equipment lists are absent."},
+        "mission_mobility": {"status": "partial", "evidence_grade": "public_specification", "applicability": "exact_current_configuration", "document_ids": ["calfire-firehawk-current", "lockheed-firehawk-2025"], "finding": "Maximum speed and nominal endurance are known; mission fuel schedules are absent."},
+        "mass_balance": {"status": "partial", "evidence_grade": "public_specification", "applicability": "exact_current_configuration", "document_ids": ["calfire-firehawk-current"], "finding": "Internal/external gross weights are public; operating weight, crew/equipment state, and CG envelope are absent."},
+        "environmental_performance": {"status": "partial", "evidence_grade": "public_specification", "applicability": "exact_current_configuration", "document_ids": ["sikorsky-ifly-2019"], "finding": "The exact calculation path is identified in Sikorsky iFly, including tank drag; operator data access is required."},
+        "delivery_system": {"status": "partial", "evidence_grade": "public_specification", "applicability": "exact_current_configuration", "document_ids": ["calfire-firehawk-current", "lockheed-firehawk-2025"], "finding": "Tank capacity, split-load capability, foam volume, and snorkel are public."},
+        "delivery_pattern": {"status": "open", "evidence_grade": "scenario_assumption", "applicability": "none", "document_ids": [], "finding": "No public gridded deposition or line/area test data for the FIREHAWK belly tank were located."},
+        "refill_site_envelope": {"status": "partial", "evidence_grade": "public_specification", "applicability": "exact_current_configuration", "document_ids": ["lockheed-firehawk-2025"], "finding": "Manufacturer states tank refill in under 45 seconds; water-depth, hover-power, approach, and source-geometry limits remain open."}
+      }
+    },
+    {
+      "profile_id": "calfire-uh1h-water",
+      "domains": {
+        "configuration_identity": {"status": "partial", "evidence_grade": "public_specification", "applicability": "exact_current_configuration", "document_ids": ["calfire-uh1h-current", "usfs-aircraft-inspector-guide-2018"], "finding": "The -703 Super Huey is identified, but exact CAL FIRE STCs, blades, tail modifications, and equipment list are absent."},
+        "mission_mobility": {"status": "partial", "evidence_grade": "public_specification", "applicability": "exact_current_configuration", "document_ids": ["calfire-uh1h-current"], "finding": "Cruise, range, endurance, gross weight, and capacity are public."},
+        "environmental_performance": {"status": "proxy", "evidence_grade": "engineering_validated", "applicability": "base_airframe_only", "document_ids": ["usfs-aircraft-inspector-guide-2018", "army-uh1h-manual"], "finding": "The public Army charts are -13 configuration data; the Forest Service explicitly warns they do not represent the -703 airframe/engine combination."},
+        "delivery_system": {"status": "partial", "evidence_grade": "public_specification", "applicability": "exact_current_configuration", "document_ids": ["calfire-uh1h-current"], "finding": "Fixed-tank and bucket capacities are public; installed tank model and limitations are absent."},
+        "delivery_pattern": {"status": "open", "evidence_grade": "scenario_assumption", "applicability": "none", "document_ids": [], "finding": "No exact CAL FIRE fixed-tank or bucket deposition test was located."}
+      }
+    },
+    {
+      "profile_id": "calfire-king-air-200-intelligence",
+      "domains": {
+        "configuration_identity": {"status": "partial", "evidence_grade": "public_specification", "applicability": "exact_current_configuration", "document_ids": ["calfire-kingair-current"], "finding": "Operator and role are identified; tail equipment and sensor configuration are absent."},
+        "mission_mobility": {"status": "partial", "evidence_grade": "public_specification", "applicability": "exact_current_configuration", "document_ids": ["calfire-kingair-current"], "finding": "Nominal speed/endurance are public; flight-manual schedules are absent."},
+        "mission_payload": {"status": "partial", "evidence_grade": "public_specification", "applicability": "role_only", "document_ids": ["calfire-kingair-current"], "finding": "IR/intelligence role is public; sensor detection, geolocation, latency, and downlink envelopes are absent."}
+      }
+    },
+    {
+      "profile_id": "calfire-ov10a-air-tactical",
+      "domains": {
+        "configuration_identity": {"status": "partial", "evidence_grade": "public_specification", "applicability": "exact_current_configuration", "document_ids": ["calfire-ov10-current"], "finding": "Operator and role are identified; exact A/D model equipment and tail configuration are absent."},
+        "mission_mobility": {"status": "partial", "evidence_grade": "public_specification", "applicability": "exact_current_configuration", "document_ids": ["calfire-ov10-current"], "finding": "Nominal speed/endurance are public; flight-manual schedules are absent."},
+        "mission_payload": {"status": "partial", "evidence_grade": "public_specification", "applicability": "role_only", "document_ids": ["calfire-ov10-current", "nwcg-pms514-2026"], "finding": "Aerial-supervision role and procedural coupling are public; sensor/communications performance is absent."}
+      }
+    },
+    {
+      "profile_id": "interagency-skydio-x10",
+      "domains": {
+        "configuration_identity": {"status": "partial", "evidence_grade": "public_specification", "applicability": "exact_current_configuration", "document_ids": ["skydio-x10-spec", "nifc-uas-ordering-2026"], "finding": "Aircraft and supported interagency role are traceable; payload/software/waiver configuration is mission-specific."},
+        "mission_mobility": {"status": "partial", "evidence_grade": "public_specification", "applicability": "exact_current_configuration", "document_ids": ["skydio-x10-spec"], "finding": "Nominal speed and endurance are public; wildfire mission-cycle validation is absent."},
+        "environmental_performance": {"status": "partial", "evidence_grade": "public_specification", "applicability": "exact_current_configuration", "document_ids": ["skydio-x10-spec"], "finding": "Published wind, temperature, ingress, and ceiling limits are available."},
+        "mission_payload": {"status": "partial", "evidence_grade": "public_specification", "applicability": "exact_current_configuration", "document_ids": ["skydio-x10-spec"], "finding": "Published sensor suite exists; smoke/thermal detection and geolocation performance remain unvalidated here."}
+      }
+    },
+    {
+      "profile_id": "interagency-parrot-anafi-usa",
+      "domains": {
+        "configuration_identity": {"status": "partial", "evidence_grade": "public_specification", "applicability": "exact_current_configuration", "document_ids": ["parrot-anafi-spec", "nifc-uas-ordering-2026"], "finding": "Aircraft and supported interagency role are traceable; payload/software/waiver configuration is mission-specific."},
+        "mission_mobility": {"status": "partial", "evidence_grade": "public_specification", "applicability": "exact_current_configuration", "document_ids": ["parrot-anafi-spec"], "finding": "Nominal speed and endurance are public; wildfire mission-cycle validation is absent."},
+        "environmental_performance": {"status": "partial", "evidence_grade": "public_specification", "applicability": "exact_current_configuration", "document_ids": ["parrot-anafi-spec"], "finding": "Published wind, temperature, ingress, and ceiling limits are available."},
+        "mission_payload": {"status": "partial", "evidence_grade": "public_specification", "applicability": "exact_current_configuration", "document_ids": ["parrot-anafi-spec"], "finding": "Published EO/IR sensor specifications exist; smoke/thermal detection and geolocation performance remain unvalidated here."}
+      }
+    },
+    {
+      "profile_id": "interagency-freefly-alta-x-ignition",
+      "domains": {
+        "configuration_identity": {"status": "partial", "evidence_grade": "public_specification", "applicability": "exact_current_configuration", "document_ids": ["freefly-alta-x-spec", "nifc-uas-ordering-2026"], "finding": "Base aircraft and aerial-ignition role are traceable; ignition payload integration and waiver are mission-specific."},
+        "mission_mobility": {"status": "partial", "evidence_grade": "public_specification", "applicability": "exact_current_configuration", "document_ids": ["freefly-alta-x-spec"], "finding": "Payload/endurance examples are public; wildfire mission-cycle validation is absent."},
+        "environmental_performance": {"status": "partial", "evidence_grade": "public_specification", "applicability": "exact_current_configuration", "document_ids": ["freefly-alta-x-spec"], "finding": "Some nominal environmental limits are public; full payload-dependent wind and density-altitude closure is absent."},
+        "mission_payload": {"status": "proxy", "evidence_grade": "public_specification", "applicability": "role_only", "document_ids": ["nifc-uas-ordering-2026", "freefly-alta-x-spec"], "finding": "Aerial ignition is an operational UAS role and the aircraft is payload-capable; exact ignition-system performance is absent."}
+      }
+    }
+  ]
+}

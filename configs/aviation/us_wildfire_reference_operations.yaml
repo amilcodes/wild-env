@@ -1,0 +1,272 @@
+scenario:
+  scenario_id: us-wildfire-reference-operations
+  title: Public-specification wildfire aviation reference
+  location_name: Synthetic western U.S. operations domain
+  time_origin: "2026-08-17T14:00:00-07:00"
+  seed: 260817
+  width: 144
+  height: 128
+  cell_size_m: 60.0
+  horizon_min: 240
+  decision_interval_min: 3
+  max_tasks: 96
+  observation_delay_min: 3
+  wind_speed_m_s: 7.0
+  wind_direction_deg: 35.0
+  wind_variability: 0.25
+  air_temperature_c: 32.0
+  relative_humidity_pct: 20.0
+  spotting_rate: 0.006
+  ground_arrival_min: 24
+  terminate_on_escape: false
+  suppression:
+    water_half_life_min: 8.0
+    retardant_half_life_min: 720.0
+    retardant_rain_wash_fraction_per_mm: 0.08
+    line_production_cv: 0.30
+    base_reload_bays: 2
+    aviation_max_wind_m_s: 18.0
+    minimum_dispatch_payload_fraction: 0.75
+    minimum_reserve_endurance_min: 15.0
+  service_sites:
+    - site_id: tanker_base
+      kind: retardant_base
+      x: 15
+      y: 111
+      services: [retardant, fuel]
+      service_mode: land
+      bays: 4
+      approach_capacity: 3
+      refill_rate_l_min: 2400.0
+      fixed_turnaround_min: 5.0
+      available_volume_l: 300000.0
+      manually_verified: false
+    - site_id: helibase
+      kind: helibase
+      x: 118
+      y: 21
+      services: [water, fuel, charge]
+      service_mode: land
+      bays: 4
+      approach_capacity: 3
+      refill_rate_l_min: 2600.0
+      fixed_turnaround_min: 2.5
+      manually_verified: false
+    - site_id: dip_site
+      kind: dip_site
+      x: 104
+      y: 91
+      services: [water]
+      service_mode: hover_fill
+      bays: 3
+      approach_capacity: 2
+      refill_rate_l_min: 6000.0
+      fixed_turnaround_min: 0.0
+      available_volume_l: 400000.0
+      minimum_depth_m: 2.0
+      minimum_length_m: 160.0
+      manually_verified: false
+    - site_id: uas_launch
+      kind: helibase
+      x: 38
+      y: 102
+      services: [charge]
+      service_mode: land
+      bays: 4
+      approach_capacity: 4
+      fixed_turnaround_min: 2.0
+      manually_verified: false
+  resources:
+    - resource_id: s2t-01
+      kind: retardant
+      vehicle_profile_id: calfire-s2t-retardant
+      performance_evidence_grade: scenario_assumption
+      delivery_evidence_grade: engineering_validated
+      delivery_surface_path: configs/aviation/delivery_surfaces/calfire_s2t_mtdc_2006_gum_v1.json
+      autonomy_level: crewed
+      operational_roles: [rapid_initial_attack, retardant_line]
+      cruise_speed_m_s: 96.56
+      payload_l: 4542.494141
+      reload_min: 14
+      dispatch_latency_min: 3
+      endurance_min: 270
+      reserve_endurance_min: 30
+      home_site_id: tanker_base
+      service_modes: [land]
+      cruise_altitude_agl_m: 300
+      minimum_terrain_clearance_m: 150
+      maximum_operating_altitude_m_msl: 4500
+      maximum_crosswind_m_s: 12
+      target_coverage_level_gpc: 3
+      retardant_length_m: 650
+      retardant_width_m: 70
+    - resource_id: s2t-02
+      kind: retardant
+      vehicle_profile_id: calfire-s2t-retardant
+      performance_evidence_grade: scenario_assumption
+      delivery_evidence_grade: engineering_validated
+      delivery_surface_path: configs/aviation/delivery_surfaces/calfire_s2t_mtdc_2006_gum_v1.json
+      autonomy_level: crewed
+      operational_roles: [rapid_initial_attack, retardant_line]
+      cruise_speed_m_s: 96.56
+      payload_l: 4542.494141
+      reload_min: 14
+      dispatch_latency_min: 3
+      endurance_min: 270
+      reserve_endurance_min: 30
+      home_site_id: tanker_base
+      service_modes: [land]
+      cruise_altitude_agl_m: 300
+      minimum_terrain_clearance_m: 150
+      maximum_operating_altitude_m_msl: 4500
+      maximum_crosswind_m_s: 12
+      target_coverage_level_gpc: 3
+      retardant_length_m: 650
+      retardant_width_m: 70
+    - resource_id: c130h-01
+      kind: retardant
+      vehicle_profile_id: calfire-c130h-retardant
+      performance_evidence_grade: scenario_assumption
+      autonomy_level: crewed
+      operational_roles: [rapid_initial_attack, large_retardant_line]
+      cruise_speed_m_s: 131.609
+      payload_l: 15141.647136
+      reload_min: 20
+      dispatch_latency_min: 10
+      endurance_min: 480
+      reserve_endurance_min: 45
+      home_site_id: tanker_base
+      service_modes: [land]
+      cruise_altitude_agl_m: 450
+      minimum_terrain_clearance_m: 200
+      maximum_operating_altitude_m_msl: 6000
+      maximum_crosswind_m_s: 15
+      retardant_length_m: 1000
+      retardant_width_m: 110
+    - resource_id: firehawk-01
+      kind: water
+      vehicle_profile_id: calfire-s70i-water
+      performance_evidence_grade: scenario_assumption
+      autonomy_level: crewed
+      operational_roles: [rapid_initial_attack, helitack, water_drop, night_operations, rescue]
+      cruise_speed_m_s: 79.739
+      payload_l: 3785.411784
+      reload_min: 1
+      dispatch_latency_min: 2
+      endurance_min: 150
+      reserve_endurance_min: 20
+      home_site_id: helibase
+      service_modes: [land, hover_fill]
+      cruise_altitude_agl_m: 150
+      minimum_terrain_clearance_m: 75
+      maximum_operating_altitude_m_msl: 4500
+      maximum_crosswind_m_s: 10
+      minimum_service_depth_m: 1.5
+      minimum_service_length_m: 20
+      water_radius_m: 80
+    - resource_id: uh1h-01
+      kind: water
+      vehicle_profile_id: calfire-uh1h-water
+      performance_evidence_grade: scenario_assumption
+      autonomy_level: crewed
+      operational_roles: [initial_attack, helitack, water_drop, aerial_ignition, rescue]
+      cruise_speed_m_s: 56.327
+      payload_l: 1362.748242
+      reload_min: 3
+      dispatch_latency_min: 2
+      endurance_min: 120
+      reserve_endurance_min: 18
+      home_site_id: helibase
+      service_modes: [land, hover_fill]
+      cruise_altitude_agl_m: 120
+      minimum_terrain_clearance_m: 60
+      maximum_operating_altitude_m_msl: 3500
+      maximum_crosswind_m_s: 9
+      water_radius_m: 55
+    - resource_id: ov10a-01
+      kind: sensor
+      vehicle_profile_id: calfire-ov10a-air-tactical
+      performance_evidence_grade: scenario_assumption
+      autonomy_level: crewed
+      operational_roles: [air_tactical_supervision, airborne_command, lead_operations]
+      cruise_speed_m_s: 92.269
+      payload_l: 0
+      reload_min: 0
+      dispatch_latency_min: 4
+      endurance_min: 330
+      reserve_endurance_min: 30
+      home_site_id: tanker_base
+      service_modes: [land]
+      cruise_altitude_agl_m: 600
+      minimum_terrain_clearance_m: 200
+      maximum_operating_altitude_m_msl: 7000
+      maximum_crosswind_m_s: 14
+    - resource_id: king-air-01
+      kind: sensor
+      vehicle_profile_id: calfire-king-air-200-intelligence
+      performance_evidence_grade: scenario_assumption
+      autonomy_level: crewed
+      operational_roles: [infrared_mapping, aerial_intelligence, atgs_training]
+      cruise_speed_m_s: 118.759
+      payload_l: 0
+      reload_min: 0
+      dispatch_latency_min: 5
+      endurance_min: 300
+      reserve_endurance_min: 30
+      home_site_id: tanker_base
+      service_modes: [land]
+      cruise_altitude_agl_m: 1200
+      minimum_terrain_clearance_m: 300
+      maximum_operating_altitude_m_msl: 8500
+      maximum_crosswind_m_s: 15
+    - resource_id: skydio-x10-01
+      kind: sensor
+      vehicle_profile_id: interagency-skydio-x10
+      performance_evidence_grade: scenario_assumption
+      autonomy_level: supervised_autonomy
+      operational_roles: [situational_awareness, infrared_mapping, inspection]
+      cruise_speed_m_s: 15
+      payload_l: 0
+      reload_min: 0
+      dispatch_latency_min: 1
+      endurance_min: 40
+      reserve_endurance_min: 8
+      home_site_id: uas_launch
+      service_modes: [land]
+      cruise_altitude_agl_m: 100
+      minimum_terrain_clearance_m: 30
+      maximum_operating_altitude_m_msl: 4572
+      maximum_crosswind_m_s: 10
+    - resource_id: alta-x-01
+      kind: sensor
+      vehicle_profile_id: interagency-freefly-alta-x-ignition
+      performance_evidence_grade: scenario_assumption
+      autonomy_level: remotely_piloted
+      operational_roles: [aerial_ignition, situational_awareness, mapping]
+      cruise_speed_m_s: 18
+      payload_l: 0
+      reload_min: 0
+      dispatch_latency_min: 2
+      endurance_min: 25
+      reserve_endurance_min: 6
+      home_site_id: uas_launch
+      service_modes: [land]
+      cruise_altitude_agl_m: 90
+      minimum_terrain_clearance_m: 30
+      maximum_operating_altitude_m_msl: 2500
+      maximum_crosswind_m_s: 8
+
+training:
+  seed: 260817
+  device: cuda
+  environment_backend: canonical
+  policy_architecture: entity_attention
+  num_envs: 256
+  rollout_steps: 128
+  updates: 2000
+  minibatch_size: 4096
+  hidden_dim: 256
+  attention_heads: 8
+  attention_layers: 3
+  checkpoint_dir: runs/us-wildfire-reference-operations
+  use_amp: true
