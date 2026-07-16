@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "study": "frontier suppression operations v0.5",
+  "created_at": "2026-07-29T07:29:22.730916+00:00",
+  "source_revision": "c395e189252a4803c6910e3e5204e44a8c3741ae",
+  "source_worktree_dirty": true,
+  "verification": {
+    "pytest": "51 passed",
+    "ruff": "passed",
+    "historical_forecasts": 24,
+    "suppression_trials": 72,
+    "replay_frames": 241,
+    "report_pages": 8
+  },
+  "source_files": {
+    "configs/frontier_suppression.yaml": "a837ec2fa2acf8f266252b9659e443e2e39aabc38a55df56463f382bde807829",
+    "docs/suppression_operations_research.md": "4596ee95be8501221a318f245d2a48d88aa77d64b78966c3ebca5c8941e4d3cc",
+    "src/aeolus/config.py": "5906ec5d90484a2ffc64412b8c89c6e9400a8782da4f636f85f3447b23bd212d",
+    "src/aeolus/core/fire.py": "d6207f6abbfb82be8bb5b0c0143056039bd824959b02c64b072089f05edc4b61",
+    "src/aeolus/core/initialization.py": "0d7d3a5ae702a100aa1cb82de98f21e2b4ac34eb60b960b3f90f9f3612738751",
+    "src/aeolus/core/localization.py": "d2b2fed275a020674ace03abc542657e77b9d67f16fe346404a9a8842f9534f4",
+    "src/aeolus/core/simulator.py": "857ea9ebd1a2417408e7bd48ca3f25bcf20feeef7be3826621a0c26c8f961311",
+    "src/aeolus/core/state.py": "651e29f395f9410479355a98106a606914153b93f3a52dbfae216373201bf8e5",
+    "src/aeolus/core/suppression.py": "9c7b48f69b50d6f45307e7d76089ad1a82777d27ee58ceacf3fa7bc35419c946",
+    "src/aeolus/core/tasks.py": "e73e562b8a1ed68ab5f66f44e21caeae8e00a363f4a25ee621aa8d4d419deb60",
+    "src/aeolus/data/forcing.py": "548289455799496daf2b15747740f53d16310e02170ddd3a3458f804406b77c8",
+    "src/aeolus/data/weather.py": "8cf0f6dce1eddaac59dc5921aebb403320229ce3c52d8fe6a223b1365257c5fc",
+    "src/aeolus/evaluation/historical.py": "f51657cdf84fb0c1b3c269aa85308fe6de9bf88f6f937684c571596c289db368",
+    "src/aeolus/policies/heuristics.py": "42fde8a8e401aa2147739087014ae2766ede658d107d434d556c648be1cb0ed3",
+    "src/aeolus/replay/recorder.py": "a0821cd5ac1da1a5e0fe6d90a4de2d617d2fc4b77ecb1efca6b20e16dd00f98a",
+    "src/aeolus/replay/render.py": "e173f3e66517a0ae80c7ec3fdad66153f1e1c5d722349fff68160037c2c84998",
+    "tests/test_frontier_operations.py": "0f68f263b7cc75b4c8d5a070b41467918b90c3f41436ee4f121e5fa0b67d931f",
+    "tools/build_frontier_operations_figures.py": "a9b83a1d3f26d90656fffbd14a4ffd387caa4cb2717ffcad3b0690fcba1aad9c",
+    "tools/build_suppression_operations_report.py": "2ad1000efde77709389c7654c12f8470d8f699d8f4503633eab6794b8eecd0a7",
+    "tools/freeze_frontier_operations_artifacts.py": "02fd967a8c491e56e80a198e7c8104dd76eb9cf32875e6bd810926850c406994",
+    "tools/run_suppression_operations_study.py": "a01f926a75cfc6aeb8924839d925b03630e1a73e07b0bf138712190e7cd436ca"
+  },
+  "artifacts": {
+    "results/frontier_operations_final/operations_results.json": {
+      "sha256": "f4dd82b26c047b8d142cb69fe711e3ea8467096c810defd2ee78ddde87db2f7b",
+      "bytes": 105096
+    },
+    "results/frontier_operations_final/suppression_trials.csv": {
+      "sha256": "9e84786d5b6b4d3f1286857d534770ecaeedfae6f10319e54a4cb24f1f3e33bb",
+      "bytes": 9928
+    },
+    "results/frontier_operations_final/arrival_history_forecasts.csv": {
+      "sha256": "00b439453fcd76d338e54e6645327819b7f30269da59eda040a72a188c113281",
+      "bytes": 7233
+    },
+    "results/frontier_operations_final/arrival_history_examples.npz": {
+      "sha256": "6cedb578380499347e0a14cd10fcf584be5e2cd2d60dbba0060f6a465bafe924",
+      "bytes": 28695
+    },
+    "results/frontier_operations_final/figures/arrival_history_atlas.png": {
+      "sha256": "e3608762d0e3df6cad2e3a60bccf7ab4f0b0f49539581e4da8e7d049df141057",
+      "bytes": 182814
+    },
+    "results/frontier_operations_final/figures/suppression_outcomes.png": {
+      "sha256": "34a11418f87ec287f4b3e863766caa5f862b6ded43691b605891699981356bf3",
+      "bytes": 140185
+    },
+    "results/frontier_operations_final/figures/forcing_analysis.png": {
+      "sha256": "ff79fad97eb20b0f810e79cc45b20b2d445f309cb5b58c5316f84efbe53d63fe",
+      "bytes": 133957
+    },
+    "results/frontier_operations_final/operations_2d_mid.png": {
+      "sha256": "53c5be64a5d9dd0b21dff912fa6fae0e4d3f49265ef1a6d50bdf9a257815c97c",
+      "bytes": 205635
+    },
+    "results/frontier_operations_final/operations_3d_mid.png": {
+      "sha256": "628ee259234d0196b89a5580ad8c5eef52702683e1fe38c37dc06d603d1882c1",
+      "bytes": 755188
+    },
+    "results/frontier_operations_final/operations_timelapse.mp4": {
+      "sha256": "7070f3f986c6195b2b1727de8712052e0362f7adb029c7bc5e317a9e59b0b944",
+      "bytes": 869003
+    },
+    "results/frontier_operations_final/replay/metadata.json": {
+      "sha256": "df85332d131cc55b1c000c649093f7affa63e4f044373661ce73175e4bded171",
+      "bytes": 153806
+    },
+    "results/frontier_operations_final/replay/events.parquet": {
+      "sha256": "32cdb38d5a4c5ef1a2df11afa7aade8aa16ae20f8f35167b3b4c1850cfa6f8dd",
+      "bytes": 14900
+    },
+    "output/pdf/suppression_operations_research_v0.5.pdf": {
+      "sha256": "de0d1dd7ed66c1821adf575714b62e974aeb1f4f3f4dbc4f8210f4e784b4b874",
+      "bytes": 1711693
+    }
+  }
+}
