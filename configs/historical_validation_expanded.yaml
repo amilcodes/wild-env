@@ -1,0 +1,649 @@
+schema_version: 1
+title: NIROPS expanded stratified historical spread validation
+seed: 20260730
+selection:
+  source_incident_count: 737
+  selected_incident_count: 36
+  criteria:
+    consecutive_usable_transitions: 5
+    transition_duration_hours:
+    - 6
+    - 36
+    minimum_maximum_reported_acres: 100
+    minimum_area_monotonic_fraction: 0.75
+    stratification: state and quartile of log maximum reported acres
+  inventory_csv: results/frontier_fire/historical_benchmark_inventory.csv
+grid_size: 128
+weather_spinup_hours: 1440
+incident_weather_source: hrrr-analysis
+buffer_m: 4500.0
+spotting_rate: 0.0
+ensemble_particles: 12
+perimeter_localization_sigma_m: 350.0
+parallel_workers: 8
+spread_candidates:
+- 0.001
+- 0.003
+- 0.008
+- 0.021
+- 0.055
+- 0.144
+- 0.377
+- 0.61
+- 0.987
+- 1.5
+- 2.75
+- 5.0
+incidents:
+- incident_code: AZ-KNF-000336_Hull
+  calibration_pair:
+  - 0
+  - 1
+  validation_pairs:
+  - - 1
+    - 2
+  - - 2
+    - 3
+  - - 3
+    - 4
+  - - 4
+    - 5
+  stratum:
+    state: AZ
+    year: 2023
+    size_bin: 0
+- incident_code: AZ-PNF-000271_Crooks
+  calibration_pair:
+  - 0
+  - 1
+  validation_pairs:
+  - - 1
+    - 2
+  - - 2
+    - 3
+  - - 3
+    - 4
+  - - 4
+    - 5
+  stratum:
+    state: AZ
+    year: 2022
+    size_bin: 1
+- incident_code: AZ-SCA-001403_BlueRiver
+  calibration_pair:
+  - 0
+  - 1
+  validation_pairs:
+  - - 1
+    - 2
+  - - 2
+    - 3
+  - - 3
+    - 4
+  - - 4
+    - 5
+  stratum:
+    state: AZ
+    year: 2020
+    size_bin: 2
+- incident_code: AZ-CNF-000413_Bighorn
+  calibration_pair:
+  - 0
+  - 1
+  validation_pairs:
+  - - 1
+    - 2
+  - - 2
+    - 3
+  - - 3
+    - 4
+  - - 4
+    - 5
+  stratum:
+    state: AZ
+    year: 2020
+    size_bin: 3
+- incident_code: CA-LNU-013407_LNULightningComplex_Meyers
+  calibration_pair:
+  - 0
+  - 1
+  validation_pairs:
+  - - 1
+    - 2
+  - - 2
+    - 3
+  - - 3
+    - 4
+  - - 4
+    - 5
+  stratum:
+    state: CA
+    year: 2020
+    size_bin: 0
+- incident_code: CA-KNF-006385_RiverComplex_Cronan
+  calibration_pair:
+  - 0
+  - 1
+  validation_pairs:
+  - - 1
+    - 2
+  - - 2
+    - 3
+  - - 3
+    - 4
+  - - 4
+    - 5
+  stratum:
+    state: CA
+    year: 2021
+    size_bin: 1
+- incident_code: CA-KNP-000088_CoffeePot
+  calibration_pair:
+  - 0
+  - 1
+  validation_pairs:
+  - - 1
+    - 2
+  - - 2
+    - 3
+  - - 3
+    - 4
+  - - 4
+    - 5
+  stratum:
+    state: CA
+    year: 2024
+    size_bin: 2
+- incident_code: CA-PNF-001308_PNFNorthComplex
+  calibration_pair:
+  - 10
+  - 11
+  validation_pairs:
+  - - 11
+    - 12
+  - - 12
+    - 13
+  - - 13
+    - 14
+  - - 14
+    - 15
+  stratum:
+    state: CA
+    year: 2020
+    size_bin: 3
+- incident_code: CO-DTX-000082_CurrantCreek
+  calibration_pair:
+  - 0
+  - 1
+  validation_pairs:
+  - - 1
+    - 2
+  - - 2
+    - 3
+  - - 3
+    - 4
+  - - 4
+    - 5
+  stratum:
+    state: CO
+    year: 2024
+    size_bin: 0
+- incident_code: CO-UPD-000186_LittleMesa
+  calibration_pair:
+  - 0
+  - 1
+  validation_pairs:
+  - - 1
+    - 2
+  - - 2
+    - 3
+  - - 3
+    - 4
+  - - 4
+    - 5
+  stratum:
+    state: CO
+    year: 2023
+    size_bin: 1
+- incident_code: CO-ARF-000641_WilliamsFork
+  calibration_pair:
+  - 0
+  - 1
+  validation_pairs:
+  - - 1
+    - 2
+  - - 2
+    - 3
+  - - 3
+    - 4
+  - - 4
+    - 5
+  stratum:
+    state: CO
+    year: 2020
+    size_bin: 2
+- incident_code: CO-ARF-000636_CameronPeak
+  calibration_pair:
+  - 33
+  - 34
+  validation_pairs:
+  - - 34
+    - 35
+  - - 35
+    - 36
+  - - 36
+    - 37
+  - - 37
+    - 38
+  stratum:
+    state: CO
+    year: 2020
+    size_bin: 3
+- incident_code: ID-SCF-022091_WolfFang
+  calibration_pair:
+  - 12
+  - 13
+  validation_pairs:
+  - - 13
+    - 14
+  - - 14
+    - 15
+  - - 15
+    - 16
+  - - 16
+    - 17
+  stratum:
+    state: ID
+    year: 2022
+    size_bin: 0
+- incident_code: ID-NCF-000558_BMHill
+  calibration_pair:
+  - 0
+  - 1
+  validation_pairs:
+  - - 1
+    - 2
+  - - 2
+    - 3
+  - - 3
+    - 4
+  - - 4
+    - 5
+  stratum:
+    state: ID
+    year: 2021
+    size_bin: 1
+- incident_code: ID-PAF-005394_FourCorners
+  calibration_pair:
+  - 0
+  - 1
+  validation_pairs:
+  - - 1
+    - 2
+  - - 2
+    - 3
+  - - 3
+    - 4
+  - - 4
+    - 5
+  stratum:
+    state: ID
+    year: 2022
+    size_bin: 2
+- incident_code: ID-SCF-022105_Moose
+  calibration_pair:
+  - 0
+  - 1
+  validation_pairs:
+  - - 1
+    - 2
+  - - 2
+    - 3
+  - - 3
+    - 4
+  - - 4
+    - 5
+  stratum:
+    state: ID
+    year: 2022
+    size_bin: 3
+- incident_code: MT-LNF-000935_LoloCreek
+  calibration_pair:
+  - 0
+  - 1
+  validation_pairs:
+  - - 1
+    - 2
+  - - 2
+    - 3
+  - - 3
+    - 4
+  - - 4
+    - 5
+  stratum:
+    state: MT
+    year: 2021
+    size_bin: 0
+- incident_code: MT-KNF-000167_BurntPeak
+  calibration_pair:
+  - 0
+  - 1
+  validation_pairs:
+  - - 1
+    - 2
+  - - 2
+    - 3
+  - - 3
+    - 4
+  - - 4
+    - 5
+  stratum:
+    state: MT
+    year: 2021
+    size_bin: 1
+- incident_code: MT-BDF-006269_AlderCreek
+  calibration_pair:
+  - 9
+  - 10
+  validation_pairs:
+  - - 10
+    - 11
+  - - 11
+    - 12
+  - - 12
+    - 13
+  - - 13
+    - 14
+  stratum:
+    state: MT
+    year: 2021
+    size_bin: 2
+- incident_code: MT-BDF-006272_TrailCreek
+  calibration_pair:
+  - 15
+  - 16
+  validation_pairs:
+  - - 16
+    - 17
+  - - 17
+    - 18
+  - - 18
+    - 19
+  - - 19
+    - 20
+  stratum:
+    state: MT
+    year: 2021
+    size_bin: 3
+- incident_code: NM-N5S-000114_NogalCanyon
+  calibration_pair:
+  - 0
+  - 1
+  validation_pairs:
+  - - 1
+    - 2
+  - - 2
+    - 3
+  - - 3
+    - 4
+  - - 4
+    - 5
+  stratum:
+    state: NM
+    year: 2022
+    size_bin: 0
+- incident_code: NM-GNF-000232_Tadpole
+  calibration_pair:
+  - 6
+  - 7
+  validation_pairs:
+  - - 7
+    - 8
+  - - 8
+    - 9
+  - - 9
+    - 10
+  - - 10
+    - 11
+  stratum:
+    state: NM
+    year: 2020
+    size_bin: 1
+- incident_code: NM-CIF-000138_BearTrap
+  calibration_pair:
+  - 0
+  - 1
+  validation_pairs:
+  - - 1
+    - 2
+  - - 2
+    - 3
+  - - 3
+    - 4
+  - - 4
+    - 5
+  stratum:
+    state: NM
+    year: 2022
+    size_bin: 2
+- incident_code: NM-SNF-000027_HermitsPeak
+  calibration_pair:
+  - 17
+  - 18
+  validation_pairs:
+  - - 18
+    - 19
+  - - 19
+    - 20
+  - - 20
+    - 21
+  - - 21
+    - 22
+  stratum:
+    state: NM
+    year: 2022
+    size_bin: 3
+- incident_code: NV-HTF-500736_Mahogany
+  calibration_pair:
+  - 0
+  - 1
+  validation_pairs:
+  - - 1
+    - 2
+  - - 2
+    - 3
+  - - 3
+    - 4
+  - - 4
+    - 5
+  stratum:
+    state: NV
+    year: 2020
+    size_bin: 0
+- incident_code: NV-TMFX_031010_Davis
+  calibration_pair:
+  - 0
+  - 1
+  validation_pairs:
+  - - 1
+    - 2
+  - - 2
+    - 3
+  - - 3
+    - 4
+  - - 4
+    - 5
+  stratum:
+    state: NV
+    year: 2024
+    size_bin: 1
+- incident_code: NV-HTF-030684_Slink
+  calibration_pair:
+  - 0
+  - 1
+  validation_pairs:
+  - - 1
+    - 2
+  - - 2
+    - 3
+  - - 3
+    - 4
+  - - 4
+    - 5
+  stratum:
+    state: NV
+    year: 2020
+    size_bin: 2
+- incident_code: NV-HTF-030419_Tamarack
+  calibration_pair:
+  - 1
+  - 2
+  validation_pairs:
+  - - 2
+    - 3
+  - - 3
+    - 4
+  - - 4
+    - 5
+  - - 5
+    - 6
+  stratum:
+    state: NV
+    year: 2021
+    size_bin: 3
+- incident_code: OR-UPF-000303_DiamondComplex_Ooya
+  calibration_pair:
+  - 12
+  - 13
+  validation_pairs:
+  - - 13
+    - 14
+  - - 14
+    - 15
+  - - 15
+    - 16
+  - - 16
+    - 17
+  stratum:
+    state: OR
+    year: 2024
+    size_bin: 0
+- incident_code: OR-CLP-240223_MiddleFork
+  calibration_pair:
+  - 9
+  - 10
+  validation_pairs:
+  - - 10
+    - 11
+  - - 11
+    - 12
+  - - 12
+    - 13
+  - - 13
+    - 14
+  stratum:
+    state: OR
+    year: 2024
+    size_bin: 1
+- incident_code: OR-WIF-210307_Gales
+  calibration_pair:
+  - 7
+  - 8
+  validation_pairs:
+  - - 8
+    - 9
+  - - 9
+    - 10
+  - - 10
+    - 11
+  - - 11
+    - 12
+  stratum:
+    state: OR
+    year: 2021
+    size_bin: 2
+- incident_code: OR-UMF-000659_GreenRidge
+  calibration_pair:
+  - 28
+  - 29
+  validation_pairs:
+  - - 29
+    - 30
+  - - 30
+    - 31
+  - - 31
+    - 32
+  - - 32
+    - 33
+  stratum:
+    state: OR
+    year: 2021
+    size_bin: 3
+- incident_code: UT-DIF-000270_Mammoth
+  calibration_pair:
+  - 0
+  - 1
+  validation_pairs:
+  - - 1
+    - 2
+  - - 2
+    - 3
+  - - 3
+    - 4
+  - - 4
+    - 5
+  stratum:
+    state: UT
+    year: 2021
+    size_bin: 0
+- incident_code: UT-MLF-000115_BennionCreek
+  calibration_pair:
+  - 2
+  - 3
+  validation_pairs:
+  - - 3
+    - 4
+  - - 4
+    - 5
+  - - 5
+    - 6
+  - - 6
+    - 7
+  stratum:
+    state: UT
+    year: 2021
+    size_bin: 1
+- incident_code: UT-VLD-000127_Bear
+  calibration_pair:
+  - 0
+  - 1
+  validation_pairs:
+  - - 1
+    - 2
+  - - 2
+    - 3
+  - - 3
+    - 4
+  - - 4
+    - 5
+  stratum:
+    state: UT
+    year: 2021
+    size_bin: 2
+- incident_code: UT-ASF-100340_EastFork
+  calibration_pair:
+  - 17
+  - 18
+  validation_pairs:
+  - - 18
+    - 19
+  - - 19
+    - 20
+  - - 20
+    - 21
+  - - 21
+    - 22
+  stratum:
+    state: UT
+    year: 2020
+    size_bin: 3
