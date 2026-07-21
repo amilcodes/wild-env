@@ -1,0 +1,39 @@
+schema_version: 1
+source:
+  product: GOFER v0.2
+  doi: 10.5281/zenodo.14642378
+  metadata_repository: https://github.com/tianjialiu/GOFER
+  metadata_commit: 8c0cc69a5dfb7900088cd4d3ae2263b78ffabdfa
+  metadata_file: gee/largeFires_metadata.js
+benchmark_contract: ../historical_validation_frozen_36.yaml
+partition: train
+matches:
+  - gofer_fire_name: LNU Lightning Complex
+    fire_year: 2020
+    ics_209_incident_id: CA-LNU-013407
+    frozen_incident_id: CA-LNU-013407_LNULightningComplex_Meyers
+    scope: aggregate_complex_contains_component
+    spatial_progression_use: excluded
+    reason: GOFER maps the LNU complex; its source metadata explicitly says Meyers is too small for GOES.
+  - gofer_fire_name: North Complex
+    fire_year: 2020
+    ics_209_incident_id: CA-PNF-001308
+    frozen_incident_id: CA-PNF-001308_PNFNorthComplex
+    scope: incident
+    spatial_progression_use: auxiliary_training_diagnostic
+    reason: Exact ICS-209 incident match; GOFER remains a reconstructed satellite product rather than independent ground truth.
+  - gofer_fire_name: River Complex
+    fire_year: 2021
+    ics_209_incident_id: CA-KNF-006385
+    frozen_incident_id: CA-KNF-006385_RiverComplex_Cronan
+    scope: aggregate_complex_contains_component
+    spatial_progression_use: excluded
+    reason: GOFER combines Haypress and Cronan while the NIROPS bundle is component-labelled.
+  - gofer_fire_name: Tamarack
+    fire_year: 2021
+    ics_209_incident_id: NV-HTF-030419
+    frozen_incident_id: NV-HTF-030419_Tamarack
+    scope: incident
+    spatial_progression_use: auxiliary_training_diagnostic
+    reason: Exact ICS-209 incident match; all GOFER-derived choices remain confined to the frozen training partition.
+

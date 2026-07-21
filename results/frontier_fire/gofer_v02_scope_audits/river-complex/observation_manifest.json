@@ -1,0 +1,139 @@
+{
+  "assets": {
+    "concurrent_active_lines": {
+      "bytes": 8260727,
+      "href": "concurrent_active_lines.geojson",
+      "sha256": "7444f6f60acb5df00b39014b9ebbd6134a6e91dd2a056bf62f06c670a38935e3"
+    },
+    "perimeters": {
+      "bytes": 64949231,
+      "href": "perimeters.geojson",
+      "sha256": "08230844ff63b5cb713a595616a965331d3e5147b2473602f2195de12aa32706"
+    },
+    "progression_summary": {
+      "bytes": 254747,
+      "href": "progression_summary.csv",
+      "sha256": "b821557dd3c999ff71daa81f498b4d46940f90f939ebdee2932bc37ef8955649"
+    },
+    "retrospective_active_lines": {
+      "bytes": 4439597,
+      "href": "retrospective_active_lines.geojson",
+      "sha256": "765587ca03afceb3b77aad4a4635eb7b371ff834c9365bf806822d6275b2ff69"
+    }
+  },
+  "audit": {
+    "concurrent_active_line_dormant_records": 332,
+    "concurrent_active_line_geometry": {
+      "empty_feature_ids": [],
+      "empty_geometry_count": 0,
+      "geometry_types": [
+        "LineString",
+        "MultiLineString"
+      ],
+      "invalid_feature_ids": [],
+      "invalid_geometry_count": 0,
+      "record_count": 1353,
+      "valid_geometry_count": 1353
+    },
+    "concurrent_active_line_records": 1353,
+    "perimeter_geometry": {
+      "empty_feature_ids": [],
+      "empty_geometry_count": 0,
+      "geometry_types": [
+        "MultiPolygon",
+        "Polygon"
+      ],
+      "invalid_feature_ids": [],
+      "invalid_geometry_count": 0,
+      "record_count": 1353,
+      "valid_geometry_count": 1353
+    },
+    "perimeters": {
+      "first_acquisition_end": "2021-08-01T05:00:00Z",
+      "last_acquisition_end": "2021-09-26T13:00:00Z",
+      "non_hourly_gap_count": 0,
+      "non_hourly_gaps": [],
+      "record_count": 1353,
+      "reported_cumulative_area_decrease_count": 0
+    },
+    "progression_summary_records": 1353,
+    "retrospective_active_line_geometry": {
+      "empty_feature_ids": [],
+      "empty_geometry_count": 0,
+      "geometry_types": [
+        "LineString",
+        "MultiLineString"
+      ],
+      "invalid_feature_ids": [],
+      "invalid_geometry_count": 0,
+      "record_count": 1352,
+      "valid_geometry_count": 1352
+    },
+    "retrospective_active_line_records": 1352
+  },
+  "dataset": "GOFER hourly progression observation bundle",
+  "fire": {
+    "fire_name": "River Complex",
+    "fire_year": 2021,
+    "fixed_offset_timezone": "Etc/GMT+8",
+    "goes_ignition_utc": "2021-07-30 21",
+    "local_timezone": "America/Los_Angeles",
+    "official_acres": 199359.0
+  },
+  "observation_semantics": {
+    "acquisition_window": "preceding nominal hour through tUTC",
+    "availability": "retrospective only; no operational issue time supplied",
+    "concurrent_active_line_confidence": 0.05,
+    "early_progression_warning": "the source paper reports low spatial accuracy before 100 hours and possible early-perimeter overinflation",
+    "perimeter_type": "cumulative burned extent",
+    "source_crs": "EPSG:4326",
+    "spatial_validation": {
+      "final_edge_error_between_fire_sd_m": 210.0,
+      "final_edge_error_maximum_between_fire_sd_m": 1140.0,
+      "final_edge_error_maximum_mean_m": 2860.0,
+      "final_edge_error_mean_m": 750.0,
+      "nominal_resolution_m": [
+        1600.0,
+        1700.0
+      ]
+    },
+    "spatial_validation_scope": "population statistics for final perimeters; not a calibrated per-frame Gaussian sigma",
+    "timestamp_role": "end of source hour"
+  },
+  "schema_version": 1,
+  "software": {
+    "importer_module": "/Users/AmilAgrawal/Documents/Codex/2026-07-26/le/aeolus_py/src/aeolus/data/gofer.py",
+    "importer_module_sha256": "7c7919e24d83547a133deff1e09459a4ae169784cec056693464154c5a44ed0c"
+  },
+  "source": {
+    "archive": {
+      "bytes": 75711678,
+      "expected_v0.2_md5": "8d495af1e4a0ed77df35b5a15d5ebb04",
+      "md5": "8d495af1e4a0ed77df35b5a15d5ebb04",
+      "path": "/Users/AmilAgrawal/Documents/Codex/2026-07-26/le/tmp/gofer/GOFER-v0.2.zip",
+      "sha256": "96eca2e18529eb274ca94af9a730bcf1c9c6da597fb04a9b5cf9167aada451c2"
+    },
+    "component_sha256": {
+      "GOFER_Combined/GOFERC_cfireLine.dbf": "9bb6b50f051f74df7890bb3894509cb592e4befc0beef83ed1c95afd6dca7c60",
+      "GOFER_Combined/GOFERC_cfireLine.prj": "a02a27b1d1982c8516d83398e85a3c8b1aef1713c13ef4d84d7bde17430c07c4",
+      "GOFER_Combined/GOFERC_cfireLine.shp": "b72b8a06b4b318d2e7cf184882c56133e0a6d2a495ff1903954a694abaee3f79",
+      "GOFER_Combined/GOFERC_cfireLine.shx": "4fd93a5021b2b3f32dff0079d53c9613389fb2e1cc988ae751d27ae8f76ce5f3",
+      "GOFER_Combined/GOFERC_fireProg.dbf": "8d709570c59ba37394eebe551f26881f1ea3e567e153d0c778c7028ed46f0e82",
+      "GOFER_Combined/GOFERC_fireProg.prj": "a02a27b1d1982c8516d83398e85a3c8b1aef1713c13ef4d84d7bde17430c07c4",
+      "GOFER_Combined/GOFERC_fireProg.shp": "fe96bb063056ef972bdb695df79129b7e9a69bcf00a2164341d33ff4b6483c78",
+      "GOFER_Combined/GOFERC_fireProg.shx": "4b542cbbd71a9ae3978a6b4e1735e042d478818b34135b847ede98b58efa1ee6",
+      "GOFER_Combined/GOFERC_rfireLine.dbf": "3321cae9631cb41e41836cc7f7cb7810d78b60fa07aed9805869a8f2e794df8a",
+      "GOFER_Combined/GOFERC_rfireLine.prj": "a02a27b1d1982c8516d83398e85a3c8b1aef1713c13ef4d84d7bde17430c07c4",
+      "GOFER_Combined/GOFERC_rfireLine.shp": "5b09aaa91ad763c04e113485202cf382dbec72f09aed6745c8bf089d5cba640c",
+      "GOFER_Combined/GOFERC_rfireLine.shx": "d44c6b54742f4dd30dec76596675b59e09a9ea2dde3b26d2a2469aae06fc9917",
+      "GOFER_Combined/GOFERC_summary.csv": "2db846c1fbfec1af858dcf244f9b1f88405b49ab9b101c3a27991b4f3315e3d3",
+      "fireData.csv": "485f4a3c6db682f8000ae149173304883e408b8f26b4cc4720d0406f8ca91a7b"
+    },
+    "doi": "10.5281/zenodo.14642378",
+    "license": "CC-BY-4.0",
+    "paper_doi": "10.5194/essd-16-1395-2024",
+    "product": "GOES-Observed Fire Event Representation",
+    "variant": "combined",
+    "version": "0.2"
+  }
+}

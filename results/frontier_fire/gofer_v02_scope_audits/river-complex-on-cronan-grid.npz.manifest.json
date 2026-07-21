@@ -1,0 +1,50 @@
+{
+  "asset": {
+    "bytes": 232204,
+    "href": "river-complex-on-cronan-grid.npz",
+    "sha256": "e6f894823549aea595616487d35c53a0003537a417c432c1b8d0468619b35b62"
+  },
+  "audit": {
+    "cumulative_nesting_violation_frames": 0,
+    "dormant_line_frames": 332,
+    "effective_active_line_frames": 268,
+    "frame_count": 1353,
+    "maximum_lost_cells_between_frames": 0,
+    "missing_concurrent_active_line_count": 0,
+    "missing_concurrent_active_line_times": [],
+    "nonempty_perimeter_frames": 1353,
+    "spatial_coverage_fraction": {
+      "final": 0.038239267563565424,
+      "maximum": 0.9947543075787652,
+      "median": 0.06007324849930759,
+      "minimum": 0.038239267563565424
+    }
+  },
+  "dataset": "incident-grid progression observation cube",
+  "incident_id": "nirops-ca-knf-006385-rivercomplex-cronan",
+  "schema_version": 1,
+  "source": {
+    "concurrent_active_lines_sha256": "7444f6f60acb5df00b39014b9ebbd6134a6e91dd2a056bf62f06c670a38935e3",
+    "observation_manifest_sha256": "a3940fb230efdd120343bb4bdac9fb8abe9d42a2853b9c96d22dbe1604fb281f",
+    "perimeters_sha256": "08230844ff63b5cb713a595616a965331d3e5147b2473602f2195de12aa32706",
+    "source_crs": "EPSG:4326"
+  },
+  "target_grid": {
+    "cell_size_m": 149.05092933600164,
+    "crs": "EPSG:32610",
+    "line_rasterization": "all_intersected_cells",
+    "polygon_rasterization": "cell_center_in_polygon",
+    "shape": [
+      128,
+      129
+    ],
+    "transform": [
+      149.05092933600164,
+      0.0,
+      469960.741063986,
+      0.0,
+      -149.05092933600164,
+      4582115.720399085
+    ]
+  }
+}
