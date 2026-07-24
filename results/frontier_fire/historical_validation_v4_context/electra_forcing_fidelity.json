@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "incident": "nirops-ca-aeu-017769-electra",
+  "comparison_sample_count": 147,
+  "hrrr_analysis_coverage_fraction": 0.9932432432432432,
+  "hrrr_missing_analysis_hours": [
+    "2022-07-06T19:00:00+00:00"
+  ],
+  "hrrr_vs_power": {
+    "wind_speed_mean_absolute_difference_m_s": 0.7274963016412697,
+    "wind_direction_mean_absolute_difference_deg": 47.52857830410912,
+    "mean_hrrr_spatial_p90_p10_wind_range_m_s": 1.000443458557129,
+    "maximum_hrrr_spatial_p90_p10_wind_range_m_s": 2.5346202850341797
+  },
+  "derived_state": {
+    "dead_1h_spatial_standard_deviation_final_kg_kg": 0.0024800729006528854,
+    "live_herbaceous_minimum_kg_kg": 0.30000001192092896,
+    "live_herbaceous_maximum_kg_kg": 0.7738412022590637
+  },
+  "interpretation": "Differences quantify forcing products and spatial sampling; they are not wind errors because no independent station reference is used."
+}

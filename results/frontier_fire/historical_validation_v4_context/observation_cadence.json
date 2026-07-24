@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "nirops": {
+    "raw_feature_count": 12706,
+    "incident_count": 737,
+    "all_incident_transitions": {
+      "transition_count": 11968,
+      "median_hours": 24.433333333333334,
+      "q10_hours": 21.25,
+      "q90_hours": 69.93333333333334,
+      "fraction_at_most_18_hours": 0.02815842245989305,
+      "fraction_at_most_30_hours": 0.7462399732620321,
+      "fraction_over_36_hours": 0.2388870320855615
+    },
+    "current_six_incident_transitions": {
+      "transition_count": 70,
+      "median_hours": 24.0,
+      "q10_hours": 21.991666666666667,
+      "q90_hours": 40.430000000000014,
+      "fraction_at_most_18_hours": 0.05714285714285714,
+      "fraction_at_most_30_hours": 0.8571428571428571,
+      "fraction_over_36_hours": 0.12857142857142856
+    }
+  },
+  "feds_case": {
+    "incident_id": "feds-conus-61854-fire-v03",
+    "raw_feature_count": 38,
+    "unique_nonempty_rasterized_frames": 21,
+    "coalesced_duplicate_features": 17,
+    "cadence": {
+      "transition_count": 20,
+      "median_hours": 12.0,
+      "q10_hours": 12.0,
+      "q90_hours": 36.0,
+      "fraction_at_most_18_hours": 0.7,
+      "fraction_at_most_30_hours": 0.85,
+      "fraction_over_36_hours": 0.05
+    },
+    "interval_hours": [
+      12.0,
+      12.0,
+      12.0,
+      12.0,
+      12.0,
+      12.0,
+      36.0,
+      12.0,
+      36.0,
+      24.0,
+      12.0,
+      12.0,
+      12.0,
+      12.0,
+      12.0,
+      132.0,
+      12.0,
+      12.0,
+      24.0,
+      24.0
+    ],
+    "time_semantics": "FEDS 12-hour local-solar-time bins"
+  },
+  "interpretation_constraints": [
+    "NIROPS acquisition intervals are irregular and observation times do not equal spread event times.",
+    "FEDS perimeters are VIIRS-derived modeled products, not independent high-resolution truth.",
+    "Features in one FEDS timestamp are scene fragments and are unioned before evaluation."
+  ]
+}

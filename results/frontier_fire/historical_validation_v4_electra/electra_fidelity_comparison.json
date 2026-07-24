@@ -1,0 +1,247 @@
+{
+  "schema_version": 1,
+  "incident_code": "CA-AEU-017769_Electra",
+  "baseline": "results/frontier_fire/historical_validation_v3/historical_validation_results.json",
+  "candidate": "results/frontier_fire/historical_validation_v4_electra/historical_validation_results.json",
+  "common_forecast_records": 28,
+  "calibration": {
+    "baseline": {
+      "calibration_pair": [
+        1,
+        2
+      ],
+      "selected_spread_adjustment": 2.0,
+      "ensemble_effective_sample_size": 4.2000000000000295
+    },
+    "candidate": {
+      "calibration_pair": [
+        1,
+        2
+      ],
+      "selected_spread_adjustment": 1.5,
+      "ensemble_effective_sample_size": 4.200000000000037
+    }
+  },
+  "methods": {
+    "persistence": {
+      "cumulative_iou": {
+        "baseline_mean": 0.9704681924250846,
+        "candidate_mean": 0.9704681924250846,
+        "candidate_minus_baseline": 0.0,
+        "paired_forecasts": 4
+      },
+      "advancing_front_tolerance_f1_observed_growth": {
+        "baseline_mean": 0.0,
+        "candidate_mean": 0.0,
+        "candidate_minus_baseline": 0.0,
+        "paired_forecasts": 2
+      },
+      "boundary_mean_symmetric_distance_m": {
+        "baseline_mean": 28.49000716122897,
+        "candidate_mean": 28.49000716122897,
+        "candidate_minus_baseline": 0.0,
+        "paired_forecasts": 4
+      },
+      "symmetric_difference_km2": {
+        "baseline_mean": 0.9588180700394721,
+        "candidate_mean": 0.9588180700394721,
+        "candidate_minus_baseline": 0.0,
+        "paired_forecasts": 4
+      }
+    },
+    "raw_physics": {
+      "cumulative_iou": {
+        "baseline_mean": 0.818231846418231,
+        "candidate_mean": 0.7434747677939355,
+        "candidate_minus_baseline": -0.07475707862429548,
+        "paired_forecasts": 4
+      },
+      "advancing_front_tolerance_f1_observed_growth": {
+        "baseline_mean": 0.05611962340779029,
+        "candidate_mean": 0.03480418599633186,
+        "candidate_minus_baseline": -0.02131543741145843,
+        "paired_forecasts": 2
+      },
+      "boundary_mean_symmetric_distance_m": {
+        "baseline_mean": 325.62487164138025,
+        "candidate_mean": 474.0431156643659,
+        "candidate_minus_baseline": 148.41824402298568,
+        "paired_forecasts": 4
+      },
+      "symmetric_difference_km2": {
+        "baseline_mean": 7.121942468695255,
+        "candidate_mean": 11.426739061501339,
+        "candidate_minus_baseline": 4.304796592806084,
+        "paired_forecasts": 4
+      }
+    },
+    "history_raw_physics": {
+      "cumulative_iou": {
+        "baseline_mean": 0.8165320372137704,
+        "candidate_mean": 0.7465849837018649,
+        "candidate_minus_baseline": -0.06994705351190555,
+        "paired_forecasts": 4
+      },
+      "advancing_front_tolerance_f1_observed_growth": {
+        "baseline_mean": 0.055152394775036286,
+        "candidate_mean": 0.03154464373223562,
+        "candidate_minus_baseline": -0.02360775104280067,
+        "paired_forecasts": 2
+      },
+      "boundary_mean_symmetric_distance_m": {
+        "baseline_mean": 360.3203558953247,
+        "candidate_mean": 469.0682503650237,
+        "candidate_minus_baseline": 108.74789446969896,
+        "paired_forecasts": 4
+      },
+      "symmetric_difference_km2": {
+        "baseline_mean": 7.196077886481811,
+        "candidate_mean": 11.25869878118514,
+        "candidate_minus_baseline": 4.062620894703329,
+        "paired_forecasts": 4
+      }
+    },
+    "calibrated_physics": {
+      "cumulative_iou": {
+        "baseline_mean": 0.4873486143524907,
+        "candidate_mean": 0.5278185448679885,
+        "candidate_minus_baseline": 0.0404699305154978,
+        "paired_forecasts": 4
+      },
+      "advancing_front_tolerance_f1_observed_growth": {
+        "baseline_mean": 0.06695422035791873,
+        "candidate_mean": 0.0795468937726601,
+        "candidate_minus_baseline": 0.012592673414741365,
+        "paired_forecasts": 2
+      },
+      "boundary_mean_symmetric_distance_m": {
+        "baseline_mean": 1090.2665222270398,
+        "candidate_mean": 1165.405748352752,
+        "candidate_minus_baseline": 75.13922612571218,
+        "paired_forecasts": 4
+      },
+      "symmetric_difference_km2": {
+        "baseline_mean": 34.76951094189529,
+        "candidate_mean": 32.52073660236972,
+        "candidate_minus_baseline": -2.2487743395255677,
+        "paired_forecasts": 4
+      }
+    },
+    "history_calibrated_physics": {
+      "cumulative_iou": {
+        "baseline_mean": 0.5105995512863739,
+        "candidate_mean": 0.5343373886063141,
+        "candidate_minus_baseline": 0.02373783731994017,
+        "paired_forecasts": 4
+      },
+      "advancing_front_tolerance_f1_observed_growth": {
+        "baseline_mean": 0.0705951113439579,
+        "candidate_mean": 0.07310115844541533,
+        "candidate_minus_baseline": 0.002506047101457423,
+        "paired_forecasts": 2
+      },
+      "boundary_mean_symmetric_distance_m": {
+        "baseline_mean": 1048.1836776808195,
+        "candidate_mean": 1115.8929729326164,
+        "candidate_minus_baseline": 67.7092952517969,
+        "paired_forecasts": 4
+      },
+      "symmetric_difference_km2": {
+        "baseline_mean": 31.73984353501799,
+        "candidate_mean": 31.136875470353992,
+        "candidate_minus_baseline": -0.6029680646639974,
+        "paired_forecasts": 4
+      }
+    },
+    "calibrated_ensemble": {
+      "cumulative_iou": {
+        "baseline_mean": 0.7114216161171121,
+        "candidate_mean": 0.8466767633818952,
+        "candidate_minus_baseline": 0.13525514726478316,
+        "paired_forecasts": 4
+      },
+      "advancing_front_tolerance_f1_observed_growth": {
+        "baseline_mean": 0.06689509147422659,
+        "candidate_mean": 0.02386129733705857,
+        "candidate_minus_baseline": -0.04303379413716803,
+        "paired_forecasts": 2
+      },
+      "boundary_mean_symmetric_distance_m": {
+        "baseline_mean": 559.567168026584,
+        "candidate_mean": 244.258754394883,
+        "candidate_minus_baseline": -315.308413631701,
+        "paired_forecasts": 4
+      },
+      "symmetric_difference_km2": {
+        "baseline_mean": 13.11702658703484,
+        "candidate_mean": 5.876467449881094,
+        "candidate_minus_baseline": -7.240559137153745,
+        "paired_forecasts": 4
+      }
+    },
+    "history_calibrated_ensemble": {
+      "cumulative_iou": {
+        "baseline_mean": 0.7181887581061441,
+        "candidate_mean": 0.8441686308655341,
+        "candidate_minus_baseline": 0.12597987275938993,
+        "paired_forecasts": 4
+      },
+      "advancing_front_tolerance_f1_observed_growth": {
+        "baseline_mean": 0.07303036143504894,
+        "candidate_mean": 0.024073034807689797,
+        "candidate_minus_baseline": -0.048957326627359146,
+        "paired_forecasts": 2
+      },
+      "boundary_mean_symmetric_distance_m": {
+        "baseline_mean": 545.7976490226423,
+        "candidate_mean": 239.92189491662936,
+        "candidate_minus_baseline": -305.87575410601295,
+        "paired_forecasts": 4
+      },
+      "symmetric_difference_km2": {
+        "baseline_mean": 12.741407136916283,
+        "candidate_mean": 6.000026479525356,
+        "candidate_minus_baseline": -6.741380657390927,
+        "paired_forecasts": 4
+      }
+    }
+  },
+  "probabilistic": {
+    "calibrated_ensemble": {
+      "active_domain_brier": {
+        "baseline_mean": 0.33177930166449526,
+        "candidate_mean": 0.317661493553556,
+        "candidate_minus_baseline": -0.014117808110939267,
+        "paired_forecasts_with_observed_growth": 2
+      },
+      "persistence_active_domain_brier": {
+        "baseline_mean": 0.35380624058764454,
+        "candidate_mean": 0.35380624058764454,
+        "candidate_minus_baseline": 0.0,
+        "paired_forecasts_with_observed_growth": 2
+      }
+    },
+    "history_calibrated_ensemble": {
+      "active_domain_brier": {
+        "baseline_mean": 0.33052326020441436,
+        "candidate_mean": 0.31771088536343106,
+        "candidate_minus_baseline": -0.012812374840983298,
+        "paired_forecasts_with_observed_growth": 2
+      },
+      "persistence_active_domain_brier": {
+        "baseline_mean": 0.35380624058764454,
+        "candidate_mean": 0.35380624058764454,
+        "candidate_minus_baseline": 0.0,
+        "paired_forecasts_with_observed_growth": 2
+      }
+    }
+  },
+  "interpretation_constraints": [
+    "The comparison is paired on method, start perimeter, and target perimeter.",
+    "The candidate combines HRRR analysis, terrain-conditioned thermodynamics, spatial dead-fuel moisture, and dynamic live-fuel moisture; this ablation does not identify the contribution of any one component.",
+    "Electra is one incident with four held-out transitions, so differences are diagnostic rather than population-level estimates.",
+    "Calibration uses an earlier perimeter pair from the same incident.",
+    "Advancing-front F1 is restricted to transitions with observed growth, avoiding perfect empty-set scores in no-growth intervals.",
+    "Higher cumulative IoU and advancing-front F1 are favorable; lower boundary distance, symmetric difference, and Brier score are favorable."
+  ]
+}
