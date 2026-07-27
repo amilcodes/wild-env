@@ -1,0 +1,43 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "aeolus-ia"
+version = "0.1.0"
+description = "Research environment for constrained multi-agent aerial wildfire initial attack"
+readme = "README.md"
+requires-python = ">=3.10,<3.13"
+license = {text = "Apache-2.0"}
+authors = [{name = "Aeolus-IA research"}]
+dependencies = [
+  "numpy>=2.0,<3",
+  "PyYAML>=6.0,<7",
+  "gymnasium>=1.0,<2",
+  "pettingzoo>=1.24,<2",
+  "torch>=2.5,<3",
+]
+
+[project.optional-dependencies]
+rllib = ["ray[rllib]>=2.55,<2.57"]
+geo = ["rasterio>=1.4,<2", "shapely>=2.0,<3", "xarray>=2025.1"]
+dev = ["pytest>=8,<9", "ruff>=0.11,<1"]
+
+[project.scripts]
+aeolus-train = "aeolus.training.train:main"
+aeolus-eval = "aeolus.evaluation.evaluate:main"
+aeolus-rollout = "aeolus.cli:rollout_main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 110
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP"]

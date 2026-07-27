@@ -1,0 +1,107 @@
+"""Truth, belief, resource, and mission state for one Aeolus episode."""
+
+from __future__ import annotations
+
+from dataclasses import dataclass, field
+from enum import IntEnum
+from typing import TYPE_CHECKING
+
+import numpy as np
+
+if TYPE_CHECKING:
+    from aeolus.config import ResourceSpec
+
+
+class FirePhase(IntEnum):
+    UNBURNED = 0
+    FLAMING = 1
+    BURNED = 2
+
+
+class ResourceStatus(IntEnum):
+    AVAILABLE = 0
+    OUTBOUND = 1
+    RETURNING = 2
+    RELOADING = 3
+    WITHDRAWN = 4
+
+
+@dataclass
+class ResourceRuntime:
+    spec: ResourceSpec
+    x: float
+    y: float
+    status: ResourceStatus = ResourceStatus.AVAILABLE
+    eta_min: int = 0
+    target_xy: tuple[int, int] | None = None
+    task_index: int = 0
+    payload_fraction: float = 1.0
+    flight_min: float = 0.0
+    reload_cycles: int = 0
+    attempted_tasks: int = 0
+    accepted_tasks: int = 0
+
+    @property
+    def resource_id(self) -> str:
+        return self.spec.resource_id
+
+
+@dataclass
+class PendingObservation:
+    deliver_minute: int
+    x: int
+    y: int
+    radius_cells: int
+    source: str
+    intensity_measurement: np.ndarray | None = None
+    burned_measurement: np.ndarray | None = None
+
+
+@dataclass
+class TruthState:
+    phase: np.ndarray
+    intensity_kw_m: np.ndarray
+    fuel_remaining: np.ndarray
+    fuel_load: np.ndarray
+    elevation_m: np.ndarray
+    barrier: np.ndarray
+    asset_value: np.ndarray
+    water: np.ndarray
+    retardant: np.ndarray
+    ground_hold: np.ndarray
+    residual_field: np.ndarray
+    observed_burned: np.ndarray
+
+
+@dataclass
+class BeliefState:
+    intensity_mean: np.ndarray
+    intensity_std: np.ndarray
+    observed_at: np.ndarray
+    known_burned: np.ndarray
+    pending: list[PendingObservation] = field(default_factory=list)
+
+
+@dataclass
+class EpisodeState:
+    minute: int
+    truth: TruthState
+    belief: BeliefState
+    resources: list[ResourceRuntime]
+    base_xy: tuple[int, int]
+    rng: np.random.Generator
+    ground_engaged: bool = False
+    terminated: bool = False
+    truncated: bool = False
+    escaped: bool = False
+    contained: bool = False
+    cumulative_cost: float = 0.0
+    cumulative_exposure: float = 0.0
+    blocked_actions: int = 0
+    events: list[dict[str, object]] = field(default_factory=list)
+
+    def event(self, kind: str, **payload: object) -> None:
+        self.events.append({"minute": self.minute, "kind": kind, **payload})
+
+    def copy_rng_state(self) -> dict[str, object]:
+        return dict(self.rng.bit_generator.state)

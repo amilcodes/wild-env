@@ -1,0 +1,26 @@
+scenario:
+  seed: 20260726
+  width: 48
+  height: 48
+  cell_size_m: 60.0
+  horizon_min: 90
+  decision_interval_min: 3
+  max_tasks: 24
+  observation_delay_min: 2
+  wind_speed_m_s: 5.0
+  wind_direction_deg: 25.0
+  wind_variability: 0.20
+  spotting_rate: 0.005
+  ground_arrival_min: 20
+training:
+  seed: 20260726
+  device: auto
+  num_envs: 8
+  rollout_steps: 32
+  updates: 4
+  epochs_per_update: 2
+  minibatch_size: 64
+  learning_rate: 0.0003
+  checkpoint_dir: runs/smoke_v4
+  checkpoint_every: 2
+  use_amp: true
