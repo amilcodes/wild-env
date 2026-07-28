@@ -1,0 +1,26 @@
+schema_version: 1
+title: Thirty-six-incident chronological holdout benchmark
+base_manifest: historical_validation_expanded.yaml
+base_manifest_sha256: dc06b0b4c2370d14c3a2d243cefdfa7e4e368a35c52f23079fad8026e37f0484
+frozen_at: '2026-08-04'
+partition_unit: incident
+ignore_incident_specific_candidates_outside_train: true
+year_partition:
+  train: [2020, 2021]
+  development: [2022]
+  test: [2023, 2024]
+prohibited_information:
+  - test target perimeters during fitting or method selection
+  - incident-specific test spread calibration
+  - post-incident landscape products
+  - verifying future weather analyses in an operational forecast claim
+physics_candidates: [0.01, 0.03, 0.1, 0.3, 1.0, 3.0]
+baselines:
+  global_isotropic:
+    candidates: [0.0, 0.02, 0.04, 0.08, 0.16, 0.32, 0.64, 1.28, 2.56]
+  last_growth_trend:
+    candidates: [0.0, 0.25, 0.5, 0.75, 1.0, 1.5, 2.0]
+  wind_ellipse:
+    candidates: [0.0, 0.04, 0.08, 0.16, 0.32, 0.64, 1.28, 2.56]
+    flank_ratio: 0.35
+    backing_ratio: 0.15

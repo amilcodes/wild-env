@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "study": "frozen metric-grid incident-holdout historical skill pilot",
+  "frozen_at": "2026-08-05T01:59:50.015787+00:00",
+  "software": {
+    "git_commit": "c395e189252a4803c6910e3e5204e44a8c3741ae",
+    "worktree_dirty": true,
+    "python": "3.10.11 (v3.10.11:7d4cc5aa85, Apr  4 2023, 19:05:19) [Clang 13.0.0 (clang-1300.0.29.30)]"
+  },
+  "artifacts": {
+    "contract": {
+      "path": "/Users/AmilAgrawal/Documents/Codex/2026-07-26/le/aeolus_py/configs/historical_validation_frozen_pilot.yaml",
+      "sha256": "6553c2f131ee45b9fa45d947f37f5c3275b1216f709d66d2698ac3e1b587538a"
+    },
+    "metric_reprojection": {
+      "path": "/Users/AmilAgrawal/Documents/Codex/2026-07-26/le/outputs/historical-validation-v6-metric/metric_reprojection_manifest.json",
+      "sha256": "7527118b99be3e56e9bf9327da4aba4afb46ca4bbbe26e8f76a0f584413ec9ea"
+    },
+    "operational_forcing": {
+      "path": "/Users/AmilAgrawal/Documents/Codex/2026-07-26/le/outputs/historical-validation-v6-operational-hrrr/operational_forcing_manifest.json",
+      "sha256": "b152f4cea0e3cf45d8e892149a4c419b367b7b70f4fac6ec981addf29bde48f7"
+    },
+    "geometric_baselines": {
+      "path": "/Users/AmilAgrawal/Documents/Codex/2026-07-26/le/aeolus_py/results/frontier_fire/historical_validation_v6_metric_frozen/baseline_results.json",
+      "sha256": "40ecda68abe482ca776d4165daecf77df37f6c4e54123da1b00f90187794574e"
+    },
+    "retrospective_physics": {
+      "path": "/Users/AmilAgrawal/Documents/Codex/2026-07-26/le/aeolus_py/results/frontier_fire/historical_validation_v6_metric_frozen/physics_results.json",
+      "sha256": "6124f890b9dda600a1933fd96aad6a32b8fd671779cbbf06b5b6ad4fbe049f00"
+    },
+    "operational_physics": {
+      "path": "/Users/AmilAgrawal/Documents/Codex/2026-07-26/le/aeolus_py/results/frontier_fire/historical_validation_v6_metric_frozen/physics_operational_hrrr_results.json",
+      "sha256": "8e8ccd178eaa7064aa37ea95943e9a40480d68ca9557aba7ab743657dca28243"
+    }
+  },
+  "validity": {
+    "metric_crs_all_incidents": true,
+    "maximum_raster_area_fractional_error": 0.02731976210473741,
+    "operational_forcing_transition_count": 24,
+    "operational_forcing_complete": true,
+    "operational_forcing_all_available_by_issue": true,
+    "partition_unit": "incident",
+    "partition_counts": {
+      "development": 2,
+      "train": 2,
+      "test": 2
+    },
+    "test_target_used_for_fitting": false,
+    "test_incident_count": 2,
+    "test_transition_count": 8
+  },
+  "test_result": {
+    "persistence": {
+      "cumulative_iou": 0.8464853769545579,
+      "boundary_distance_m": 127.79172591934494,
+      "advancing_front_f1": 0.0
+    },
+    "operational_front_selected": {
+      "spread_adjustment": 0.3,
+      "cumulative_iou": 0.8353404047018623,
+      "boundary_distance_m": 144.57763744802378,
+      "advancing_front_f1": 0.11163777602608416
+    }
+  },
+  "claim_gate": {
+    "positive_incident_cluster_iou_interval": false,
+    "positive_incident_cluster_boundary_interval": false,
+    "advancing_front_signal_above_persistence": true,
+    "held_out_historical_skill_passed": false
+  }
+}
