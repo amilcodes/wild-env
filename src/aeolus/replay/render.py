@@ -81,7 +81,7 @@ def render_frame_2d(
         _rgba_overlay(phase == 2, (0.10, 0.07, 0.06), np.full(phase.shape, 0.70)),
         origin="upper",
     )
-    active_normalized = np.clip((intensity - 18.0) / 62.0, 0.0, 1.0)
+    active_normalized = np.clip(np.log1p(intensity) / np.log(20_001.0), 0.0, 1.0)
     active_rgba = plt.get_cmap("autumn")(active_normalized)
     active_rgba[..., :3] = np.maximum(active_rgba[..., :3], (0.98, 0.20, 0.02))
     active_rgba[..., 3] = np.where(phase == 1, 0.90, 0.0)
@@ -94,6 +94,17 @@ def render_frame_2d(
             linewidths=0.65,
             alpha=0.9,
         )
+    if "truth/fire_type" in states:
+        fire_type = np.asarray(states["truth/fire_type"][index])
+        if np.any(fire_type >= 2):
+            axis.contour(
+                fire_type >= 2,
+                levels=[0.5],
+                colors=["#f7f4ff"],
+                linewidths=1.25,
+                linestyles="dashdot",
+                alpha=0.95,
+            )
     axis.imshow(
         _rgba_overlay(water > 0.05, (0.10, 0.62, 0.95), np.clip(water * 0.72, 0.0, 0.72)),
         origin="upper",
@@ -190,6 +201,16 @@ def render_frame_2d(
         transform=status.transAxes,
     )
     status.text(0.0, 0.715, "burned cells", color="#97a5af", fontsize=9, transform=status.transAxes)
+    if "truth/flame_length_m" in states:
+        max_flame = float(np.asarray(states["truth/flame_length_m"][index]).max())
+        status.text(
+            0.0,
+            0.67,
+            f"maximum flame length  {max_flame:.1f} m",
+            color="#c7d0d7",
+            fontsize=8,
+            transform=status.transAxes,
+        )
     status.text(0.0, 0.64, "RESOURCES", color="#97a5af", fontsize=8.5, transform=status.transAxes)
     statuses = np.asarray(states["resources/status"][index])
     payload = np.asarray(states["resources/payload_fraction"][index])
@@ -251,7 +272,9 @@ def render_frame_3d(
         ["#17251d", "#29452d", "#496343", "#77745a", "#a38f70", "#d4c9b4"],
     )
     colors = light.shade(elevation, cmap=terrain_cmap, vert_exag=1.6)
-    fire_colors = plt.get_cmap("autumn")(np.clip((intensity - 18.0) / 62.0, 0.0, 1.0))
+    fire_colors = plt.get_cmap("autumn")(
+        np.clip(np.log1p(intensity) / np.log(20_001.0), 0.0, 1.0)
+    )
     fire_colors[..., :3] = np.maximum(fire_colors[..., :3], (0.98, 0.18, 0.01))
     active = phase == 1
     colors[active] = fire_colors[active]

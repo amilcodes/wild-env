@@ -35,6 +35,11 @@ class ReplayRecorder:
         self.minutes: list[int] = []
         self.phase: list[np.ndarray] = []
         self.intensity: list[np.ndarray] = []
+        self.fire_type: list[np.ndarray] = []
+        self.spread_rate: list[np.ndarray] = []
+        self.flame_length: list[np.ndarray] = []
+        self.fuel_remaining: list[np.ndarray] = []
+        self.moisture_dead_1h: list[np.ndarray] = []
         self.belief_mean: list[np.ndarray] = []
         self.belief_std: list[np.ndarray] = []
         self.known_burned: list[np.ndarray] = []
@@ -62,6 +67,23 @@ class ReplayRecorder:
         append(self.minutes, int(state.minute))
         append(self.phase, state.truth.phase.astype(np.uint8, copy=True))
         append(self.intensity, state.truth.intensity_kw_m.astype(np.float32, copy=True))
+        append(self.fire_type, state.truth.fire_type.astype(np.uint8, copy=True))
+        append(
+            self.spread_rate,
+            state.truth.spread_rate_m_min.astype(np.float32, copy=True),
+        )
+        append(
+            self.flame_length,
+            state.truth.flame_length_m.astype(np.float32, copy=True),
+        )
+        append(
+            self.fuel_remaining,
+            state.truth.fuel_remaining.astype(np.float32, copy=True),
+        )
+        append(
+            self.moisture_dead_1h,
+            state.truth.moisture_dead_1h.astype(np.float32, copy=True),
+        )
         append(self.belief_mean, state.belief.intensity_mean.astype(np.float32, copy=True))
         append(self.belief_std, state.belief.intensity_std.astype(np.float32, copy=True))
         append(self.known_burned, state.belief.known_burned.astype(np.float32, copy=True))
@@ -123,6 +145,11 @@ class ReplayRecorder:
         for name, values in (
             ("truth/phase", self.phase),
             ("truth/intensity_kw_m", self.intensity),
+            ("truth/fire_type", self.fire_type),
+            ("truth/spread_rate_m_min", self.spread_rate),
+            ("truth/flame_length_m", self.flame_length),
+            ("truth/fuel_remaining", self.fuel_remaining),
+            ("truth/moisture_dead_1h", self.moisture_dead_1h),
             ("belief/intensity_mean", self.belief_mean),
             ("belief/intensity_std", self.belief_std),
             ("belief/known_burned", self.known_burned),
@@ -138,6 +165,31 @@ class ReplayRecorder:
         write("resources/payload_fraction", np.stack(self.resource_payload), resource_chunks)
         write("static/elevation_m", simulator.state.truth.elevation_m, shape)
         write("static/fuel_load_kg_m2", simulator.state.truth.fuel_load, shape)
+        write(
+            "static/fuel_model_number",
+            simulator.state.truth.fuel_model_number,
+            shape,
+        )
+        write(
+            "static/canopy_cover",
+            simulator.state.truth.canopy_cover,
+            shape,
+        )
+        write(
+            "static/canopy_height_m",
+            simulator.state.truth.canopy_height_m,
+            shape,
+        )
+        write(
+            "static/canopy_base_height_m",
+            simulator.state.truth.canopy_base_height_m,
+            shape,
+        )
+        write(
+            "static/canopy_bulk_density_kg_m3",
+            simulator.state.truth.canopy_bulk_density_kg_m3,
+            shape,
+        )
         write("static/barrier", simulator.state.truth.barrier.astype(np.uint8), shape)
         write("static/asset_value", simulator.state.truth.asset_value, shape)
 

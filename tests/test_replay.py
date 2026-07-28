@@ -29,6 +29,10 @@ def test_replay_round_trip_and_render(tmp_path) -> None:
     restored = ReplayBundle.open(replay.root)
     assert restored.frame_count >= 2
     assert len(restored.events()) > 0
+    assert "truth/fire_type" in restored.states
+    assert "truth/spread_rate_m_min" in restored.states
+    assert "truth/moisture_dead_1h" in restored.states
+    assert "static/fuel_model_number" in restored.states
     image_2d = render_frame_2d(restored, tmp_path / "frame-2d.png")
     image_3d = render_frame_3d(restored, tmp_path / "frame-3d.png")
     assert image_2d.stat().st_size > 10_000

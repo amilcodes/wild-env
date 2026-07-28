@@ -18,6 +18,7 @@ class WeatherForcing:
     air_temperature_c: np.ndarray
     relative_humidity_pct: np.ndarray
     metadata: dict[str, Any]
+    precipitation_rate_mm_h: np.ndarray | None = None
 
     def validate(self) -> None:
         count = len(self.minute)
@@ -31,16 +32,24 @@ class WeatherForcing:
             )
         ):
             raise ValueError("weather arrays must have one common non-empty time dimension")
+        if self.precipitation_rate_mm_h is not None and len(
+            self.precipitation_rate_mm_h
+        ) != count:
+            raise ValueError("precipitation must share the weather time dimension")
         if np.any(np.diff(self.minute) <= 0):
             raise ValueError("weather time coordinate must be strictly increasing")
         if np.any(self.wind_speed_m_s < 0):
             raise ValueError("wind speed must be non-negative")
         if np.any((self.relative_humidity_pct < 0) | (self.relative_humidity_pct > 100)):
             raise ValueError("relative humidity must be within [0, 100]")
+        if self.precipitation_rate_mm_h is not None and np.any(
+            self.precipitation_rate_mm_h < 0
+        ):
+            raise ValueError("precipitation rate must be non-negative")
 
     def at_minute(self, minute: float) -> dict[str, float]:
         self.validate()
-        return {
+        result = {
             "wind_speed_m_s": float(np.interp(minute, self.minute, self.wind_speed_m_s)),
             "wind_direction_deg": float(
                 np.interp(minute, self.minute, np.unwrap(np.deg2rad(self.wind_direction_deg)))
@@ -53,6 +62,12 @@ class WeatherForcing:
                 np.interp(minute, self.minute, self.relative_humidity_pct)
             ),
         }
+        result["precipitation_rate_mm_h"] = (
+            float(np.interp(minute, self.minute, self.precipitation_rate_mm_h))
+            if self.precipitation_rate_mm_h is not None
+            else 0.0
+        )
+        return result
 
     @classmethod
     def load(cls, path: str | Path) -> WeatherForcing:
@@ -99,6 +114,14 @@ class WeatherForcing:
                     "history": _decode_attribute(getattr(dataset, "history", "")),
                     "time_units": unit,
                 },
+                precipitation_rate_mm_h=(
+                    np.asarray(
+                        dataset.variables["precipitation_rate"][:],
+                        dtype=np.float32,
+                    )
+                    if "precipitation_rate" in dataset.variables
+                    else None
+                ),
             )
         forcing.validate()
         return forcing
@@ -157,6 +180,14 @@ def write_weather_forcing(
         humidity.standard_name = "relative_humidity"
         humidity.units = "%"
         humidity[:] = forcing.relative_humidity_pct
+
+        if forcing.precipitation_rate_mm_h is not None:
+            precipitation = dataset.createVariable(
+                "precipitation_rate", "f", ("time",)
+            )
+            precipitation.standard_name = "precipitation_flux"
+            precipitation.units = "mm h-1"
+            precipitation[:] = forcing.precipitation_rate_mm_h
     return destination
 
 

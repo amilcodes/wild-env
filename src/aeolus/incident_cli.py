@@ -9,6 +9,7 @@ from pathlib import Path
 from aeolus.data import IncidentBundle, load_bundle, write_incident_bundle
 from aeolus.data.importers import (
     build_landscape_from_services,
+    enrich_scenario_from_landscape,
     fetch_feds_perimeters,
     geojson_bbox,
 )
@@ -93,6 +94,31 @@ def _assemble(args: argparse.Namespace) -> None:
     print(json.dumps(_summary(bundle), indent=2))
 
 
+def _enrich(args: argparse.Namespace) -> None:
+    bundle = enrich_scenario_from_landscape(
+        args.scenario,
+        args.landscape,
+        args.out,
+    )
+    print(
+        json.dumps(
+            {
+                "output": str(Path(args.out).resolve()),
+                "schema_version": bundle.metadata["schema_version"],
+                "grid_shape": list(bundle.elevation_m.shape),
+                "fuel_models": sorted(
+                    int(value) for value in set(bundle.fuel_model_number.flat)
+                ),
+                "canopy_cover_range": [
+                    float(bundle.canopy_cover.min()),
+                    float(bundle.canopy_cover.max()),
+                ],
+            },
+            indent=2,
+        )
+    )
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="Historical incident bundle operations")
     subparsers = parser.add_subparsers(dest="command", required=True)
@@ -121,6 +147,15 @@ def main() -> None:
     assembler.add_argument("--source-name", default="local-normalized-source")
     assembler.add_argument("--title")
     assembler.set_defaults(handler=_assemble)
+
+    enrich = subparsers.add_parser(
+        "enrich-scenario",
+        help="add retained FBFM40 and canopy bands to a legacy scenario NPZ",
+    )
+    enrich.add_argument("--scenario", required=True)
+    enrich.add_argument("--landscape", required=True)
+    enrich.add_argument("--out", required=True)
+    enrich.set_defaults(handler=_enrich)
 
     for command in ("validate", "inspect"):
         operation = subparsers.add_parser(command)

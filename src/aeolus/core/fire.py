@@ -1,10 +1,4 @@
-"""Fast, inspectable surface spread and intervention operators.
-
-The rate of spread follows the dimensional structure of Rothermel's surface
-spread equation. This module is a training-kernel implementation rather than a
-certified fire-behavior implementation; its purpose is to expose parameters and
-support validation against independent tools.
-"""
+"""Vectorized operational-equation fire spread and intervention operators."""
 
 from __future__ import annotations
 
@@ -13,7 +7,8 @@ from math import ceil, cos, exp, pi, sin, sqrt
 import numpy as np
 
 from aeolus.config import FuelModel, ScenarioConfig
-from aeolus.core.state import FirePhase, TruthState
+from aeolus.core.fire_behavior import fire_behavior_lookup
+from aeolus.core.state import FirePhase, FireType, TruthState
 
 _NEIGHBORS: tuple[tuple[int, int], ...] = (
     (-1, -1),
@@ -31,74 +26,285 @@ def _clip(value: float, low: float, high: float) -> float:
     return max(low, min(high, value))
 
 
-def rothermel_ros_m_min(fuel: FuelModel, wind_m_s: float, slope_tan: float) -> float:
-    """Return an approximate no-direction surface ROS in metres/minute.
+def _shift_to_target(source: np.ndarray, dx: int, dy: int, fill: float = 0.0) -> np.ndarray:
+    """Shift source-cell values to neighboring targets without wraparound."""
 
-    The conversion uses the conventional Rothermel dimensional terms, then
-    bounds output to avoid numerical pathologies outside the kernel's stated
-    validity envelope. Fuel values are scenario parameters, not a LANDFIRE fuel
-    model lookup.
-    """
-
-    w0 = fuel.fuel_load_kg_m2 * 0.204816  # lb / ft^2
-    delta = fuel.fuel_depth_m * 3.28084  # ft
-    sigma = fuel.surface_area_to_volume_m_inv / 3.28084  # ft^-1
-    rho_p = fuel.fuel_particle_density_kg_m3 * 0.062428  # lb / ft^3
-    heat = fuel.heat_content_kj_kg * 0.429923  # Btu / lb
-    moisture = fuel.dead_moisture
-    beta = _clip((w0 / max(delta, 1e-4)) / max(rho_p, 1e-4), 1e-5, 1.0)
-    beta_op = 3.348 * sigma**-0.8189
-    a_value = 1.0 / max(4.77 * sigma**0.1 - 7.27, 0.2)
-    gamma_max = sigma**1.5 / (495.0 + 0.0594 * sigma**1.5)
-    gamma = gamma_max * (beta / beta_op) ** a_value * exp(a_value * (1.0 - beta / beta_op))
-    eta_m = max(
-        0.0,
-        1.0
-        - 2.59 * moisture / fuel.moisture_of_extinction
-        + 5.11 * (moisture / fuel.moisture_of_extinction) ** 2
-        - 3.52 * (moisture / fuel.moisture_of_extinction) ** 3,
-    )
-    reaction_intensity = gamma * w0 * 0.95 * heat * eta_m * fuel.mineral_damping
-    propagating_flux = exp((0.792 + 0.681 * sqrt(sigma)) * (beta + 0.1)) / (192.0 + 0.2595 * sigma)
-    heat_sink = max((w0 / max(delta, 1e-4)) * exp(-138.0 / sigma) * (250.0 + 1116.0 * moisture), 1e-4)
-    c_value = 7.47 * exp(-0.133 * sigma**0.55)
-    b_value = 0.02526 * sigma**0.54
-    e_value = 0.715 * exp(-0.000359 * sigma)
-    # The equation's wind response is extremely sensitive outside its fuel-model
-    # calibration range. The fast kernel uses a documented midflame-equivalent
-    # cap and a scenario-level coarse-grid calibration factor; full validation
-    # against a fire-behavior reference remains required.
-    wind_ft_min = max(0.0, min(wind_m_s, 2.5) * 196.8504)
-    phi_w = c_value * wind_ft_min**b_value * (beta / beta_op) ** (-e_value)
-    phi_s = 5.275 * beta**-0.3 * slope_tan**2
-    ros_ft_min = reaction_intensity * propagating_flux * (1.0 + phi_w + phi_s) / heat_sink
-    return _clip(ros_ft_min * 0.3048 * 0.10, 0.005, 16.0)
+    output = np.full_like(source, fill)
+    height, width = source.shape[-2:]
+    source_y = slice(max(0, -dy), min(height, height - dy))
+    target_y = slice(max(0, dy), min(height, height + dy))
+    source_x = slice(max(0, -dx), min(width, width - dx))
+    target_x = slice(max(0, dx), min(width, width + dx))
+    output[..., target_y, target_x] = source[..., source_y, source_x]
+    return output
 
 
-def terrain_gradient(elevation: np.ndarray, x: int, y: int) -> tuple[float, float]:
-    height, width = elevation.shape
-    left = elevation[y, max(0, x - 1)]
-    right = elevation[y, min(width - 1, x + 1)]
-    down = elevation[max(0, y - 1), x]
-    up = elevation[min(height - 1, y + 1), x]
-    return float((right - left) * 0.5), float((up - down) * 0.5)
+def _neighbor_any(mask: np.ndarray) -> np.ndarray:
+    output = np.zeros_like(mask, dtype=np.bool_)
+    for dx, dy in _NEIGHBORS:
+        output |= _shift_to_target(mask, dx, dy, fill=False)
+    return output
 
 
-def _coverage_factor(truth: TruthState, x: int, y: int, intensity: float) -> float:
-    retardant = float(truth.retardant[y, x])
-    water = float(truth.water[y, x])
-    ground = float(truth.ground_hold[y, x])
-    # Water loses effectiveness as intensity rises; retardant/ground influence
-    # ignition hazard and are not treated as deterministic barriers.
-    water_effect = water * (0.74 / (1.0 + intensity / 1600.0))
-    return _clip(1.0 - 0.82 * retardant - water_effect - 0.42 * ground, 0.05, 1.0)
+def _fuel_moisture_equilibrium(temperature_c: float, relative_humidity_pct: float) -> float:
+    """Simard equilibrium moisture content as kg/kg dry fuel."""
+
+    rh = float(np.clip(relative_humidity_pct, 0.0, 100.0))
+    temperature_f = temperature_c * 9.0 / 5.0 + 32.0
+    if rh < 10.0:
+        percent = 0.03229 + 0.281073 * rh - 0.000578 * rh * temperature_f
+    elif rh <= 50.0:
+        percent = 2.22749 + 0.160107 * rh - 0.01478 * temperature_f
+    else:
+        percent = (
+            21.0606
+            + 0.005565 * rh * rh
+            - 0.00035 * rh * temperature_f
+            - 0.483199 * rh
+        )
+    return float(np.clip(percent / 100.0, 0.01, 0.60))
 
 
-def _ignite(truth: TruthState, x: int, y: int, intensity: float) -> None:
-    if truth.barrier[y, x] or truth.phase[y, x] == FirePhase.BURNED:
+def update_fuel_moisture(
+    truth: TruthState,
+    config: ScenarioConfig,
+    *,
+    air_temperature_c: float,
+    relative_humidity_pct: float,
+    precipitation_rate_mm_h: float = 0.0,
+    dt_min: float = 1.0,
+) -> None:
+    if config.fire.moisture_model == "fixed":
         return
-    truth.phase[y, x] = FirePhase.FLAMING
-    truth.intensity_kw_m[y, x] = max(float(truth.intensity_kw_m[y, x]), intensity)
+    equilibrium = _fuel_moisture_equilibrium(
+        air_temperature_c, relative_humidity_pct
+    )
+    for field, lag_min in (
+        (truth.moisture_dead_1h, 60.0),
+        (truth.moisture_dead_10h, 600.0),
+        (truth.moisture_dead_100h, 6000.0),
+    ):
+        field += (equilibrium - field) * (1.0 - exp(-dt_min / lag_min))
+        if precipitation_rate_mm_h > 0.0:
+            wetting_rate = (
+                precipitation_rate_mm_h
+                * dt_min
+                / 60.0
+                / max(lag_min / 60.0, 1.0)
+            )
+            field += (0.60 - field) * (1.0 - exp(-wetting_rate))
+        np.clip(field, 0.01, 0.60, out=field)
+
+
+def rothermel_ros_m_min(fuel: FuelModel, wind_m_s: float, slope_tan: float) -> float:
+    """Compatibility point query backed by the packaged reference table."""
+
+    shape = (1, 1)
+    behavior = fire_behavior_lookup().resolve_numpy(
+        fuel_model_number=np.full(shape, fuel.standard_number, dtype=np.int16),
+        moisture_dead_1h=np.full(shape, fuel.dead_moisture, dtype=np.float32),
+        wind_speed_10m_m_s=wind_m_s,
+        wind_from_direction_deg=270.0,
+        terrain_slope_x=np.full(shape, slope_tan, dtype=np.float32),
+        terrain_slope_y=np.zeros(shape, dtype=np.float32),
+        canopy_cover=np.zeros(shape, dtype=np.float32),
+        canopy_height_m=np.zeros(shape, dtype=np.float32),
+        canopy_base_height_m=np.zeros(shape, dtype=np.float32),
+        canopy_bulk_density_kg_m3=np.zeros(shape, dtype=np.float32),
+        foliar_moisture=np.ones(shape, dtype=np.float32),
+        config=ScenarioConfig(fuel=fuel).fire,
+    )
+    return float(behavior.spread_rate_m_min[0, 0])
+
+
+def _terrain_slopes(elevation_m: np.ndarray, cell_size_m: float) -> tuple[np.ndarray, np.ndarray]:
+    slope_y, slope_x = np.gradient(elevation_m, cell_size_m)
+    return slope_x.astype(np.float32), slope_y.astype(np.float32)
+
+
+def _coverage_factor(truth: TruthState) -> np.ndarray:
+    # Water changes both immediate intensity and dead-fuel moisture.  Retardant
+    # and constructed line reduce the local spread multiplier but do not become
+    # unconditional barriers.
+    intensity = truth.intensity_kw_m
+    water_effect = truth.water * (0.76 / (1.0 + intensity / 1600.0))
+    return np.clip(
+        1.0 - 0.84 * truth.retardant - water_effect - 0.48 * truth.ground_hold,
+        0.025,
+        1.0,
+    ).astype(np.float32)
+
+
+def _resolve_behavior(
+    truth: TruthState,
+    config: ScenarioConfig,
+    wind_speed_m_s: float,
+    wind_direction_deg: float,
+):
+    slope_x, slope_y = _terrain_slopes(truth.elevation_m, config.cell_size_m)
+    nominal_load = max(config.fuel.fuel_load_kg_m2, 1e-5)
+    fuel_adjustment = np.clip(truth.fuel_load / nominal_load, 0.05, 2.5)
+    spread_adjustment = (
+        truth.residual_field * fuel_adjustment * _coverage_factor(truth)
+    )
+    return fire_behavior_lookup().resolve_numpy(
+        fuel_model_number=truth.fuel_model_number,
+        moisture_dead_1h=truth.moisture_dead_1h,
+        wind_speed_10m_m_s=wind_speed_m_s,
+        wind_from_direction_deg=wind_direction_deg,
+        terrain_slope_x=slope_x,
+        terrain_slope_y=slope_y,
+        canopy_cover=truth.canopy_cover,
+        canopy_height_m=truth.canopy_height_m,
+        canopy_base_height_m=truth.canopy_base_height_m,
+        canopy_bulk_density_kg_m3=truth.canopy_bulk_density_kg_m3,
+        foliar_moisture=truth.foliar_moisture,
+        spread_adjustment=spread_adjustment,
+        config=config.fire,
+    )
+
+
+def _propagate_substep(
+    truth: TruthState,
+    config: ScenarioConfig,
+    behavior,
+    dt_min: float,
+    current_time_min: float,
+) -> np.ndarray:
+    flaming = truth.phase == FirePhase.FLAMING
+    burnable = (~truth.barrier) & (truth.fuel_load > 0.0)
+    unburned = (truth.phase == FirePhase.UNBURNED) & burnable
+    incoming = np.zeros_like(truth.ignition_progress)
+    for dx, dy in _NEIGHBORS:
+        distance = sqrt(dx * dx + dy * dy) * config.cell_size_m
+        direction_x = dx / sqrt(dx * dx + dy * dy)
+        direction_y = dy / sqrt(dx * dx + dy * dy)
+        cosine = behavior.head_x * direction_x + behavior.head_y * direction_y
+        directional_factor = (1.0 - behavior.eccentricity) / np.maximum(
+            1.0 - behavior.eccentricity * cosine, 1e-4
+        )
+        travel_fraction = (
+            behavior.spread_rate_m_min
+            * directional_factor
+            * dt_min
+            / max(distance, 1e-5)
+        )
+        candidate = _shift_to_target(
+            np.where(flaming, travel_fraction, 0.0), dx, dy
+        )
+        incoming = np.maximum(incoming, candidate)
+    truth.ignition_progress[unburned] += incoming[unburned]
+    ignited = unburned & (truth.ignition_progress >= 1.0)
+    if np.any(ignited):
+        truth.phase[ignited] = FirePhase.FLAMING
+        truth.arrival_time_min[ignited] = current_time_min
+        truth.burn_age_min[ignited] = 0.0
+        truth.ignition_progress[ignited] = 0.0
+        truth.intensity_kw_m[ignited] = behavior.fireline_intensity_kw_m[ignited]
+        truth.fire_type[ignited] = behavior.fire_type[ignited]
+        truth.spread_rate_m_min[ignited] = behavior.spread_rate_m_min[ignited]
+        truth.flame_length_m[ignited] = behavior.flame_length_m[ignited]
+    return ignited
+
+
+def _spot_fires(
+    truth: TruthState,
+    config: ScenarioConfig,
+    rng: np.random.Generator,
+    behavior,
+    wind_speed_m_s: float,
+    wind_from_direction_deg: float,
+    minute: int,
+) -> int:
+    settings = config.fire
+    if (
+        not settings.enable_spotting
+        or config.spotting_rate <= 0.0
+        or wind_speed_m_s < 0.5
+    ):
+        return 0
+    source_mask = (
+        (truth.phase == FirePhase.FLAMING)
+        & (behavior.fireline_intensity_kw_m >= 350.0)
+    )
+    sources = np.argwhere(source_mask)
+    if not len(sources):
+        return 0
+    expected = (
+        settings.spotting_embers_per_source_min
+        * config.spotting_rate
+        / 0.01
+        * len(sources)
+    )
+    count = min(
+        int(rng.poisson(expected)),
+        settings.max_spot_embers_per_minute,
+    )
+    if count <= 0:
+        return 0
+    selected = sources[rng.integers(0, len(sources), size=count)]
+    intensity = behavior.fireline_intensity_kw_m[selected[:, 0], selected[:, 1]]
+    median = settings.spotting_median_distance_m * np.power(
+        np.maximum(wind_speed_m_s / 6.0, 0.1), settings.spotting_wind_exponent
+    ) * np.power(
+        np.maximum(intensity / 2000.0, 0.1), settings.spotting_intensity_exponent
+    )
+    distance = np.minimum(
+        rng.lognormal(np.log(np.maximum(median, 1.0)), settings.spotting_log_sigma),
+        settings.spotting_max_distance_m,
+    )
+    cross = rng.normal(
+        0.0, settings.spotting_crosswind_fraction * np.maximum(distance, 1.0)
+    )
+    radians = np.deg2rad(wind_from_direction_deg)
+    down_x, down_y = -np.sin(radians), np.cos(radians)
+    cross_x, cross_y = -down_y, down_x
+    target_x = np.rint(
+        selected[:, 1]
+        + (distance * down_x + cross * cross_x) / config.cell_size_m
+    ).astype(np.int64)
+    target_y = np.rint(
+        selected[:, 0]
+        + (distance * down_y + cross * cross_y) / config.cell_size_m
+    ).astype(np.int64)
+    height, width = truth.phase.shape
+    valid = (
+        (target_x >= 0)
+        & (target_x < width)
+        & (target_y >= 0)
+        & (target_y < height)
+    )
+    if not np.any(valid):
+        return 0
+    target_x, target_y, distance = target_x[valid], target_y[valid], distance[valid]
+    survival = np.exp(-distance / settings.spotting_survival_distance_m)
+    moisture_factor = np.clip(
+        1.0 - truth.moisture_dead_1h[target_y, target_x] / 0.35, 0.0, 1.0
+    )
+    treatment = _coverage_factor(truth)[target_y, target_x]
+    probability = (
+        settings.spotting_ignition_probability
+        * survival
+        * moisture_factor
+        * treatment
+    )
+    accepted = rng.random(len(probability)) < probability
+    ignitions = 0
+    for x, y in zip(target_x[accepted], target_y[accepted], strict=True):
+        if (
+            truth.phase[y, x] == FirePhase.UNBURNED
+            and not truth.barrier[y, x]
+            and truth.fuel_load[y, x] > 0.0
+        ):
+            truth.phase[y, x] = FirePhase.FLAMING
+            truth.arrival_time_min[y, x] = float(minute)
+            truth.burn_age_min[y, x] = 0.0
+            truth.fire_type[y, x] = FireType.SURFACE
+            truth.intensity_kw_m[y, x] = max(
+                60.0, float(behavior.fireline_intensity_kw_m[y, x])
+            )
+            ignitions += 1
+    return ignitions
 
 
 def step_fire(
@@ -109,89 +315,153 @@ def step_fire(
     *,
     wind_speed_m_s: float | None = None,
     wind_direction_deg: float | None = None,
+    air_temperature_c: float | None = None,
+    relative_humidity_pct: float | None = None,
+    precipitation_rate_mm_h: float | None = None,
 ) -> int:
-    """Advance one minute and return the number of new flaming cells."""
+    """Advance one minute using adaptive Huygens-style raster front tracking."""
 
-    height, width = truth.phase.shape
-    new_ignitions: list[tuple[int, int, float]] = []
     forced_speed = config.wind_speed_m_s if wind_speed_m_s is None else wind_speed_m_s
     forced_direction = (
         config.wind_direction_deg if wind_direction_deg is None else wind_direction_deg
     )
-    # Synthetic scenarios retain a smooth sub-hourly perturbation. A supplied
-    # weather forcing is already time varying and therefore passes zero
-    # variability through the caller.
     variability = 0.0 if wind_speed_m_s is not None else config.wind_variability
-    direction_variation = 0.0 if wind_direction_deg is not None else 7.0 * sin(minute / 17.0)
-    wind_angle = np.deg2rad(forced_direction + direction_variation)
-    wind_speed = max(0.2, forced_speed * (1.0 + variability * sin(minute / 13.0)))
-    wx, wy = cos(wind_angle), -sin(wind_angle)
-    flaming = np.argwhere(truth.phase == FirePhase.FLAMING)
+    direction_variation = (
+        0.0 if wind_direction_deg is not None else 7.0 * sin(minute / 17.0)
+    )
+    wind_speed = max(
+        0.0, forced_speed * (1.0 + variability * sin(minute / 13.0))
+    )
+    wind_direction = forced_direction + direction_variation
+    temperature = (
+        config.air_temperature_c
+        if air_temperature_c is None or np.isnan(air_temperature_c)
+        else air_temperature_c
+    )
+    humidity = (
+        config.relative_humidity_pct
+        if relative_humidity_pct is None or np.isnan(relative_humidity_pct)
+        else relative_humidity_pct
+    )
+    precipitation = (
+        config.precipitation_rate_mm_h
+        if precipitation_rate_mm_h is None or np.isnan(precipitation_rate_mm_h)
+        else precipitation_rate_mm_h
+    )
+    update_fuel_moisture(
+        truth,
+        config,
+        air_temperature_c=temperature,
+        relative_humidity_pct=humidity,
+        precipitation_rate_mm_h=precipitation,
+    )
+    # Wetting from drops participates in subsequent behavior, not just the
+    # momentary intensity reduction.
+    truth.moisture_dead_1h[:] = np.maximum(
+        truth.moisture_dead_1h, config.fuel.dead_moisture + 0.24 * truth.water
+    )
+    behavior = _resolve_behavior(
+        truth, config, float(wind_speed), float(wind_direction)
+    )
+    max_fraction = float(
+        np.max(behavior.spread_rate_m_min) / max(config.cell_size_m, 1e-5)
+    )
+    substeps = int(
+        np.clip(
+            ceil(max_fraction / config.fire.propagation_cfl),
+            1,
+            config.fire.max_substeps,
+        )
+    )
+    new_ignitions = 0
+    for substep in range(substeps):
+        ignited = _propagate_substep(
+            truth,
+            config,
+            behavior,
+            1.0 / substeps,
+            minute - 1.0 + (substep + 1.0) / substeps,
+        )
+        new_ignitions += int(ignited.sum())
 
-    for y_raw, x_raw in flaming:
-        y, x = int(y_raw), int(x_raw)
-        intensity = float(truth.intensity_kw_m[y, x])
-        dx_elev, dy_elev = terrain_gradient(truth.elevation_m, x, y)
-        slope_tan = sqrt(dx_elev**2 + dy_elev**2) / config.cell_size_m
-        base_ros = rothermel_ros_m_min(config.fuel, wind_speed, slope_tan)
-        for dx, dy in _NEIGHBORS:
-            nx, ny = x + dx, y + dy
-            if nx < 0 or ny < 0 or nx >= width or ny >= height or truth.barrier[ny, nx]:
-                continue
-            if truth.phase[ny, nx] != FirePhase.UNBURNED:
-                continue
-            distance_cells = sqrt(dx * dx + dy * dy)
-            alignment = (dx / distance_cells) * wx + (dy / distance_cells) * wy
-            directional_ros = base_ros * _clip(0.38 + 1.28 * max(alignment, -0.2), 0.12, 1.75)
-            local_slope = (truth.elevation_m[ny, nx] - truth.elevation_m[y, x]) / config.cell_size_m
-            directional_ros *= _clip(1.0 + 0.45 * local_slope, 0.3, 1.7)
-            fuel_factor = _clip(
-                float(truth.fuel_load[ny, nx]) / max(config.fuel.fuel_load_kg_m2, 1e-6), 0.05, 1.8
-            )
-            residual = float(truth.residual_field[ny, nx])
-            treatment = _coverage_factor(truth, nx, ny, intensity)
-            hazard = (
-                directional_ros * fuel_factor * residual * treatment * distance_cells / config.cell_size_m
-            )
-            probability = 1.0 - exp(-max(0.0, hazard))
-            if rng.random() < probability:
-                new_ignitions.append((nx, ny, max(60.0, intensity * 0.72)))
-
-        # Short-range spotting is explicitly stochastic and independently logged.
-        spot_probability = config.spotting_rate * _clip(intensity / 1200.0, 0.0, 2.0) * wind_speed / 8.0
-        if rng.random() < spot_probability:
-            range_cells = int(rng.integers(3, 10))
-            sx = int(round(x + wx * range_cells + rng.normal(0.0, 1.2)))
-            sy = int(round(y + wy * range_cells + rng.normal(0.0, 1.2)))
-            if 0 <= sx < width and 0 <= sy < height and not truth.barrier[sy, sx]:
-                new_ignitions.append((sx, sy, max(45.0, intensity * 0.42)))
-
-        local_water = float(truth.water[y, x])
-        local_retardant = float(truth.retardant[y, x])
-        truth.intensity_kw_m[y, x] *= _clip(0.88 - 0.28 * local_water - 0.08 * local_retardant, 0.18, 0.94)
-        truth.fuel_remaining[y, x] = max(0.0, truth.fuel_remaining[y, x] - 0.045 * (1.0 + intensity / 2400.0))
-        if truth.fuel_remaining[y, x] <= 0.04 or truth.intensity_kw_m[y, x] < 20.0:
-            truth.phase[y, x] = FirePhase.BURNED
-            truth.intensity_kw_m[y, x] = 0.0
-            truth.observed_burned[y, x] = 1.0
-
-    for x, y, intensity in new_ignitions:
-        _ignite(truth, x, y, intensity)
+    flaming = truth.phase == FirePhase.FLAMING
+    truth.burn_age_min[flaming] += 1.0
+    truth.spread_rate_m_min[flaming] = behavior.spread_rate_m_min[flaming]
+    truth.flame_length_m[flaming] = behavior.flame_length_m[flaming]
+    truth.fire_type[flaming] = behavior.fire_type[flaming]
+    truth.intensity_kw_m[flaming] = behavior.fireline_intensity_kw_m[flaming]
+    truth.intensity_kw_m[flaming] *= np.clip(
+        1.0 - 0.68 * truth.water[flaming] - 0.12 * truth.retardant[flaming],
+        0.05,
+        1.0,
+    )
+    # Exponential consumption preserves a spreading front at coarse resolution;
+    # cells become burned after the front has passed, rather than on a fixed
+    # residence clock that can halt slow fires between cell centers.
+    truth.fuel_remaining[flaming] *= np.exp(
+        -1.0 / np.clip(18.0 + 0.18 * config.cell_size_m, 18.0, 90.0)
+    )
+    adjacent_unburned = _neighbor_any(
+        (truth.phase == FirePhase.UNBURNED)
+        & (~truth.barrier)
+        & (truth.fuel_load > 0.0)
+    )
+    passed_front = flaming & (~adjacent_unburned)
+    expired_front = flaming & (
+        truth.burn_age_min >= config.fire.max_front_residence_min
+    )
+    consumed = flaming & (
+        (truth.fuel_remaining <= 0.05)
+        & (truth.burn_age_min >= config.fire.min_front_residence_min)
+        & (truth.intensity_kw_m < 20.0)
+    )
+    suppression_hold = flaming & (
+        (truth.burn_age_min >= config.fire.min_front_residence_min)
+        & (truth.intensity_kw_m < 20.0)
+        & (_coverage_factor(truth) < 0.35)
+    )
+    burned = passed_front | expired_front | consumed | suppression_hold
+    truth.phase[burned] = FirePhase.BURNED
+    truth.fire_type[burned] = FireType.UNBURNED
+    truth.intensity_kw_m[burned] = 0.0
+    truth.spread_rate_m_min[burned] = 0.0
+    truth.flame_length_m[burned] = 0.0
+    truth.observed_burned[burned] = 1.0
+    new_ignitions += _spot_fires(
+        truth,
+        config,
+        rng,
+        behavior,
+        float(wind_speed),
+        float(wind_direction),
+        minute,
+    )
     truth.water *= 0.74
     truth.retardant *= 0.996
     truth.ground_hold *= 0.999
-    return len(new_ignitions)
+    return new_ignitions
 
 
 def apply_water(truth: TruthState, x: int, y: int, radius_cells: float) -> None:
     height, width = truth.phase.shape
-    for ny in range(max(0, int(y - ceil(radius_cells))), min(height, int(y + ceil(radius_cells) + 1))):
-        for nx in range(max(0, int(x - ceil(radius_cells))), min(width, int(x + ceil(radius_cells) + 1))):
+    for ny in range(
+        max(0, int(y - ceil(radius_cells))),
+        min(height, int(y + ceil(radius_cells) + 1)),
+    ):
+        for nx in range(
+            max(0, int(x - ceil(radius_cells))),
+            min(width, int(x + ceil(radius_cells) + 1)),
+        ):
             distance = sqrt((nx - x) ** 2 + (ny - y) ** 2)
             if distance > radius_cells:
                 continue
-            coverage = _clip(1.0 - distance / (radius_cells + 0.5), 0.0, 1.0)
+            coverage = _clip(
+                1.0 - distance / (radius_cells + 0.5), 0.0, 1.0
+            )
             truth.water[ny, nx] = max(float(truth.water[ny, nx]), coverage)
+            truth.moisture_dead_1h[ny, nx] = max(
+                float(truth.moisture_dead_1h[ny, nx]), 0.28 * coverage
+            )
             if truth.phase[ny, nx] == FirePhase.FLAMING:
                 truth.intensity_kw_m[ny, nx] *= 1.0 - 0.48 * coverage
 
@@ -211,14 +481,28 @@ def apply_retardant(
     radians = wind_direction_deg * pi / 180.0
     along_x, along_y = -sin(radians), -cos(radians)
     cross_x, cross_y = cos(radians), -sin(radians)
-    for along in np.arange(-length_cells / 2.0, length_cells / 2.0 + 0.5, 0.5):
-        for cross in np.arange(-width_cells / 2.0, width_cells / 2.0 + 0.5, 0.5):
+    for along in np.arange(
+        -length_cells / 2.0, length_cells / 2.0 + 0.5, 0.5
+    ):
+        for cross in np.arange(
+            -width_cells / 2.0, width_cells / 2.0 + 0.5, 0.5
+        ):
             nx = int(round(x + along_x * along + cross_x * cross))
             ny = int(round(y + along_y * along + cross_y * cross))
-            if nx < 0 or ny < 0 or nx >= width or ny >= height or truth.barrier[ny, nx]:
+            if (
+                nx < 0
+                or ny < 0
+                or nx >= width
+                or ny >= height
+                or truth.barrier[ny, nx]
+            ):
                 continue
             lateral = abs(cross) / max(width_cells / 2.0, 0.1)
             coverage = _clip(0.96 - 0.44 * lateral, 0.25, 0.96)
-            truth.retardant[ny, nx] = max(float(truth.retardant[ny, nx]), coverage)
+            truth.retardant[ny, nx] = max(
+                float(truth.retardant[ny, nx]), coverage
+            )
             if ground_engaged:
-                truth.ground_hold[ny, nx] = max(float(truth.ground_hold[ny, nx]), 0.72 * coverage)
+                truth.ground_hold[ny, nx] = max(
+                    float(truth.ground_hold[ny, nx]), 0.72 * coverage
+                )

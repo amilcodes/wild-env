@@ -107,6 +107,8 @@ def test_hindcast_produces_spatial_scores(tmp_path) -> None:
     result = run_hindcast(AeolusSimulator(config), series, no_aerial_action)
     assert result["simulated_minutes"] == 6
     assert 0.0 <= result["metrics"]["iou"] <= 1.0
+    assert 0.0 <= result["growth_metrics"]["iou"] <= 1.0
+    assert 0.0 <= result["growth_tolerance_1_cell"]["f1"] <= 1.0
     assert result["metrics"]["observed_area_km2"] > 0.0
 
 

@@ -1,7 +1,7 @@
 # Incident and replay data contracts
 
 There is no broadly adopted, simulator-complete wildfire episode standard.
-Version 0.2 therefore composes existing geospatial conventions instead of
+Version 0.3 therefore composes existing geospatial conventions instead of
 inventing new encodings for each asset.
 
 ## IncidentBundle v2
@@ -27,6 +27,10 @@ Arrays use `(y, x)` order:
 
 - `elevation_m`: float32 metres;
 - `fuel_load_kg_m2`: float32 non-negative surface-fuel proxy;
+- `fuel_model_number`: int16 Anderson/Scott–Burgan model code;
+- `canopy_cover`: float32 fraction;
+- `canopy_height_m` and `canopy_base_height_m`: float32 metres;
+- `canopy_bulk_density_kg_m3`: float32 kg/m³;
 - `barrier`: boolean non-burnable/control cells;
 - `asset_value`: float32 non-negative objective weight.
 
@@ -34,9 +38,10 @@ Metadata records schema version, CRS, six-value affine transform, bounds, cell
 size, source services, transformations and immutable train/development/
 evaluation split.
 
-The public importer preserves LANDFIRE FBFM40 codes in GeoTIFF band 2 and maps
-model families to a scalar fuel-load proxy for the current kernel. That mapping
-is an explicit approximation, not a substitute for per-model fuel parameters.
+The public importer preserves LANDFIRE FBFM40 codes and converts LANDFIRE
+canopy integer scaling to SI. The fuel-load proxy remains available for
+conditioning and legacy bundles. `aeolus-incident enrich-scenario` upgrades a
+legacy NPZ from its retained six-band source GeoTIFF without re-downloading.
 
 ### Perimeter observations
 
@@ -59,13 +64,16 @@ The CF-NetCDF reader requires a monotonic `time` coordinate and:
 - `wind_from_direction` in degrees;
 - `air_temperature` in K;
 - `relative_humidity` in percent.
+- optional `precipitation_rate` in mm/h.
 
 Direction interpolation unwraps angles, so interpolation between 350° and 10°
 passes through north.
 
 ## ReplayBundle v1
 
-`states.zarr` stores minute-indexed truth, belief, treatments and resources.
+`states.zarr` stores minute-indexed phase, fire type, intensity, spread rate,
+flame length, fuel remaining, dead-fuel moisture, belief, treatments and
+resources. Static fields include elevation, fuel model/load and canopy layers.
 `events.parquet` stores typed event records. `metadata.json` fixes the schema,
 scenario, episode result, policy identity and checkpoint digest.
 

@@ -18,11 +18,15 @@ The simulator landscape has three useful fidelity classes:
 | operational/semi-empirical spread tools | Behave/FlamMap/FARSITE family | mature fuel and fire-behavior workflows | weaker fit for millions of closed-loop MARL steps |
 | coupled physics models | WRF-Fire, FIRETEC, QUIC-Fire | atmosphere/fire or high-resolution plume/flow behavior | expensive setup and execution; unsuitable as the sole training kernel |
 
-Aeolus v0.2 belongs in the first class. Its distinguishing content is the
-decision problem: actor/critic information separation, heterogeneous logistics,
-belief-driven candidate tasks, capacity conflicts, exact assignment baseline,
-historical timestamp assimilation, and causal-mode separation. Its fire kernel
-is less mature than established fire simulators and has not been calibrated.
+Aeolus v0.3 spans the first and second classes: its raster propagation remains
+optimized for repeated research episodes, while local surface behavior is
+derived from the operational Rothermel/Scott–Burgan implementation in
+Pyretechnics. Its distinguishing decision content is actor/critic information
+separation, heterogeneous logistics, belief-driven candidate tasks, capacity
+conflicts, an exact assignment baseline, historical timestamp assimilation and
+causal-mode separation. Crown and ember modules are implemented, but the
+integrated spread model still requires incident calibration and geographic
+holdout evidence.
 
 Recent wildfire MARL papers commonly study grid surveillance, suppression
 motion, task allocation or aerial coordination in synthetic environments. That
@@ -51,19 +55,19 @@ response” on their own.
 
 ## Current validity envelope
 
-Version 0.2 is suitable for:
+Version 0.3 is suitable for:
 
 - software and MARL method development;
 - ablation of observation delay, resource mix and assignment semantics;
 - repeatable paired comparisons inside the stated kernel;
 - import/replay of public perimeter timestamps and terrain;
-- profiling the policy/environment boundary before native-kernel work.
+- batched GPU fire ensembles and profiling the policy/environment boundary.
 
 It is not yet suitable for:
 
 - operational dispatch recommendations;
 - claimed prediction of real perimeter location or containment probability;
-- crown-fire or plume-dominated incidents;
+- plume-dominated or atmosphere-feedback incidents;
 - evaluating retardant effectiveness without calibrated treatment data;
 - comparing agencies, crews or historical incident decisions.
 
@@ -86,7 +90,11 @@ It is not yet suitable for:
 - SimFire: <https://arxiv.org/abs/2311.15925>
 - Cell2Fire: <https://arxiv.org/abs/1905.09317>
 - JaxWildfire: <https://arxiv.org/abs/2512.06102>
-- WRF-Fire user guide: <https://www2.mmm.ucar.edu/wrf/users/docs/user_guide_v4/v4.4/users_guide_chap-fire.html>
+- PyTorchFire: <https://arxiv.org/abs/2502.18738>
+- Pyretechnics: <https://pypi.org/project/pyretechnics/>
+- ELMFIRE: <https://elmfire.io/tech_ref.html>
+- Community Fire Behavior Model: <https://gmd.copernicus.org/articles/19/3035/2026/>
+- WRF-Fire user guide: <https://www2.mmm.ucar.edu/wrf/site/documentation/users_guide/fire.html>
 - QUIC-Fire: <https://research.fs.usda.gov/treesearch/59686>
 - NASA FEDS: <https://firms.modaps.eosdis.nasa.gov/descriptions/FEDS_VIIRS_SNPP.html>
 - LANDFIRE landscape products: <https://landfire.gov/fuel/landscape>

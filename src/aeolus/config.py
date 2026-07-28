@@ -18,6 +18,7 @@ class FuelModel:
     """
 
     name: str = "shrub-grass-mix"
+    standard_number: int = 122
     fuel_load_kg_m2: float = 1.15
     fuel_depth_m: float = 0.65
     surface_area_to_volume_m_inv: float = 5200.0
@@ -26,6 +27,50 @@ class FuelModel:
     mineral_damping: float = 0.9
     moisture_of_extinction: float = 0.30
     dead_moisture: float = 0.075
+
+
+@dataclass(frozen=True)
+class FireBehaviorConfig:
+    """Numerical and physical controls for the operational-equation kernel."""
+
+    backend: str = "operational"
+    moisture_model: str = "equilibrium_time_lag"
+    enable_crown_fire: bool = True
+    enable_spotting: bool = True
+    max_spread_rate_m_min: float = 180.0
+    propagation_cfl: float = 0.35
+    max_substeps: int = 16
+    min_front_residence_min: float = 20.0
+    max_front_residence_min: float = 360.0
+    surface_spread_adjustment: float = 1.0
+    crown_spread_adjustment: float = 1.0
+    dead_moisture_10h: float = 0.095
+    dead_moisture_100h: float = 0.115
+    live_herbaceous_moisture: float = 0.75
+    live_woody_moisture: float = 0.60
+    foliar_moisture: float = 1.00
+    spotting_embers_per_source_min: float = 0.025
+    spotting_median_distance_m: float = 220.0
+    spotting_log_sigma: float = 0.85
+    spotting_crosswind_fraction: float = 0.12
+    spotting_wind_exponent: float = 1.35
+    spotting_intensity_exponent: float = 0.30
+    spotting_survival_distance_m: float = 4200.0
+    spotting_ignition_probability: float = 0.28
+    spotting_max_distance_m: float = 18_000.0
+    max_spot_embers_per_minute: int = 4096
+
+    def __post_init__(self) -> None:
+        if self.backend not in {"operational"}:
+            raise ValueError("fire backend must be 'operational'")
+        if self.moisture_model not in {"equilibrium_time_lag", "fixed"}:
+            raise ValueError("unknown fuel-moisture model")
+        if not 0 < self.propagation_cfl <= 1:
+            raise ValueError("propagation_cfl must be within (0, 1]")
+        if self.max_substeps < 1:
+            raise ValueError("max_substeps must be positive")
+        if self.max_spread_rate_m_min <= 0:
+            raise ValueError("max_spread_rate_m_min must be positive")
 
 
 @dataclass(frozen=True)
@@ -62,6 +107,9 @@ class ScenarioConfig:
     wind_speed_m_s: float = 6.0
     wind_direction_deg: float = 25.0
     wind_variability: float = 0.25
+    air_temperature_c: float = 30.0
+    relative_humidity_pct: float = 24.0
+    precipitation_rate_mm_h: float = 0.0
     spotting_rate: float = 0.01
     ground_arrival_min: int = 25
     reward_loss_scale: float = 0.05
@@ -73,6 +121,7 @@ class ScenarioConfig:
     landscape_bundle: str | None = None
     weather_forcing: str | None = None
     fuel: FuelModel = field(default_factory=FuelModel)
+    fire: FireBehaviorConfig = field(default_factory=FireBehaviorConfig)
     resources: tuple[ResourceSpec, ...] = DEFAULT_RESOURCES
 
     def __post_init__(self) -> None:
@@ -128,6 +177,8 @@ def _scenario(value: dict[str, Any]) -> ScenarioConfig:
     payload = dict(value)
     if "fuel" in payload:
         payload["fuel"] = FuelModel(**payload["fuel"])
+    if "fire" in payload:
+        payload["fire"] = FireBehaviorConfig(**payload["fire"])
     if "resources" in payload:
         payload["resources"] = tuple(_resource(item) for item in payload["resources"])
     return ScenarioConfig(**payload)

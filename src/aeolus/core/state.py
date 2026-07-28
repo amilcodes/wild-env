@@ -18,6 +18,13 @@ class FirePhase(IntEnum):
     BURNED = 2
 
 
+class FireType(IntEnum):
+    UNBURNED = 0
+    SURFACE = 1
+    PASSIVE_CROWN = 2
+    ACTIVE_CROWN = 3
+
+
 class ResourceStatus(IntEnum):
     AVAILABLE = 0
     OUTBOUND = 1
@@ -75,6 +82,23 @@ class TruthState:
     ground_hold: np.ndarray
     residual_field: np.ndarray
     observed_burned: np.ndarray
+    fuel_model_number: np.ndarray
+    moisture_dead_1h: np.ndarray
+    moisture_dead_10h: np.ndarray
+    moisture_dead_100h: np.ndarray
+    moisture_live_herbaceous: np.ndarray
+    moisture_live_woody: np.ndarray
+    foliar_moisture: np.ndarray
+    canopy_cover: np.ndarray
+    canopy_height_m: np.ndarray
+    canopy_base_height_m: np.ndarray
+    canopy_bulk_density_kg_m3: np.ndarray
+    fire_type: np.ndarray
+    spread_rate_m_min: np.ndarray
+    flame_length_m: np.ndarray
+    ignition_progress: np.ndarray
+    arrival_time_min: np.ndarray
+    burn_age_min: np.ndarray
 
 
 @dataclass

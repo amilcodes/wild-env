@@ -2,15 +2,17 @@
 
 Aeolus-IA is a research environment for constrained multi-agent allocation of
 heterogeneous aerial resources during wildfire initial attack. It includes a
-headless stochastic fire/resource simulator, delayed belief model, task-based
+headless operational-equation fire/resource simulator, delayed belief model, task-based
 PettingZoo and RLlib interfaces, a recurrent MAPPO baseline, exact and heuristic
 comparators, public incident import, historical evaluation, and deterministic
 2D/3D replay.
 
-The fast fire kernel is intentionally inspectable and has not been calibrated
-as an operational fire-behavior model. See
-[`docs/research_position.md`](docs/research_position.md) for the fidelity
-assessment and required validation evidence.
+The fire core uses a reproducible Pyretechnics-derived Anderson/Scott–Burgan
+surface-behavior table, vector wind/slope coupling, crown transition and spread,
+dynamic dead-fuel moisture, statistical ember transport and adaptive raster
+front propagation. NumPy and accelerator-resident PyTorch paths share the
+local-behavior equations. Its equations and limits are specified in
+[`docs/fire_behavior.md`](docs/fire_behavior.md).
 
 ## Install and verify
 
@@ -100,6 +102,15 @@ aeolus-benchmark \
   --envs 8 \
   --decisions 512 \
   --out runs/benchmark.json
+```
+
+The batched fire core has its own point-query, validation and accelerator
+benchmark interface:
+
+```bash
+aeolus-fire point --fuel-model 145 --moisture 0.07 --wind 6
+aeolus-fire benchmark --device cuda --batch 256 --height 128 --width 128
+aeolus-fire validate --device cuda --output runs/fire-validation
 ```
 
 ## Record and render

@@ -16,6 +16,7 @@ from aeolus.core.state import (
     BeliefState,
     EpisodeState,
     FirePhase,
+    FireType,
     PendingObservation,
     ResourceRuntime,
     ResourceStatus,
@@ -69,8 +70,11 @@ class AeolusSimulator:
         return {
             "wind_speed_m_s": float(self.config.wind_speed_m_s),
             "wind_direction_deg": float(self.config.wind_direction_deg),
-            "air_temperature_c": float("nan"),
-            "relative_humidity_pct": float("nan"),
+            "air_temperature_c": float(self.config.air_temperature_c),
+            "relative_humidity_pct": float(self.config.relative_humidity_pct),
+            "precipitation_rate_mm_h": float(
+                self.config.precipitation_rate_mm_h
+            ),
         }
 
     @property
@@ -145,6 +149,35 @@ class AeolusSimulator:
             fuel_load = bundle.fuel_load_kg_m2.copy()
             barrier = bundle.barrier.copy()
             asset_value = bundle.asset_value.copy()
+            fuel_model_number = (
+                bundle.fuel_model_number.copy()
+                if bundle.fuel_model_number is not None
+                else np.full(
+                    (height, width),
+                    self.config.fuel.standard_number,
+                    dtype=np.int16,
+                )
+            )
+            canopy_cover = (
+                bundle.canopy_cover.copy()
+                if bundle.canopy_cover is not None
+                else np.zeros((height, width), dtype=np.float32)
+            )
+            canopy_height = (
+                bundle.canopy_height_m.copy()
+                if bundle.canopy_height_m is not None
+                else np.zeros((height, width), dtype=np.float32)
+            )
+            canopy_base_height = (
+                bundle.canopy_base_height_m.copy()
+                if bundle.canopy_base_height_m is not None
+                else np.zeros((height, width), dtype=np.float32)
+            )
+            canopy_bulk_density = (
+                bundle.canopy_bulk_density_kg_m3.copy()
+                if bundle.canopy_bulk_density_kg_m3 is not None
+                else np.zeros((height, width), dtype=np.float32)
+            )
         else:
             elevation = (
                 310.0
@@ -162,6 +195,11 @@ class AeolusSimulator:
                 1.35,
             ).astype(np.float32)
             fuel_load = fuel_multiplier * self.config.fuel.fuel_load_kg_m2
+            fuel_model_number = np.full(
+                (height, width), self.config.fuel.standard_number, dtype=np.int16
+            )
+            fuel_model_number[fuel_multiplier < 0.66] = 101
+            fuel_model_number[fuel_multiplier > 1.02] = 145
             barrier = np.zeros((height, width), dtype=np.bool_)
             barrier[:, 3:5] = True
             road_y = int(height * 0.72)
@@ -170,6 +208,25 @@ class AeolusSimulator:
             asset_x, asset_y = int(width * 0.77), int(height * 0.25)
             asset_dist = np.hypot(x - asset_x, y - asset_y)
             asset_value[asset_dist <= 5.2] = np.clip(1.0 - asset_dist[asset_dist <= 5.2] / 7.0, 0.3, 1.0)
+            woodland = np.clip(
+                0.20
+                + 0.38 * np.sin((x + 2 * y) / 29.0)
+                + 0.22 * np.cos((2 * x - y) / 21.0),
+                0.0,
+                0.82,
+            ).astype(np.float32)
+            canopy_cover = np.where(fuel_multiplier > 0.88, woodland, 0.0).astype(
+                np.float32
+            )
+            canopy_height = np.where(
+                canopy_cover >= 0.20, 8.0 + 10.0 * canopy_cover, 0.0
+            ).astype(np.float32)
+            canopy_base_height = np.where(
+                canopy_cover >= 0.20, 2.1 + 2.5 * (1.0 - canopy_cover), 0.0
+            ).astype(np.float32)
+            canopy_bulk_density = np.where(
+                canopy_cover >= 0.20, 0.06 + 0.17 * canopy_cover, 0.0
+            ).astype(np.float32)
         phase = np.full((height, width), FirePhase.UNBURNED, dtype=np.uint8)
         intensity = np.zeros((height, width), dtype=np.float32)
         ignition_x, ignition_y = width // 2 - 7, height // 2 + 5
@@ -179,6 +236,7 @@ class AeolusSimulator:
         intensity[ignition] = (760.0 * np.clip(1.0 - ignition_distance[ignition] / 5.0, 0.35, 1.0)).astype(
             np.float32
         )
+        barrier |= (fuel_model_number >= 91) & (fuel_model_number <= 99)
         residual_base = rng.normal(
             0.0,
             self.config.residual_spread_std,
@@ -199,6 +257,49 @@ class AeolusSimulator:
             ground_hold=np.zeros((height, width), dtype=np.float32),
             residual_field=residual,
             observed_burned=np.zeros((height, width), dtype=np.float32),
+            fuel_model_number=fuel_model_number,
+            moisture_dead_1h=np.full(
+                (height, width),
+                self.config.fuel.dead_moisture,
+                dtype=np.float32,
+            ),
+            moisture_dead_10h=np.full(
+                (height, width),
+                self.config.fire.dead_moisture_10h,
+                dtype=np.float32,
+            ),
+            moisture_dead_100h=np.full(
+                (height, width),
+                self.config.fire.dead_moisture_100h,
+                dtype=np.float32,
+            ),
+            moisture_live_herbaceous=np.full(
+                (height, width),
+                self.config.fire.live_herbaceous_moisture,
+                dtype=np.float32,
+            ),
+            moisture_live_woody=np.full(
+                (height, width),
+                self.config.fire.live_woody_moisture,
+                dtype=np.float32,
+            ),
+            foliar_moisture=np.full(
+                (height, width),
+                self.config.fire.foliar_moisture,
+                dtype=np.float32,
+            ),
+            canopy_cover=canopy_cover,
+            canopy_height_m=canopy_height,
+            canopy_base_height_m=canopy_base_height,
+            canopy_bulk_density_kg_m3=canopy_bulk_density,
+            fire_type=np.where(
+                ignition, FireType.SURFACE, FireType.UNBURNED
+            ).astype(np.uint8),
+            spread_rate_m_min=np.zeros((height, width), dtype=np.float32),
+            flame_length_m=np.zeros((height, width), dtype=np.float32),
+            ignition_progress=np.zeros((height, width), dtype=np.float32),
+            arrival_time_min=np.where(ignition, 0.0, np.inf).astype(np.float32),
+            burn_age_min=np.zeros((height, width), dtype=np.float32),
         )
         return truth, (6, height - 7)
 
@@ -362,6 +463,9 @@ class AeolusSimulator:
             wind_direction_deg=(
                 weather["wind_direction_deg"] if self.weather is not None else None
             ),
+            air_temperature_c=weather["air_temperature_c"],
+            relative_humidity_pct=weather["relative_humidity_pct"],
+            precipitation_rate_mm_h=weather["precipitation_rate_mm_h"],
         )
         if new_ignitions:
             self.state.event("fire_growth", cells=new_ignitions)
@@ -389,11 +493,17 @@ class AeolusSimulator:
 
     def _weighted_loss(self) -> float:
         truth = self.state.truth
-        burned = truth.observed_burned
-        active_proxy = np.clip(truth.intensity_kw_m / 2500.0, 0.0, 1.0)
+        consumed_fraction = np.clip(1.0 - truth.fuel_remaining, 0.0, 1.0)
+        burned = truth.observed_burned * consumed_fraction
+        # Active cells have already incurred their consumed-fuel loss plus a
+        # small current-intensity term; this avoids a discontinuity when a
+        # successfully held cell changes from flaming to burned.
+        active_proxy = (truth.phase == FirePhase.FLAMING) * np.clip(
+            consumed_fraction + truth.intensity_kw_m / 5000.0, 0.0, 1.0
+        )
         return float(
             (burned * (1.0 + 9.0 * truth.asset_value)).sum()
-            + (active_proxy * (0.05 + truth.asset_value)).sum()
+            + (active_proxy * (1.0 + 9.0 * truth.asset_value)).sum()
         )
 
     def _assign(self, actions: dict[str, int]) -> dict[str, dict[str, Any]]:
@@ -545,6 +655,14 @@ class AeolusSimulator:
         truth.water[:] = 0.0
         truth.retardant[:] = 0.0
         truth.ground_hold[:] = 0.0
+        truth.fire_type[:] = FireType.UNBURNED
+        truth.fire_type[boundary] = FireType.SURFACE
+        truth.spread_rate_m_min[:] = 0.0
+        truth.flame_length_m[:] = 0.0
+        truth.ignition_progress[:] = 0.0
+        truth.arrival_time_min[:] = np.inf
+        truth.arrival_time_min[observed] = 0.0
+        truth.burn_age_min[:] = 0.0
         self.state.belief.intensity_mean[:] = 0.0
         self.state.belief.intensity_std[:] = 1.0
         self.state.belief.observed_at[:] = -9999

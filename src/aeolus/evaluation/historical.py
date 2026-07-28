@@ -94,6 +94,55 @@ def perimeter_metrics(predicted: np.ndarray, observed: np.ndarray, cell_size_m: 
     }
 
 
+def tolerance_metrics(
+    predicted: np.ndarray,
+    observed: np.ndarray,
+    *,
+    radius_cells: int = 1,
+) -> dict[str, float]:
+    """Precision/recall after a finite raster localization tolerance."""
+
+    if predicted.shape != observed.shape:
+        raise ValueError("predicted and observed masks must share a grid")
+    if radius_cells < 0:
+        raise ValueError("radius_cells must be non-negative")
+
+    def dilate(mask: np.ndarray) -> np.ndarray:
+        result = np.zeros_like(mask, dtype=np.bool_)
+        padded = np.pad(mask.astype(np.bool_), radius_cells)
+        height, width = mask.shape
+        for dy in range(-radius_cells, radius_cells + 1):
+            for dx in range(-radius_cells, radius_cells + 1):
+                if dx * dx + dy * dy > radius_cells * radius_cells:
+                    continue
+                y0, x0 = radius_cells + dy, radius_cells + dx
+                result |= padded[y0 : y0 + height, x0 : x0 + width]
+        return result
+
+    predicted_mask = predicted.astype(np.bool_)
+    observed_mask = observed.astype(np.bool_)
+    predicted_count = int(predicted_mask.sum())
+    observed_count = int(observed_mask.sum())
+    matched_predicted = int((predicted_mask & dilate(observed_mask)).sum())
+    matched_observed = int((observed_mask & dilate(predicted_mask)).sum())
+    precision = (
+        matched_predicted / predicted_count
+        if predicted_count
+        else float(observed_count == 0)
+    )
+    recall = (
+        matched_observed / observed_count
+        if observed_count
+        else float(predicted_count == 0)
+    )
+    return {
+        "radius_cells": float(radius_cells),
+        "precision": precision,
+        "recall": recall,
+        "f1": 2.0 * precision * recall / max(precision + recall, 1e-12),
+    }
+
+
 def run_hindcast(
     simulator: AeolusSimulator,
     series: PerimeterSeries,
@@ -111,13 +160,22 @@ def run_hindcast(
     requested_minutes = max(1, round((target.timestamp - start.timestamp).total_seconds() / 60.0))
     simulator.reset(simulator.config.seed)
     simulator.initialize_from_observed_perimeter(start.mask, source="historical-hindcast-start")
-    while (
-        simulator.state.minute < requested_minutes
-        and not simulator.state.terminated
-        and not simulator.state.truncated
-    ):
+    # An operational episode may terminate when fire reaches the finite raster
+    # boundary. A hindcast still has to integrate for the full observation
+    # interval so its area error cannot improve merely by stopping early.
+    while simulator.state.minute < requested_minutes and not simulator.state.truncated:
+        if simulator.state.terminated:
+            if simulator.state.escaped:
+                simulator.state.terminated = False
+            else:
+                # A contained fire is a stable absorbing state. There is no
+                # reason to execute empty decision steps through the remaining
+                # wall-clock interval.
+                break
         simulator.decision_step(policy(simulator))
     predicted = simulator.state.truth.phase != 0
+    predicted_growth = predicted & ~start.mask
+    observed_growth = target.mask & ~start.mask
     return {
         "start_time": start.timestamp.isoformat(),
         "target_time": target.timestamp.isoformat(),
@@ -127,7 +185,119 @@ def run_hindcast(
         "truncated": simulator.state.truncated,
         "escaped": simulator.state.escaped,
         "metrics": perimeter_metrics(predicted, target.mask, series.cell_size_m),
+        "growth_metrics": perimeter_metrics(
+            predicted_growth,
+            observed_growth,
+            series.cell_size_m,
+        ),
+        "perimeter_tolerance_1_cell": tolerance_metrics(
+            predicted, target.mask, radius_cells=1
+        ),
+        "growth_tolerance_1_cell": tolerance_metrics(
+            predicted_growth, observed_growth, radius_cells=1
+        ),
         "episode": simulator.episode_record(),
+    }
+
+
+def calibrate_spread_adjustment(
+    config: ScenarioConfig,
+    series: PerimeterSeries,
+    policy: Policy,
+    *,
+    start_index: int = 0,
+    target_index: int = 1,
+    validation_target_index: int | None = None,
+    candidates: list[float] | None = None,
+) -> dict[str, Any]:
+    """Fit one effective spread multiplier and evaluate the next interval.
+
+    This is deliberately a low-dimensional calibration. It is useful when
+    local weather or fuel conditioning is absent, while avoiding the false
+    identifiability of jointly fitting wind, moisture, fuel, and suppression
+    from one observed perimeter.
+    """
+
+    values = candidates or np.geomspace(0.005, 1.0, 16).tolist()
+    if not values or any(value <= 0.0 for value in values):
+        raise ValueError("spread-adjustment candidates must be positive")
+    trials: list[dict[str, Any]] = []
+    for adjustment in values:
+        fire = replace(
+            config.fire,
+            surface_spread_adjustment=float(adjustment),
+            crown_spread_adjustment=float(adjustment),
+        )
+        trial_config = replace(
+            config,
+            fire=fire,
+            terminate_on_escape=False,
+        )
+        result = run_hindcast(
+            AeolusSimulator(trial_config),
+            series,
+            policy,
+            start_index=start_index,
+            target_index=target_index,
+        )
+        metrics = result["metrics"]
+        growth_metrics = result["growth_metrics"]
+        area_ratio = max(growth_metrics["predicted_area_km2"], 1e-9) / max(
+            growth_metrics["observed_area_km2"], 1e-9
+        )
+        score = float(
+            growth_metrics["iou"] - 0.15 * abs(np.log(area_ratio))
+        )
+        trials.append(
+            {
+                "spread_adjustment": float(adjustment),
+                "score": score,
+                "metrics": metrics,
+                "growth_metrics": growth_metrics,
+                "growth_tolerance_1_cell": result[
+                    "growth_tolerance_1_cell"
+                ],
+            }
+        )
+    best = max(trials, key=lambda item: item["score"])
+    calibrated_fire = replace(
+        config.fire,
+        surface_spread_adjustment=best["spread_adjustment"],
+        crown_spread_adjustment=best["spread_adjustment"],
+    )
+    calibrated_config = replace(
+        config,
+        fire=calibrated_fire,
+        terminate_on_escape=False,
+    )
+    validation = None
+    if validation_target_index is not None:
+        if validation_target_index <= target_index:
+            raise ValueError("validation target must follow the calibration target")
+        validation = run_hindcast(
+            AeolusSimulator(calibrated_config),
+            series,
+            policy,
+            start_index=target_index,
+            target_index=validation_target_index,
+        )
+    return {
+        "method": "one-parameter log-grid calibration",
+        "fitted_parameter": "surface_and_crown_spread_adjustment",
+        "calibration_interval": {
+            "start_index": start_index,
+            "target_index": target_index,
+        },
+        "selected_spread_adjustment": best["spread_adjustment"],
+        "calibration_metrics": best["metrics"],
+        "calibration_growth_metrics": best["growth_metrics"],
+        "candidate_trials": trials,
+        "validation": validation,
+        "limitations": [
+            "effective multiplier conflates unresolved weather, fuel conditioning, and suppression",
+            "a single perimeter interval cannot identify those factors separately",
+            "validation interval is not used during selection",
+        ],
     }
 
 

@@ -14,7 +14,7 @@ from typing import Any
 import certifi
 import numpy as np
 
-from aeolus.data.bundle import ScenarioBundle
+from aeolus.data.bundle import ScenarioBundle, load_bundle, write_bundle
 
 FEDS_PERIMETER_URL = (
     "https://gis.earthdata.nasa.gov/image/rest/services/FireTracking/"
@@ -245,6 +245,15 @@ def build_landscape_from_services(
         bounds = tuple(float(value) for value in source.bounds)
     with rasterio.open(layer_paths["fuel_model"]) as source:
         fuel_model = source.read(1)
+    canopy_layers: dict[str, np.ndarray] = {}
+    for name in (
+        "canopy_cover",
+        "canopy_height",
+        "canopy_base_height",
+        "canopy_bulk_density",
+    ):
+        with rasterio.open(layer_paths[name]) as source:
+            canopy_layers[name] = source.read(1).astype(np.float32)
     fuel_load = _fuel_load_from_fbfm40(fuel_model)
     barrier = (fuel_model <= 0) | ((fuel_model >= 90) & (fuel_model <= 99))
     asset_value = np.zeros(elevation.shape, dtype=np.float32)
@@ -260,8 +269,7 @@ def build_landscape_from_services(
             ("canopy_cover", "canopy_height", "canopy_base_height", "canopy_bulk_density"),
             start=3,
         ):
-            with rasterio.open(layer_paths[name]) as source:
-                destination_raster.write(source.read(1).astype(np.float32), index)
+            destination_raster.write(canopy_layers[name], index)
             destination_raster.set_band_description(index, name)
 
     cell_size = abs(float(profile["transform"].a))
@@ -270,8 +278,19 @@ def build_landscape_from_services(
         fuel_load_kg_m2=fuel_load,
         barrier=barrier.astype(np.bool_),
         asset_value=asset_value,
+        fuel_model_number=fuel_model.astype(np.int16),
+        # LANDFIRE native scaling: cover percent, heights decimetres, and
+        # canopy bulk density hundredths of kg/m³.
+        canopy_cover=np.clip(canopy_layers["canopy_cover"] / 100.0, 0.0, 1.0),
+        canopy_height_m=np.maximum(canopy_layers["canopy_height"] / 10.0, 0.0),
+        canopy_base_height_m=np.maximum(
+            canopy_layers["canopy_base_height"] / 10.0, 0.0
+        ),
+        canopy_bulk_density_kg_m3=np.maximum(
+            canopy_layers["canopy_bulk_density"] / 100.0, 0.0
+        ),
         metadata={
-            "schema_version": 1,
+            "schema_version": 2,
             "crs": crs,
             "cell_size_m": cell_size,
             "sources": [
@@ -285,7 +304,8 @@ def build_landscape_from_services(
             "transformations": [
                 "Web Mercator incident crop",
                 f"service resample to {size[0]}x{size[1]}",
-                "FBFM40 family to scalar fuel-load proxy",
+                "FBFM40 retained as operational fuel model and mapped to a load proxy",
+                "LANDFIRE canopy layers converted from native integer scaling to SI",
             ],
             "split": split,
             "transform": transform,
@@ -296,3 +316,57 @@ def build_landscape_from_services(
     )
     scenario.validate()
     return scenario, landscape_path
+
+
+def enrich_scenario_from_landscape(
+    scenario_path: str | Path,
+    landscape_path: str | Path,
+    destination: str | Path,
+) -> ScenarioBundle:
+    """Add retained FBFM40 and canopy bands to a legacy scalar-fuel bundle."""
+
+    try:
+        import rasterio
+    except ImportError as exc:  # pragma: no cover
+        raise ImportError("install aeolus-ia[geo] to enrich landscape bundles") from exc
+    original = load_bundle(scenario_path)
+    with rasterio.open(landscape_path) as source:
+        if source.count < 6:
+            raise ValueError("landscape GeoTIFF requires six Aeolus source bands")
+        arrays = [source.read(index).astype(np.float32) for index in range(1, 7)]
+        descriptions = tuple(source.descriptions)
+    expected = (
+        "elevation_m",
+        "fbfm40_code",
+        "canopy_cover",
+        "canopy_height",
+        "canopy_base_height",
+        "canopy_bulk_density",
+    )
+    if descriptions != expected:
+        raise ValueError(
+            f"unexpected landscape bands: expected {expected}, received {descriptions}"
+        )
+    if arrays[0].shape != original.elevation_m.shape:
+        raise ValueError("source GeoTIFF and simulator bundle grids do not match")
+    metadata = dict(original.metadata)
+    metadata["schema_version"] = 2
+    transformations = list(metadata.get("transformations", []))
+    transformations.append(
+        "legacy scenario enriched from retained FBFM40 and LANDFIRE canopy bands"
+    )
+    metadata["transformations"] = transformations
+    enriched = ScenarioBundle(
+        elevation_m=original.elevation_m,
+        fuel_load_kg_m2=original.fuel_load_kg_m2,
+        barrier=original.barrier,
+        asset_value=original.asset_value,
+        metadata=metadata,
+        fuel_model_number=arrays[1].astype(np.int16),
+        canopy_cover=np.clip(arrays[2] / 100.0, 0.0, 1.0),
+        canopy_height_m=np.maximum(arrays[3] / 10.0, 0.0),
+        canopy_base_height_m=np.maximum(arrays[4] / 10.0, 0.0),
+        canopy_bulk_density_kg_m3=np.maximum(arrays[5] / 100.0, 0.0),
+    )
+    write_bundle(destination, enriched)
+    return enriched

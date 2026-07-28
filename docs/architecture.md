@@ -52,25 +52,27 @@ the minimum serious non-learning comparison for policy results.
 
 ## Fire and intervention kernel
 
-The fast kernel is a stochastic cellular surface-fire approximation:
+The version 0.3 kernel resolves per-cell Anderson/Scott–Burgan surface behavior
+from a packaged Pyretechnics reference table. Wind and slope factors combine as
+vectors, directional spread follows an ellipse, crown initiation/spread uses
+Van Wagner and Cruz relations, dead-fuel moisture responds to weather and
+precipitation, and spotting uses stochastic downwind/crosswind ember transport.
+Adaptive Huygens-style raster front propagation replaces the old probabilistic
+neighbor ignition rule.
 
-- Rothermel-dimensional baseline surface ROS from explicit fuel parameters;
-- directional wind and local-slope effects;
-- per-cell fuel-load and correlated residual multipliers;
-- stochastic eight-neighbor ignition and independent short-range spotting;
-- fuel consumption, flaming-to-burned transition, and explicit barriers;
-- intensity-dependent water effect, oriented retardant footprints, and a
-  raster ground-hold field.
+The canonical NumPy path participates in the complete incident/resource
+simulator. A separate `TensorFireKernel` keeps batches resident in PyTorch on
+CUDA, ROCm, MPS or CPU. It shares the behavior table and equations, and parity
+tests compare local outputs field by field. Replay records fuel model, canopy,
+moisture, fire type, spread rate, flame length and fuel consumption.
 
-Time-varying wind can be interpolated from CF-NetCDF. Temperature and relative
-humidity are retained in the forcing record but are not converted into dynamic
-dead-fuel moisture in version 0.2; doing that requires a separately calibrated
-moisture model.
+Water changes current intensity and dead-fuel moisture. Oriented retardant and
+ground line change spread conditioning without becoming unconditional
+barriers. Intervention response remains an empirical research model.
 
-This kernel is designed for throughput and falsifiability. It is not a
-validated fire-behavior model. Per-cell Scott/Burgan fuel parameters, crown
-fire, plume dynamics, smoke, long-range spotting, and atmosphere coupling are
-outside its current validity envelope.
+The full numerical and physical contract is in
+[`fire_behavior.md`](fire_behavior.md). Atmosphere coupling, plume dynamics,
+smoke and combustion-resolving flow remain outside the model.
 
 ## Resource dynamics
 
@@ -94,16 +96,17 @@ The included model is parameter-shared recurrent MAPPO:
 - data-parallel training with `torchrun` and DDP.
 
 The actor is decentralized at execution but currently has no learned
-inter-agent message channel. Simulation remains CPU-resident; model inference
-and optimization run on GPU. A native batched fire kernel becomes justified
-when profiling shows rollout simulation, rather than the policy, dominates
-wall time.
+inter-agent message channel. The interoperable environment remains
+NumPy-resident; model inference and optimization run on GPU. High-throughput
+fire-only ensembles and future GPU-resident vector environments use the
+batched PyTorch kernel.
 
 ## Replay contract
 
 Every replay is a directory containing:
 
-- chunked Zarr arrays for truth, belief, treatment, terrain and resource state;
+- chunked Zarr arrays for fire behavior, truth, belief, treatment, terrain and
+  resource state;
 - Parquet events with minute, type and JSON payload;
 - JSON metadata containing the exact scenario, policy, episode summary,
   resource schema and checkpoint SHA-256.
