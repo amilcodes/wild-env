@@ -5,7 +5,12 @@ from __future__ import annotations
 import torch
 from torch import Tensor, nn
 
-from aeolus.core.tasks import GLOBAL_FEATURE_DIM, RESOURCE_FEATURE_DIM, TASK_FEATURE_DIM
+from aeolus.core.tasks import (
+    ACTOR_GLOBAL_FEATURE_DIM,
+    CRITIC_GLOBAL_FEATURE_DIM,
+    RESOURCE_FEATURE_DIM,
+    TASK_FEATURE_DIM,
+)
 
 
 class TaskPointerActorCritic(nn.Module):
@@ -29,8 +34,17 @@ class TaskPointerActorCritic(nn.Module):
             nn.Linear(hidden_dim, hidden_dim),
             nn.SiLU(),
         )
-        self.global_encoder = nn.Sequential(
-            nn.Linear(GLOBAL_FEATURE_DIM, hidden_dim), nn.SiLU(), nn.Linear(hidden_dim, hidden_dim), nn.SiLU()
+        self.actor_global_encoder = nn.Sequential(
+            nn.Linear(ACTOR_GLOBAL_FEATURE_DIM, hidden_dim),
+            nn.SiLU(),
+            nn.Linear(hidden_dim, hidden_dim),
+            nn.SiLU(),
+        )
+        self.critic_global_encoder = nn.Sequential(
+            nn.Linear(CRITIC_GLOBAL_FEATURE_DIM, hidden_dim),
+            nn.SiLU(),
+            nn.Linear(hidden_dim, hidden_dim),
+            nn.SiLU(),
         )
         self.actor_gru = nn.GRUCell(hidden_dim * 3, hidden_dim)
         self.query = nn.Linear(hidden_dim, hidden_dim, bias=False)
@@ -49,7 +63,8 @@ class TaskPointerActorCritic(nn.Module):
         resource: Tensor,
         tasks: Tensor,
         action_mask: Tensor,
-        global_state: Tensor,
+        actor_global_state: Tensor,
+        critic_global_state: Tensor,
         hidden: Tensor | None = None,
     ) -> tuple[Tensor, Tensor, Tensor]:
         """Return masked logits `[B,N,K]`, team value `[B]`, and next hidden."""
@@ -57,10 +72,11 @@ class TaskPointerActorCritic(nn.Module):
         batch, agents, _ = resource.shape
         task_embedding = self.task_encoder(tasks)  # B,K,H
         resource_embedding = self.resource_encoder(resource)  # B,N,H
-        global_embedding = self.global_encoder(global_state)  # B,H
+        actor_global_embedding = self.actor_global_encoder(actor_global_state)  # B,H
+        critic_global_embedding = self.critic_global_encoder(critic_global_state)  # B,H
         valid = action_mask.any(dim=1).float().unsqueeze(-1)  # B,K,1
         task_pool = (task_embedding * valid).sum(dim=1) / valid.sum(dim=1).clamp_min(1.0)
-        global_per_agent = global_embedding.unsqueeze(1).expand(-1, agents, -1)
+        global_per_agent = actor_global_embedding.unsqueeze(1).expand(-1, agents, -1)
         task_per_agent = task_pool.unsqueeze(1).expand(-1, agents, -1)
         actor_input = torch.cat((resource_embedding, task_per_agent, global_per_agent), dim=-1)
         if hidden is None:
@@ -76,7 +92,9 @@ class TaskPointerActorCritic(nn.Module):
         logits = logits + self.task_bias(tasks).squeeze(-1).unsqueeze(1)
         logits = logits.masked_fill(~action_mask.bool(), torch.finfo(logits.dtype).min)
         resource_pool = resource_embedding.mean(dim=1)
-        value = self.critic(torch.cat((resource_pool, task_pool, global_embedding), dim=-1)).squeeze(-1)
+        value = self.critic(
+            torch.cat((resource_pool, task_pool, critic_global_embedding), dim=-1)
+        ).squeeze(-1)
         return logits, value, next_hidden
 
     def act(
@@ -84,11 +102,19 @@ class TaskPointerActorCritic(nn.Module):
         resource: Tensor,
         tasks: Tensor,
         action_mask: Tensor,
-        global_state: Tensor,
+        actor_global_state: Tensor,
+        critic_global_state: Tensor,
         hidden: Tensor | None = None,
         deterministic: bool = False,
     ) -> tuple[Tensor, Tensor, Tensor, Tensor, Tensor]:
-        logits, value, next_hidden = self(resource, tasks, action_mask, global_state, hidden)
+        logits, value, next_hidden = self(
+            resource,
+            tasks,
+            action_mask,
+            actor_global_state,
+            critic_global_state,
+            hidden,
+        )
         distribution = torch.distributions.Categorical(logits=logits)
         actions = logits.argmax(dim=-1) if deterministic else distribution.sample()
         return actions, distribution.log_prob(actions), distribution.entropy(), value, next_hidden
@@ -98,10 +124,18 @@ class TaskPointerActorCritic(nn.Module):
         resource: Tensor,
         tasks: Tensor,
         action_mask: Tensor,
-        global_state: Tensor,
+        actor_global_state: Tensor,
+        critic_global_state: Tensor,
         hidden: Tensor,
         actions: Tensor,
     ) -> tuple[Tensor, Tensor, Tensor]:
-        logits, value, _ = self(resource, tasks, action_mask, global_state, hidden)
+        logits, value, _ = self(
+            resource,
+            tasks,
+            action_mask,
+            actor_global_state,
+            critic_global_state,
+            hidden,
+        )
         distribution = torch.distributions.Categorical(logits=logits)
         return distribution.log_prob(actions), distribution.entropy(), value

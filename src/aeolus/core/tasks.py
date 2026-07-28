@@ -25,7 +25,8 @@ class TaskKind(IntEnum):
 
 TASK_FEATURE_DIM = 11
 RESOURCE_FEATURE_DIM = 13
-GLOBAL_FEATURE_DIM = 10
+ACTOR_GLOBAL_FEATURE_DIM = 10
+CRITIC_GLOBAL_FEATURE_DIM = 12
 
 
 @dataclass(frozen=True)
@@ -150,7 +151,7 @@ def resource_features(resource: ResourceRuntime, sim: AeolusSimulator) -> np.nda
             resource.reload_cycles / 20.0,
             float(sim.state.ground_engaged),
             sim.state.minute / sim.config.horizon_min,
-            len(sim.state.events[-8:]) / 8.0,
+            resource.accepted_tasks / max(resource.attempted_tasks, 1),
         ],
         dtype=np.float32,
     )
@@ -165,23 +166,56 @@ def action_mask(resource: ResourceRuntime, tasks: list[Task], max_tasks: int) ->
     return mask
 
 
-def global_features(sim: AeolusSimulator) -> np.ndarray:
+def actor_global_features(sim: AeolusSimulator) -> np.ndarray:
+    """Shared information available to every executing resource.
+
+    Every value is derived from the delivered belief, the public incident
+    clock, or observable fleet state. Hidden fire truth is deliberately absent.
+    """
+
+    belief = sim.state.belief
+    observed = belief.observed_at >= 0
+    estimated_active = belief.intensity_mean >= 20.0
+    observed_age = np.maximum(0, sim.state.minute - belief.observed_at[observed])
+    resource_ready = sum(resource.status == ResourceStatus.AVAILABLE for resource in sim.state.resources)
+    return np.array(
+        [
+            float(estimated_active.mean()),
+            float(belief.known_burned.mean()),
+            float(belief.intensity_mean.mean() / 1000.0),
+            float(belief.intensity_std.mean() / 100.0),
+            float(observed_age.mean() / max(sim.config.horizon_min, 1)) if observed_age.size else 1.0,
+            float(observed.mean()),
+            resource_ready / max(len(sim.state.resources), 1),
+            float(sim.state.ground_engaged),
+            sim.state.minute / sim.config.horizon_min,
+            sim.state.cumulative_exposure / 500.0,
+        ],
+        dtype=np.float32,
+    )
+
+
+def critic_global_features(sim: AeolusSimulator) -> np.ndarray:
+    """Privileged centralized-training state, never placed in agent observations."""
+
     truth = sim.state.truth
     belief = sim.state.belief
     flaming = truth.phase == 1
     asset_loss = float((truth.observed_burned * truth.asset_value).sum())
-    observed_age = np.maximum(0, sim.state.minute - belief.observed_at)
+    observed = belief.observed_at >= 0
     resource_ready = sum(resource.status == ResourceStatus.AVAILABLE for resource in sim.state.resources)
     return np.array(
         [
             float(flaming.mean()),
             float(truth.observed_burned.mean()),
             float(truth.intensity_kw_m.mean() / 1000.0),
-            float(belief.intensity_std.mean() / 100.0),
-            float(observed_age[flaming].mean() / max(sim.config.horizon_min, 1)) if flaming.any() else 0.0,
+            float(truth.fuel_remaining.mean()),
+            float(truth.water.mean()),
+            float(truth.retardant.mean()),
+            float(truth.ground_hold.mean()),
             asset_loss / 50.0,
+            float(observed.mean()),
             resource_ready / max(len(sim.state.resources), 1),
-            float(sim.state.ground_engaged),
             sim.state.minute / sim.config.horizon_min,
             sim.state.cumulative_exposure / 500.0,
         ],

@@ -20,8 +20,8 @@ Python environment as the parity oracle.
 
 ```bash
 cd aeolus_py
-docker build -f deploy/Dockerfile -t registry.example/aeolus-ia:0.1 .
-apptainer build aeolus-ia.sif docker-daemon://registry.example/aeolus-ia:0.1
+docker build -f deploy/Dockerfile -t registry.example/aeolus-ia:0.2 .
+apptainer build aeolus-ia.sif docker-daemon://registry.example/aeolus-ia:0.2
 export AEOLUS_IMAGE=$PWD/aeolus-ia.sif
 export PROJECT_DIR=$PWD
 sbatch deploy/slurm/train.sbatch

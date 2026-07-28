@@ -11,7 +11,7 @@ from pettingzoo.utils.env import ParallelEnv
 
 from aeolus.config import ScenarioConfig
 from aeolus.core.simulator import AeolusSimulator
-from aeolus.core.tasks import GLOBAL_FEATURE_DIM, RESOURCE_FEATURE_DIM, TASK_FEATURE_DIM
+from aeolus.core.tasks import ACTOR_GLOBAL_FEATURE_DIM, RESOURCE_FEATURE_DIM, TASK_FEATURE_DIM
 
 
 class AeolusParallelEnv(ParallelEnv):
@@ -31,7 +31,9 @@ class AeolusParallelEnv(ParallelEnv):
                 ),
                 "action_mask": spaces.MultiBinary(self.config.max_tasks),
                 "task_valid": spaces.MultiBinary(self.config.max_tasks),
-                "global": spaces.Box(-np.inf, np.inf, shape=(GLOBAL_FEATURE_DIM,), dtype=np.float32),
+                "global": spaces.Box(
+                    -np.inf, np.inf, shape=(ACTOR_GLOBAL_FEATURE_DIM,), dtype=np.float32
+                ),
             }
         )
         self._action_space = spaces.Discrete(self.config.max_tasks)
@@ -68,7 +70,7 @@ class AeolusParallelEnv(ParallelEnv):
         truncations = {agent: truncated for agent in self.agents}
         if terminated or truncated:
             self.agents = []
-            return {}, rewards, terminations, truncations, infos
+            return observations, rewards, terminations, truncations, infos
         return observations, rewards, terminations, truncations, infos
 
     def render(self) -> str | None:

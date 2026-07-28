@@ -4,11 +4,12 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "aeolus-ia"
-version = "0.1.0"
+version = "0.2.0"
 description = "Research environment for constrained multi-agent aerial wildfire initial attack"
 readme = "README.md"
 requires-python = ">=3.10,<3.13"
-license = {text = "Apache-2.0"}
+license = "Apache-2.0"
+license-files = ["LICENSE"]
 authors = [{name = "Aeolus-IA research"}]
 dependencies = [
   "numpy>=2.0,<3",
@@ -16,17 +17,37 @@ dependencies = [
   "gymnasium>=1.0,<2",
   "pettingzoo>=1.24,<2",
   "torch>=2.5,<3",
+  "certifi>=2025.1",
 ]
 
 [project.optional-dependencies]
 rllib = ["ray[rllib]>=2.55,<2.57"]
-geo = ["rasterio>=1.4,<2", "shapely>=2.0,<3", "xarray>=2025.1"]
+geo = [
+  "rasterio>=1.4,<2",
+  "shapely>=2.0,<3",
+  "pyproj>=3.7,<4",
+  "xarray>=2025.1,<2027",
+  "scipy>=1.15,<2",
+  "pandas>=2.2,<3",
+  "pyarrow>=19,<24",
+  "zarr>=2.18,<3",
+]
+render = [
+  "matplotlib>=3.10,<4",
+  "pillow>=11,<13",
+  "imageio>=2.37,<3",
+  "imageio-ffmpeg>=0.6,<1",
+]
 dev = ["pytest>=8,<9", "ruff>=0.11,<1"]
 
 [project.scripts]
 aeolus-train = "aeolus.training.train:main"
 aeolus-eval = "aeolus.evaluation.evaluate:main"
 aeolus-rollout = "aeolus.cli:rollout_main"
+aeolus-incident = "aeolus.incident_cli:main"
+aeolus-historical = "aeolus.historical_cli:main"
+aeolus-replay = "aeolus.replay_cli:main"
+aeolus-benchmark = "aeolus.benchmark_cli:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

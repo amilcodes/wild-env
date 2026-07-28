@@ -4,6 +4,8 @@ __pycache__/
 .pytest_cache/
 .ruff_cache/
 runs/
+build/
+dist/
 native/aeolus_native_smoke
 src/*.egg-info/
 *.sif

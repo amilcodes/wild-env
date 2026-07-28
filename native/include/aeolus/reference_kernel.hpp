@@ -17,3 +17,17 @@ inline double ignition_hazard(double ros_m_per_min, double residual,
 }
 
 }  // namespace aeolus
+
+extern "C" {
+
+double aeolus_ignition_hazard(double ros_m_per_min, double residual,
+                              double treatment_factor, double distance_cells,
+                              double cell_size_m);
+
+void aeolus_ignition_hazard_batch(const double* ros_m_per_min,
+                                  const double* residual,
+                                  const double* treatment_factor,
+                                  const double* distance_cells,
+                                  double cell_size_m, double* output,
+                                  unsigned long count);
+}

@@ -64,9 +64,14 @@ class ScenarioConfig:
     wind_variability: float = 0.25
     spotting_rate: float = 0.01
     ground_arrival_min: int = 25
+    reward_loss_scale: float = 0.05
+    escape_penalty: float = 12.0
+    containment_bonus: float = 12.0
+    terminate_on_escape: bool = True
     initial_perimeter_radius_cells: float = 2.5
     residual_spread_std: float = 0.18
     landscape_bundle: str | None = None
+    weather_forcing: str | None = None
     fuel: FuelModel = field(default_factory=FuelModel)
     resources: tuple[ResourceSpec, ...] = DEFAULT_RESOURCES
 
@@ -77,6 +82,8 @@ class ScenarioConfig:
             raise ValueError("decision_interval_min must be positive")
         if self.max_tasks < 8:
             raise ValueError("max_tasks must reserve room for hold and front tasks")
+        if self.reward_loss_scale <= 0:
+            raise ValueError("reward_loss_scale must be positive")
 
 
 @dataclass(frozen=True)
@@ -100,6 +107,8 @@ class TrainingConfig:
     checkpoint_dir: str = "runs/default"
     checkpoint_every: int = 25
     use_amp: bool = True
+    expert_warmstart_steps: int = 0
+    expert_policy: str = "joint_assignment"
 
 
 @dataclass(frozen=True)

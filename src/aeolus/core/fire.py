@@ -101,13 +101,30 @@ def _ignite(truth: TruthState, x: int, y: int, intensity: float) -> None:
     truth.intensity_kw_m[y, x] = max(float(truth.intensity_kw_m[y, x]), intensity)
 
 
-def step_fire(truth: TruthState, config: ScenarioConfig, rng: np.random.Generator, minute: int) -> int:
+def step_fire(
+    truth: TruthState,
+    config: ScenarioConfig,
+    rng: np.random.Generator,
+    minute: int,
+    *,
+    wind_speed_m_s: float | None = None,
+    wind_direction_deg: float | None = None,
+) -> int:
     """Advance one minute and return the number of new flaming cells."""
 
     height, width = truth.phase.shape
     new_ignitions: list[tuple[int, int, float]] = []
-    wind_angle = np.deg2rad(config.wind_direction_deg + 7.0 * sin(minute / 17.0))
-    wind_speed = max(0.2, config.wind_speed_m_s * (1.0 + config.wind_variability * sin(minute / 13.0)))
+    forced_speed = config.wind_speed_m_s if wind_speed_m_s is None else wind_speed_m_s
+    forced_direction = (
+        config.wind_direction_deg if wind_direction_deg is None else wind_direction_deg
+    )
+    # Synthetic scenarios retain a smooth sub-hourly perturbation. A supplied
+    # weather forcing is already time varying and therefore passes zero
+    # variability through the caller.
+    variability = 0.0 if wind_speed_m_s is not None else config.wind_variability
+    direction_variation = 0.0 if wind_direction_deg is not None else 7.0 * sin(minute / 17.0)
+    wind_angle = np.deg2rad(forced_direction + direction_variation)
+    wind_speed = max(0.2, forced_speed * (1.0 + variability * sin(minute / 13.0)))
     wx, wy = cos(wind_angle), -sin(wind_angle)
     flaming = np.argwhere(truth.phase == FirePhase.FLAMING)
 

@@ -34,7 +34,11 @@ class ResourceRuntime:
     status: ResourceStatus = ResourceStatus.AVAILABLE
     eta_min: int = 0
     target_xy: tuple[int, int] | None = None
+    leg_start_xy: tuple[float, float] | None = None
+    leg_end_xy: tuple[float, float] | None = None
+    leg_total_min: int = 0
     task_index: int = 0
+    task_kind: int = 0
     payload_fraction: float = 1.0
     flight_min: float = 0.0
     reload_cycles: int = 0

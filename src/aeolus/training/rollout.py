@@ -8,6 +8,7 @@ import numpy as np
 import torch
 
 from aeolus.config import ScenarioConfig
+from aeolus.core.tasks import critic_global_features
 from aeolus.envs.parallel import AeolusParallelEnv
 from aeolus.training.networks import TaskPointerActorCritic
 
@@ -17,7 +18,8 @@ class Rollout:
     resource: torch.Tensor
     tasks: torch.Tensor
     masks: torch.Tensor
-    global_state: torch.Tensor
+    actor_global_state: torch.Tensor
+    critic_global_state: torch.Tensor
     hidden: torch.Tensor
     actions: torch.Tensor
     logp: torch.Tensor
@@ -66,7 +68,8 @@ class SynchronousCollector:
                 "resource",
                 "tasks",
                 "masks",
-                "global_state",
+                "actor_global_state",
+                "critic_global_state",
                 "hidden",
                 "actions",
                 "logp",
@@ -77,11 +80,21 @@ class SynchronousCollector:
         }
         model.eval()
         for _ in range(steps):
-            resource, tasks, masks, global_state = _stack_observations(
+            resource, tasks, masks, actor_global_state = _stack_observations(
                 self.observations, self.agent_ids, self.device
             )
+            critic_global_state = torch.as_tensor(
+                np.stack([critic_global_features(env.sim) for env in self.envs]),
+                device=self.device,
+                dtype=torch.float32,
+            )
             actions, logp, _, values, next_hidden = model.act(
-                resource, tasks, masks, global_state, self.hidden
+                resource,
+                tasks,
+                masks,
+                actor_global_state,
+                critic_global_state,
+                self.hidden,
             )
             action_cpu = actions.detach().cpu().numpy()
             rewards, dones, next_observations = [], [], []
@@ -102,7 +115,8 @@ class SynchronousCollector:
                 ("resource", resource),
                 ("tasks", tasks),
                 ("masks", masks),
-                ("global_state", global_state),
+                ("actor_global_state", actor_global_state),
+                ("critic_global_state", critic_global_state),
                 ("hidden", self.hidden),
                 ("actions", actions),
                 ("logp", logp),
@@ -113,15 +127,28 @@ class SynchronousCollector:
             records["dones"].append(torch.tensor(dones, device=self.device, dtype=torch.float32))
             self.observations = next_observations
             self.hidden = next_hidden.detach()
-        resource, tasks, masks, global_state = _stack_observations(
+        resource, tasks, masks, actor_global_state = _stack_observations(
             self.observations, self.agent_ids, self.device
         )
-        _, bootstrap_value, _ = model(resource, tasks, masks, global_state, self.hidden)
+        critic_global_state = torch.as_tensor(
+            np.stack([critic_global_features(env.sim) for env in self.envs]),
+            device=self.device,
+            dtype=torch.float32,
+        )
+        _, bootstrap_value, _ = model(
+            resource,
+            tasks,
+            masks,
+            actor_global_state,
+            critic_global_state,
+            self.hidden,
+        )
         return Rollout(
             resource=torch.stack(records["resource"]),
             tasks=torch.stack(records["tasks"]),
             masks=torch.stack(records["masks"]),
-            global_state=torch.stack(records["global_state"]),
+            actor_global_state=torch.stack(records["actor_global_state"]),
+            critic_global_state=torch.stack(records["critic_global_state"]),
             hidden=torch.stack(records["hidden"]),
             actions=torch.stack(records["actions"]),
             logp=torch.stack(records["logp"]),

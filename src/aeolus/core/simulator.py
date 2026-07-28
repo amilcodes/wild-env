@@ -2,8 +2,10 @@
 
 from __future__ import annotations
 
+from collections.abc import Callable
 from dataclasses import asdict
 from math import ceil, hypot
+from pathlib import Path
 from typing import Any
 
 import numpy as np
@@ -21,14 +23,15 @@ from aeolus.core.state import (
 )
 from aeolus.core.tasks import (
     Task,
+    TaskKind,
     action_mask,
+    actor_global_features,
     generate_tasks,
-    global_features,
     resource_features,
     task_distance_min,
     task_tensor,
 )
-from aeolus.data import load_bundle
+from aeolus.data import IncidentBundle, WeatherForcing, load_bundle
 
 
 class AeolusSimulator:
@@ -42,9 +45,33 @@ class AeolusSimulator:
 
     def __init__(self, config: ScenarioConfig):
         self.config = config
+        self.weather = self._load_weather_forcing()
         self.state: EpisodeState
         self.tasks: list[Task] = []
+        self._state_observers: list[Callable[[AeolusSimulator], None]] = []
         self.reset(config.seed)
+
+    def _load_weather_forcing(self) -> WeatherForcing | None:
+        weather_path = Path(self.config.weather_forcing) if self.config.weather_forcing else None
+        if weather_path is None and self.config.landscape_bundle:
+            landscape_path = Path(self.config.landscape_bundle)
+            if landscape_path.is_dir() and (landscape_path / "item.json").exists():
+                weather_path = IncidentBundle.load(landscape_path).asset_path(
+                    "weather", required=False
+                )
+        return WeatherForcing.load(weather_path) if weather_path is not None else None
+
+    def current_weather(self) -> dict[str, float]:
+        """Return forcing values at the current simulation minute."""
+
+        if self.weather is not None:
+            return self.weather.at_minute(self.state.minute)
+        return {
+            "wind_speed_m_s": float(self.config.wind_speed_m_s),
+            "wind_direction_deg": float(self.config.wind_direction_deg),
+            "air_temperature_c": float("nan"),
+            "relative_humidity_pct": float("nan"),
+        }
 
     @property
     def agent_ids(self) -> list[str]:
@@ -78,13 +105,35 @@ class AeolusSimulator:
         self._deliver_observations()
         self.tasks = generate_tasks(self)
         self.state.event("reset", scenario_seed=episode_seed)
+        self._notify_state_observers()
         return self.observations()
+
+    def add_state_observer(
+        self, observer: Callable[[AeolusSimulator], None], *, capture_initial: bool = True
+    ) -> None:
+        """Attach a read-only observer used by replay recorders."""
+
+        self._state_observers.append(observer)
+        if capture_initial:
+            observer(self)
+
+    def remove_state_observer(self, observer: Callable[[AeolusSimulator], None]) -> None:
+        self._state_observers.remove(observer)
+
+    def _notify_state_observers(self) -> None:
+        for observer in tuple(self._state_observers):
+            observer(self)
 
     def _build_truth(self, rng: np.random.Generator) -> tuple[TruthState, tuple[int, int]]:
         height, width = self.config.height, self.config.width
         y, x = np.mgrid[0:height, 0:width]
         if self.config.landscape_bundle:
-            bundle = load_bundle(self.config.landscape_bundle)
+            landscape_path = Path(self.config.landscape_bundle)
+            bundle = (
+                IncidentBundle.load(landscape_path).scenario_bundle()
+                if landscape_path.is_dir()
+                else load_bundle(landscape_path)
+            )
             if bundle.elevation_m.shape != (height, width):
                 raise ValueError(
                     "scenario dimensions do not match the landscape bundle: "
@@ -209,6 +258,19 @@ class AeolusSimulator:
         if resource.status == ResourceStatus.AVAILABLE or resource.status == ResourceStatus.WITHDRAWN:
             return
         resource.eta_min = max(0, resource.eta_min - 1)
+        if (
+            resource.status in (ResourceStatus.OUTBOUND, ResourceStatus.RETURNING)
+            and resource.leg_start_xy is not None
+            and resource.leg_end_xy is not None
+            and resource.leg_total_min > 0
+        ):
+            fraction = 1.0 - resource.eta_min / resource.leg_total_min
+            resource.x = resource.leg_start_xy[0] + (
+                resource.leg_end_xy[0] - resource.leg_start_xy[0]
+            ) * fraction
+            resource.y = resource.leg_start_xy[1] + (
+                resource.leg_end_xy[1] - resource.leg_start_xy[1]
+            ) * fraction
         if resource.eta_min > 0:
             return
         if resource.status == ResourceStatus.OUTBOUND:
@@ -223,37 +285,46 @@ class AeolusSimulator:
             else:
                 resource.status = ResourceStatus.AVAILABLE
                 resource.target_xy = None
+                resource.task_kind = int(TaskKind.HOLD)
+                resource.leg_start_xy = None
+                resource.leg_end_xy = None
+                resource.leg_total_min = 0
                 self.state.event("resource_available", resource=resource.resource_id)
             return
         if resource.status == ResourceStatus.RELOADING:
             resource.status = ResourceStatus.AVAILABLE
             resource.target_xy = None
+            resource.task_kind = int(TaskKind.HOLD)
+            resource.leg_start_xy = None
+            resource.leg_end_xy = None
+            resource.leg_total_min = 0
             resource.payload_fraction = 1.0
             resource.reload_cycles += 1
             self.state.event("resource_available", resource=resource.resource_id)
 
     def _execute_mission(self, resource: ResourceRuntime) -> None:
         assert resource.target_xy is not None
-        task = self.tasks[resource.task_index]
+        task_kind = TaskKind(resource.task_kind)
         x, y = resource.target_xy
         resource.x, resource.y = x, y
-        if task.kind.name == "OBSERVE":
+        if task_kind == TaskKind.OBSERVE:
             self._capture_observation(x, y, 9, resource.resource_id)
             self.state.event("observe", resource=resource.resource_id, x=x, y=y)
-        elif task.kind.name == "WATER":
+        elif task_kind == TaskKind.WATER:
             radius = max(1.5, resource.spec.water_radius_m / self.config.cell_size_m)
             apply_water(self.state.truth, x, y, radius)
             resource.payload_fraction = 0.0
             self.state.cumulative_cost += 0.8
             self.state.event("water_drop", resource=resource.resource_id, x=x, y=y)
-        elif task.kind.name in {"RETARDANT", "REINFORCE"}:
+        elif task_kind in (TaskKind.RETARDANT, TaskKind.REINFORCE):
+            weather = self.current_weather()
             apply_retardant(
                 self.state.truth,
                 x,
                 y,
                 resource.spec.retardant_length_m / self.config.cell_size_m,
                 resource.spec.retardant_width_m / self.config.cell_size_m,
-                self.config.wind_direction_deg,
+                weather["wind_direction_deg"],
                 self.state.ground_engaged,
             )
             resource.payload_fraction = 0.0
@@ -262,6 +333,12 @@ class AeolusSimulator:
         distance_back = hypot(x - self.state.base_xy[0], y - self.state.base_xy[1]) * self.config.cell_size_m
         resource.status = ResourceStatus.RETURNING
         resource.eta_min = max(1, ceil(distance_back / max(resource.spec.cruise_speed_m_s * 60.0, 1.0)))
+        resource.leg_start_xy = (float(x), float(y))
+        resource.leg_end_xy = (
+            float(self.state.base_xy[0]),
+            float(self.state.base_xy[1]),
+        )
+        resource.leg_total_min = resource.eta_min
 
     def _advance_internal_minute(self) -> None:
         self.state.minute += 1
@@ -275,20 +352,34 @@ class AeolusSimulator:
                     resource.status = ResourceStatus.WITHDRAWN
                     resource.eta_min = 0
                     self.state.event("resource_withdrawn", resource=resource.resource_id)
-        new_ignitions = step_fire(self.state.truth, self.config, self.state.rng, self.state.minute)
+        weather = self.current_weather()
+        new_ignitions = step_fire(
+            self.state.truth,
+            self.config,
+            self.state.rng,
+            self.state.minute,
+            wind_speed_m_s=weather["wind_speed_m_s"] if self.weather is not None else None,
+            wind_direction_deg=(
+                weather["wind_direction_deg"] if self.weather is not None else None
+            ),
+        )
         if new_ignitions:
             self.state.event("fire_growth", cells=new_ignitions)
         self._deliver_observations()
         self._update_terminal_state()
+        self._notify_state_observers()
 
     def _update_terminal_state(self) -> None:
         truth = self.state.truth
         flaming = truth.phase == FirePhase.FLAMING
         boundary = np.concatenate((flaming[0], flaming[-1], flaming[:, 0], flaming[:, -1]))
         if boundary.any():
+            first_escape = not self.state.escaped
             self.state.escaped = True
-            self.state.terminated = True
-            self.state.event("escape")
+            if self.config.terminate_on_escape:
+                self.state.terminated = True
+            if first_escape:
+                self.state.event("escape")
         elif not flaming.any() and self.state.minute > 5:
             self.state.contained = True
             self.state.terminated = True
@@ -334,8 +425,12 @@ class AeolusSimulator:
             travel_min = task_distance_min(resource, task, self.config.cell_size_m)
             resource.target_xy = (task.x, task.y)
             resource.task_index = action
+            resource.task_kind = int(task.kind)
             resource.status = ResourceStatus.OUTBOUND
             resource.eta_min = max(1, ceil(travel_min) + resource.spec.dispatch_latency_min)
+            resource.leg_start_xy = (float(resource.x), float(resource.y))
+            resource.leg_end_xy = (float(task.x), float(task.y))
+            resource.leg_total_min = resource.eta_min
             resource.accepted_tasks += 1
             resource.flight_min += 0.0
             taken[action] = taken.get(action, 0) + 1
@@ -358,6 +453,10 @@ class AeolusSimulator:
         before_loss = self._weighted_loss()
         before_cost = self.state.cumulative_cost
         before_blocked = self.state.blocked_actions
+        self.state.event(
+            "joint_action",
+            actions={resource_id: int(action) for resource_id, action in actions.items()},
+        )
         assignment_info = self._assign(actions)
         for _ in range(self.config.decision_interval_min):
             if self.state.terminated or self.state.truncated:
@@ -365,14 +464,14 @@ class AeolusSimulator:
             self._advance_internal_minute()
         after_loss = self._weighted_loss()
         reward = (
-            -(after_loss - before_loss)
+            -self.config.reward_loss_scale * (after_loss - before_loss)
             - 0.02 * (self.state.cumulative_cost - before_cost)
             - 0.01 * (self.state.blocked_actions - before_blocked)
         )
         if self.state.escaped:
-            reward -= 60.0
+            reward -= self.config.escape_penalty
         if self.state.contained:
-            reward += 25.0
+            reward += self.config.containment_bonus
         self.tasks = generate_tasks(self)
         infos = {
             resource.resource_id: {
@@ -387,11 +486,83 @@ class AeolusSimulator:
         }
         return self.observations(), float(reward), self.state.terminated, self.state.truncated, infos
 
+    @staticmethod
+    def _perimeter_boundary(mask: np.ndarray) -> np.ndarray:
+        padded = np.pad(mask.astype(np.bool_), 1, constant_values=False)
+        neighbors_inside = (
+            padded[:-2, 1:-1]
+            & padded[2:, 1:-1]
+            & padded[1:-1, :-2]
+            & padded[1:-1, 2:]
+        )
+        return mask.astype(np.bool_) & ~neighbors_inside
+
+    def assimilate_observed_perimeter(
+        self, mask: np.ndarray, *, source: str = "historical-perimeter"
+    ) -> None:
+        """Update the policy belief from a cumulative observed perimeter."""
+
+        if mask.shape != self.state.truth.phase.shape:
+            raise ValueError(f"perimeter shape {mask.shape} does not match simulator grid")
+        observed = mask.astype(np.bool_)
+        boundary = self._perimeter_boundary(observed)
+        interior = observed & ~boundary
+        belief = self.state.belief
+        belief.known_burned[interior] = 1.0
+        belief.intensity_mean[interior] = 0.0
+        belief.intensity_mean[boundary] = np.maximum(belief.intensity_mean[boundary], 520.0)
+        belief.intensity_std[observed] = 55.0
+        belief.observed_at[observed] = self.state.minute
+        self.state.event(
+            "perimeter_assimilated",
+            source=source,
+            observed_cells=int(observed.sum()),
+            boundary_cells=int(boundary.sum()),
+        )
+        self.tasks = generate_tasks(self)
+
+    def initialize_from_observed_perimeter(
+        self, mask: np.ndarray, *, source: str = "historical-perimeter"
+    ) -> None:
+        """Set an episode's initial fire state from an observed perimeter."""
+
+        if mask.shape != self.state.truth.phase.shape:
+            raise ValueError(f"perimeter shape {mask.shape} does not match simulator grid")
+        observed = mask.astype(np.bool_)
+        boundary = self._perimeter_boundary(observed)
+        interior = observed & ~boundary
+        truth = self.state.truth
+        truth.phase[:] = FirePhase.UNBURNED
+        truth.phase[interior] = FirePhase.BURNED
+        truth.phase[boundary] = FirePhase.FLAMING
+        truth.intensity_kw_m[:] = 0.0
+        truth.intensity_kw_m[boundary] = 720.0
+        truth.fuel_remaining[:] = 1.0
+        truth.fuel_remaining[interior] = 0.0
+        truth.fuel_remaining[boundary] = 0.65
+        truth.observed_burned[:] = 0.0
+        truth.observed_burned[interior] = 1.0
+        truth.water[:] = 0.0
+        truth.retardant[:] = 0.0
+        truth.ground_hold[:] = 0.0
+        self.state.belief.intensity_mean[:] = 0.0
+        self.state.belief.intensity_std[:] = 1.0
+        self.state.belief.observed_at[:] = -9999
+        self.state.belief.known_burned[:] = 0.0
+        self.state.belief.pending.clear()
+        self.state.terminated = False
+        self.state.truncated = False
+        self.state.escaped = False
+        self.state.contained = False
+        self.assimilate_observed_perimeter(observed, source=source)
+        self.state.event("historical_initialization", source=source)
+        self._notify_state_observers()
+
     def observations(self) -> dict[str, dict[str, np.ndarray]]:
         task_values, valid = task_tensor(
             self.tasks, self.config.max_tasks, self.config.width, self.config.height
         )
-        global_value = global_features(self)
+        global_value = actor_global_features(self)
         result: dict[str, dict[str, np.ndarray]] = {}
         for resource in self.state.resources:
             result[resource.resource_id] = {

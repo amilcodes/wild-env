@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import weakref
 from collections.abc import Callable
 from pathlib import Path
 
@@ -12,13 +13,24 @@ import torch
 
 from aeolus.config import load_config
 from aeolus.core.simulator import AeolusSimulator
-from aeolus.policies import anchor_flank, greedy_value, nearest_feasible, no_aerial_action
+from aeolus.core.tasks import CRITIC_GLOBAL_FEATURE_DIM
+from aeolus.policies import (
+    anchor_flank,
+    greedy_value,
+    joint_assignment,
+    nearest_feasible,
+    no_aerial_action,
+)
 from aeolus.training.networks import TaskPointerActorCritic
 
 Policy = Callable[[AeolusSimulator], dict[str, int]]
 
 
 def learned_policy(model: TaskPointerActorCritic, device: torch.device) -> Policy:
+    hidden_by_simulator: weakref.WeakKeyDictionary[
+        AeolusSimulator, tuple[int, torch.Tensor]
+    ] = weakref.WeakKeyDictionary()
+
     @torch.no_grad()
     def act(sim: AeolusSimulator) -> dict[str, int]:
         observations = sim.observations()
@@ -30,10 +42,28 @@ def learned_policy(model: TaskPointerActorCritic, device: torch.device) -> Polic
         masks = torch.tensor(
             np.stack([observations[item]["action_mask"] for item in ids]), device=device
         ).unsqueeze(0)
-        global_state = torch.tensor(observations[ids[0]]["global"], device=device).unsqueeze(0)
-        actions, _, _, _, _ = model.act(
-            resource.float(), tasks.float(), masks.bool(), global_state.float(), deterministic=True
+        actor_global_state = torch.tensor(
+            observations[ids[0]]["global"], device=device
+        ).unsqueeze(0)
+        # The value function is irrelevant during execution. A zero privileged
+        # state makes the deployment boundary explicit and cannot affect logits.
+        critic_global_state = torch.zeros(
+            (1, CRITIC_GLOBAL_FEATURE_DIM), device=device, dtype=torch.float32
         )
+        previous = hidden_by_simulator.get(sim)
+        hidden = None
+        if previous is not None and sim.state.minute > previous[0]:
+            hidden = previous[1]
+        actions, _, _, _, next_hidden = model.act(
+            resource.float(),
+            tasks.float(),
+            masks.bool(),
+            actor_global_state.float(),
+            critic_global_state,
+            hidden=hidden,
+            deterministic=True,
+        )
+        hidden_by_simulator[sim] = (sim.state.minute, next_hidden.detach())
         return {agent: int(actions[0, index]) for index, agent in enumerate(ids)}
 
     return act
@@ -46,21 +76,74 @@ def run_episode(sim: AeolusSimulator, policy: Policy, seed: int) -> dict[str, ob
     return sim.episode_record()
 
 
+def _bootstrap_mean_interval(
+    values: np.ndarray,
+    *,
+    seed: int,
+    replicates: int = 2000,
+) -> list[float]:
+    if values.size == 1:
+        value = float(values[0])
+        return [value, value]
+    rng = np.random.default_rng(seed)
+    indices = rng.integers(0, values.size, size=(replicates, values.size))
+    means = values[indices].mean(axis=1)
+    return [float(value) for value in np.quantile(means, [0.025, 0.975])]
+
+
 def evaluate_pairs(
     policies: dict[str, Policy], simulator: AeolusSimulator, seeds: list[int]
 ) -> dict[str, object]:
     records = {
         name: [run_episode(simulator, policy, seed) for seed in seeds] for name, policy in policies.items()
     }
-    summary = {
-        name: {
-            "episodes": len(items),
-            "mean_weighted_loss": float(np.mean([item["weighted_loss"] for item in items])),
-            "escape_rate": float(np.mean([item["escaped"] for item in items])),
-            "containment_rate": float(np.mean([item["contained"] for item in items])),
-        }
+    loss = {
+        name: np.asarray([item["weighted_loss"] for item in items], dtype=np.float64)
         for name, items in records.items()
     }
+    reference_name = "no_aerial" if "no_aerial" in records else next(iter(records))
+    summary = {}
+    for policy_index, (name, items) in enumerate(records.items()):
+        delta = loss[name] - loss[reference_name]
+        summary[name] = {
+            "episodes": len(items),
+            "mean_weighted_loss": float(loss[name].mean()),
+            "std_weighted_loss": float(loss[name].std(ddof=1)) if len(items) > 1 else 0.0,
+            "weighted_loss_ci95": _bootstrap_mean_interval(
+                loss[name],
+                seed=93_001 + policy_index,
+            ),
+            "mean_paired_delta_vs_reference": float(delta.mean()),
+            "paired_delta_ci95": _bootstrap_mean_interval(
+                delta,
+                seed=193_001 + policy_index,
+            ),
+            "reference_policy": reference_name,
+            "escape_rate": float(np.mean([item["escaped"] for item in items])),
+            "containment_rate": float(np.mean([item["contained"] for item in items])),
+            "mean_blocked_actions": float(
+                np.mean([item["blocked_actions"] for item in items])
+            ),
+            "mean_flight_min": float(
+                np.mean(
+                    [
+                        sum(resource["flight_min"] for resource in item["resource"])
+                        for item in items
+                    ]
+                )
+            ),
+            "paired_weighted_loss_delta": {
+                other_name: {
+                    "mean": float((loss[name] - other_loss).mean()),
+                    "ci95": _bootstrap_mean_interval(
+                        loss[name] - other_loss,
+                        seed=293_001 + policy_index * 101 + other_index,
+                    ),
+                }
+                for other_index, (other_name, other_loss) in enumerate(loss.items())
+                if other_name != name
+            },
+        }
     return {"schema_version": 1, "seeds": seeds, "summary": summary, "episodes": records}
 
 
@@ -78,6 +161,7 @@ def main() -> None:
         "nearest": nearest_feasible,
         "anchor_flank": anchor_flank,
         "greedy_value": greedy_value,
+        "joint_assignment": joint_assignment,
     }
     if args.checkpoint:
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")

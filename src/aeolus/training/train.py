@@ -15,8 +15,10 @@ from torch import nn
 from torch.nn.parallel import DistributedDataParallel
 
 from aeolus.config import ExperimentConfig, load_config
+from aeolus.core.tasks import critic_global_features
 from aeolus.training.networks import TaskPointerActorCritic
-from aeolus.training.rollout import Rollout, SynchronousCollector
+from aeolus.training.rollout import Rollout, SynchronousCollector, _stack_observations
+from aeolus.workflows import resolve_policy
 
 
 def _distributed_device(requested: str) -> tuple[torch.device, int, int, bool]:
@@ -25,14 +27,21 @@ def _distributed_device(requested: str) -> tuple[torch.device, int, int, bool]:
     local_rank = int(os.environ.get("LOCAL_RANK", "0"))
     distributed = world_size > 1
     if requested == "auto":
+        # Tiny recurrent policy batches are slower on MPS because simulation is
+        # CPU-resident and each decision incurs a device synchronization. MPS
+        # remains available when requested explicitly.
         requested = "cuda" if torch.cuda.is_available() else "cpu"
     if requested == "cuda" and not torch.cuda.is_available():
         raise RuntimeError("CUDA was requested but no CUDA device is visible")
+    if requested == "mps" and not torch.backends.mps.is_available():
+        raise RuntimeError("MPS was requested but is not available")
+    if distributed and requested == "mps":
+        raise RuntimeError("multi-process DDP is supported on CUDA or CPU, not MPS")
     if requested == "cuda":
         torch.cuda.set_device(local_rank)
         device = torch.device("cuda", local_rank)
     else:
-        device = torch.device("cpu")
+        device = torch.device(requested)
     if distributed and not dist.is_initialized():
         dist.init_process_group(backend="nccl" if device.type == "cuda" else "gloo")
     return device, rank, world_size, distributed
@@ -79,17 +88,18 @@ def _ppo_update(
     resource = flatten(rollout.resource)
     tasks = flatten(rollout.tasks)
     masks = flatten(rollout.masks)
-    global_state = flatten(rollout.global_state)
+    actor_global_state = flatten(rollout.actor_global_state)
+    critic_global_state = flatten(rollout.critic_global_state)
     hidden = flatten(rollout.hidden)
     actions = flatten(rollout.actions)
     old_logp = flatten(rollout.logp)
     old_values = rollout.values.reshape(flat)
     target_returns = returns.reshape(flat)
     flat_advantages = advantages.reshape(flat)
-    indices = torch.randperm(flat, device=device)
     losses: list[tuple[float, float, float]] = []
     amp_enabled = train.use_amp and device.type == "cuda"
     for _ in range(train.epochs_per_update):
+        indices = torch.randperm(flat, device=device)
         for start in range(0, flat, train.minibatch_size):
             batch_index = indices[start : start + train.minibatch_size]
             with torch.autocast(device_type=device.type, enabled=amp_enabled):
@@ -97,7 +107,8 @@ def _ppo_update(
                     resource[batch_index],
                     tasks[batch_index],
                     masks[batch_index],
-                    global_state[batch_index],
+                    actor_global_state[batch_index],
+                    critic_global_state[batch_index],
                     hidden[batch_index],
                 )
                 distribution = torch.distributions.Categorical(logits=logits)
@@ -135,6 +146,84 @@ def _ppo_update(
     }
 
 
+def _expert_warmstart(
+    model: nn.Module,
+    optimizer: torch.optim.Optimizer,
+    collector: SynchronousCollector,
+    config: ExperimentConfig,
+    device: torch.device,
+) -> dict[str, float] | None:
+    steps = config.training.expert_warmstart_steps
+    if steps <= 0:
+        return None
+    expert = resolve_policy(config.training.expert_policy)[0]
+    losses: list[float] = []
+    core_model = model.module if isinstance(model, DistributedDataParallel) else model
+    core_model.train()
+    for _ in range(steps):
+        resource, tasks, masks, actor_global_state = _stack_observations(
+            collector.observations,
+            collector.agent_ids,
+            device,
+        )
+        critic_global_state = torch.as_tensor(
+            np.stack([critic_global_features(env.sim) for env in collector.envs]),
+            device=device,
+            dtype=torch.float32,
+        )
+        target_actions = [
+            expert(env.sim)
+            for env in collector.envs
+        ]
+        target = torch.as_tensor(
+            [
+                [actions[agent] for agent in collector.agent_ids]
+                for actions in target_actions
+            ],
+            device=device,
+            dtype=torch.long,
+        )
+        logits, _, next_hidden = model(
+            resource,
+            tasks,
+            masks,
+            actor_global_state,
+            critic_global_state,
+            collector.hidden,
+        )
+        loss = nn.functional.cross_entropy(
+            logits.reshape(-1, logits.shape[-1]),
+            target.reshape(-1),
+        )
+        optimizer.zero_grad(set_to_none=True)
+        loss.backward()
+        torch.nn.utils.clip_grad_norm_(model.parameters(), config.training.max_grad_norm)
+        optimizer.step()
+        losses.append(float(loss.detach()))
+
+        next_observations = []
+        for env_index, env in enumerate(collector.envs):
+            obs, _, terminations, truncations, _ = env.step(target_actions[env_index])
+            done = bool(
+                terminations[collector.agent_ids[0]]
+                or truncations[collector.agent_ids[0]]
+            )
+            if done:
+                collector.episode_index[env_index] += collector.num_envs
+                obs, _ = env.reset(
+                    seed=collector.seed + int(collector.episode_index[env_index])
+                )
+                next_hidden[env_index].zero_()
+            next_observations.append(obs)
+        collector.observations = next_observations
+        collector.hidden = next_hidden.detach()
+    return {
+        "expert_steps": float(steps),
+        "expert_loss_initial": losses[0],
+        "expert_loss_final": losses[-1],
+    }
+
+
 def train(experiment: ExperimentConfig) -> None:
     device, rank, world_size, distributed = _distributed_device(experiment.training.device)
     _seed_everything(experiment.training.seed + rank)
@@ -161,6 +250,15 @@ def train(experiment: ExperimentConfig) -> None:
         device,
         experiment.training.hidden_dim,
     )
+    warmstart_metrics = _expert_warmstart(
+        model,
+        optimizer,
+        collector,
+        experiment,
+        device,
+    )
+    if rank == 0 and warmstart_metrics is not None:
+        print(json.dumps({"phase": "expert_warmstart", **warmstart_metrics}), flush=True)
     metrics_path = checkpoint_dir / "metrics.jsonl"
     for update in range(1, experiment.training.updates + 1):
         rollout = collector.collect(core_model, experiment.training.rollout_steps)
