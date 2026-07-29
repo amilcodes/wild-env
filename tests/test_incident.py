@@ -15,9 +15,15 @@ from aeolus.data import (
     write_incident_bundle,
     write_weather_forcing,
 )
-from aeolus.data.importers import fetch_feds_perimeters, geojson_bbox
+from aeolus.data.importers import (
+    fetch_feds_perimeters,
+    fetch_nasa_power_hourly,
+    geojson_bbox,
+    load_nirops_perimeters,
+)
 from aeolus.evaluation.historical import (
     PerimeterSeries,
+    boundary_distance_metrics,
     compare_counterfactual_policies,
     perimeter_metrics,
     run_hindcast,
@@ -149,6 +155,9 @@ def test_perimeter_metrics_have_expected_identity() -> None:
     scores = perimeter_metrics(mask, mask, 30.0)
     assert scores["iou"] == 1.0
     assert scores["area_bias_km2"] == 0.0
+    boundary = boundary_distance_metrics(mask, mask, 30.0)
+    assert boundary["mean_symmetric_distance_m"] == 0.0
+    assert boundary["hausdorff_95_m"] == 0.0
 
 
 def test_feds_import_normalizes_and_sorts(monkeypatch) -> None:
@@ -176,6 +185,83 @@ def test_feds_import_normalizes_and_sorts(monkeypatch) -> None:
     assert [item["properties"]["t"] for item in restored["features"]] == [1000, 2000]
     assert restored["features"][0]["properties"]["source"] == "NASA-FEDS-VIIRS"
     assert geojson_bbox(restored) == (-121.0, 39.0, -120.9, 39.1)
+
+
+def test_nasa_power_import_builds_relative_hourly_forcing(monkeypatch) -> None:
+    payload = {
+        "header": {"fill_value": -999.0, "api": {"version": "test"}},
+        "properties": {
+            "parameter": {
+                "WS10M": {"2022070502": 3.0, "2022070503": 4.0},
+                "WD10M": {"2022070502": 250.0, "2022070503": 260.0},
+                "T2M": {"2022070502": 20.0, "2022070503": 18.0},
+                "RH2M": {"2022070502": 30.0, "2022070503": 40.0},
+                "PRECTOTCORR": {"2022070502": 0.0, "2022070503": 0.1},
+            }
+        },
+    }
+
+    def fake_download(*_args, **_kwargs) -> bytes:
+        return json.dumps(payload).encode()
+
+    monkeypatch.setattr("aeolus.data.importers._download", fake_download)
+    forcing = fetch_nasa_power_hourly(
+        38.0,
+        -120.0,
+        "2022-07-05T02:30:00Z",
+        "2022-07-05T04:00:00Z",
+    )
+    assert forcing.minute.tolist() == [-30.0, 30.0]
+    assert forcing.at_minute(0.0)["wind_speed_m_s"] == 3.5
+    assert forcing.at_minute(0.0)["precipitation_rate_mm_h"] == pytest.approx(0.05)
+
+
+def test_nirops_import_filters_and_sorts_acquisition_times(tmp_path) -> None:
+    import shapefile
+
+    source = tmp_path / "nirops"
+    with shapefile.Writer(str(source), shapeType=shapefile.POLYGON) as writer:
+        writer.field("Incident_C", "C")
+        writer.field("Inc Name", "C")
+        writer.field("Inc Number", "C")
+        writer.field("UTC", "C")
+        writer.field("IRWINID", "C")
+        writer.field("Acres", "N", decimal=1)
+        for code, timestamp, acres, offset in (
+            ("CA-TEST-001_Fire", "2022-07-06T04:00:00", 20.0, 0.0),
+            ("OTHER", "2022-07-05T03:00:00", 8.0, 2.0),
+            ("CA-TEST-001_Fire", "2022-07-05T04:00:00", 10.0, 1.0),
+        ):
+            writer.poly(
+                [
+                    [
+                        [offset, offset],
+                        [offset, offset + 0.5],
+                        [offset + 0.5, offset + 0.5],
+                        [offset + 0.5, offset],
+                        [offset, offset],
+                    ]
+                ]
+            )
+            writer.record(
+                code,
+                "Test Fire",
+                "TEST-001",
+                timestamp,
+                "test-irwin",
+                acres,
+            )
+
+    collection = load_nirops_perimeters(
+        source.with_suffix(".shp"),
+        "CA-TEST-001_Fire",
+    )
+    assert len(collection["features"]) == 2
+    assert [
+        feature["properties"]["observed_at"] for feature in collection["features"]
+    ] == ["2022-07-05T04:00:00Z", "2022-07-06T04:00:00Z"]
+    assert collection["features"][1]["properties"]["reported_acres"] == 20.0
+    assert collection["aeolus:source"]["doi"].endswith("95rj5d379g.1")
 
 
 def test_weather_forcing_round_trip_and_direction_interpolation(tmp_path) -> None:

@@ -15,11 +15,14 @@ import certifi
 import numpy as np
 
 from aeolus.data.bundle import ScenarioBundle, load_bundle, write_bundle
+from aeolus.data.weather import WeatherForcing
 
 FEDS_PERIMETER_URL = (
     "https://gis.earthdata.nasa.gov/image/rest/services/FireTracking/"
     "Fire_Events_Data_Suite_Fire_Perimeters_nrt/MapServer/0/query"
 )
+NASA_POWER_HOURLY_URL = "https://power.larc.nasa.gov/api/temporal/hourly/point"
+NIROPS_PROGRESSION_DOI = "https://doi.org/10.17632/95rj5d379g.1"
 LANDFIRE_WCS_URL = "https://edcintl.cr.usgs.gov/geoserver/landfire/conus_2025/wcs"
 USGS_3DEP_EXPORT_URL = (
     "https://elevation.nationalmap.gov/arcgis/rest/services/"
@@ -106,19 +109,180 @@ def fetch_feds_perimeters(
     return collection
 
 
+def load_nirops_perimeters(
+    shapefile_path: str | Path,
+    incident_code: str,
+) -> dict[str, Any]:
+    """Select one time series from the Magstadt et al. NIROPS archive.
+
+    The source is the 2026 curated release of analyst-interpreted airborne
+    infrared perimeters for western U.S. incidents from 2020 through 2024.
+    """
+
+    try:
+        import shapefile
+        from shapely.geometry import mapping
+        from shapely.geometry import shape as shapely_shape
+    except ImportError as exc:  # pragma: no cover
+        raise ImportError("install aeolus-ia[geo] to read NIROPS perimeters") from exc
+
+    source = Path(shapefile_path)
+    reader = shapefile.Reader(str(source))
+    features: list[dict[str, Any]] = []
+    for index, record in enumerate(reader.iterRecords()):
+        properties = record.as_dict()
+        if str(properties.get("Incident_C")) != incident_code:
+            continue
+
+        def field(*names: str) -> Any:
+            for name in names:
+                if name in properties:
+                    return properties[name]
+            raise KeyError(f"NIROPS record is missing all field aliases {names!r}")
+
+        observed = datetime.fromisoformat(str(properties["UTC"])).replace(
+            tzinfo=timezone.utc
+        )
+        geometry = shapely_shape(reader.shape(index).__geo_interface__)
+        if not geometry.is_valid:
+            geometry = geometry.buffer(0)
+        features.append(
+            {
+                "type": "Feature",
+                "geometry": mapping(geometry),
+                "properties": {
+                    "observed_at": observed.isoformat().replace("+00:00", "Z"),
+                    "source": "USFS-NIROPS-curated-progression",
+                    "source_crs": "EPSG:4326",
+                    "incident_code": str(properties["Incident_C"]),
+                    "incident_name": str(field("Inc Name", "Inc_Name")),
+                    "incident_number": str(field("Inc Number", "Inc_Number")),
+                    "irwin_id": str(properties["IRWINID"]),
+                    "reported_acres": float(properties["Acres"]),
+                    "time_semantics": "airborne infrared acquisition time in UTC",
+                },
+            }
+        )
+    if len(features) < 2:
+        raise LookupError(
+            f"NIROPS archive has fewer than two records for {incident_code!r}"
+        )
+    features.sort(key=lambda feature: feature["properties"]["observed_at"])
+    return {
+        "type": "FeatureCollection",
+        "name": f"NIROPS progression {incident_code}",
+        "features": features,
+        "aeolus:source": {
+            "title": (
+                "A high spatial resolution daily fire perimeter progression "
+                "dataset for wildfires in the Western United States: 2020-2024"
+            ),
+            "doi": NIROPS_PROGRESSION_DOI,
+            "license": "CC BY 4.0",
+            "source_path": str(source.resolve()),
+            "incident_code": incident_code,
+            "retrieved_at": datetime.now(timezone.utc)
+            .isoformat()
+            .replace("+00:00", "Z"),
+        },
+    }
+
+
+def fetch_nasa_power_hourly(
+    latitude: float,
+    longitude: float,
+    start_datetime: datetime | str,
+    end_datetime: datetime | str,
+    *,
+    timeout: float = 120.0,
+) -> WeatherForcing:
+    """Fetch hourly MERRA-2 meteorology through the NASA POWER API."""
+
+    def normalize(value: datetime | str) -> datetime:
+        parsed = (
+            datetime.fromisoformat(value.replace("Z", "+00:00"))
+            if isinstance(value, str)
+            else value
+        )
+        if parsed.tzinfo is None:
+            parsed = parsed.replace(tzinfo=timezone.utc)
+        return parsed.astimezone(timezone.utc)
+
+    start = normalize(start_datetime)
+    end = normalize(end_datetime)
+    if end <= start:
+        raise ValueError("weather end time must follow start time")
+    parameters = ("WS10M", "WD10M", "T2M", "RH2M", "PRECTOTCORR")
+    body = _download(
+        NASA_POWER_HOURLY_URL,
+        [
+            ("parameters", ",".join(parameters)),
+            ("community", "AG"),
+            ("longitude", str(float(longitude))),
+            ("latitude", str(float(latitude))),
+            ("start", start.strftime("%Y%m%d")),
+            ("end", end.strftime("%Y%m%d")),
+            ("format", "JSON"),
+            ("time-standard", "UTC"),
+        ],
+        timeout=timeout,
+    )
+    payload = json.loads(body)
+    values = payload.get("properties", {}).get("parameter", {})
+    if not all(name in values for name in parameters):
+        raise RuntimeError(f"NASA POWER response is missing parameters: {payload}")
+    fill = float(payload.get("header", {}).get("fill_value", -999.0))
+    keys = sorted(set.intersection(*(set(values[name]) for name in parameters)))
+    timestamps: list[datetime] = []
+    rows: dict[str, list[float]] = {name: [] for name in parameters}
+    for key in keys:
+        sample = [float(values[name][key]) for name in parameters]
+        if any(value <= fill + 1e-6 for value in sample):
+            continue
+        timestamp = datetime.strptime(key, "%Y%m%d%H").replace(tzinfo=timezone.utc)
+        timestamps.append(timestamp)
+        for name, value in zip(parameters, sample, strict=True):
+            rows[name].append(value)
+    if len(timestamps) < 2:
+        raise RuntimeError("NASA POWER returned fewer than two complete hourly samples")
+    forcing = WeatherForcing(
+        minute=np.asarray(
+            [(timestamp - start).total_seconds() / 60.0 for timestamp in timestamps],
+            dtype=np.float64,
+        ),
+        wind_speed_m_s=np.asarray(rows["WS10M"], dtype=np.float32),
+        wind_direction_deg=np.asarray(rows["WD10M"], dtype=np.float32),
+        air_temperature_c=np.asarray(rows["T2M"], dtype=np.float32),
+        relative_humidity_pct=np.asarray(rows["RH2M"], dtype=np.float32),
+        precipitation_rate_mm_h=np.asarray(rows["PRECTOTCORR"], dtype=np.float32),
+        metadata={
+            "source": "NASA POWER hourly API; MERRA-2 and POWER",
+            "history": (
+                f"point extraction at latitude={latitude:.6f}, "
+                f"longitude={longitude:.6f}; API "
+                f"{payload.get('header', {}).get('api', {}).get('version', 'unknown')}"
+            ),
+            "time_standard": "UTC",
+            "source_url": NASA_POWER_HOURLY_URL,
+        },
+    )
+    forcing.validate()
+    return forcing
+
+
 def geojson_bbox(collection: dict[str, Any]) -> tuple[float, float, float, float]:
     coordinates: list[tuple[float, float]] = []
 
     def visit(value: Any) -> None:
         if (
-            isinstance(value, list)
+            isinstance(value, (list, tuple))
             and len(value) >= 2
             and isinstance(value[0], (int, float))
             and isinstance(value[1], (int, float))
         ):
             coordinates.append((float(value[0]), float(value[1])))
             return
-        if isinstance(value, list):
+        if isinstance(value, (list, tuple)):
             for item in value:
                 visit(item)
 

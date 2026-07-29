@@ -76,6 +76,32 @@ Hindcast, shadow replay and counterfactual branches have deliberately different
 causal interpretations; they are described in
 [`docs/research_position.md`](docs/research_position.md).
 
+### NIROPS held-out benchmark
+
+The multi-incident study imports analyst-interpreted airborne-infrared
+progressions, builds aligned terrain/fuel/weather bundles, calibrates on one
+earlier transition per fire, and scores four later transitions per fire:
+
+```bash
+aeolus-study prepare \
+  --manifest configs/historical_validation.yaml \
+  --source-shapefile /path/to/NIROPS_2020_2024_R1_R6.shp \
+  --out outputs/historical-validation/incidents
+
+aeolus-study run \
+  --manifest configs/historical_validation.yaml \
+  --prepared-root outputs/historical-validation/incidents \
+  --out outputs/historical-validation/results
+```
+
+The frozen six-fire result has 24 held-out forecasts. Calibrated physics
+reaches cumulative IoU 0.611 and active-growth one-cell-tolerance F1 0.151;
+the no-growth persistence baseline reaches cumulative IoU 0.873. The result
+does not support a historical spread-accuracy claim. The full protocol,
+incident results, and suppression-data audit are in
+[`docs/historical_validation.md`](docs/historical_validation.md). Machine-readable
+outputs are under [`results/historical_validation`](results/historical_validation).
+
 ## Train and compare
 
 ```bash

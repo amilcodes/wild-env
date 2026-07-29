@@ -23,6 +23,7 @@ dependencies = [
 [project.optional-dependencies]
 rllib = ["ray[rllib]>=2.55,<2.57"]
 geo = [
+  "pyshp>=2.3,<3",
   "rasterio>=1.4,<2",
   "shapely>=2.0,<3",
   "pyproj>=3.7,<4",
@@ -38,6 +39,7 @@ render = [
   "imageio>=2.37,<3",
   "imageio-ffmpeg>=0.6,<1",
 ]
+paper = ["reportlab>=4.4,<5"]
 dev = ["pytest>=8,<9", "ruff>=0.11,<1"]
 fire-reference = [
   "pyretechnics==2025.5.15; python_version >= '3.11' and python_version < '3.12'",
@@ -52,6 +54,7 @@ aeolus-historical = "aeolus.historical_cli:main"
 aeolus-replay = "aeolus.replay_cli:main"
 aeolus-benchmark = "aeolus.benchmark_cli:main"
 aeolus-fire = "aeolus.fire_cli:main"
+aeolus-study = "aeolus.study_cli:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

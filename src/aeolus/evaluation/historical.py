@@ -143,6 +143,45 @@ def tolerance_metrics(
     }
 
 
+def boundary_distance_metrics(
+    predicted: np.ndarray,
+    observed: np.ndarray,
+    cell_size_m: float,
+) -> dict[str, float]:
+    """Symmetric boundary distances on a common raster grid."""
+
+    if predicted.shape != observed.shape:
+        raise ValueError("predicted and observed masks must share a grid")
+    try:
+        from scipy.ndimage import binary_erosion, distance_transform_edt
+    except ImportError as exc:  # pragma: no cover
+        raise ImportError("install aeolus-ia[geo] for boundary metrics") from exc
+
+    predicted_mask = predicted.astype(np.bool_)
+    observed_mask = observed.astype(np.bool_)
+    predicted_edge = predicted_mask & ~binary_erosion(predicted_mask)
+    observed_edge = observed_mask & ~binary_erosion(observed_mask)
+    if not predicted_edge.any() or not observed_edge.any():
+        return {
+            "mean_symmetric_distance_m": float("nan"),
+            "hausdorff_95_m": float("nan"),
+            "maximum_distance_m": float("nan"),
+        }
+    distance_to_observed = distance_transform_edt(~observed_edge) * cell_size_m
+    distance_to_predicted = distance_transform_edt(~predicted_edge) * cell_size_m
+    distances = np.concatenate(
+        (
+            distance_to_observed[predicted_edge],
+            distance_to_predicted[observed_edge],
+        )
+    )
+    return {
+        "mean_symmetric_distance_m": float(np.mean(distances)),
+        "hausdorff_95_m": float(np.quantile(distances, 0.95)),
+        "maximum_distance_m": float(np.max(distances)),
+    }
+
+
 def run_hindcast(
     simulator: AeolusSimulator,
     series: PerimeterSeries,
@@ -150,6 +189,7 @@ def run_hindcast(
     *,
     start_index: int = 0,
     target_index: int = 1,
+    return_prediction: bool = False,
 ) -> dict[str, Any]:
     """Initialize at one observation and forecast toward a later perimeter."""
 
@@ -176,7 +216,7 @@ def run_hindcast(
     predicted = simulator.state.truth.phase != 0
     predicted_growth = predicted & ~start.mask
     observed_growth = target.mask & ~start.mask
-    return {
+    result = {
         "start_time": start.timestamp.isoformat(),
         "target_time": target.timestamp.isoformat(),
         "requested_minutes": requested_minutes,
@@ -196,8 +236,14 @@ def run_hindcast(
         "growth_tolerance_1_cell": tolerance_metrics(
             predicted_growth, observed_growth, radius_cells=1
         ),
+        "boundary": boundary_distance_metrics(
+            predicted, target.mask, series.cell_size_m
+        ),
         "episode": simulator.episode_record(),
     }
+    if return_prediction:
+        result["prediction_mask"] = predicted
+    return result
 
 
 def calibrate_spread_adjustment(

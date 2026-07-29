@@ -6,4 +6,4 @@ recursive-include docs *.md
 recursive-include native CMakeLists.txt *.hpp *.cpp
 recursive-include requirements *.lock
 recursive-include src/aeolus/resources *.npz
-include tools/build_fire_lookup.py
+recursive-include tools *.py
