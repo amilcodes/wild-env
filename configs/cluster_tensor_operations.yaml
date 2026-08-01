@@ -1,0 +1,202 @@
+scenario:
+  seed: 260729
+  width: 192
+  height: 192
+  cell_size_m: 60.0
+  horizon_min: 360
+  decision_interval_min: 3
+  max_tasks: 96
+  wind_speed_m_s: 8.0
+  wind_direction_deg: 35.0
+  wind_variability: 0.35
+  spotting_rate: 0.012
+  suppression:
+    aviation_max_wind_m_s: 18.0
+    minimum_dispatch_payload_fraction: 0.80
+    minimum_reserve_endurance_min: 20.0
+  service_sites:
+    - site_id: west_airport
+      kind: airport
+      x: 18
+      y: 169
+      services: [water, fuel, charge]
+      service_mode: land
+      bays: 6
+      approach_capacity: 4
+      refill_rate_l_min: 3200.0
+      fixed_turnaround_min: 4.0
+      manually_verified: true
+    - site_id: retardant_base
+      kind: retardant_base
+      x: 29
+      y: 154
+      services: [retardant, fuel]
+      service_mode: land
+      bays: 4
+      approach_capacity: 3
+      refill_rate_l_min: 2400.0
+      fixed_turnaround_min: 6.0
+      available_volume_l: 360000.0
+      manually_verified: true
+    - site_id: north_helibase
+      kind: helibase
+      x: 112
+      y: 31
+      services: [water, fuel, charge]
+      service_mode: land
+      bays: 4
+      approach_capacity: 3
+      refill_rate_l_min: 2600.0
+      fixed_turnaround_min: 3.0
+      manually_verified: true
+    - site_id: reservoir_alpha
+      kind: dip_site
+      x: 87
+      y: 121
+      services: [water]
+      service_mode: hover_fill
+      bays: 3
+      approach_capacity: 3
+      refill_rate_l_min: 6500.0
+      fixed_turnaround_min: 1.0
+      available_volume_l: 480000.0
+      minimum_depth_m: 2.5
+      minimum_length_m: 180.0
+      manually_verified: true
+    - site_id: reservoir_bravo
+      kind: dip_site
+      x: 151
+      y: 96
+      services: [water]
+      service_mode: hover_fill
+      bays: 2
+      approach_capacity: 2
+      refill_rate_l_min: 5200.0
+      fixed_turnaround_min: 1.0
+      available_volume_l: 260000.0
+      minimum_depth_m: 2.0
+      minimum_length_m: 140.0
+      manually_verified: true
+    - site_id: scoop_lake
+      kind: scoopable_water
+      x: 133
+      y: 152
+      services: [water]
+      service_mode: scoop
+      bays: 2
+      approach_capacity: 2
+      refill_rate_l_min: 18000.0
+      fixed_turnaround_min: 1.0
+      available_volume_l: 1500000.0
+      minimum_depth_m: 2.2
+      minimum_length_m: 1600.0
+      manually_verified: true
+  resources:
+    - &water_uav
+      resource_id: water_uav_00
+      kind: water
+      cruise_speed_m_s: 48.0
+      payload_l: 1200.0
+      reload_min: 3
+      dispatch_latency_min: 1
+      endurance_min: 125
+      reserve_endurance_min: 20.0
+      home_site_id: west_airport
+      service_modes: [land, hover_fill]
+      max_operating_wind_m_s: 16.0
+      water_radius_m: 48.0
+      minimum_drop_length_m: 180.0
+      maximum_drop_length_m: 700.0
+    - <<: *water_uav
+      resource_id: water_uav_01
+    - <<: *water_uav
+      resource_id: water_uav_02
+      home_site_id: north_helibase
+    - <<: *water_uav
+      resource_id: water_uav_03
+      home_site_id: north_helibase
+    - <<: *water_uav
+      resource_id: water_uav_04
+    - <<: *water_uav
+      resource_id: water_uav_05
+    - &heavy_water_uav
+      resource_id: heavy_water_uav_00
+      kind: water
+      cruise_speed_m_s: 55.0
+      payload_l: 2800.0
+      reload_min: 5
+      dispatch_latency_min: 2
+      endurance_min: 150
+      reserve_endurance_min: 25.0
+      home_site_id: west_airport
+      service_modes: [land, hover_fill]
+      max_operating_wind_m_s: 17.0
+      water_radius_m: 70.0
+      minimum_drop_length_m: 240.0
+      maximum_drop_length_m: 900.0
+    - <<: *heavy_water_uav
+      resource_id: heavy_water_uav_01
+      home_site_id: north_helibase
+    - &scooper_uav
+      resource_id: scooper_uav_00
+      kind: water
+      cruise_speed_m_s: 66.0
+      payload_l: 6000.0
+      reload_min: 2
+      dispatch_latency_min: 2
+      endurance_min: 210
+      reserve_endurance_min: 30.0
+      home_site_id: west_airport
+      service_modes: [land, scoop]
+      max_operating_wind_m_s: 18.0
+      water_radius_m: 95.0
+      minimum_drop_length_m: 420.0
+      maximum_drop_length_m: 1200.0
+    - <<: *scooper_uav
+      resource_id: scooper_uav_01
+    - &retardant_uav
+      resource_id: retardant_uav_00
+      kind: retardant
+      cruise_speed_m_s: 64.0
+      payload_l: 5200.0
+      reload_min: 9
+      dispatch_latency_min: 2
+      endurance_min: 190
+      reserve_endurance_min: 30.0
+      home_site_id: retardant_base
+      service_modes: [land]
+      max_operating_wind_m_s: 18.0
+      retardant_length_m: 700.0
+      retardant_width_m: 75.0
+      minimum_drop_length_m: 300.0
+      maximum_drop_length_m: 1100.0
+      target_coverage_level_gpc: 2.0
+    - <<: *retardant_uav
+      resource_id: retardant_uav_01
+
+training:
+  seed: 260729
+  device: cuda
+  environment_backend: tensor_operations
+  policy_architecture: entity_attention
+  tensor_max_segments: 48
+  num_envs: 2048
+  rollout_steps: 128
+  updates: 3000
+  epochs_per_update: 3
+  minibatch_size: 4096
+  learning_rate: 0.0002
+  gamma: 0.995
+  gae_lambda: 0.95
+  clip_ratio: 0.20
+  value_clip_ratio: 0.20
+  entropy_coef: 0.008
+  value_coef: 0.5
+  max_grad_norm: 0.8
+  hidden_dim: 256
+  attention_heads: 8
+  attention_layers: 3
+  compile_model: true
+  checkpoint_dir: runs/tensor_operations
+  checkpoint_every: 25
+  use_amp: true
