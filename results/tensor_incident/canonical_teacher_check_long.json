@@ -1,0 +1,156 @@
+{
+  "schema_version": 1,
+  "status": "diagnostic_not_calibrated",
+  "config": "/Users/AmilAgrawal/Documents/Codex/2026-07-26/le/aeolus_py/configs/cluster_tensor_incident.yaml",
+  "device": "cpu",
+  "cases": [
+    {
+      "seed": 9103,
+      "start_minute": 12,
+      "forecast_minutes": 120,
+      "canonical_initial": {
+        "burning_fraction": 0.0006885914173965736,
+        "burned_fraction": 0.0002754365669586294,
+        "cumulative_fire_fraction": 0.000964027984355203,
+        "expected_loss": 0.0
+      },
+      "canonical_final": {
+        "burning_fraction": 0.0051782074588222335,
+        "burned_fraction": 0.008097835068583706,
+        "cumulative_fire_fraction": 0.013276042527405938,
+        "expected_loss": 0.0
+      },
+      "canonical_delta_expected_loss": 0.0,
+      "canonical_delta_cumulative_fire_fraction": 0.012312014543050736,
+      "tensor_delta_expected_loss": {
+        "mean": 0.0,
+        "p05": 0.0,
+        "median": 0.0,
+        "p95": 0.0
+      },
+      "tensor_delta_cumulative_fire_fraction": {
+        "mean": 0.0054805041290819645,
+        "p05": 0.0007347046630457044,
+        "median": 0.0022924053482711315,
+        "p95": 0.015551071614027023
+      },
+      "absolute_error_delta_expected_loss": 0.0,
+      "absolute_error_delta_cumulative_fire_fraction": 0.006831510413968771,
+      "canonical_loss_in_tensor_90pct_interval": true,
+      "canonical_cumulative_in_tensor_90pct_interval": true
+    },
+    {
+      "seed": 10112,
+      "start_minute": 12,
+      "forecast_minutes": 120,
+      "canonical_initial": {
+        "burning_fraction": 0.0005508731339172588,
+        "burned_fraction": 0.0002754365669586294,
+        "cumulative_fire_fraction": 0.0008263097008758883,
+        "expected_loss": 0.0
+      },
+      "canonical_final": {
+        "burning_fraction": 0.002396298132540076,
+        "burned_fraction": 0.0031950641767201013,
+        "cumulative_fire_fraction": 0.005591362309260177,
+        "expected_loss": 0.0
+      },
+      "canonical_delta_expected_loss": 0.0,
+      "canonical_delta_cumulative_fire_fraction": 0.004765052608384289,
+      "tensor_delta_expected_loss": {
+        "mean": 0.0,
+        "p05": 0.0,
+        "median": 0.0,
+        "p95": 0.0
+      },
+      "tensor_delta_cumulative_fire_fraction": {
+        "mean": 0.0037815480027347803,
+        "p05": 0.0006530522950924933,
+        "median": 0.003243665210902691,
+        "p95": 0.009104752913117409
+      },
+      "absolute_error_delta_expected_loss": 0.0,
+      "absolute_error_delta_cumulative_fire_fraction": 0.0009835046056495085,
+      "canonical_loss_in_tensor_90pct_interval": true,
+      "canonical_cumulative_in_tensor_90pct_interval": true
+    },
+    {
+      "seed": 11121,
+      "start_minute": 12,
+      "forecast_minutes": 120,
+      "canonical_initial": {
+        "burning_fraction": 0.0005784167906131218,
+        "burned_fraction": 0.0003029802236544924,
+        "cumulative_fire_fraction": 0.0008813970142676141,
+        "expected_loss": 0.0
+      },
+      "canonical_final": {
+        "burning_fraction": 0.004930314548559467,
+        "burned_fraction": 0.004654877981600837,
+        "cumulative_fire_fraction": 0.009585192530160304,
+        "expected_loss": 0.0
+      },
+      "canonical_delta_expected_loss": 0.0,
+      "canonical_delta_cumulative_fire_fraction": 0.00870379551589269,
+      "tensor_delta_expected_loss": {
+        "mean": 0.0,
+        "p05": 0.0,
+        "median": 0.0,
+        "p95": 0.0
+      },
+      "tensor_delta_cumulative_fire_fraction": {
+        "mean": 0.0041514802724123,
+        "p05": 0.0006710310117341578,
+        "median": 0.0025402626488357782,
+        "p95": 0.011044973507523537
+      },
+      "absolute_error_delta_expected_loss": 0.0,
+      "absolute_error_delta_cumulative_fire_fraction": 0.00455231524348039,
+      "canonical_loss_in_tensor_90pct_interval": true,
+      "canonical_cumulative_in_tensor_90pct_interval": true
+    },
+    {
+      "seed": 12130,
+      "start_minute": 12,
+      "forecast_minutes": 120,
+      "canonical_initial": {
+        "burning_fraction": 0.0006335041040048477,
+        "burned_fraction": 0.0002754365669586294,
+        "cumulative_fire_fraction": 0.0009089406709634771,
+        "expected_loss": 0.0
+      },
+      "canonical_final": {
+        "burning_fraction": 0.0026441910428028426,
+        "burned_fraction": 0.0029471712664573347,
+        "cumulative_fire_fraction": 0.005591362309260177,
+        "expected_loss": 0.0
+      },
+      "canonical_delta_expected_loss": 0.0,
+      "canonical_delta_cumulative_fire_fraction": 0.0046824216382967,
+      "tensor_delta_expected_loss": {
+        "mean": 0.0,
+        "p05": 0.0,
+        "median": 0.0,
+        "p95": 0.0
+      },
+      "tensor_delta_cumulative_fire_fraction": {
+        "mean": 0.004142122343182564,
+        "p05": 0.0008602124289609492,
+        "median": 0.002690732479095459,
+        "p95": 0.011730734258890152
+      },
+      "absolute_error_delta_expected_loss": 0.0,
+      "absolute_error_delta_cumulative_fire_fraction": 0.0005402992951141364,
+      "canonical_loss_in_tensor_90pct_interval": true,
+      "canonical_cumulative_in_tensor_90pct_interval": true
+    }
+  ],
+  "summary": {
+    "case_count": 4,
+    "mean_absolute_error_delta_expected_loss": 0.0,
+    "mean_absolute_error_delta_cumulative_fire_fraction": 0.0032269073895532015,
+    "loss_interval_coverage": 1.0,
+    "cumulative_fire_interval_coverage": 1.0
+  },
+  "interpretation": "This projects canonical snapshots into the coarse tensor state and checks uncontrolled forecast deltas. It is an initial teacher diagnostic, not a calibrated suppression or historical-validity result."
+}

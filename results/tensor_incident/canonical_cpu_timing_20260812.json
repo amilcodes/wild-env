@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "hardware": "macOS-15.3.1-arm64-arm-64bit",
+  "grid": [
+    192,
+    192
+  ],
+  "decision_interval_min": 3,
+  "steps": 40,
+  "elapsed_s": 15.431066415971145,
+  "canonical_decisions_per_second": 2.592173406667476,
+  "simulated_minutes_per_wall_second": 7.7765202200024275
+}
