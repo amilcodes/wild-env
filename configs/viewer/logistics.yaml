@@ -1,0 +1,49 @@
+schema_version: 1
+preset: logistics
+
+window:
+  width: 1840
+  height: 1080
+  start_view: operational_2d
+  show_vehicle_panel: true
+  show_event_panel: true
+  show_layer_panel: true
+
+playback:
+  rate: 4.0
+  refresh_hz: 20
+  loop: false
+  trail_minutes: 90
+  event_autoselect: true
+
+camera:
+  mode: incident
+  elevation_deg: 42.0
+  azimuth_deg: -132.0
+  vertical_exaggeration: 1.25
+  follow_resource: null
+  follow_radius_cells: 22.0
+
+layers:
+  active_fire: true
+  burned_area: true
+  fire_type: false
+  belief_perimeter: false
+  belief_uncertainty: false
+  water: false
+  retardant: false
+  constructed_line: false
+  assets: true
+  service_sites: true
+  vehicle_tracks: true
+  vehicle_labels: true
+  targets: true
+  wind: true
+  coordinate_grid: true
+
+export:
+  width: 2560
+  height: 1440
+  dpi: 180
+  fps: 24
+  codec: libx264
