@@ -1,8 +1,9 @@
 # CUDA/PyTorch version is intentionally a build argument: cluster driver policy
 # determines the correct wheel index. This image contains no incident data.
-FROM nvidia/cuda:12.8.1-cudnn-runtime-ubuntu22.04
+ARG CUDA_IMAGE=nvidia/cuda:13.3.0-cudnn-runtime-ubuntu24.04
+FROM ${CUDA_IMAGE}
 
-ARG TORCH_INDEX_URL=https://download.pytorch.org/whl/cu128
+ARG TORCH_INDEX_URL=https://download.pytorch.org/whl/cu130
 ARG TORCH_VERSION=2.13.0
 ENV DEBIAN_FRONTEND=noninteractive \
     PIP_NO_CACHE_DIR=1 \
@@ -24,4 +25,4 @@ RUN python3 -m pip install --upgrade pip && \
 
 COPY configs ./configs
 ENTRYPOINT ["/usr/bin/tini", "--"]
-CMD ["aeolus-train", "--config", "configs/cluster_mappo.yaml"]
+CMD ["aeolus-train", "--config", "configs/cluster_tensor_operations.yaml"]
