@@ -21,15 +21,15 @@ from aeolus.policies import (
     nearest_feasible,
     no_aerial_action,
 )
-from aeolus.training.networks import TaskPointerActorCritic
+from aeolus.training.networks import TaskPointerActorCritic, build_policy_network
 
 Policy = Callable[[AeolusSimulator], dict[str, int]]
 
 
 def learned_policy(model: TaskPointerActorCritic, device: torch.device) -> Policy:
-    hidden_by_simulator: weakref.WeakKeyDictionary[
-        AeolusSimulator, tuple[int, torch.Tensor]
-    ] = weakref.WeakKeyDictionary()
+    hidden_by_simulator: weakref.WeakKeyDictionary[AeolusSimulator, tuple[int, torch.Tensor]] = (
+        weakref.WeakKeyDictionary()
+    )
 
     @torch.no_grad()
     def act(sim: AeolusSimulator) -> dict[str, int]:
@@ -42,14 +42,10 @@ def learned_policy(model: TaskPointerActorCritic, device: torch.device) -> Polic
         masks = torch.tensor(
             np.stack([observations[item]["action_mask"] for item in ids]), device=device
         ).unsqueeze(0)
-        actor_global_state = torch.tensor(
-            observations[ids[0]]["global"], device=device
-        ).unsqueeze(0)
+        actor_global_state = torch.tensor(observations[ids[0]]["global"], device=device).unsqueeze(0)
         # The value function is irrelevant during execution. A zero privileged
         # state makes the deployment boundary explicit and cannot affect logits.
-        critic_global_state = torch.zeros(
-            (1, CRITIC_GLOBAL_FEATURE_DIM), device=device, dtype=torch.float32
-        )
+        critic_global_state = torch.zeros((1, CRITIC_GLOBAL_FEATURE_DIM), device=device, dtype=torch.float32)
         previous = hidden_by_simulator.get(sim)
         hidden = None
         if previous is not None and sim.state.minute > previous[0]:
@@ -121,16 +117,9 @@ def evaluate_pairs(
             "reference_policy": reference_name,
             "escape_rate": float(np.mean([item["escaped"] for item in items])),
             "containment_rate": float(np.mean([item["contained"] for item in items])),
-            "mean_blocked_actions": float(
-                np.mean([item["blocked_actions"] for item in items])
-            ),
+            "mean_blocked_actions": float(np.mean([item["blocked_actions"] for item in items])),
             "mean_flight_min": float(
-                np.mean(
-                    [
-                        sum(resource["flight_min"] for resource in item["resource"])
-                        for item in items
-                    ]
-                )
+                np.mean([sum(resource["flight_min"] for resource in item["resource"]) for item in items])
             ),
             "paired_weighted_loss_delta": {
                 other_name: {
@@ -166,7 +155,7 @@ def main() -> None:
     if args.checkpoint:
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         checkpoint = torch.load(args.checkpoint, map_location=device, weights_only=False)
-        model = TaskPointerActorCritic(config.training.hidden_dim).to(device)
+        model = build_policy_network(config.training).to(device)
         model.load_state_dict(checkpoint["model"])
         model.eval()
         policies["mappo"] = learned_policy(model, device)

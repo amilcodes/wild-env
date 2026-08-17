@@ -5,7 +5,7 @@ from __future__ import annotations
 from collections.abc import Callable
 from pathlib import Path
 
-from aeolus.config import ResourceSpec, ScenarioConfig
+from aeolus.config import ResourceSpec, ScenarioConfig, TrainingConfig
 from aeolus.core.simulator import AeolusSimulator
 from aeolus.data import IncidentBundle
 from aeolus.policies import (
@@ -14,6 +14,7 @@ from aeolus.policies import (
     joint_assignment,
     nearest_feasible,
     no_aerial_action,
+    rollout_lookahead,
 )
 
 Policy = Callable[[AeolusSimulator], dict[str, int]]
@@ -42,7 +43,12 @@ def scenario_from_incident(
 ) -> ScenarioConfig:
     landscape = incident.scenario_bundle()
     height, width = landscape.elevation_m.shape
+    properties = incident.item.get("properties", {})
+    time_origin = properties.get("start_datetime")
     return ScenarioConfig(
+        scenario_id=incident.incident_id,
+        title=str(properties.get("title", incident.incident_id)),
+        time_origin=str(time_origin) if time_origin is not None else None,
         seed=seed,
         width=width,
         height=height,
@@ -69,6 +75,7 @@ def resolve_policy(
         "anchor_flank": anchor_flank,
         "greedy_value": greedy_value,
         "joint_assignment": joint_assignment,
+        "rollout_lookahead": rollout_lookahead,
     }
     if name in policies:
         return policies[name], None
@@ -80,13 +87,13 @@ def resolve_policy(
     import torch
 
     from aeolus.evaluation.evaluate import learned_policy
-    from aeolus.training.networks import TaskPointerActorCritic
+    from aeolus.training.networks import build_policy_network
 
     checkpoint_path = Path(checkpoint)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     payload = torch.load(checkpoint_path, map_location=device, weights_only=False)
-    hidden_dim = int(payload.get("config", {}).get("training", {}).get("hidden_dim", 192))
-    model = TaskPointerActorCritic(hidden_dim).to(device)
+    training = TrainingConfig(**payload.get("config", {}).get("training", {}))
+    model = build_policy_network(training).to(device)
     model.load_state_dict(payload["model"])
     model.eval()
     return learned_policy(model, device), str(checkpoint_path.resolve())

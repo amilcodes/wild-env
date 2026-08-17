@@ -1,3 +1,11 @@
-from .networks import TaskPointerActorCritic
+from .networks import (
+    EntityAttentionActorCritic,
+    TaskPointerActorCritic,
+    build_policy_network,
+)
 
-__all__ = ["TaskPointerActorCritic"]
+__all__ = [
+    "EntityAttentionActorCritic",
+    "TaskPointerActorCritic",
+    "build_policy_network",
+]

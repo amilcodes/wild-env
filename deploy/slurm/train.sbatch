@@ -14,7 +14,7 @@ set -euo pipefail
 
 PROJECT_DIR="${PROJECT_DIR:-$PWD}"
 IMAGE="${AEOLUS_IMAGE:?Set AEOLUS_IMAGE to an OCI image or Apptainer SIF path}"
-CONFIG="${AEOLUS_CONFIG:-configs/cluster_mappo.yaml}"
+CONFIG="${AEOLUS_CONFIG:-configs/cluster_tensor_incident.yaml}"
 MASTER_ADDR="$(scontrol show hostnames "$SLURM_JOB_NODELIST" | head -n 1)"
 MASTER_PORT="${MASTER_PORT:-29500}"
 export MASTER_ADDR MASTER_PORT

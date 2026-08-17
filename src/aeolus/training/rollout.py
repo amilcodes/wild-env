@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from math import ceil
 
 import numpy as np
 import torch
@@ -10,6 +11,8 @@ import torch
 from aeolus.config import ScenarioConfig
 from aeolus.core.tasks import critic_global_features
 from aeolus.envs.parallel import AeolusParallelEnv
+from aeolus.envs.tensor_incident import TensorIncidentEnv
+from aeolus.envs.tensor_operations import TensorOperationsEnv
 from aeolus.training.networks import TaskPointerActorCritic
 
 
@@ -27,6 +30,7 @@ class Rollout:
     rewards: torch.Tensor
     dones: torch.Tensor
     bootstrap_value: torch.Tensor
+    diagnostics: dict[str, torch.Tensor]
 
 
 def _stack_observations(
@@ -156,4 +160,197 @@ class SynchronousCollector:
             rewards=torch.stack(records["rewards"]),
             dones=torch.stack(records["dones"]),
             bootstrap_value=bootstrap_value.detach(),
+            diagnostics={},
         )
+
+
+class TensorOperationsCollector:
+    """End-to-end device-resident collector for operations pretraining."""
+
+    def __init__(
+        self,
+        config: ScenarioConfig,
+        num_envs: int,
+        seed: int,
+        device: torch.device,
+        hidden_dim: int,
+        *,
+        max_segments: int,
+    ):
+        self.env = TensorOperationsEnv(
+            config,
+            batch_size=num_envs,
+            max_segments=max_segments,
+            device=device,
+            terminate_on_completion=False,
+        )
+        self.device = device
+        self.hidden = torch.zeros(
+            (num_envs, self.env.num_resources, hidden_dim),
+            device=device,
+        )
+        self.observation = self.env.reset(seed=seed)
+        self.episode_decisions = ceil(config.horizon_min / config.decision_interval_min)
+        self.decision_in_episode = 0
+
+    @property
+    def num_envs(self) -> int:
+        return self.env.batch_size
+
+    @torch.no_grad()
+    def collect(self, model: TaskPointerActorCritic, steps: int) -> Rollout:
+        records: dict[str, list[torch.Tensor]] = {
+            key: []
+            for key in (
+                "resource",
+                "tasks",
+                "masks",
+                "actor_global_state",
+                "critic_global_state",
+                "hidden",
+                "actions",
+                "logp",
+                "values",
+                "rewards",
+                "dones",
+            )
+        }
+        diagnostic_records: dict[str, list[torch.Tensor]] = {
+            "delivered_l": [],
+            "wasted_l": [],
+            "blocked_actions": [],
+        }
+        incident_diagnostics = isinstance(self.env, TensorIncidentEnv)
+        if incident_diagnostics:
+            diagnostic_records.update(
+                {
+                    "expected_loss": [],
+                    "burned_fraction": [],
+                    "constraint_blocked": [],
+                    "constraint_exhaustion": [],
+                    "constraint_queue": [],
+                    "constraint_waste": [],
+                    "contained": [],
+                    "escaped": [],
+                }
+            )
+        model.eval()
+        for _ in range(steps):
+            observation = self.observation
+            critic_global_state = self.env.critic_state()
+            actions, logp, _, values, next_hidden = model.act(
+                observation.resource,
+                observation.tasks,
+                observation.action_mask,
+                observation.global_state,
+                critic_global_state,
+                self.hidden,
+            )
+            transition = self.env.step(actions)
+            diagnostic_records["delivered_l"].append(transition.delivered_l.detach())
+            diagnostic_records["wasted_l"].append(transition.wasted_l.detach())
+            diagnostic_records["blocked_actions"].append(transition.blocked_actions.detach())
+            if incident_diagnostics:
+                diagnostic_records["expected_loss"].append(transition.expected_loss.detach())
+                diagnostic_records["burned_fraction"].append(transition.burned_fraction.detach())
+                for index, name in enumerate(
+                    (
+                        "constraint_blocked",
+                        "constraint_exhaustion",
+                        "constraint_queue",
+                        "constraint_waste",
+                    )
+                ):
+                    diagnostic_records[name].append(transition.constraint_costs[:, index].detach())
+                diagnostic_records["contained"].append(self.env.state.contained.to(torch.float32).detach())
+                diagnostic_records["escaped"].append(self.env.state.escaped.to(torch.float32).detach())
+            for key, value in (
+                ("resource", observation.resource),
+                ("tasks", observation.tasks),
+                ("masks", observation.action_mask),
+                ("actor_global_state", observation.global_state),
+                ("critic_global_state", critic_global_state),
+                ("hidden", self.hidden),
+                ("actions", actions),
+                ("logp", logp),
+                ("values", values),
+                ("rewards", transition.reward),
+                ("dones", transition.done.to(torch.float32)),
+            ):
+                records[key].append(value.detach())
+            next_hidden = next_hidden.masked_fill(
+                transition.done[:, None, None],
+                0.0,
+            )
+            self.decision_in_episode += 1
+            if self.decision_in_episode >= self.episode_decisions:
+                self.observation = self.env.reset()
+                self.hidden = torch.zeros_like(next_hidden)
+                self.decision_in_episode = 0
+            else:
+                self.observation = transition.observation
+                self.hidden = next_hidden.detach()
+        observation = self.observation
+        _, bootstrap_value, _ = model(
+            observation.resource,
+            observation.tasks,
+            observation.action_mask,
+            observation.global_state,
+            self.env.critic_state(),
+            self.hidden,
+        )
+        return Rollout(
+            resource=torch.stack(records["resource"]),
+            tasks=torch.stack(records["tasks"]),
+            masks=torch.stack(records["masks"]),
+            actor_global_state=torch.stack(records["actor_global_state"]),
+            critic_global_state=torch.stack(records["critic_global_state"]),
+            hidden=torch.stack(records["hidden"]),
+            actions=torch.stack(records["actions"]),
+            logp=torch.stack(records["logp"]),
+            values=torch.stack(records["values"]),
+            rewards=torch.stack(records["rewards"]),
+            dones=torch.stack(records["dones"]),
+            bootstrap_value=bootstrap_value.detach(),
+            diagnostics={name: torch.stack(values) for name, values in diagnostic_records.items()},
+        )
+
+
+class TensorIncidentCollector(TensorOperationsCollector):
+    """Device-resident collector for fire-coupled surrogate pretraining."""
+
+    def __init__(
+        self,
+        config: ScenarioConfig,
+        num_envs: int,
+        seed: int,
+        device: torch.device,
+        hidden_dim: int,
+        *,
+        max_segments: int,
+        grid_size: int,
+        fire_substeps: int,
+        observation_period_min: int,
+        compile_environment: bool,
+    ):
+        self.env = TensorIncidentEnv(
+            config,
+            batch_size=num_envs,
+            max_segments=max_segments,
+            grid_size=grid_size,
+            fire_substeps=fire_substeps,
+            observation_period_min=observation_period_min,
+            device=device,
+            terminate_on_completion=False,
+            terminate_on_escape=False,
+        )
+        if compile_environment:
+            self.env.compile()
+        self.device = device
+        self.hidden = torch.zeros(
+            (num_envs, self.env.num_resources, hidden_dim),
+            device=device,
+        )
+        self.observation = self.env.reset(seed=seed)
+        self.episode_decisions = ceil(config.horizon_min / config.decision_interval_min)
+        self.decision_in_episode = 0

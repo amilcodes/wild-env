@@ -16,8 +16,14 @@ from torch.nn.parallel import DistributedDataParallel
 
 from aeolus.config import ExperimentConfig, load_config
 from aeolus.core.tasks import critic_global_features
-from aeolus.training.networks import TaskPointerActorCritic
-from aeolus.training.rollout import Rollout, SynchronousCollector, _stack_observations
+from aeolus.training.networks import TaskPointerActorCritic, build_policy_network
+from aeolus.training.rollout import (
+    Rollout,
+    SynchronousCollector,
+    TensorIncidentCollector,
+    TensorOperationsCollector,
+    _stack_observations,
+)
 from aeolus.workflows import resolve_policy
 
 
@@ -80,55 +86,89 @@ def _ppo_update(
     advantages, returns = _gae(rollout, train.gamma, train.gae_lambda)
     advantages = (advantages - advantages.mean()) / advantages.std().clamp_min(1e-6)
     time_steps, envs = advantages.shape
-    flat = time_steps * envs
-
-    def flatten(value: torch.Tensor) -> torch.Tensor:
-        return value.reshape(flat, *value.shape[2:])
-
-    resource = flatten(rollout.resource)
-    tasks = flatten(rollout.tasks)
-    masks = flatten(rollout.masks)
-    actor_global_state = flatten(rollout.actor_global_state)
-    critic_global_state = flatten(rollout.critic_global_state)
-    hidden = flatten(rollout.hidden)
-    actions = flatten(rollout.actions)
-    old_logp = flatten(rollout.logp)
-    old_values = rollout.values.reshape(flat)
-    target_returns = returns.reshape(flat)
-    flat_advantages = advantages.reshape(flat)
+    sequence_length = train.recurrent_sequence_length
+    if time_steps % sequence_length:
+        raise ValueError("rollout length is not divisible by recurrent sequence length")
+    sequence_starts = torch.arange(
+        0,
+        time_steps,
+        sequence_length,
+        device=device,
+    ).repeat_interleave(envs)
+    sequence_envs = torch.arange(envs, device=device).repeat(time_steps // sequence_length)
+    sequence_count = sequence_starts.numel()
+    sequences_per_minibatch = max(1, train.minibatch_size // sequence_length)
     losses: list[tuple[float, float, float]] = []
     amp_enabled = train.use_amp and device.type == "cuda"
     for _ in range(train.epochs_per_update):
-        indices = torch.randperm(flat, device=device)
-        for start in range(0, flat, train.minibatch_size):
-            batch_index = indices[start : start + train.minibatch_size]
+        indices = torch.randperm(sequence_count, device=device)
+        for start in range(0, sequence_count, sequences_per_minibatch):
+            sequence_index = indices[start : start + sequences_per_minibatch]
+            starts = sequence_starts[sequence_index]
+            selected_envs = sequence_envs[sequence_index]
+            recurrent_hidden = rollout.hidden[starts, selected_envs]
+            new_logp: list[torch.Tensor] = []
+            new_values: list[torch.Tensor] = []
+            new_entropy: list[torch.Tensor] = []
+            old_logp: list[torch.Tensor] = []
+            old_values: list[torch.Tensor] = []
+            target_returns: list[torch.Tensor] = []
+            sequence_advantages: list[torch.Tensor] = []
             with torch.autocast(device_type=device.type, enabled=amp_enabled):
-                logits, values, _ = model(
-                    resource[batch_index],
-                    tasks[batch_index],
-                    masks[batch_index],
-                    actor_global_state[batch_index],
-                    critic_global_state[batch_index],
-                    hidden[batch_index],
-                )
-                distribution = torch.distributions.Categorical(logits=logits)
-                logp = distribution.log_prob(actions[batch_index])
-                ratio = (logp - old_logp[batch_index]).exp()
-                expanded_advantage = flat_advantages[batch_index].unsqueeze(-1)
+                for offset in range(sequence_length):
+                    time_index = starts + offset
+                    resource = rollout.resource[time_index, selected_envs]
+                    tasks = rollout.tasks[time_index, selected_envs]
+                    masks = rollout.masks[time_index, selected_envs]
+                    logits, values, next_hidden = model(
+                        resource,
+                        tasks,
+                        masks,
+                        rollout.actor_global_state[time_index, selected_envs],
+                        rollout.critic_global_state[time_index, selected_envs],
+                        recurrent_hidden,
+                    )
+                    _, logp, sample_entropy = TaskPointerActorCritic._capacity_aware_actions(
+                        logits,
+                        tasks,
+                        masks,
+                        actions=rollout.actions[time_index, selected_envs],
+                    )
+                    new_logp.append(logp)
+                    new_values.append(values)
+                    new_entropy.append(sample_entropy)
+                    old_logp.append(rollout.logp[time_index, selected_envs])
+                    old_values.append(rollout.values[time_index, selected_envs])
+                    target_returns.append(returns[time_index, selected_envs])
+                    sequence_advantages.append(advantages[time_index, selected_envs])
+                    recurrent_hidden = next_hidden.masked_fill(
+                        rollout.dones[time_index, selected_envs, None, None].bool(),
+                        0.0,
+                    )
+                logp = torch.stack(new_logp)
+                values = torch.stack(new_values)
+                sample_entropy = torch.stack(new_entropy)
+                previous_logp = torch.stack(old_logp)
+                previous_values = torch.stack(old_values)
+                batch_returns = torch.stack(target_returns)
+                batch_advantages = torch.stack(sequence_advantages)
+                ratio = (logp - previous_logp).exp()
+                expanded_advantage = batch_advantages.unsqueeze(-1)
                 unclipped = ratio * expanded_advantage
                 clipped = ratio.clamp(1.0 - train.clip_ratio, 1.0 + train.clip_ratio) * expanded_advantage
                 policy_loss = -torch.minimum(unclipped, clipped).mean()
-                clipped_values = old_values[batch_index] + (values - old_values[batch_index]).clamp(
-                    -train.value_clip_ratio, train.value_clip_ratio
+                clipped_values = previous_values + (values - previous_values).clamp(
+                    -train.value_clip_ratio,
+                    train.value_clip_ratio,
                 )
                 value_loss = (
                     0.5
                     * torch.maximum(
-                        (values - target_returns[batch_index]).square(),
-                        (clipped_values - target_returns[batch_index]).square(),
+                        (values - batch_returns).square(),
+                        (clipped_values - batch_returns).square(),
                     ).mean()
                 )
-                entropy = distribution.entropy().mean()
+                entropy = sample_entropy.mean()
                 loss = policy_loss + train.value_coef * value_loss - train.entropy_coef * entropy
             optimizer.zero_grad(set_to_none=True)
             scaler.scale(loss).backward()
@@ -138,12 +178,18 @@ def _ppo_update(
             scaler.update()
             losses.append((float(policy_loss.detach()), float(value_loss.detach()), float(entropy.detach())))
     summary = np.array(losses, dtype=np.float64).mean(axis=0)
-    return {
+    metrics = {
         "policy_loss": float(summary[0]),
         "value_loss": float(summary[1]),
         "entropy": float(summary[2]),
         "return_mean": float(rollout.rewards.mean()),
     }
+    for name, value in rollout.diagnostics.items():
+        if name in {"expected_loss", "burned_fraction", "contained", "escaped"}:
+            metrics[f"{name}_final"] = float(value[-1].to(torch.float32).mean())
+        else:
+            metrics[f"{name}_per_env"] = float(value.to(torch.float32).sum(dim=0).mean())
+    return metrics
 
 
 def _expert_warmstart(
@@ -171,15 +217,9 @@ def _expert_warmstart(
             device=device,
             dtype=torch.float32,
         )
-        target_actions = [
-            expert(env.sim)
-            for env in collector.envs
-        ]
+        target_actions = [expert(env.sim) for env in collector.envs]
         target = torch.as_tensor(
-            [
-                [actions[agent] for agent in collector.agent_ids]
-                for actions in target_actions
-            ],
+            [[actions[agent] for agent in collector.agent_ids] for actions in target_actions],
             device=device,
             dtype=torch.long,
         )
@@ -204,15 +244,10 @@ def _expert_warmstart(
         next_observations = []
         for env_index, env in enumerate(collector.envs):
             obs, _, terminations, truncations, _ = env.step(target_actions[env_index])
-            done = bool(
-                terminations[collector.agent_ids[0]]
-                or truncations[collector.agent_ids[0]]
-            )
+            done = bool(terminations[collector.agent_ids[0]] or truncations[collector.agent_ids[0]])
             if done:
                 collector.episode_index[env_index] += collector.num_envs
-                obs, _ = env.reset(
-                    seed=collector.seed + int(collector.episode_index[env_index])
-                )
+                obs, _ = env.reset(seed=collector.seed + int(collector.episode_index[env_index]))
                 next_hidden[env_index].zero_()
             next_observations.append(obs)
         collector.observations = next_observations
@@ -235,7 +270,12 @@ def train(experiment: ExperimentConfig) -> None:
         )
     if distributed:
         dist.barrier()
-    core_model = TaskPointerActorCritic(experiment.training.hidden_dim).to(device)
+    core_model = build_policy_network(experiment.training).to(device)
+    if experiment.training.compile_model:
+        core_model.compile(
+            mode="reduce-overhead",
+            fullgraph=False,
+        )
     model: nn.Module = core_model
     if distributed:
         model = DistributedDataParallel(
@@ -243,13 +283,42 @@ def train(experiment: ExperimentConfig) -> None:
         )
     optimizer = torch.optim.AdamW(model.parameters(), lr=experiment.training.learning_rate, eps=1e-5)
     scaler = torch.amp.GradScaler("cuda", enabled=experiment.training.use_amp and device.type == "cuda")
-    collector = SynchronousCollector(
-        experiment.scenario,
-        experiment.training.num_envs,
-        experiment.training.seed + rank * 100_000,
-        device,
-        experiment.training.hidden_dim,
-    )
+    if experiment.training.environment_backend in {
+        "tensor_operations",
+        "tensor_incident",
+    }:
+        if experiment.training.expert_warmstart_steps:
+            raise ValueError("expert warm start currently requires the canonical incident environment")
+        if experiment.training.environment_backend == "tensor_operations":
+            collector = TensorOperationsCollector(
+                experiment.scenario,
+                experiment.training.num_envs,
+                experiment.training.seed + rank * 100_000,
+                device,
+                experiment.training.hidden_dim,
+                max_segments=experiment.training.tensor_max_segments,
+            )
+        else:
+            collector = TensorIncidentCollector(
+                experiment.scenario,
+                experiment.training.num_envs,
+                experiment.training.seed + rank * 100_000,
+                device,
+                experiment.training.hidden_dim,
+                max_segments=experiment.training.tensor_max_segments,
+                grid_size=experiment.training.tensor_grid_size,
+                fire_substeps=experiment.training.tensor_fire_substeps,
+                observation_period_min=(experiment.training.tensor_observation_period_min),
+                compile_environment=experiment.training.compile_environment,
+            )
+    else:
+        collector = SynchronousCollector(
+            experiment.scenario,
+            experiment.training.num_envs,
+            experiment.training.seed + rank * 100_000,
+            device,
+            experiment.training.hidden_dim,
+        )
     warmstart_metrics = _expert_warmstart(
         model,
         optimizer,
@@ -271,9 +340,11 @@ def train(experiment: ExperimentConfig) -> None:
             if update % experiment.training.checkpoint_every == 0 or update == experiment.training.updates:
                 torch.save(
                     {
-                        "schema_version": 1,
+                        "schema_version": 2,
                         "update": update,
                         "config": experiment.as_dict(),
+                        "policy_architecture": experiment.training.policy_architecture,
+                        "environment_backend": experiment.training.environment_backend,
                         "model": core_model.state_dict(),
                         "optimizer": optimizer.state_dict(),
                         "torch_rng": torch.get_rng_state(),
