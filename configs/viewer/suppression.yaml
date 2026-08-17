@@ -1,0 +1,38 @@
+schema_version: 1
+preset: suppression
+
+window:
+  width: 1680
+  height: 1050
+  start_view: operational_2d
+
+playback:
+  rate: 3.0
+  refresh_hz: 20
+  loop: false
+  trail_minutes: 60
+
+camera:
+  mode: incident
+  elevation_deg: 44.0
+  azimuth_deg: -135.0
+  vertical_exaggeration: 1.6
+  follow_radius_cells: 24.0
+
+layers:
+  active_fire: true
+  belief_perimeter: false
+  water: true
+  retardant: true
+  constructed_line: true
+  service_sites: true
+  vehicle_tracks: true
+  vehicle_labels: true
+  targets: true
+
+export:
+  width: 2560
+  height: 1440
+  dpi: 180
+  fps: 24
+  codec: libx264

@@ -1,0 +1,48 @@
+schema_version: 1
+preset: belief
+
+window:
+  width: 1680
+  height: 1050
+  start_view: operational_2d
+  show_vehicle_panel: false
+  show_event_panel: true
+  show_layer_panel: true
+
+playback:
+  rate: 2.0
+  refresh_hz: 20
+  loop: false
+  trail_minutes: 15
+  event_autoselect: true
+
+camera:
+  mode: north_up
+  elevation_deg: 90.0
+  azimuth_deg: -90.0
+  vertical_exaggeration: 1.25
+  follow_resource: null
+  follow_radius_cells: 28.0
+
+layers:
+  active_fire: false
+  burned_area: false
+  fire_type: false
+  belief_perimeter: true
+  belief_uncertainty: true
+  water: false
+  retardant: false
+  constructed_line: false
+  service_sites: false
+  vehicle_tracks: false
+  vehicle_labels: false
+  targets: false
+  wind: true
+  coordinate_grid: true
+
+export:
+  width: 2560
+  height: 1440
+  dpi: 180
+  fps: 24
+  codec: libx264

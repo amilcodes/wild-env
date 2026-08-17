@@ -10,7 +10,14 @@ from aeolus.config import load_config
 from aeolus.core.simulator import AeolusSimulator
 from aeolus.data import IncidentBundle
 from aeolus.evaluation.historical import PerimeterSeries
-from aeolus.replay import record_episode, render_frame_2d, render_frame_3d, render_video
+from aeolus.replay import (
+    export_paraview,
+    record_episode,
+    render_frame_2d,
+    render_frame_3d,
+    render_video,
+)
+from aeolus.viewer import load_viewer_config
 from aeolus.workflows import resolve_policy, scenario_from_incident
 
 
@@ -27,10 +34,26 @@ def main() -> None:
     parser.add_argument("--out", required=True, help="replay bundle directory")
     parser.add_argument("--frame-2d")
     parser.add_argument("--frame-3d")
+    parser.add_argument(
+        "--frame",
+        type=int,
+        default=-1,
+        help="Frame index for still exports; negative indices count from the end",
+    )
     parser.add_argument("--video")
+    parser.add_argument("--paraview", help="Output directory for a VTK/ParaView time series")
+    parser.add_argument("--viewer-config", help="Viewer/export YAML manifest")
+    parser.add_argument(
+        "--view",
+        choices=("operational_2d", "terrain_3d"),
+        default="operational_2d",
+        help="Video view",
+    )
+    parser.add_argument("--selected-resource", help="Vehicle to select or follow in exports")
     parser.add_argument("--fps", type=int, default=12)
     parser.add_argument("--max-video-frames", type=int, default=120)
     args = parser.parse_args()
+    viewer_config = load_viewer_config(args.viewer_config)
 
     initializer = None
     if args.incident:
@@ -83,15 +106,42 @@ def main() -> None:
         },
     }
     if args.frame_2d:
-        outputs["frame_2d"] = str(render_frame_2d(replay, args.frame_2d).resolve())
+        outputs["frame_2d"] = str(
+            render_frame_2d(
+                replay,
+                args.frame_2d,
+                frame=args.frame,
+                viewer_config=viewer_config,
+                selected_resource=args.selected_resource,
+            ).resolve()
+        )
     if args.frame_3d:
-        outputs["frame_3d"] = str(render_frame_3d(replay, args.frame_3d).resolve())
+        outputs["frame_3d"] = str(
+            render_frame_3d(
+                replay,
+                args.frame_3d,
+                frame=args.frame,
+                viewer_config=viewer_config,
+                selected_resource=args.selected_resource,
+            ).resolve()
+        )
     if args.video:
         outputs["video"] = str(
             render_video(
                 replay,
                 args.video,
                 fps=args.fps,
+                max_frames=args.max_video_frames,
+                viewer_config=viewer_config,
+                view=args.view,
+                selected_resource=args.selected_resource,
+            ).resolve()
+        )
+    if args.paraview:
+        outputs["paraview"] = str(
+            export_paraview(
+                replay,
+                args.paraview,
                 max_frames=args.max_video_frames,
             ).resolve()
         )

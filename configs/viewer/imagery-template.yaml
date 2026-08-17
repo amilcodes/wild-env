@@ -1,0 +1,49 @@
+schema_version: 1
+preset: imagery
+
+window:
+  width: 1680
+  height: 1050
+  start_view: operational_2d
+
+playback:
+  rate: 4.0
+  refresh_hz: 20
+  loop: false
+  trail_minutes: 45
+
+camera:
+  mode: incident
+  elevation_deg: 42.0
+  azimuth_deg: -132.0
+  vertical_exaggeration: 1.25
+  follow_radius_cells: 28.0
+
+layers:
+  imagery: true
+  hillshade: true
+  contours: false
+  active_fire: true
+  burned_area: true
+  water: true
+  retardant: true
+  constructed_line: true
+  service_sites: true
+  vehicle_tracks: true
+  vehicle_labels: true
+
+imagery:
+  # Replace this with a local, georeferenced RGB GeoTIFF. Relative paths are
+  # resolved from this YAML file.
+  path: ../../data/imagery/incident-orthophoto.tif
+  bands: [1, 2, 3]
+  gamma: 1.05
+  opacity: 0.88
+  attribution: "Imagery source and acquisition time required"
+
+export:
+  width: 3840
+  height: 2160
+  dpi: 200
+  fps: 30
+  codec: libx264

@@ -1,13 +1,24 @@
-"""High-resolution 2D and terrain-aware 3D replay rendering."""
+"""Deterministic publication and video rendering from replay bundles."""
 
 from __future__ import annotations
 
+from dataclasses import replace
 from pathlib import Path
 from typing import Any
 
 import numpy as np
 
 from aeolus.replay.recorder import ReplayBundle
+from aeolus.viewer.config import ViewerConfig, load_viewer_config
+from aeolus.viewer.imagery import load_imagery
+from aeolus.viewer.model import ReplayModel
+from aeolus.viewer.scene2d import (
+    BACKGROUND,
+    FOREGROUND,
+    MUTED,
+    RESOURCE_COLOR,
+    draw_operational_map,
+)
 
 
 def _pyplot() -> Any:
@@ -22,18 +33,214 @@ def _pyplot() -> Any:
 
 
 def _frame_index(replay: ReplayBundle, frame: int) -> int:
-    count = replay.frame_count
-    value = frame if frame >= 0 else count + frame
-    if not 0 <= value < count:
-        raise IndexError(f"frame {frame} is outside replay with {count} frames")
+    value = frame if frame >= 0 else replay.frame_count + frame
+    if not 0 <= value < replay.frame_count:
+        raise IndexError(f"frame {frame} is outside replay with {replay.frame_count} frames")
     return value
 
 
-def _rgba_overlay(mask: np.ndarray, color: tuple[float, float, float], alpha: np.ndarray) -> np.ndarray:
-    rgba = np.zeros((*mask.shape, 4), dtype=np.float32)
-    rgba[..., :3] = color
-    rgba[..., 3] = np.where(mask, alpha, 0.0)
-    return rgba
+def _config(value: ViewerConfig | str | Path | None) -> ViewerConfig:
+    return value if isinstance(value, ViewerConfig) else load_viewer_config(value)
+
+
+def _incident_clock(model: ReplayModel, minute: int) -> str:
+    return model.clock_label(minute)
+
+
+def _draw_status_panel(
+    axis: Any,
+    model: ReplayModel,
+    frame: int,
+    selected_resource: str | None,
+) -> None:
+    axis.clear()
+    axis.set_facecolor(BACKGROUND)
+    axis.axis("off")
+    minute = int(model.minutes[frame])
+    phase = model.field("truth/phase", frame)
+    intensity = model.field("truth/intensity_kw_m", frame)
+    fire_y, fire_x = np.where(phase == 1)
+    sample_x = float(fire_x.mean()) if fire_x.size else model.shape[1] / 2
+    sample_y = float(fire_y.mean()) if fire_y.size else model.shape[0] / 2
+    conditions = model.conditions(frame, sample_x, sample_y)
+    resources = model.resources(frame)
+    selected = (
+        next((item for item in resources if item["id"] == selected_resource), None)
+        if selected_resource
+        else None
+    )
+
+    axis.text(0.0, 0.985, model.title.upper(), color=MUTED, fontsize=8.3, va="top")
+    axis.text(
+        0.0,
+        0.946,
+        _incident_clock(model, minute),
+        color=FOREGROUND,
+        fontsize=13.0,
+        weight="medium",
+        va="top",
+    )
+    axis.text(
+        0.0,
+        0.902,
+        f"frame {frame + 1:,} / {model.frame_count:,}   ·   policy {model.metadata['policy_name']}",
+        color=MUTED,
+        fontsize=7.5,
+        va="top",
+    )
+
+    active_cells = int((phase == 1).sum())
+    burned_cells = int((phase == 2).sum())
+    cell_area_ha = model.cell_size_m**2 / 10_000.0
+    axis.text(0.0, 0.850, "FIRE STATE", color=MUTED, fontsize=8.0, va="top")
+    axis.text(
+        0.0,
+        0.813,
+        f"{active_cells * cell_area_ha:,.1f} ha active",
+        color=FOREGROUND,
+        fontsize=11.0,
+        va="top",
+    )
+    axis.text(
+        0.0,
+        0.778,
+        f"{burned_cells * cell_area_ha:,.1f} ha burned",
+        color=FOREGROUND,
+        fontsize=10.0,
+        va="top",
+    )
+    axis.text(
+        0.0,
+        0.744,
+        f"maximum intensity {float(intensity.max()):,.0f} kW m⁻¹",
+        color=MUTED,
+        fontsize=7.5,
+        va="top",
+    )
+    if model.has("truth/flame_length_m"):
+        flame = model.field("truth/flame_length_m", frame)
+        axis.text(
+            0.0,
+            0.716,
+            f"maximum flame length {float(flame.max()):.1f} m",
+            color=MUTED,
+            fontsize=7.5,
+            va="top",
+        )
+
+    axis.text(0.0, 0.665, "LOCAL CONDITIONS AT FIRE", color=MUTED, fontsize=8.0, va="top")
+    axis.text(
+        0.0,
+        0.627,
+        (f"wind {conditions['wind_direction_deg']:.0f}° from / {conditions['wind_speed_m_s']:.1f} m s⁻¹"),
+        color=FOREGROUND,
+        fontsize=8.6,
+        va="top",
+    )
+    axis.text(
+        0.0,
+        0.596,
+        (
+            f"{conditions['air_temperature_c']:.1f} °C   ·   "
+            f"RH {conditions['relative_humidity_pct']:.0f}%   ·   "
+            f"1 h moisture {conditions['dead_fuel_moisture']:.1%}"
+        ),
+        color=FOREGROUND,
+        fontsize=7.8,
+        va="top",
+    )
+    axis.text(
+        0.0,
+        0.566,
+        f"precipitation {conditions['precipitation_rate_mm_h']:.2f} mm h⁻¹",
+        color=MUTED,
+        fontsize=7.5,
+        va="top",
+    )
+
+    if selected is not None:
+        axis.text(0.0, 0.520, "SELECTED VEHICLE", color=MUTED, fontsize=8.0, va="top")
+        axis.text(
+            0.0,
+            0.482,
+            selected["id"],
+            color=RESOURCE_COLOR[selected["kind"]],
+            fontsize=10.0,
+            weight="medium",
+            va="top",
+        )
+        endurance = selected["endurance_remaining_min"]
+        endurance_text = "n/a" if np.isnan(endurance) else f"{endurance:.0f} min"
+        axis.text(
+            0.0,
+            0.448,
+            (f"{selected['status_name']}   ·   {selected['task_name']}   ·   ETA {selected['eta_min']} min"),
+            color=FOREGROUND,
+            fontsize=7.8,
+            va="top",
+        )
+        axis.text(
+            0.0,
+            0.419,
+            (f"payload {selected['payload_fraction']:.0%}   ·   endurance {endurance_text}"),
+            color=FOREGROUND,
+            fontsize=7.8,
+            va="top",
+        )
+        axis.text(
+            0.0,
+            0.390,
+            f"site {selected['service_site'] or selected['current_site'] or '—'}",
+            color=MUTED,
+            fontsize=7.5,
+            va="top",
+        )
+        resources_top = 0.342
+    else:
+        resources_top = 0.520
+
+    axis.text(0.0, resources_top, "FLEET", color=MUTED, fontsize=8.0, va="top")
+    available_height = resources_top - 0.12
+    row_step = min(0.035, available_height / max(len(resources), 1))
+    for row, resource in enumerate(resources):
+        y = resources_top - 0.034 - row * row_step
+        if y < 0.105:
+            break
+        axis.scatter(
+            [0.018],
+            [y],
+            s=22,
+            marker="o",
+            color=RESOURCE_COLOR[resource["kind"]],
+            transform=axis.transAxes,
+        )
+        axis.text(
+            0.055,
+            y,
+            (f"{resource['id']}  ·  {resource['status_name']}  ·  {resource['payload_fraction']:.0%}"),
+            color=RESOURCE_COLOR[resource["kind"]],
+            fontsize=7.1,
+            va="center",
+            transform=axis.transAxes,
+        )
+
+    events = model.events_near(minute)
+    if events:
+        event_names = ", ".join(event.kind for event in events[:3])
+        if len(events) > 3:
+            event_names += f", +{len(events) - 3}"
+        axis.text(0.0, 0.065, "EVENTS THIS MINUTE", color=MUTED, fontsize=7.2, va="top")
+        axis.text(
+            0.0,
+            0.035,
+            event_names,
+            color=FOREGROUND,
+            fontsize=6.9,
+            va="top",
+            wrap=True,
+        )
+    axis.set_xlim(0.0, 1.0)
+    axis.set_ylim(0.0, 1.0)
 
 
 def render_frame_2d(
@@ -41,208 +248,72 @@ def render_frame_2d(
     destination: str | Path,
     *,
     frame: int = -1,
-    dpi: int = 180,
+    dpi: int | None = None,
+    viewer_config: ViewerConfig | str | Path | None = None,
+    selected_resource: str | None = None,
 ) -> Path:
+    """Render an export-quality operational map and inspection panel."""
+
     plt = _pyplot()
-    from matplotlib.colors import LightSource, LinearSegmentedColormap
-
+    config = _config(viewer_config)
+    model = ReplayModel(replay)
     index = _frame_index(replay, frame)
-    states = replay.states
-    elevation = np.asarray(states["static/elevation_m"])
-    phase = np.asarray(states["truth/phase"][index])
-    intensity = np.asarray(states["truth/intensity_kw_m"][index])
-    belief = np.asarray(states["belief/intensity_mean"][index])
-    water = np.asarray(states["treatment/water"][index])
-    retardant = np.asarray(states["treatment/retardant"][index])
-    ground = np.asarray(states["treatment/ground_hold"][index])
-    assets = np.asarray(states["static/asset_value"])
-    minute = int(states["time/minute"][index])
-
-    figure = plt.figure(figsize=(14.4, 8.4), facecolor="#101316", layout="constrained")
-    grid = figure.add_gridspec(1, 2, width_ratios=(4.8, 1.25))
-    axis = figure.add_subplot(grid[0, 0])
-    status = figure.add_subplot(grid[0, 1])
-    for item in (axis, status):
-        item.set_facecolor("#101316")
-
-    light = LightSource(azdeg=315, altdeg=38)
-    terrain_cmap = LinearSegmentedColormap.from_list(
-        "incident-terrain",
-        ["#17251d", "#29452d", "#496343", "#77745a", "#a38f70", "#d4c9b4"],
-    )
-    terrain = light.shade(
-        elevation,
-        cmap=terrain_cmap,
-        vert_exag=1.5,
-        blend_mode="soft",
-    )
-    axis.imshow(terrain, origin="upper")
-    axis.imshow(
-        _rgba_overlay(phase == 2, (0.10, 0.07, 0.06), np.full(phase.shape, 0.70)),
-        origin="upper",
-    )
-    active_normalized = np.clip(np.log1p(intensity) / np.log(20_001.0), 0.0, 1.0)
-    active_rgba = plt.get_cmap("autumn")(active_normalized)
-    active_rgba[..., :3] = np.maximum(active_rgba[..., :3], (0.98, 0.20, 0.02))
-    active_rgba[..., 3] = np.where(phase == 1, 0.90, 0.0)
-    axis.imshow(active_rgba, origin="upper")
-    if np.any(phase == 1):
-        axis.contour(
-            phase == 1,
-            levels=[0.5],
-            colors=["#ffd166"],
-            linewidths=0.65,
-            alpha=0.9,
-        )
-    if "truth/fire_type" in states:
-        fire_type = np.asarray(states["truth/fire_type"][index])
-        if np.any(fire_type >= 2):
-            axis.contour(
-                fire_type >= 2,
-                levels=[0.5],
-                colors=["#f7f4ff"],
-                linewidths=1.25,
-                linestyles="dashdot",
-                alpha=0.95,
-            )
-    axis.imshow(
-        _rgba_overlay(water > 0.05, (0.10, 0.62, 0.95), np.clip(water * 0.72, 0.0, 0.72)),
-        origin="upper",
-    )
-    axis.imshow(
-        _rgba_overlay(
-            retardant > 0.05,
-            (0.90, 0.18, 0.55),
-            np.clip(retardant * 0.78, 0.0, 0.78),
+    imagery = load_imagery(model, config.imagery)
+    export_dpi = config.export.dpi if dpi is None else dpi
+    figure = plt.figure(
+        figsize=(
+            config.export.width / export_dpi,
+            config.export.height / export_dpi,
         ),
-        origin="upper",
+        facecolor=BACKGROUND,
     )
-    axis.imshow(
-        _rgba_overlay(ground > 0.05, (0.35, 0.90, 0.48), np.clip(ground * 0.62, 0.0, 0.62)),
-        origin="upper",
+    grid = figure.add_gridspec(1, 2, width_ratios=(5.35, 1.42))
+    map_axis = figure.add_subplot(grid[0, 0])
+    panel_axis = figure.add_subplot(grid[0, 1])
+    draw_operational_map(
+        map_axis,
+        model,
+        config,
+        index,
+        selected_resource=selected_resource,
+        imagery=imagery,
     )
-    if np.any(belief >= 20.0):
-        axis.contour(
-            belief >= 20.0,
-            levels=[0.5],
-            colors=["#b8efff"],
-            linewidths=1.1,
-            linestyles="dashed",
-            alpha=0.62,
-        )
-    if np.any(assets > 0):
-        axis.contour(assets, levels=[0.1], colors=["#f8d675"], linewidths=1.2)
-
-    resource_ids = replay.metadata["resource_ids"]
-    resource_kinds = replay.metadata["resource_kinds"]
-    x_values = np.asarray(states["resources/x"][index])
-    y_values = np.asarray(states["resources/y"][index])
-    marker_by_kind = {"retardant": "^", "water": "o", "sensor": "D"}
-    color_by_kind = {"retardant": "#f7f0db", "water": "#72c9ff", "sensor": "#f4d35e"}
-    for resource_index, (resource_id, kind) in enumerate(zip(resource_ids, resource_kinds, strict=True)):
-        start = max(0, index - 28)
-        trail_x = np.asarray(states["resources/x"][start : index + 1, resource_index])
-        trail_y = np.asarray(states["resources/y"][start : index + 1, resource_index])
-        axis.plot(trail_x, trail_y, color=color_by_kind[kind], linewidth=1.1, alpha=0.68)
-        axis.scatter(
-            [x_values[resource_index]],
-            [y_values[resource_index]],
-            marker=marker_by_kind[kind],
-            s=76,
-            color=color_by_kind[kind],
-            edgecolors="#101316",
-            linewidths=0.9,
-            zorder=8,
-        )
-        axis.text(
-            x_values[resource_index] + 1.4 + 3.5 * (resource_index // 4),
-            y_values[resource_index] - 4.6 + 2.6 * (resource_index % 4),
-            resource_id,
-            color="#f2f5f7",
-            fontsize=7.5,
-            weight="medium",
-            zorder=9,
-        )
-
-    axis.set_title(
-        f"Wildfire initial attack  •  T+{minute:03d} min",
+    minute = int(model.minutes[index])
+    map_axis.set_title(
+        f"Operational replay  ·  {_incident_clock(model, minute)}",
         loc="left",
-        color="#f2f5f7",
-        fontsize=15,
+        color=FOREGROUND,
+        fontsize=13.0,
         weight="medium",
-        pad=12,
+        pad=10,
     )
-    axis.set_xticks([])
-    axis.set_yticks([])
-    for spine in axis.spines.values():
-        spine.set_color("#39434b")
-
-    active_cells = int((phase == 1).sum())
-    burned_cells = int((phase == 2).sum())
-    status.axis("off")
-    status.text(0.0, 0.97, "INCIDENT STATE", color="#97a5af", fontsize=8.5, transform=status.transAxes)
-    status.text(
-        0.0,
-        0.90,
-        f"{active_cells:,}",
-        color="#f2f5f7",
-        fontsize=24,
-        weight="medium",
-        transform=status.transAxes,
+    _draw_status_panel(panel_axis, model, index, selected_resource)
+    figure.subplots_adjust(
+        left=0.04,
+        right=0.992,
+        top=0.94,
+        bottom=0.055,
+        wspace=0.055,
     )
-    status.text(0.0, 0.855, "active cells", color="#97a5af", fontsize=9, transform=status.transAxes)
-    status.text(
-        0.0,
-        0.76,
-        f"{burned_cells:,}",
-        color="#f2f5f7",
-        fontsize=19,
-        weight="medium",
-        transform=status.transAxes,
+    figure.text(
+        0.012,
+        0.007,
+        (
+            f"Replay schema {model.metadata['schema_version']}  ·  "
+            f"{model.spatial_reference.get('crs') or 'local grid'}  ·  "
+            f"{model.cell_size_m:g} m cell  ·  "
+            "truth, belief and treatment layers shown separately"
+        ),
+        color=MUTED,
+        fontsize=6.7,
     )
-    status.text(0.0, 0.715, "burned cells", color="#97a5af", fontsize=9, transform=status.transAxes)
-    if "truth/flame_length_m" in states:
-        max_flame = float(np.asarray(states["truth/flame_length_m"][index]).max())
-        status.text(
-            0.0,
-            0.67,
-            f"maximum flame length  {max_flame:.1f} m",
-            color="#c7d0d7",
-            fontsize=8,
-            transform=status.transAxes,
-        )
-    status.text(0.0, 0.64, "RESOURCES", color="#97a5af", fontsize=8.5, transform=status.transAxes)
-    statuses = np.asarray(states["resources/status"][index])
-    payload = np.asarray(states["resources/payload_fraction"][index])
-    status_names = ["ready", "outbound", "returning", "reloading", "withdrawn"]
-    resource_step = min(0.095, 0.36 / max(len(resource_ids) - 1, 1))
-    for row, resource_id in enumerate(resource_ids):
-        y = 0.58 - row * resource_step
-        status.text(0.0, y, resource_id, color="#f2f5f7", fontsize=9, transform=status.transAxes)
-        status.text(
-            0.0,
-            y - 0.026,
-            f"{status_names[int(statuses[row])]}  ·  payload {payload[row]:.0%}",
-            color="#97a5af",
-            fontsize=7.5,
-            transform=status.transAxes,
-        )
-    status.text(0.0, 0.16, "MAP KEY", color="#97a5af", fontsize=8.5, transform=status.transAxes)
-    legend = [
-        ("active fire", "#ff8a2b"),
-        ("policy belief edge", "#b8efff"),
-        ("water", "#1f9bea"),
-        ("retardant", "#e62e8c"),
-        ("ground hold", "#59d77a"),
-    ]
-    for row, (label, color) in enumerate(legend):
-        y = 0.125 - row * 0.030
-        status.scatter([0.025], [y], s=28, color=color, transform=status.transAxes)
-        status.text(0.075, y - 0.007, label, color="#dce3e8", fontsize=8, transform=status.transAxes)
-
     destination_path = Path(destination)
     destination_path.parent.mkdir(parents=True, exist_ok=True)
-    figure.savefig(destination_path, dpi=dpi, facecolor=figure.get_facecolor())
+    figure.savefig(
+        destination_path,
+        dpi=export_dpi,
+        facecolor=figure.get_facecolor(),
+    )
     plt.close(figure)
     return destination_path
 
@@ -252,42 +323,61 @@ def render_frame_3d(
     destination: str | Path,
     *,
     frame: int = -1,
-    dpi: int = 180,
+    dpi: int | None = None,
+    viewer_config: ViewerConfig | str | Path | None = None,
+    selected_resource: str | None = None,
 ) -> Path:
+    """Render a terrain view; vehicle height is a documented display offset."""
+
     plt = _pyplot()
     from matplotlib.colors import LightSource, LinearSegmentedColormap
 
+    config = _config(viewer_config)
+    model = ReplayModel(replay)
     index = _frame_index(replay, frame)
-    states = replay.states
-    elevation = np.asarray(states["static/elevation_m"])
-    phase = np.asarray(states["truth/phase"][index])
-    intensity = np.asarray(states["truth/intensity_kw_m"][index])
-    minute = int(states["time/minute"][index])
+    elevation = model.static("static/elevation_m")
+    phase = model.field("truth/phase", index)
+    intensity = model.field("truth/intensity_kw_m", index)
+    imagery = load_imagery(model, config.imagery)
     height, width = elevation.shape
     y_grid, x_grid = np.mgrid[0:height, 0:width]
-    stride = max(1, max(height, width) // 96)
-    light = LightSource(azdeg=315, altdeg=38)
+    stride = max(1, max(height, width) // 128)
+    light = LightSource(azdeg=315, altdeg=42)
     terrain_cmap = LinearSegmentedColormap.from_list(
-        "incident-terrain",
-        ["#17251d", "#29452d", "#496343", "#77745a", "#a38f70", "#d4c9b4"],
+        "aeolus-terrain",
+        ["#102119", "#23402a", "#42583b", "#69674c", "#8d7657", "#c1b29a"],
     )
-    colors = light.shade(elevation, cmap=terrain_cmap, vert_exag=1.6)
-    fire_colors = plt.get_cmap("autumn")(
-        np.clip(np.log1p(intensity) / np.log(20_001.0), 0.0, 1.0)
+    colors = (
+        imagery.rgb.copy()
+        if config.layers.imagery and imagery is not None
+        else light.shade(
+            elevation,
+            cmap=terrain_cmap,
+            vert_exag=config.camera.vertical_exaggeration,
+        )[..., :3]
     )
-    fire_colors[..., :3] = np.maximum(fire_colors[..., :3], (0.98, 0.18, 0.01))
+    colors = np.concatenate(
+        [colors[..., :3], np.ones((*colors.shape[:2], 1), dtype=np.float32)],
+        axis=-1,
+    )
+    normalized = np.clip(np.log1p(intensity) / np.log(20_001.0), 0.0, 1.0)
+    fire_colors = plt.get_cmap("inferno")(normalized)
     active = phase == 1
     colors[active] = fire_colors[active]
-    burned = phase == 2
-    colors[burned, :3] = colors[burned, :3] * 0.28
-
-    figure = plt.figure(figsize=(13.6, 8.2), facecolor="#101316", layout="constrained")
+    colors[phase == 2, :3] *= 0.24
+    export_dpi = config.export.dpi if dpi is None else dpi
+    figure = plt.figure(
+        figsize=(config.export.width / export_dpi, config.export.height / export_dpi),
+        facecolor=BACKGROUND,
+        layout="constrained",
+    )
     axis = figure.add_subplot(111, projection="3d")
-    axis.set_facecolor("#101316")
+    axis.set_facecolor(BACKGROUND)
+    z = (elevation - float(elevation.min())) * config.camera.vertical_exaggeration
     axis.plot_surface(
         x_grid[::stride, ::stride],
         y_grid[::stride, ::stride],
-        elevation[::stride, ::stride],
+        z[::stride, ::stride],
         facecolors=colors[::stride, ::stride],
         rstride=1,
         cstride=1,
@@ -297,45 +387,108 @@ def render_frame_3d(
     )
     active_y, active_x = np.where(active)
     if active_x.size:
-        active_z = elevation[active_y, active_x] + 14.0
         axis.scatter(
             active_x,
             active_y,
-            active_z,
-            c=np.clip(intensity[active_y, active_x], 20.0, 80.0),
-            cmap="autumn",
-            vmin=20.0,
-            vmax=80.0,
-            s=7,
+            z[active_y, active_x] + max(float(np.ptp(z)) * 0.025, 3.0),
+            c=np.clip(intensity[active_y, active_x], 20.0, 10_000.0),
+            cmap="inferno",
+            norm="log",
+            s=8,
             alpha=0.92,
             depthshade=False,
         )
-    resource_ids = replay.metadata["resource_ids"]
-    resource_kinds = replay.metadata["resource_kinds"]
-    for resource_index, (resource_id, kind) in enumerate(zip(resource_ids, resource_kinds, strict=True)):
-        trail_start = max(0, index - 45)
-        trail_x = np.asarray(states["resources/x"][trail_start : index + 1, resource_index])
-        trail_y = np.asarray(states["resources/y"][trail_start : index + 1, resource_index])
+    if config.layers.water:
+        water = model.field("treatment/water_coverage_gpc", index)
+        water_y, water_x = np.where(water > 0.05)
+        axis.scatter(
+            water_x,
+            water_y,
+            z[water_y, water_x] + 1.2,
+            color="#168fe5",
+            s=5,
+            alpha=0.62,
+            depthshade=False,
+        )
+    if config.layers.retardant:
+        retardant = model.field("treatment/retardant_coverage_gpc", index)
+        retardant_y, retardant_x = np.where(retardant > 0.05)
+        axis.scatter(
+            retardant_x,
+            retardant_y,
+            z[retardant_y, retardant_x] + 1.5,
+            color="#d91b78",
+            s=5,
+            alpha=0.68,
+            depthshade=False,
+        )
+    resources = model.resources(index)
+    for resource_index, resource in enumerate(resources):
+        start_minute = int(model.minutes[index]) - config.playback.trail_minutes
+        start = int(np.searchsorted(model.minutes, start_minute))
+        trail_x = np.asarray(model.states["resources/x"][start : index + 1, resource_index])
+        trail_y = np.asarray(model.states["resources/y"][start : index + 1, resource_index])
         ix = np.clip(np.rint(trail_x).astype(int), 0, width - 1)
         iy = np.clip(np.rint(trail_y).astype(int), 0, height - 1)
-        altitude = elevation[iy, ix] + {"retardant": 410.0, "water": 270.0, "sensor": 560.0}[kind]
-        color = {"retardant": "#f7f0db", "water": "#72c9ff", "sensor": "#f4d35e"}[kind]
-        axis.plot(trail_x, trail_y, altitude, color=color, linewidth=1.7)
-
+        display_offset = 2.0 if resource["kind"] == "crew" else max(float(np.ptp(z)) * 0.06, 12.0)
+        trail_z = z[iy, ix] + display_offset
+        color = RESOURCE_COLOR[resource["kind"]]
+        axis.plot(trail_x, trail_y, trail_z, color=color, linewidth=1.5, alpha=0.85)
+        axis.scatter(
+            [trail_x[-1]],
+            [trail_y[-1]],
+            [trail_z[-1]],
+            color=color,
+            s=56 if resource["id"] == selected_resource else 34,
+            edgecolor="#ffffff" if resource["id"] == selected_resource else BACKGROUND,
+            linewidth=0.9,
+            depthshade=False,
+        )
+    for site in model.service_sites:
+        x, y = int(site["x"]), int(site["y"])
+        axis.scatter(
+            [x],
+            [y],
+            [z[y, x] + 2.0],
+            color="#d7e1e6",
+            marker="P",
+            s=42,
+            edgecolor=BACKGROUND,
+            linewidth=0.7,
+            depthshade=False,
+        )
+    minute = int(model.minutes[index])
     axis.set_title(
-        f"Terrain replay  •  T+{minute:03d} min",
+        f"Terrain replay  ·  {_incident_clock(model, minute)}",
         loc="left",
-        color="#f2f5f7",
-        fontsize=15,
+        color=FOREGROUND,
+        fontsize=13.0,
         weight="medium",
         pad=10,
     )
-    axis.view_init(elev=45, azim=-128)
-    axis.set_box_aspect((width, height, max(width, height) * 0.34))
+    axis.view_init(
+        elev=config.camera.elevation_deg,
+        azim=config.camera.azimuth_deg,
+    )
+    axis.set_box_aspect((width, height, max(width, height) * 0.35))
     axis.set_axis_off()
+    figure.text(
+        0.012,
+        0.012,
+        (
+            "Terrain elevation is vertically exaggerated. Aircraft track height is a "
+            "display-separation offset; the simulator does not resolve altitude."
+        ),
+        color=MUTED,
+        fontsize=7.0,
+    )
     destination_path = Path(destination)
     destination_path.parent.mkdir(parents=True, exist_ok=True)
-    figure.savefig(destination_path, dpi=dpi, facecolor=figure.get_facecolor())
+    figure.savefig(
+        destination_path,
+        dpi=export_dpi,
+        facecolor=figure.get_facecolor(),
+    )
     plt.close(figure)
     return destination_path
 
@@ -344,30 +497,54 @@ def render_video(
     replay: ReplayBundle,
     destination: str | Path,
     *,
-    fps: int = 12,
-    max_frames: int = 120,
+    fps: int | None = None,
+    max_frames: int = 240,
+    viewer_config: ViewerConfig | str | Path | None = None,
+    view: str = "operational_2d",
+    selected_resource: str | None = None,
 ) -> Path:
+    """Render a deterministic H.264-compatible replay video."""
+
     try:
         import imageio.v2 as imageio
     except ImportError as exc:  # pragma: no cover
         raise ImportError("install aeolus-ia[render] to render replay videos") from exc
     import tempfile
 
-    count = replay.frame_count
-    selected = np.unique(np.linspace(0, count - 1, min(count, max_frames), dtype=int))
+    config = _config(viewer_config)
+    output_fps = config.export.fps if fps is None else fps
+    selected = np.unique(
+        np.linspace(
+            0,
+            replay.frame_count - 1,
+            min(replay.frame_count, max_frames),
+            dtype=int,
+        )
+    )
     destination_path = Path(destination)
     destination_path.parent.mkdir(parents=True, exist_ok=True)
+    render = render_frame_3d if view == "terrain_3d" else render_frame_2d
+    video_config = replace(
+        config,
+        export=replace(config.export, dpi=100),
+    )
     with tempfile.TemporaryDirectory(prefix="aeolus-replay-") as temporary:
         temp_root = Path(temporary)
         with imageio.get_writer(
             destination_path,
-            fps=fps,
-            codec="libx264",
+            fps=output_fps,
+            codec=config.export.codec,
             quality=8,
             macro_block_size=2,
         ) as writer:
             for output_index, frame_index in enumerate(selected):
                 frame_path = temp_root / f"frame-{output_index:05d}.png"
-                render_frame_2d(replay, frame_path, frame=int(frame_index), dpi=110)
+                render(
+                    replay,
+                    frame_path,
+                    frame=int(frame_index),
+                    viewer_config=video_config,
+                    selected_resource=selected_resource,
+                )
                 writer.append_data(imageio.imread(frame_path))
     return destination_path

@@ -1,0 +1,38 @@
+schema_version: 1
+preset: fire_behavior
+
+window:
+  width: 1680
+  height: 1050
+  start_view: terrain_3d
+
+playback:
+  rate: 2.0
+  refresh_hz: 20
+  loop: false
+  trail_minutes: 20
+
+camera:
+  mode: incident
+  elevation_deg: 38.0
+  azimuth_deg: -125.0
+  vertical_exaggeration: 2.0
+  follow_radius_cells: 30.0
+
+layers:
+  active_fire: true
+  burned_area: true
+  fire_type: true
+  belief_perimeter: false
+  water: false
+  retardant: false
+  constructed_line: false
+  vehicle_tracks: false
+  vehicle_labels: false
+
+export:
+  width: 2560
+  height: 1440
+  dpi: 180
+  fps: 24
+  codec: libx264
