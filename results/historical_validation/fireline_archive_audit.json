@@ -1,0 +1,141 @@
+{
+  "schema_version": 1,
+  "source": {
+    "title": "Fireline engagement from the National Interagency Fire Center Feature Service from 2017-2024",
+    "doi": "https://doi.org/10.2737/RDS-2025-0011",
+    "archive_sha256": "7698cccb39a07369b1dcc3f1bf83bfa12f8a6ee7afdd2c2f473599487b4bc64d"
+  },
+  "features": 2236584,
+  "incidents_by_irwin_id": 1161,
+  "incident_names": 1101,
+  "line_datetime_present_fraction": 0.06609677973194836,
+  "create_date_present_fraction": 0.9498257163603067,
+  "engagement": {
+    "Burned Over": {
+      "features": 492341,
+      "length_km": 785944.6409913702,
+      "line_datetime_present": 32778
+    },
+    "Held": {
+      "features": 928014,
+      "length_km": 1618069.0275564461,
+      "line_datetime_present": 63932
+    },
+    "Not Engaged": {
+      "features": 816229,
+      "length_km": 1484385.101071159,
+      "line_datetime_present": 51121
+    }
+  },
+  "feature_category": {
+    "Completed Burnout": {
+      "features": 12256,
+      "length_km": 40391.599489655404,
+      "line_datetime_present": 1244
+    },
+    "Completed Dozer Line": {
+      "features": 1438052,
+      "length_km": 2644295.6618953026,
+      "line_datetime_present": 95901
+    },
+    "Completed Fuel Break": {
+      "features": 18308,
+      "length_km": 31074.513726067824,
+      "line_datetime_present": 798
+    },
+    "Completed Hand Line": {
+      "features": 404873,
+      "length_km": 372451.1317428168,
+      "line_datetime_present": 25101
+    },
+    "Completed Mixed Construction Line": {
+      "features": 32377,
+      "length_km": 107275.43612455929,
+      "line_datetime_present": 1761
+    },
+    "Completed Plow Line": {
+      "features": 8007,
+      "length_km": 8744.12763907235,
+      "line_datetime_present": 463
+    },
+    "Completed Road as Line": {
+      "features": 183773,
+      "length_km": 415170.6498702883,
+      "line_datetime_present": 10328
+    },
+    "Road as Completed Line": {
+      "features": 138938,
+      "length_km": 268995.64913121285,
+      "line_datetime_present": 12235
+    }
+  },
+  "year": {
+    "2017": {
+      "features": 29242,
+      "length_km": 34287.65428568617,
+      "line_datetime_present": 3093
+    },
+    "2018": {
+      "features": 283763,
+      "length_km": 345023.5376330498,
+      "line_datetime_present": 38864
+    },
+    "2019": {
+      "features": 35897,
+      "length_km": 39058.04359676711,
+      "line_datetime_present": 5008
+    },
+    "2020": {
+      "features": 493412,
+      "length_km": 678453.9071109204,
+      "line_datetime_present": 22024
+    },
+    "2021": {
+      "features": 452475,
+      "length_km": 492537.41762626555,
+      "line_datetime_present": 20502
+    },
+    "2022": {
+      "features": 168362,
+      "length_km": 232840.0825871572,
+      "line_datetime_present": 6555
+    },
+    "2023": {
+      "features": 106956,
+      "length_km": 95200.26567530907,
+      "line_datetime_present": 8368
+    },
+    "2024": {
+      "features": 666477,
+      "length_km": 1970997.86110382,
+      "line_datetime_present": 43417
+    }
+  },
+  "crockets_knob": {
+    "features": 1742,
+    "line_datetime_present_fraction": 0.001722158438576349,
+    "engagement": {
+      "Burned Over": {
+        "features": 220,
+        "length_km": 214.9901674325681,
+        "line_datetime_present": 0
+      },
+      "Held": {
+        "features": 1002,
+        "length_km": 543.6411891166706,
+        "line_datetime_present": 3
+      },
+      "Not Engaged": {
+        "features": 520,
+        "length_km": 560.7475308975393,
+        "line_datetime_present": 0
+      }
+    }
+  },
+  "interpretation": [
+    "LineDateTime is the only candidate construction-time field.",
+    "CreateDate is a geodatabase creation field and is not treated as construction time.",
+    "Engagement is a final-perimeter overlay outcome, not a causal treatment effect.",
+    "Summed length attributes are retained for audit only and are not treated as unique constructed-line length because the archive contains fragmented and potentially repeated features."
+  ]
+}

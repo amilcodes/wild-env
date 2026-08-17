@@ -1,0 +1,46 @@
+schema_version: 1
+title: NIROPS held-out multi-incident spread validation
+seed: 20260728
+grid_size: 128
+buffer_m: 4500.0
+spotting_rate: 0.0
+spread_candidates:
+  - 0.003
+  - 0.005
+  - 0.008
+  - 0.013
+  - 0.021
+  - 0.034
+  - 0.055
+  - 0.089
+  - 0.144
+  - 0.233
+  - 0.377
+  - 0.610
+  - 0.987
+  - 1.200
+incidents:
+  - incident_code: CA-AEU-017769_Electra
+    calibration_pair: [1, 2]
+    validation_pairs: [[2, 3], [3, 4], [4, 5], [5, 6]]
+    additional_spread_candidates: [0.42, 0.48, 0.54, 0.67]
+  - incident_code: OR-MAF-022199_CrocketsKnob
+    calibration_pair: [0, 1]
+    validation_pairs: [[1, 2], [2, 3], [3, 4], [4, 5]]
+    additional_spread_candidates: [1.00, 1.05, 1.10, 1.15]
+  - incident_code: AZ-SCA-001418_DryLake
+    calibration_pair: [0, 1]
+    validation_pairs: [[1, 2], [2, 3], [3, 4], [4, 5]]
+    additional_spread_candidates: [0.11, 0.12, 0.13, 0.16, 0.18]
+  - incident_code: ID-IPF-000447_RidgeCreek
+    calibration_pair: [3, 4]
+    validation_pairs: [[4, 5], [5, 6], [6, 7], [7, 8]]
+    additional_spread_candidates: [0.30, 0.33, 0.41, 0.45]
+  - incident_code: NM-GNF-000382_Davis
+    calibration_pair: [0, 1]
+    validation_pairs: [[1, 2], [2, 3], [3, 4], [4, 5]]
+    additional_spread_candidates: [1.50, 2.00, 2.75, 3.50]
+  - incident_code: UT-VLD-000127_Bear
+    calibration_pair: [0, 1]
+    validation_pairs: [[1, 2], [2, 3], [3, 4], [4, 5]]
+    additional_spread_candidates: [1.50, 2.00, 2.75, 3.50]
