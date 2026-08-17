@@ -2,7 +2,7 @@
 
 ## Scope
 
-Version 0.3 has two execution paths over one local fire-behavior model:
+Version 0.4 has two execution paths over one local fire-behavior model:
 
 - the canonical NumPy incident simulator, used by the PettingZoo environment,
   historical workflows, interventions and replay;
@@ -72,29 +72,66 @@ type, rate of spread and flame length at every recorded minute.
 ## Fuel moisture and weather
 
 CF-NetCDF weather supplies 10 m wind speed and direction, air temperature,
-relative humidity and optional precipitation rate. Dead 1/10/100-hour moisture
-approaches Simard equilibrium moisture with 1/10/100-hour exponential time
-lags. Rain and water drops wet fuels; water also reduces current intensity.
-Live-herbaceous, live-woody and foliar moisture remain scenario fields.
+relative humidity and optional precipitation rate. Each variable can be a time
+series or a time-varying raster on the fire grid. Wind direction is interpolated
+as a circular quantity, so a transition from 359 to 1 degrees passes through
+zero. Dead 1/10/100-hour moisture uses separate Van Wagner-Pickett drying and
+wetting equilibria, sorption hysteresis, and exact exponential 1/10/100-hour
+lag updates. Rain and water drops wet fuels; water also reduces current
+intensity.
 
-This is a fuel-conditioning approximation. A research result must state
-whether moisture was observed, initialized, calibrated or left at the
-scenario assumption.
+Historical preparation derives live herbaceous and woody moisture from the
+NFDRS-v4 growing-season-index factors: minimum temperature, maximum vapor
+pressure deficit, photoperiod, and trailing precipitation. The unsmoothed
+product receives a 28-day trailing mean and maps to 0.30–2.50 kg/kg
+herbaceous and 0.60–2.00 kg/kg woody moisture. A 60-day weather spin-up is used
+so the rolling state is developed before the first perimeter.
+
+The packaged Pyretechnics lookup has explicit dead 1-hour, live-herbaceous,
+live-woody, wind, and slope axes. Pyretechnics performs Scott-Burgan dynamic
+herbaceous load transfer below 1.20 kg/kg, with complete transfer at 0.30
+kg/kg. NumPy and PyTorch interpolate the same five-dimensional table. At dead
+moisture 0.07, 4 m/s wind, and slope 0.2, FBFM102 spread falls from 8.12 m/min
+at 0.30 live-herbaceous moisture to 0.032 m/min at 2.50; static FBFM1 remains
+12.14 m/min across the same live-moisture sweep.
+
+This remains a fuel-conditioning model. GSI is meteorologically derived rather
+than incident fuel sampling, remote-sensing retrieval, or species-specific
+phenology. A research result must state whether moisture was observed,
+initialized, derived, calibrated, or left at the scenario assumption.
 
 ## Front propagation
 
-Propagation accumulates directional travel fraction from the active perimeter
-to eight neighboring targets. Adaptive substeps enforce a configured
-cell-fraction CFL bound and permit a fast front to traverse multiple cells in a
-minute. Flaming cells remain part of the propagating front until it has passed,
-is held, or reaches the residence bound. This avoids the coarse-grid failure
-where a slow fire self-extinguishes at a cell center before reaching the next
-cell.
+The canonical front is the zero contour of a signed-distance level-set field:
+negative values are inside the represented fire and positive values are
+outside. Propagation solves the anisotropic Hamilton-Jacobi equation using
+Jiang-Shu WENO5 one-sided derivatives and third-order strong-stability-
+preserving Runge-Kutta time integration. A first-order Godunov comparator is
+retained. Adaptive substeps enforce the configured CFL bound.
 
-This method is an accelerator-friendly Huygens raster front. It is not the
-WENO5/RK3 level-set solver used by WRF-Fire and the Community Fire Behavior
-Model. Grid convergence, rotational invariance and arrival-time error remain
-required evidence for any predictive use.
+The directional speed at the front is recovered from the local heading rate
+and ellipse eccentricity. The Hamiltonian is evaluated in a narrow band and on
+the connected exterior of the represented fire. The latter causal restriction
+prevents a contour from nucleating across a nonburnable barrier. The signed
+distance field is periodically reinitialized. The NumPy path uses an exact
+Euclidean distance transform; the PyTorch path uses an on-device pseudo-time
+reinitialization equation and does not copy state back to the host.
+
+Arrival time is interpolated within the numerical step when the zero contour
+crosses a cell center. The prior eight-neighbor accumulated-travel solver is
+available as `adaptive_huygens` for ablation.
+
+`aeolus-fire verify-front` runs two manufactured-solution checks. After a
+30-minute constant-speed circular expansion, the 15 m WENO5 run has 1.65 m
+equivalent-radius error. An anisotropic front rotated through eight headings
+has 0.60% coefficient of variation in reached area and 1.82% in heading
+extent. These checks establish numerical consistency for the tested idealized
+conditions; they do not validate physical rate-of-spread parameters.
+
+This front formulation is parallel to the numerical class used by WRF-Fire
+and CFBM. The present model remains one-way forced and includes empirical crown
+and spotting modules, while WRF-Fire/CFBM provide atmosphere coupling and
+their own surface-fire assumptions.
 
 ## Spotting
 
@@ -140,6 +177,13 @@ aeolus-fire validate \
   --output runs/fire-validation
 ```
 
+Run manufactured-solution grid and rotation checks:
+
+```bash
+aeolus-fire verify-front \
+  --output runs/front-verification
+```
+
 Calibrate one effective spread parameter on one historical interval and apply
 it without refitting to the next interval:
 
@@ -155,9 +199,12 @@ aeolus-historical \
 ```
 
 Calibration reports cumulative-perimeter and incremental-growth metrics
-separately. An effective multiplier can absorb missing weather, conditioning
-and suppression; it must not be interpreted as an identified physical
-parameter.
+separately. The historical study also fits a posterior parameter ensemble over
+effective spread, wind exposure, wind direction, and dead-fuel moisture. The
+ensemble emits burn probability and conditional arrival-time mean and
+standard deviation, and is scored with Brier, balanced Brier, logarithmic, and
+reliability metrics. These are joint predictive particles; their weights do
+not identify which physical input was wrong.
 
 ## Reference systems
 

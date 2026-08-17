@@ -66,9 +66,7 @@ def main() -> None:
         "elapsed_s": elapsed,
         "decisions_per_s": args.decisions / elapsed,
         "simulated_minutes_per_s": minutes_advanced / elapsed,
-        "grid_cell_minutes_per_s": (
-            minutes_advanced * config.width * config.height / elapsed
-        ),
+        "grid_cell_minutes_per_s": (minutes_advanced * config.width * config.height / elapsed),
         "decision_latency_ms": {
             "p50": float(np.percentile(durations, 50) * 1000.0),
             "p95": float(np.percentile(durations, 95) * 1000.0),

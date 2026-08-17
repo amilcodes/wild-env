@@ -4,17 +4,20 @@ import numpy as np
 import torch
 
 from aeolus.config import FireBehaviorConfig, ScenarioConfig
-from aeolus.core.fire import update_fuel_moisture
+from aeolus.core.fire import _resolve_behavior, update_fuel_moisture
 from aeolus.core.fire_behavior import fire_behavior_lookup
 from aeolus.core.simulator import AeolusSimulator
 from aeolus.core.state import FireType
 from aeolus.core.tensor_fire import TensorFireKernel, make_synthetic_batch
+from aeolus.data import fuel_load_from_fbfm40
 
 
 def _numpy_behavior(
     *,
     fuel: int = 122,
     moisture: float = 0.07,
+    live_herbaceous: float = 0.75,
+    live_woody: float = 0.60,
     wind: float = 6.0,
     slope_x: float = 0.0,
     canopy_cover: float = 0.0,
@@ -30,6 +33,8 @@ def _numpy_behavior(
     return fire_behavior_lookup().resolve_numpy(
         fuel_model_number=np.full(shape, fuel, dtype=np.int16),
         moisture_dead_1h=full(moisture),
+        moisture_live_herbaceous=full(live_herbaceous),
+        moisture_live_woody=full(live_woody),
         wind_speed_10m_m_s=wind,
         wind_from_direction_deg=270.0,
         terrain_slope_x=full(slope_x),
@@ -55,9 +60,7 @@ def test_reference_nodes_match_pyretechnics_fixtures() -> None:
     for model, (ros, intensity) in expected.items():
         behavior = _numpy_behavior(fuel=model)
         assert np.isclose(behavior.spread_rate_m_min.item(), ros, rtol=2e-6)
-        assert np.isclose(
-            behavior.fireline_intensity_kw_m.item(), intensity, rtol=2e-6
-        )
+        assert np.isclose(behavior.fireline_intensity_kw_m.item(), intensity, rtol=2e-6)
 
 
 def test_crown_transition_resolves_passive_and_active_types() -> None:
@@ -73,17 +76,33 @@ def test_crown_transition_resolves_passive_and_active_types() -> None:
     assert active.fireline_intensity_kw_m.item() > surface.fireline_intensity_kw_m.item()
 
 
+def test_dynamic_grass_model_responds_to_live_herbaceous_moisture() -> None:
+    cured = _numpy_behavior(fuel=102, live_herbaceous=0.30, wind=4.0)
+    green = _numpy_behavior(fuel=102, live_herbaceous=2.50, wind=4.0)
+    static_cured = _numpy_behavior(fuel=1, live_herbaceous=0.30, wind=4.0)
+    static_green = _numpy_behavior(fuel=1, live_herbaceous=2.50, wind=4.0)
+    assert cured.spread_rate_m_min.item() > 100.0 * green.spread_rate_m_min.item()
+    assert np.isclose(
+        static_cured.spread_rate_m_min.item(),
+        static_green.spread_rate_m_min.item(),
+    )
+
+
 def test_numpy_and_torch_behavior_paths_agree() -> None:
     rng = np.random.default_rng(4)
     shape = (2, 8, 7)
     fuel = rng.choice([1, 101, 122, 145, 183, 202], size=shape).astype(np.int16)
     moisture = rng.uniform(0.04, 0.20, size=shape).astype(np.float32)
+    live_herbaceous = rng.uniform(0.30, 2.50, size=shape).astype(np.float32)
+    live_woody = rng.uniform(0.60, 2.00, size=shape).astype(np.float32)
     slope_x = rng.uniform(-0.35, 0.35, size=shape).astype(np.float32)
     slope_y = rng.uniform(-0.35, 0.35, size=shape).astype(np.float32)
     zeros = np.zeros(shape, dtype=np.float32)
     numpy_result = fire_behavior_lookup().resolve_numpy(
         fuel_model_number=fuel,
         moisture_dead_1h=moisture,
+        moisture_live_herbaceous=live_herbaceous,
+        moisture_live_woody=live_woody,
         wind_speed_10m_m_s=5.4,
         wind_from_direction_deg=238.0,
         terrain_slope_x=slope_x,
@@ -98,6 +117,8 @@ def test_numpy_and_torch_behavior_paths_agree() -> None:
     tensor_result = fire_behavior_lookup().resolve_torch(
         fuel_model_number=torch.from_numpy(fuel),
         moisture_dead_1h=torch.from_numpy(moisture),
+        moisture_live_herbaceous=torch.from_numpy(live_herbaceous),
+        moisture_live_woody=torch.from_numpy(live_woody),
         wind_speed_10m_m_s=torch.full((2, 1, 1), 5.4),
         wind_from_direction_deg=torch.full((2, 1, 1), 238.0),
         terrain_slope_x=torch.from_numpy(slope_x),
@@ -150,7 +171,12 @@ def test_equilibrium_moisture_drives_drying_and_rain_wetting() -> None:
 
 
 def test_tensor_batch_preserves_independent_weather_response() -> None:
-    state = make_synthetic_batch(batch_size=3, height=48, width=48)
+    state = make_synthetic_batch(
+        batch_size=3,
+        height=48,
+        width=48,
+        cell_size_m=20.0,
+    )
     kernel = TensorFireKernel(cell_size_m=20.0)
     for minute in range(1, 16):
         kernel.step(
@@ -168,3 +194,39 @@ def test_lookup_provenance_is_packaged() -> None:
     assert provenance["reference"] == "pyretechnics"
     assert provenance["reference_version"] == "2025.5.15"
     assert provenance["surface_lw_ratio_model"] == "behave"
+    assert provenance["units"]["fuel_load"] == "kg m-2 oven-dry surface fuel"
+
+
+def test_standard_fuel_load_comes_from_model_loading_classes() -> None:
+    codes = np.asarray([91, 101, 122, 204], dtype=np.int16)
+    loads = fuel_load_from_fbfm40(codes)
+    assert loads[0] == 0.0
+    assert np.isclose(loads[1], 0.0184 * 4.88242763638305, rtol=1e-5)
+    assert np.isclose(loads[2], 0.1194 * 4.88242763638305, rtol=1e-5)
+    assert np.isclose(loads[3], 0.6427 * 4.88242763638305, rtol=1e-5)
+
+
+def test_physical_fuel_mass_is_not_applied_twice_to_standard_ros() -> None:
+    config = ScenarioConfig(
+        width=24,
+        height=24,
+        wind_variability=0.0,
+        residual_spread_std=0.0,
+    )
+    truth = AeolusSimulator(config).state.truth
+    truth.elevation_m[:] = 0.0
+    truth.residual_field[:] = 1.0
+    truth.fuel_model_number[:] = 122
+    truth.moisture_dead_1h[:] = 0.07
+    truth.fuel_load[:, :12] = 0.1
+    truth.fuel_load[:, 12:] = 2.0
+    behavior = _resolve_behavior(
+        truth,
+        config,
+        wind_speed_m_s=4.0,
+        wind_direction_deg=270.0,
+    )
+    assert np.allclose(
+        behavior.spread_rate_m_min[:, :12],
+        behavior.spread_rate_m_min[:, 12:],
+    )
