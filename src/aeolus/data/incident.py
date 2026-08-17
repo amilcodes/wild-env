@@ -176,9 +176,7 @@ def write_incident_bundle(
         "bbox": [west, south, east, north],
         "geometry": {
             "type": "Polygon",
-            "coordinates": [
-                [[west, south], [east, south], [east, north], [west, north], [west, south]]
-            ],
+            "coordinates": [[[west, south], [east, south], [east, north], [west, north], [west, south]]],
         },
         "properties": {
             "datetime": None,

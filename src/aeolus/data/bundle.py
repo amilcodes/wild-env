@@ -66,9 +66,7 @@ class ScenarioBundle:
             raise ValueError("cell_size_m must be positive")
         if np.any(self.fuel_load_kg_m2 < 0) or np.any(self.asset_value < 0):
             raise ValueError("fuel load and asset value must be non-negative")
-        if self.canopy_cover is not None and np.any(
-            (self.canopy_cover < 0) | (self.canopy_cover > 1)
-        ):
+        if self.canopy_cover is not None and np.any((self.canopy_cover < 0) | (self.canopy_cover > 1)):
             raise ValueError("canopy_cover must be a fraction within [0, 1]")
         for name, value in optional_arrays.items():
             if name != "fuel_model_number" and value is not None and np.any(value < 0):
@@ -111,19 +109,11 @@ def load_bundle(path: str | Path) -> ScenarioBundle:
             asset_value=payload["asset_value"].astype(np.float32),
             metadata=json.loads(str(payload["metadata_json"].item())),
             fuel_model_number=(
-                payload["fuel_model_number"].astype(np.int16)
-                if "fuel_model_number" in payload
-                else None
+                payload["fuel_model_number"].astype(np.int16) if "fuel_model_number" in payload else None
             ),
-            canopy_cover=(
-                payload["canopy_cover"].astype(np.float32)
-                if "canopy_cover" in payload
-                else None
-            ),
+            canopy_cover=(payload["canopy_cover"].astype(np.float32) if "canopy_cover" in payload else None),
             canopy_height_m=(
-                payload["canopy_height_m"].astype(np.float32)
-                if "canopy_height_m" in payload
-                else None
+                payload["canopy_height_m"].astype(np.float32) if "canopy_height_m" in payload else None
             ),
             canopy_base_height_m=(
                 payload["canopy_base_height_m"].astype(np.float32)

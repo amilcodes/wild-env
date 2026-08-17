@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+from datetime import datetime, timezone
 
 import numpy as np
 import pytest
@@ -21,7 +22,17 @@ from aeolus.data.importers import (
     geojson_bbox,
     load_nirops_perimeters,
 )
+from aeolus.evaluation.ensemble import (
+    calibrate_particle_ensemble,
+    incremental_growth_log_likelihood,
+    normalize_log_weights,
+    probability_metrics,
+    run_ensemble_hindcast,
+    systematic_resample,
+    tempered_log_weights,
+)
 from aeolus.evaluation.historical import (
+    PerimeterFrame,
     PerimeterSeries,
     boundary_distance_metrics,
     compare_counterfactual_policies,
@@ -30,6 +41,7 @@ from aeolus.evaluation.historical import (
     run_shadow_replay,
 )
 from aeolus.policies import no_aerial_action
+from aeolus.workflows import scenario_from_incident
 
 
 def _polygon(x0: float, y0: float, x1: float, y1: float) -> dict[str, object]:
@@ -94,6 +106,31 @@ def test_incident_bundle_round_trip_and_rasterization(tmp_path) -> None:
     series = PerimeterSeries.from_incident(restored)
     assert len(series.frames) == 2
     assert series.frames[0].mask.sum() < series.frames[1].mask.sum()
+    config = scenario_from_incident(restored)
+    assert config.time_origin == "2026-01-01T00:00:00Z"
+    assert config.scenario_id == "test-fire"
+
+
+def test_perimeter_series_coalesces_duplicate_timestamps(tmp_path) -> None:
+    incident = _incident(tmp_path)
+    perimeter_path = incident.asset_path("observed-perimeters")
+    collection = json.loads(perimeter_path.read_text(encoding="utf-8"))
+    collection["features"].append(
+        {
+            "type": "Feature",
+            "geometry": _polygon(2.0, 2.0, 4.0, 4.0),
+            "properties": {
+                "observed_at": "2026-01-01T00:00:00Z",
+                "source": "second-scene-fragment",
+            },
+        }
+    )
+    perimeter_path.write_text(json.dumps(collection), encoding="utf-8")
+    series = PerimeterSeries.from_incident(IncidentBundle.load(incident.root))
+    assert len(series.frames) == 2
+    assert series.frames[0].properties["source_feature_count"] == 2
+    assert series.frames[0].properties["coalesced_duplicate_features"] == 1
+    assert series.frames[0].mask[21, 2]
 
 
 def test_hindcast_produces_spatial_scores(tmp_path) -> None:
@@ -148,6 +185,21 @@ def test_shadow_replay_and_paired_counterfactual_modes(tmp_path) -> None:
     )
     assert comparison["mode"] == "paired-counterfactual"
     assert comparison["summary"]["none"]["episodes"] == 2
+
+
+def test_perimeter_assimilation_updates_continuous_belief() -> None:
+    simulator = AeolusSimulator(ScenarioConfig(width=24, height=24, max_tasks=16))
+    observed = np.zeros((24, 24), dtype=np.bool_)
+    observed[6:18, 7:17] = True
+    simulator.initialize_from_observed_perimeter(
+        observed,
+        source="unit-test-perimeter",
+    )
+    belief = simulator.state.belief
+    assert belief.burn_probability[12, 12] > 0.95
+    assert belief.burn_probability[0, 0] < 0.05
+    assert np.isfinite(belief.arrival_time_mean[12, 12])
+    assert belief.perimeter_source == "unit-test-perimeter"
 
 
 def test_perimeter_metrics_have_expected_identity() -> None:
@@ -216,6 +268,164 @@ def test_nasa_power_import_builds_relative_hourly_forcing(monkeypatch) -> None:
     assert forcing.at_minute(0.0)["precipitation_rate_mm_h"] == pytest.approx(0.05)
 
 
+def test_spatial_weather_round_trip_and_circular_direction(tmp_path) -> None:
+    shape = (2, 3, 4)
+    forcing = WeatherForcing(
+        minute=np.asarray([0.0, 60.0]),
+        wind_speed_m_s=np.stack(
+            (
+                np.full(shape[1:], 2.0, dtype=np.float32),
+                np.full(shape[1:], 4.0, dtype=np.float32),
+            )
+        ),
+        wind_direction_deg=np.stack(
+            (
+                np.full(shape[1:], 359.0, dtype=np.float32),
+                np.full(shape[1:], 1.0, dtype=np.float32),
+            )
+        ),
+        air_temperature_c=np.full(shape, 30.0, dtype=np.float32),
+        relative_humidity_pct=np.full(shape, 20.0, dtype=np.float32),
+        precipitation_rate_mm_h=np.zeros(shape, dtype=np.float32),
+        metadata={"source": "unit-test", "nested": {"coverage": 0.99}},
+    )
+    path = write_weather_forcing(
+        tmp_path / "spatial.nc",
+        forcing,
+        start_datetime="2026-01-01T00:00:00Z",
+    )
+    restored = WeatherForcing.load(path)
+    assert restored.metadata["nested"]["coverage"] == 0.99
+    midpoint = restored.at_minute(30.0)
+    assert np.asarray(midpoint["wind_speed_m_s"]).shape == shape[1:]
+    assert np.allclose(midpoint["wind_speed_m_s"], 3.0)
+    direction = np.asarray(midpoint["wind_direction_deg"])
+    assert np.all((direction < 0.1) | (direction > 359.9))
+
+
+def test_hindcast_uses_absolute_weather_clock_for_later_interval(tmp_path) -> None:
+    forcing = WeatherForcing(
+        minute=np.asarray([0.0, 60.0, 120.0]),
+        wind_speed_m_s=np.asarray([1.0, 5.0, 9.0], dtype=np.float32),
+        wind_direction_deg=np.zeros(3, dtype=np.float32),
+        air_temperature_c=np.full(3, 25.0, dtype=np.float32),
+        relative_humidity_pct=np.full(3, 30.0, dtype=np.float32),
+        metadata={"source": "unit-test"},
+    )
+    weather_path = write_weather_forcing(
+        tmp_path / "clock.nc",
+        forcing,
+        start_datetime="2026-01-01T00:00:00Z",
+    )
+    masks = []
+    for radius in (2, 3, 4):
+        y, x = np.mgrid[:24, :24]
+        masks.append(np.hypot(x - 12, y - 12) <= radius)
+    series = PerimeterSeries(
+        frames=tuple(
+            PerimeterFrame(
+                datetime(2026, 1, 1, hour, tzinfo=timezone.utc),
+                mask,
+                {},
+            )
+            for hour, mask in enumerate(masks)
+        ),
+        cell_size_m=30.0,
+    )
+    config = ScenarioConfig(
+        width=24,
+        height=24,
+        cell_size_m=30.0,
+        horizon_min=65,
+        decision_interval_min=3,
+        max_tasks=16,
+        spotting_rate=0.0,
+        terminate_on_escape=False,
+        time_origin="2026-01-01T00:00:00Z",
+        weather_forcing=str(weather_path),
+    )
+    simulator = AeolusSimulator(config)
+    result = run_hindcast(
+        simulator,
+        series,
+        no_aerial_action,
+        start_index=1,
+        target_index=2,
+    )
+    assert result["forcing_clock"]["forecast_start_offset_min"] == 60.0
+    assert result["forcing_clock"]["forecast_end_offset_min"] == 120.0
+    simulator.reset()
+    simulator.set_simulation_start(series.frames[1].timestamp)
+    assert simulator.current_weather()["wind_speed_m_s"] == 5.0
+
+
+def test_probability_scores_reward_calibrated_identity() -> None:
+    observed = np.zeros((20, 20), dtype=np.bool_)
+    observed[6:14, 7:13] = True
+    perfect = np.where(observed, 0.99, 0.01)
+    uncertain = np.full(observed.shape, 0.5)
+    perfect_score = probability_metrics(perfect, observed)
+    uncertain_score = probability_metrics(uncertain, observed)
+    assert perfect_score["brier_score"] < uncertain_score["brier_score"]
+    assert perfect_score["log_score"] < uncertain_score["log_score"]
+    assert np.isclose(normalize_log_weights(np.array([-1.0, -1.0])).sum(), 1.0)
+    indices = systematic_resample([0.0, 1.0], seed=7)
+    assert np.array_equal(indices, np.ones(2, dtype=np.int64))
+    tempered, beta, raw_ess = tempered_log_weights(np.asarray([0.0, -100.0, -200.0, -300.0]))
+    assert np.isclose(tempered.sum(), 1.0)
+    assert beta < 1.0
+    assert raw_ess < 2.0
+    assert 1.0 / np.sum(tempered**2) >= 1.4 - 1e-8
+    empty = np.zeros((8, 8), dtype=np.bool_)
+    growth = empty.copy()
+    growth[3:5, 3:5] = True
+    identity = incremental_growth_log_likelihood(growth, growth)
+    missing = incremental_growth_log_likelihood(empty, growth)
+    assert identity["log_likelihood"] == 0.0
+    assert np.isfinite(missing["log_likelihood"])
+    assert missing["log_likelihood"] < identity["log_likelihood"]
+
+
+def test_parameter_ensemble_calibrates_and_forecasts(tmp_path) -> None:
+    incident = _incident(tmp_path)
+    series = PerimeterSeries.from_incident(incident)
+    config = ScenarioConfig(
+        width=24,
+        height=24,
+        cell_size_m=1.0,
+        horizon_min=12,
+        decision_interval_min=3,
+        max_tasks=16,
+        wind_speed_m_s=0.6,
+        spotting_rate=0.0,
+        landscape_bundle=str(incident.root),
+    )
+    calibration = calibrate_particle_ensemble(
+        config,
+        series,
+        no_aerial_action,
+        start_index=0,
+        target_index=1,
+        spread_candidates=[0.03, 0.10, 0.30, 1.0],
+        particle_count=4,
+        seed=19,
+        localization_sigma_m=2.0,
+    )
+    assert np.isclose(sum(calibration["posterior_weights"]), 1.0)
+    result = run_ensemble_hindcast(
+        config,
+        series,
+        no_aerial_action,
+        start_index=0,
+        target_index=1,
+        particles=calibration["particles"],
+        weights=calibration["posterior_weights"],
+        return_probability=True,
+    )
+    assert result["probability"].shape == series.frames[0].mask.shape
+    assert 0.0 <= result["probabilistic_metrics"]["brier_score"] <= 1.0
+
+
 def test_nirops_import_filters_and_sorts_acquisition_times(tmp_path) -> None:
     import shapefile
 
@@ -257,9 +467,10 @@ def test_nirops_import_filters_and_sorts_acquisition_times(tmp_path) -> None:
         "CA-TEST-001_Fire",
     )
     assert len(collection["features"]) == 2
-    assert [
-        feature["properties"]["observed_at"] for feature in collection["features"]
-    ] == ["2022-07-05T04:00:00Z", "2022-07-06T04:00:00Z"]
+    assert [feature["properties"]["observed_at"] for feature in collection["features"]] == [
+        "2022-07-05T04:00:00Z",
+        "2022-07-06T04:00:00Z",
+    ]
     assert collection["features"][1]["properties"]["reported_acres"] == 20.0
     assert collection["aeolus:source"]["doi"].endswith("95rj5d379g.1")
 

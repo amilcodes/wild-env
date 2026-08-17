@@ -15,6 +15,8 @@ import certifi
 import numpy as np
 
 from aeolus.data.bundle import ScenarioBundle, load_bundle, write_bundle
+from aeolus.data.fuels import fuel_load_from_fbfm40
+from aeolus.data.reprojection import reproject_scenario_to_metric
 from aeolus.data.weather import WeatherForcing
 
 FEDS_PERIMETER_URL = (
@@ -25,8 +27,7 @@ NASA_POWER_HOURLY_URL = "https://power.larc.nasa.gov/api/temporal/hourly/point"
 NIROPS_PROGRESSION_DOI = "https://doi.org/10.17632/95rj5d379g.1"
 LANDFIRE_WCS_URL = "https://edcintl.cr.usgs.gov/geoserver/landfire/conus_2025/wcs"
 USGS_3DEP_EXPORT_URL = (
-    "https://elevation.nationalmap.gov/arcgis/rest/services/"
-    "3DEPElevation/ImageServer/exportImage"
+    "https://elevation.nationalmap.gov/arcgis/rest/services/3DEPElevation/ImageServer/exportImage"
 )
 
 LANDFIRE_COVERAGES = {
@@ -91,9 +92,7 @@ def fetch_feds_perimeters(
         millis = _feature_timestamp(feature)
         properties = feature.setdefault("properties", {})
         properties["observed_at"] = (
-            datetime.fromtimestamp(millis / 1000.0, tz=timezone.utc)
-            .isoformat()
-            .replace("+00:00", "Z")
+            datetime.fromtimestamp(millis / 1000.0, tz=timezone.utc).isoformat().replace("+00:00", "Z")
         )
         properties["source"] = "NASA-FEDS-VIIRS"
         properties["source_crs"] = "EPSG:4326"
@@ -140,9 +139,7 @@ def load_nirops_perimeters(
                     return properties[name]
             raise KeyError(f"NIROPS record is missing all field aliases {names!r}")
 
-        observed = datetime.fromisoformat(str(properties["UTC"])).replace(
-            tzinfo=timezone.utc
-        )
+        observed = datetime.fromisoformat(str(properties["UTC"])).replace(tzinfo=timezone.utc)
         geometry = shapely_shape(reader.shape(index).__geo_interface__)
         if not geometry.is_valid:
             geometry = geometry.buffer(0)
@@ -164,9 +161,7 @@ def load_nirops_perimeters(
             }
         )
     if len(features) < 2:
-        raise LookupError(
-            f"NIROPS archive has fewer than two records for {incident_code!r}"
-        )
+        raise LookupError(f"NIROPS archive has fewer than two records for {incident_code!r}")
     features.sort(key=lambda feature: feature["properties"]["observed_at"])
     return {
         "type": "FeatureCollection",
@@ -181,9 +176,7 @@ def load_nirops_perimeters(
             "license": "CC BY 4.0",
             "source_path": str(source.resolve()),
             "incident_code": incident_code,
-            "retrieved_at": datetime.now(timezone.utc)
-            .isoformat()
-            .replace("+00:00", "Z"),
+            "retrieved_at": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
         },
     }
 
@@ -199,11 +192,7 @@ def fetch_nasa_power_hourly(
     """Fetch hourly MERRA-2 meteorology through the NASA POWER API."""
 
     def normalize(value: datetime | str) -> datetime:
-        parsed = (
-            datetime.fromisoformat(value.replace("Z", "+00:00"))
-            if isinstance(value, str)
-            else value
-        )
+        parsed = datetime.fromisoformat(value.replace("Z", "+00:00")) if isinstance(value, str) else value
         if parsed.tzinfo is None:
             parsed = parsed.replace(tzinfo=timezone.utc)
         return parsed.astimezone(timezone.utc)
@@ -305,10 +294,21 @@ def _web_mercator(lon: float, lat: float) -> tuple[float, float]:
 def buffered_web_mercator_bbox(
     bbox_wgs84: tuple[float, float, float, float], buffer_m: float
 ) -> tuple[float, float, float, float]:
+    """Return a Web Mercator request extent with a ground-distance buffer."""
+
+    if buffer_m < 0.0:
+        raise ValueError("landscape buffer cannot be negative")
     west, south, east, north = bbox_wgs84
     min_x, min_y = _web_mercator(west, south)
     max_x, max_y = _web_mercator(east, north)
-    return min_x - buffer_m, min_y - buffer_m, max_x + buffer_m, max_y + buffer_m
+    center_latitude = 0.5 * (south + north)
+    mercator_buffer = buffer_m / max(math.cos(math.radians(center_latitude)), 1e-6)
+    return (
+        min_x - mercator_buffer,
+        min_y - mercator_buffer,
+        max_x + mercator_buffer,
+        max_y + mercator_buffer,
+    )
 
 
 def download_usgs_3dep(
@@ -363,20 +363,6 @@ def download_landfire_coverage(
     return path
 
 
-def _fuel_load_from_fbfm40(codes: np.ndarray) -> np.ndarray:
-    """Coarse surface-fuel load proxy by Scott/Burgan model family."""
-
-    output = np.full(codes.shape, 0.85, dtype=np.float32)
-    output[(codes >= 101) & (codes <= 109)] = 0.35
-    output[(codes >= 121) & (codes <= 124)] = 0.70
-    output[(codes >= 141) & (codes <= 149)] = 1.05
-    output[(codes >= 161) & (codes <= 165)] = 0.90
-    output[(codes >= 181) & (codes <= 189)] = 1.20
-    output[(codes >= 201) & (codes <= 204)] = 1.55
-    output[(codes <= 0) | ((codes >= 90) & (codes <= 99))] = 0.0
-    return output
-
-
 def build_landscape_from_services(
     bbox_wgs84: tuple[float, float, float, float],
     destination: str | Path,
@@ -418,26 +404,12 @@ def build_landscape_from_services(
     ):
         with rasterio.open(layer_paths[name]) as source:
             canopy_layers[name] = source.read(1).astype(np.float32)
-    fuel_load = _fuel_load_from_fbfm40(fuel_model)
+    fuel_load = fuel_load_from_fbfm40(fuel_model)
     barrier = (fuel_model <= 0) | ((fuel_model >= 90) & (fuel_model <= 99))
     asset_value = np.zeros(elevation.shape, dtype=np.float32)
 
-    landscape_path = root / "landscape.tif"
-    profile.update(count=6, dtype="float32", nodata=None, compress="deflate")
-    with rasterio.open(landscape_path, "w", **profile) as destination_raster:
-        destination_raster.write(elevation, 1)
-        destination_raster.set_band_description(1, "elevation_m")
-        destination_raster.write(fuel_model.astype(np.float32), 2)
-        destination_raster.set_band_description(2, "fbfm40_code")
-        for index, name in enumerate(
-            ("canopy_cover", "canopy_height", "canopy_base_height", "canopy_bulk_density"),
-            start=3,
-        ):
-            destination_raster.write(canopy_layers[name], index)
-            destination_raster.set_band_description(index, name)
-
     cell_size = abs(float(profile["transform"].a))
-    scenario = ScenarioBundle(
+    source_scenario = ScenarioBundle(
         elevation_m=elevation,
         fuel_load_kg_m2=fuel_load,
         barrier=barrier.astype(np.bool_),
@@ -447,12 +419,8 @@ def build_landscape_from_services(
         # canopy bulk density hundredths of kg/m³.
         canopy_cover=np.clip(canopy_layers["canopy_cover"] / 100.0, 0.0, 1.0),
         canopy_height_m=np.maximum(canopy_layers["canopy_height"] / 10.0, 0.0),
-        canopy_base_height_m=np.maximum(
-            canopy_layers["canopy_base_height"] / 10.0, 0.0
-        ),
-        canopy_bulk_density_kg_m3=np.maximum(
-            canopy_layers["canopy_bulk_density"] / 100.0, 0.0
-        ),
+        canopy_base_height_m=np.maximum(canopy_layers["canopy_base_height"] / 10.0, 0.0),
+        canopy_bulk_density_kg_m3=np.maximum(canopy_layers["canopy_bulk_density"] / 100.0, 0.0),
         metadata={
             "schema_version": 2,
             "crs": crs,
@@ -463,12 +431,21 @@ def build_landscape_from_services(
                     "name": "LANDFIRE 2025",
                     "service": LANDFIRE_WCS_URL,
                     "layers": list(LANDFIRE_COVERAGES.values()),
+                    "product_year": 2025,
+                    "disturbance_through_year": 2024,
+                    "historical_use_note": (
+                        "Product date must be compared with incident time; "
+                        "post-incident products can contain future disturbance information."
+                    ),
                 },
             ],
             "transformations": [
-                "Web Mercator incident crop",
+                ("service retrieval on a Web Mercator grid with latitude-corrected ground-distance buffer"),
                 f"service resample to {size[0]}x{size[1]}",
-                "FBFM40 retained as operational fuel model and mapped to a load proxy",
+                (
+                    "FBFM40 retained as operational fuel model; oven-dry surface "
+                    "load mapped from its six standard Rothermel loading classes"
+                ),
                 "LANDFIRE canopy layers converted from native integer scaling to SI",
             ],
             "split": split,
@@ -476,8 +453,45 @@ def build_landscape_from_services(
             "bounds": bounds,
             "source_bbox_wgs84": bbox_wgs84,
             "fuel_model_semantics": "Scott/Burgan FBFM40 code retained in landscape.tif band 2",
+            "fuel_load_semantics": (
+                "oven-dry kg/m2 summed across standard dead/live loading classes; "
+                "used for mass and burnability, not as an additional ROS multiplier"
+            ),
         },
     )
+    source_scenario.validate()
+    scenario = reproject_scenario_to_metric(source_scenario)
+
+    landscape_path = root / "landscape.tif"
+    metric_profile = {
+        "driver": "GTiff",
+        "height": scenario.elevation_m.shape[0],
+        "width": scenario.elevation_m.shape[1],
+        "count": 6,
+        "dtype": "float32",
+        "crs": scenario.metadata["crs"],
+        "transform": rasterio.Affine(*scenario.metadata["transform"]),
+        "nodata": None,
+        "compress": "deflate",
+    }
+    assert scenario.fuel_model_number is not None
+    with rasterio.open(landscape_path, "w", **metric_profile) as destination_raster:
+        values = (
+            (scenario.elevation_m, "elevation_m"),
+            (scenario.fuel_model_number.astype(np.float32), "fbfm40_code"),
+            (scenario.canopy_cover * 100.0, "canopy_cover"),
+            (scenario.canopy_height_m * 10.0, "canopy_height"),
+            (scenario.canopy_base_height_m * 10.0, "canopy_base_height"),
+            (
+                scenario.canopy_bulk_density_kg_m3 * 100.0,
+                "canopy_bulk_density",
+            ),
+        )
+        for index, (value, description) in enumerate(values, start=1):
+            assert value is not None
+            destination_raster.write(value.astype(np.float32), index)
+            destination_raster.set_band_description(index, description)
+
     scenario.validate()
     return scenario, landscape_path
 
@@ -508,17 +522,13 @@ def enrich_scenario_from_landscape(
         "canopy_bulk_density",
     )
     if descriptions != expected:
-        raise ValueError(
-            f"unexpected landscape bands: expected {expected}, received {descriptions}"
-        )
+        raise ValueError(f"unexpected landscape bands: expected {expected}, received {descriptions}")
     if arrays[0].shape != original.elevation_m.shape:
         raise ValueError("source GeoTIFF and simulator bundle grids do not match")
     metadata = dict(original.metadata)
     metadata["schema_version"] = 2
     transformations = list(metadata.get("transformations", []))
-    transformations.append(
-        "legacy scenario enriched from retained FBFM40 and LANDFIRE canopy bands"
-    )
+    transformations.append("legacy scenario enriched from retained FBFM40 and LANDFIRE canopy bands")
     metadata["transformations"] = transformations
     enriched = ScenarioBundle(
         elevation_m=original.elevation_m,
