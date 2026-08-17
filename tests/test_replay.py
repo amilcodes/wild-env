@@ -12,6 +12,7 @@ from aeolus.replay import (
     render_frame_2d,
     render_frame_3d,
 )
+from aeolus.replay_cli import _with_horizon_override
 from aeolus.viewer.model import ReplayModel
 
 
@@ -65,3 +66,11 @@ def test_replay_round_trip_and_render(tmp_path) -> None:
     paraview = export_paraview(restored, tmp_path / "paraview", max_frames=2)
     assert paraview.exists()
     assert len(list((tmp_path / "paraview" / "frames").glob("*.vtm"))) == 2
+
+
+def test_replay_cli_horizon_override_preserves_or_replaces_config() -> None:
+    config = ScenarioConfig(horizon_min=30)
+    assert _with_horizon_override(config, None) is config
+    shortened = _with_horizon_override(config, 6)
+    assert config.horizon_min == 30
+    assert shortened.horizon_min == 6

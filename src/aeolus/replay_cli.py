@@ -4,9 +4,10 @@ from __future__ import annotations
 
 import argparse
 import json
+from dataclasses import replace
 from pathlib import Path
 
-from aeolus.config import load_config
+from aeolus.config import ScenarioConfig, load_config
 from aeolus.core.simulator import AeolusSimulator
 from aeolus.data import IncidentBundle
 from aeolus.evaluation.historical import PerimeterSeries
@@ -21,6 +22,10 @@ from aeolus.viewer import load_viewer_config
 from aeolus.workflows import resolve_policy, scenario_from_incident
 
 
+def _with_horizon_override(config: ScenarioConfig, horizon_min: int | None) -> ScenarioConfig:
+    return config if horizon_min is None else replace(config, horizon_min=horizon_min)
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="Record and render a deterministic Aeolus replay")
     source = parser.add_mutually_exclusive_group(required=True)
@@ -29,7 +34,11 @@ def main() -> None:
     parser.add_argument("--policy", default="joint_assignment")
     parser.add_argument("--checkpoint")
     parser.add_argument("--seed", type=int, default=20260726)
-    parser.add_argument("--horizon-min", type=int, default=180)
+    parser.add_argument(
+        "--horizon-min",
+        type=int,
+        help="override the scenario horizon; imported incidents default to 180 minutes",
+    )
     parser.add_argument("--start-index", type=int, default=0)
     parser.add_argument("--out", required=True, help="replay bundle directory")
     parser.add_argument("--frame-2d")
@@ -61,7 +70,7 @@ def main() -> None:
         config = scenario_from_incident(
             incident,
             seed=args.seed,
-            horizon_min=args.horizon_min,
+            horizon_min=args.horizon_min if args.horizon_min is not None else 180,
         )
         frame = PerimeterSeries.from_incident(incident).frames[args.start_index]
 
@@ -74,7 +83,7 @@ def main() -> None:
         initializer = initialize
     else:
         experiment = load_config(args.config)
-        config = experiment.scenario
+        config = _with_horizon_override(experiment.scenario, args.horizon_min)
 
     policy, checkpoint_path = resolve_policy(args.policy, checkpoint=args.checkpoint)
     replay = record_episode(
