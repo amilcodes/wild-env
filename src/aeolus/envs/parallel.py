@@ -31,9 +31,7 @@ class AeolusParallelEnv(ParallelEnv):
                 ),
                 "action_mask": spaces.MultiBinary(self.config.max_tasks),
                 "task_valid": spaces.MultiBinary(self.config.max_tasks),
-                "global": spaces.Box(
-                    -np.inf, np.inf, shape=(ACTOR_GLOBAL_FEATURE_DIM,), dtype=np.float32
-                ),
+                "global": spaces.Box(-np.inf, np.inf, shape=(ACTOR_GLOBAL_FEATURE_DIM,), dtype=np.float32),
             }
         )
         self._action_space = spaces.Discrete(self.config.max_tasks)

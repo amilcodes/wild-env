@@ -9,7 +9,7 @@ from typing import TYPE_CHECKING
 import numpy as np
 
 if TYPE_CHECKING:
-    from aeolus.config import ResourceSpec
+    from aeolus.config import ResourceSpec, ServiceSiteSpec
 
 
 class FirePhase(IntEnum):
@@ -31,6 +31,8 @@ class ResourceStatus(IntEnum):
     RETURNING = 2
     RELOADING = 3
     WITHDRAWN = 4
+    WORKING = 5
+    QUEUED = 6
 
 
 @dataclass
@@ -46,15 +48,43 @@ class ResourceRuntime:
     leg_total_min: int = 0
     task_index: int = 0
     task_kind: int = 0
+    task_heading_deg: float = 0.0
     payload_fraction: float = 1.0
     flight_min: float = 0.0
     reload_cycles: int = 0
     attempted_tasks: int = 0
     accepted_tasks: int = 0
+    work_remaining_m: float = 0.0
+    line_start_xy: tuple[float, float] | None = None
+    line_end_xy: tuple[float, float] | None = None
+    line_progress_m: float = 0.0
+    production_multiplier: float = 1.0
+    queue_entered_min: int | None = None
+    current_site_id: str | None = None
+    service_site_id: str | None = None
+    service_volume_l: float = 0.0
 
     @property
     def resource_id(self) -> str:
         return self.spec.resource_id
+
+    @property
+    def payload_l(self) -> float:
+        return self.spec.payload_l * self.payload_fraction
+
+    @property
+    def endurance_remaining_min(self) -> float:
+        return max(0.0, self.spec.endurance_min - self.flight_min)
+
+
+@dataclass
+class ServiceSiteRuntime:
+    spec: ServiceSiteSpec
+    remaining_volume_l: float
+
+    @property
+    def site_id(self) -> str:
+        return self.spec.site_id
 
 
 @dataclass
@@ -80,6 +110,12 @@ class TruthState:
     water: np.ndarray
     retardant: np.ndarray
     ground_hold: np.ndarray
+    water_coverage_gpc: np.ndarray
+    retardant_coverage_gpc: np.ndarray
+    retardant_effective_coverage_gpc: np.ndarray
+    constructed_line: np.ndarray
+    line_strength: np.ndarray
+    line_status: np.ndarray
     residual_field: np.ndarray
     observed_burned: np.ndarray
     fuel_model_number: np.ndarray
@@ -97,8 +133,14 @@ class TruthState:
     spread_rate_m_min: np.ndarray
     flame_length_m: np.ndarray
     ignition_progress: np.ndarray
+    level_set_m: np.ndarray
     arrival_time_min: np.ndarray
     burn_age_min: np.ndarray
+    history_speed_m_min: np.ndarray
+    history_head_x: np.ndarray
+    history_head_y: np.ndarray
+    history_confidence: np.ndarray
+    history_heat_flux_kw_m2: np.ndarray
 
 
 @dataclass
@@ -107,6 +149,10 @@ class BeliefState:
     intensity_std: np.ndarray
     observed_at: np.ndarray
     known_burned: np.ndarray
+    burn_probability: np.ndarray
+    arrival_time_mean: np.ndarray
+    arrival_time_std: np.ndarray
+    perimeter_source: str | None = None
     pending: list[PendingObservation] = field(default_factory=list)
 
 
@@ -116,6 +162,7 @@ class EpisodeState:
     truth: TruthState
     belief: BeliefState
     resources: list[ResourceRuntime]
+    service_sites: list[ServiceSiteRuntime]
     base_xy: tuple[int, int]
     rng: np.random.Generator
     ground_engaged: bool = False

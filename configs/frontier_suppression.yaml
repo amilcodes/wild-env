@@ -1,0 +1,80 @@
+scenario:
+  seed: 20260728
+  width: 96
+  height: 96
+  cell_size_m: 45.0
+  horizon_min: 240
+  decision_interval_min: 3
+  max_tasks: 64
+  wind_speed_m_s: 6.0
+  wind_direction_deg: 35.0
+  wind_variability: 0.18
+  air_temperature_c: 31.0
+  relative_humidity_pct: 21.0
+  spotting_rate: 0.0
+  ground_arrival_min: 10000
+  suppression:
+    water_half_life_min: 8.0
+    retardant_half_life_min: 720.0
+    retardant_rain_wash_fraction_per_mm: 0.08
+    line_production_cv: 0.38
+    base_reload_bays: 1
+    aviation_max_wind_m_s: 18.0
+  resources:
+    - resource_id: tanker_12
+      kind: retardant
+      cruise_speed_m_s: 70.0
+      payload_l: 11000.0
+      reload_min: 14
+      dispatch_latency_min: 3
+      endurance_min: 210
+      retardant_length_m: 750.0
+      retardant_width_m: 110.0
+      target_coverage_level_gpc: 2.0
+    - resource_id: heli_07
+      kind: water
+      cruise_speed_m_s: 48.0
+      payload_l: 2800.0
+      reload_min: 8
+      dispatch_latency_min: 2
+      endurance_min: 150
+      water_radius_m: 150.0
+    - resource_id: ir_scout
+      kind: sensor
+      cruise_speed_m_s: 38.0
+      payload_l: 0.0
+      reload_min: 0
+      dispatch_latency_min: 1
+      endurance_min: 120
+    - resource_id: crew_31
+      kind: crew
+      cruise_speed_m_s: 1.25
+      payload_l: 0.0
+      reload_min: 0
+      dispatch_latency_min: 18
+      endurance_min: 720
+      line_length_m: 600.0
+      line_width_m: 1.2
+      line_production_m_min: 5.0
+      max_operating_wind_m_s: 30.0
+      max_direct_intensity_kw_m: 2100.0
+    - resource_id: dozer_14
+      kind: crew
+      cruise_speed_m_s: 1.0
+      payload_l: 0.0
+      reload_min: 0
+      dispatch_latency_min: 25
+      endurance_min: 720
+      line_length_m: 900.0
+      line_width_m: 3.2
+      line_production_m_min: 9.0
+      max_operating_wind_m_s: 30.0
+      max_direct_intensity_kw_m: 1500.0
+
+training:
+  seed: 20260728
+  device: auto
+  num_envs: 64
+  rollout_steps: 128
+  updates: 1000
+  checkpoint_dir: runs/frontier-suppression
