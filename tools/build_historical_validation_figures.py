@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import csv
 import json
+from datetime import datetime
 from pathlib import Path
 from typing import Any
 
@@ -15,16 +16,23 @@ from matplotlib.colors import LightSource, ListedColormap
 from matplotlib.lines import Line2D
 from matplotlib.patches import Patch
 
-METHODS = ("persistence", "raw_physics", "calibrated_physics")
+METHODS = (
+    "persistence",
+    "raw_physics",
+    "calibrated_physics",
+    "calibrated_ensemble",
+)
 METHOD_LABELS = {
     "persistence": "Persistence",
-    "raw_physics": "Raw physics",
-    "calibrated_physics": "Calibrated physics",
+    "raw_physics": "Raw\nphysics",
+    "calibrated_physics": "Calibrated\nphysics",
+    "calibrated_ensemble": "Posterior\nensemble",
 }
 METHOD_COLORS = {
     "persistence": "#6D7785",
     "raw_physics": "#C96732",
     "calibrated_physics": "#2C718E",
+    "calibrated_ensemble": "#6A5B9E",
 }
 INCIDENT_LABELS = {
     "CA-AEU-017769_Electra": "Electra, CA",
@@ -152,19 +160,14 @@ def build_summary_figure(results: dict[str, Any], destination: Path) -> None:
 
 def _incident_records(results: dict[str, Any], code: str, method: str) -> list[dict[str, Any]]:
     return [
-        item
-        for item in results["forecasts"]
-        if item["incident_code"] == code and item["method"] == method
+        item for item in results["forecasts"] if item["incident_code"] == code and item["method"] == method
     ]
 
 
 def build_transfer_figure(results: dict[str, Any], destination: Path) -> None:
     codes = [item["incident_code"] for item in results["calibrations"]]
     labels = [INCIDENT_LABELS[code] for code in codes]
-    adjustments = [
-        float(item["selected_spread_adjustment"])
-        for item in results["calibrations"]
-    ]
+    adjustments = [float(item["selected_spread_adjustment"]) for item in results["calibrations"]]
     cumulative_deltas = []
     active_growth_deltas = []
     for code in codes:
@@ -254,9 +257,7 @@ def _hillshade(elevation: np.ndarray) -> np.ndarray:
     finite = np.asarray(elevation, dtype=float)
     if np.isnan(finite).any():
         finite = np.nan_to_num(finite, nan=float(np.nanmedian(finite)))
-    return LightSource(azdeg=315, altdeg=35).hillshade(
-        finite, vert_exag=1.8, dx=1.0, dy=1.0
-    )
+    return LightSource(azdeg=315, altdeg=35).hillshade(finite, vert_exag=1.8, dx=1.0, dy=1.0)
 
 
 def build_atlas(
@@ -265,18 +266,11 @@ def build_atlas(
     prepared: dict[str, Any],
     destination: Path,
 ) -> None:
-    prepared_by_code = {
-        item["incident_code"]: item for item in prepared["incidents"]
-    }
+    prepared_by_code = {item["incident_code"]: item for item in prepared["incidents"]}
     codes = [item["incident_code"] for item in results["calibrations"]]
-    records = {
-        code: _incident_records(results, code, "calibrated_physics")[-1]
-        for code in codes
-    }
+    records = {code: _incident_records(results, code, "calibrated_physics")[-1] for code in codes}
     fig, axes = plt.subplots(2, 3, figsize=(12.4, 8.6))
-    categorical = ListedColormap(
-        ["#00000000", "#334155D9", "#3996C6E8", "#66A85CEB", "#D65745EB"]
-    )
+    categorical = ListedColormap(["#00000000", "#334155D9", "#3996C6E8", "#66A85CEB", "#D65745EB"])
     with np.load(examples_path) as values:
         for ax, code in zip(axes.flat, codes, strict=True):
             key = code.lower().replace("-", "_")
@@ -358,6 +352,128 @@ def build_atlas(
         fontsize=8.5,
     )
     fig.tight_layout(rect=(0.025, 0.07, 0.99, 0.93), h_pad=1.6, w_pad=1.1)
+    fig.savefig(destination, bbox_inches="tight")
+    plt.close(fig)
+
+
+def build_probability_atlas(
+    results: dict[str, Any],
+    examples_path: Path,
+    destination: Path,
+) -> None:
+    codes = [item["incident_code"] for item in results["calibrations"]]
+    records = {code: _incident_records(results, code, "calibrated_ensemble")[-1] for code in codes}
+    fig, axes = plt.subplots(2, 3, figsize=(12.4, 8.6))
+    image = None
+    with np.load(examples_path) as values:
+        for ax, code in zip(axes.flat, codes, strict=True):
+            key = code.lower().replace("-", "_")
+            elevation = values[f"{key}_elevation"]
+            start = values[f"{key}_start"].astype(bool)
+            observed = values[f"{key}_observed"].astype(bool)
+            probability = values[f"{key}_ensemble_probability"]
+            display_probability = np.ma.masked_where(
+                probability < 0.01,
+                probability,
+            )
+            ax.imshow(_hillshade(elevation), cmap="gray", vmin=0.25, vmax=1.0)
+            image = ax.imshow(
+                display_probability,
+                cmap="magma",
+                vmin=0.0,
+                vmax=1.0,
+                interpolation="nearest",
+                alpha=0.82,
+            )
+            ax.contour(
+                observed,
+                levels=[0.5],
+                colors="#54D7EF",
+                linewidths=1.15,
+            )
+            ax.contour(
+                start,
+                levels=[0.5],
+                colors="#F2F4F5",
+                linewidths=0.75,
+                linestyles="--",
+            )
+            forecast = records[code]["forecast"]
+            active = forecast["active_domain_probabilistic_metrics"]
+            ax.set_title(
+                f"{INCIDENT_LABELS[code]}\n"
+                f"IoU {forecast['metrics']['iou']:.2f} | "
+                f"active Brier {active['balanced_brier_score']:.3f}",
+                loc="left",
+                fontweight="bold",
+                fontsize=9.5,
+            )
+            ax.set_xticks([])
+            ax.set_yticks([])
+            for spine in ax.spines.values():
+                spine.set_visible(True)
+                spine.set_color("#CFD5DB")
+    assert image is not None
+    colorbar = fig.colorbar(
+        image,
+        ax=axes.ravel().tolist(),
+        orientation="horizontal",
+        fraction=0.035,
+        pad=0.055,
+        aspect=45,
+    )
+    colorbar.set_label("Posterior probability of fire reaching cell")
+    handles = [
+        Line2D(
+            [0],
+            [0],
+            color="#54D7EF",
+            linewidth=1.6,
+            label="Held-out observed perimeter",
+        ),
+        Line2D(
+            [0],
+            [0],
+            color="#F2F4F5",
+            linewidth=1.2,
+            linestyle="--",
+            label="Initialization perimeter",
+        ),
+    ]
+    fig.legend(
+        handles=handles,
+        loc="lower center",
+        ncol=2,
+        frameon=False,
+        bbox_to_anchor=(0.5, 0.012),
+        fontsize=8.5,
+    )
+    fig.suptitle(
+        "Held-out ensemble fire-reach probability",
+        x=0.04,
+        y=0.995,
+        ha="left",
+        fontsize=15,
+        fontweight="bold",
+    )
+    fig.text(
+        0.04,
+        0.955,
+        "Probability is the posterior-weighted fraction of parameter particles. "
+        "Cyan perimeters were not used in calibration.",
+        ha="left",
+        va="top",
+        color="#45515E",
+        fontsize=8.5,
+    )
+    fig.subplots_adjust(
+        left=0.035,
+        right=0.99,
+        top=0.91,
+        bottom=0.13,
+        hspace=0.24,
+        wspace=0.10,
+    )
     fig.savefig(destination, bbox_inches="tight")
     plt.close(fig)
 
@@ -541,12 +657,26 @@ def export_forecasts(results: dict[str, Any], destination: Path) -> None:
         "observed_growth_km2",
         "predicted_growth_km2",
         "spread_adjustment",
+        "brier_score",
+        "balanced_brier_score",
+        "active_domain_brier_score",
+        "active_domain_balanced_brier_score",
+        "active_domain_brier_skill",
+        "active_domain_balanced_brier_skill",
     ]
     with destination.open("w", encoding="utf-8", newline="") as handle:
         writer = csv.DictWriter(handle, fieldnames=fields)
         writer.writeheader()
         for item in results["forecasts"]:
             forecast = item["forecast"]
+            duration_minutes = forecast.get("requested_minutes")
+            if duration_minutes is None:
+                start = datetime.fromisoformat(forecast["start_time"])
+                target = datetime.fromisoformat(forecast["target_time"])
+                duration_minutes = round((target - start).total_seconds() / 60.0)
+            probabilistic = forecast.get("probabilistic_metrics", {})
+            active_probability = forecast.get("active_domain_probabilistic_metrics", {})
+            probability_skill = forecast.get("probabilistic_skill_against_persistence", {})
             writer.writerow(
                 {
                     "incident_code": item["incident_code"],
@@ -555,7 +685,7 @@ def export_forecasts(results: dict[str, Any], destination: Path) -> None:
                     "target_index": item["target_index"],
                     "start_time": forecast["start_time"],
                     "target_time": forecast["target_time"],
-                    "duration_h": forecast["requested_minutes"] / 60.0,
+                    "duration_h": duration_minutes / 60.0,
                     "cumulative_iou": forecast["metrics"]["iou"],
                     "growth_iou": forecast["growth_metrics"]["iou"],
                     "growth_tolerance_f1": forecast["growth_tolerance_1_cell"]["f1"],
@@ -565,6 +695,14 @@ def export_forecasts(results: dict[str, Any], destination: Path) -> None:
                     "observed_growth_km2": forecast["growth_metrics"]["observed_area_km2"],
                     "predicted_growth_km2": forecast["growth_metrics"]["predicted_area_km2"],
                     "spread_adjustment": item["spread_adjustment"],
+                    "brier_score": probabilistic.get("brier_score"),
+                    "balanced_brier_score": probabilistic.get("balanced_brier_score"),
+                    "active_domain_brier_score": active_probability.get("brier_score"),
+                    "active_domain_balanced_brier_score": active_probability.get("balanced_brier_score"),
+                    "active_domain_brier_skill": probability_skill.get("active_domain_brier_skill_score"),
+                    "active_domain_balanced_brier_skill": probability_skill.get(
+                        "active_domain_balanced_brier_skill_score"
+                    ),
                 }
             )
 
@@ -586,14 +724,15 @@ def main() -> None:
     build_summary_figure(results, args.out / "aggregate_metrics.png")
     build_transfer_figure(results, args.out / "calibration_transfer.png")
     build_atlas(results, args.examples, prepared, args.out / "incident_atlas.png")
+    build_probability_atlas(
+        results,
+        args.examples,
+        args.out / "ensemble_probability_atlas.png",
+    )
     build_study_map(prepared, args.out / "incident_locations.png")
     if args.fireline_gdb:
         crockets = Path(
-            next(
-                item["bundle"]
-                for item in prepared["incidents"]
-                if "CrocketsKnob" in item["incident_code"]
-            )
+            next(item["bundle"] for item in prepared["incidents"] if "CrocketsKnob" in item["incident_code"])
         )
         build_fireline_case(
             args.fireline_gdb,

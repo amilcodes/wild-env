@@ -106,9 +106,7 @@ def _enrich(args: argparse.Namespace) -> None:
                 "output": str(Path(args.out).resolve()),
                 "schema_version": bundle.metadata["schema_version"],
                 "grid_shape": list(bundle.elevation_m.shape),
-                "fuel_models": sorted(
-                    int(value) for value in set(bundle.fuel_model_number.flat)
-                ),
+                "fuel_models": sorted(int(value) for value in set(bundle.fuel_model_number.flat)),
                 "canopy_cover_range": [
                     float(bundle.canopy_cover.min()),
                     float(bundle.canopy_cover.max()),

@@ -1,8 +1,14 @@
 # Historical validation
 
+> **Archived result.** This document describes the earlier v0.4 study. Its
+> forcing clock and coarse-grid front-retirement behavior were subsequently
+> corrected. It must not be used as evidence for the current model. The
+> corrected protocol, implementation audit, and v3 results are reported in
+> [Historical accuracy study](historical_accuracy_report.md).
+
 ## Scope
 
-This study evaluates whether Aeolus-IA v0.3 reproduces observed wildfire
+This study evaluates whether Aeolus-IA v0.4 reproduces observed wildfire
 progression after initialization from an analyst-interpreted fire perimeter. It
 also audits the public evidence needed to evaluate historical suppression. The
 spread and suppression questions require different experimental designs:
@@ -62,20 +68,28 @@ For each validation interval:
 6. Compare the resulting perimeter and newly burned cells with the next
    observed perimeter.
 
-Three forecasts are scored:
+Four forecasts are scored:
 
 - **Persistence:** the initial perimeter does not grow.
-- **Raw physics:** the configured v0.3 fire behavior model with spread
+- **Raw physics:** the configured v0.4 fire behavior model with spread
   adjustment 1.0.
 - **Calibrated physics:** the same model with a single incident-specific
   surface/crown spread multiplier selected on the earlier calibration
   interval.
+- **Calibrated ensemble:** twelve joint particles over effective spread,
+  wind-speed exposure, wind-direction bias and dead-fuel moisture, weighted by
+  a localization-aware likelihood on the earlier interval.
 
 The scalar calibration score combines newly burned-area IoU with a penalty on
 growth-area ratio. It intentionally avoids simultaneous fitting of fuel
 moisture, wind, fuel model, suppression, and spread rate from a single
 perimeter transition, because those factors are not identifiable from that
 transition alone.
+
+The ensemble does vary those factors jointly, but treats the particle as the
+identifiable unit. Its weights express predictive adequacy and do not assign
+causal error to one physical input. The held-out posterior produces a burn
+probability and conditional arrival-time mean and standard deviation.
 
 The primary metrics are:
 
@@ -86,6 +100,11 @@ The primary metrics are:
 - symmetric mean perimeter-boundary distance;
 - 95th-percentile Hausdorff boundary distance; and
 - symmetric-difference area.
+
+The ensemble is additionally scored with Brier score, class-balanced Brier
+score, logarithmic score, reliability bins and expected calibration error.
+Whole-raster scores are accompanied by a buffered active-domain score so easy
+unburned background cannot dominate the result.
 
 Uncertainty intervals are obtained with 2,000 bootstrap samples clustered by
 incident. Clustering matters because four intervals from one fire are not four
@@ -99,36 +118,61 @@ intervals contain observed growth. Aggregate means are:
 | Method | Cumulative IoU | Active-growth IoU | Active-growth tolerance F1 | Boundary distance | Symmetric difference |
 |---|---:|---:|---:|---:|---:|
 | Persistence | 0.873 | 0.000 | 0.000 | 156 m | 4.4 km² |
-| Raw physics | 0.534 | 0.053 | 0.145 | 1,223 m | 50.1 km² |
-| Calibrated physics | 0.611 | 0.056 | 0.151 | 938 m | 50.3 km² |
+| Raw physics | 0.809 | 0.036 | 0.106 | 307 m | 7.3 km² |
+| Calibrated physics | 0.807 | 0.048 | 0.142 | 299 m | 7.3 km² |
+| Calibrated ensemble | 0.862 | 0.031 | 0.096 | 167 m | 4.8 km² |
 
 The corresponding incident-cluster 95% intervals for cumulative IoU are
-0.830-0.923 for persistence, 0.327-0.719 for raw physics, and 0.394-0.813 for
-calibrated physics. For active-growth one-cell-tolerance F1 they are 0,
-0.069-0.227, and 0.095-0.213.
+0.830-0.923 for persistence, 0.687-0.900 for raw physics, 0.690-0.896 for
+calibrated physics, and 0.817-0.911 for the ensemble. For active-growth
+one-cell-tolerance F1 they are 0, 0.035-0.197, 0.065-0.226, and 0.015-0.201.
 
-These results support three conclusions.
+The posterior probability field has the following active-growth proper scores:
+
+| Evaluation domain | Ensemble Brier | Persistence Brier | Skill |
+|---|---:|---:|---:|
+| Whole raster | 0.0133 | 0.0126 | -5.5% |
+| Whole raster, class-balanced | 0.0657 | 0.0722 | +9.0% |
+| Buffered active domain | 0.3200 | 0.3315 | +3.5% |
+| Buffered active domain, class-balanced | 0.4702 | 0.5000 | +6.0% |
+
+Skill is `1 - ensemble score / persistence score`, computed over the 21
+intervals with observed growth. The active domain is defined from the observed
+initial/target growth envelope and a fixed buffer; it does not depend on the
+forecast.
+
+These results support four conclusions.
 
 First, persistence is the strongest cumulative-extent forecast. Daily
 perimeters contain a large common interior, so cumulative overlap rewards
-conservative forecasts. Persistence also has the lowest mean boundary
-displacement. Any operational spread model should be required to beat this
-baseline.
+conservative forecasts. The posterior ensemble closes most of that gap:
+0.862 versus 0.873 cumulative IoU, 167 versus 156 m boundary displacement, and
+4.8 versus 4.4 km² symmetric difference. Their incident-cluster intervals
+overlap. This is near-baseline extent reconstruction, not evidence that the
+simulator predicts the advancing front.
 
-Second, the physics model has weak, nonzero information about the advancing
-front. Persistence has zero overlap and zero tolerance F1 on active-growth
-intervals, while calibrated physics reaches 0.056 growth IoU and 0.151
-tolerance F1. That signal is too small for an accuracy claim, but it is
-measurably different from no growth.
+Second, replacing the raster activation front with the WENO5/RK3 signed level
+set removes a major numerical error. Against the archived v0.3 study, raw
+cumulative IoU rises from 0.534 to 0.809, boundary displacement falls from
+1,223 to 307 m, and symmetric difference falls from 50.1 to 7.3 km². These
+are paired-protocol development results; they isolate a software/model
+increment, not a new external dataset.
 
 Third, one-interval calibration is unstable under changing fire regimes.
-Selected multipliers range from 0.13 to 3.5. Calibration substantially
-improves Electra, Dry Lake, and Ridge Creek cumulative scores. It degrades
-Crockets Knob and Davis, and fails severely on Bear. Bear's calibrated mean
-cumulative IoU is 0.243, its mean boundary displacement is 3.11 km, and its
-mean symmetric-difference area is 235 km². The calibration interval selected
-the upper candidate 3.5, which overpredicts later growth as observed growth
-decelerates.
+Selected scalar spread multipliers are 0.987, 1.2, or 3.5. Scalar calibration
+improves active-growth tolerance F1 from 0.106 to 0.142 but slightly reduces
+cumulative IoU. The posterior update has raw effective sample sizes from 1.06
+to 3.57 particles out of 12. Adaptive likelihood tempering raises final
+effective sample size to 4.2 and exposes the collapse through a reported
+tempering coefficient rather than hiding it.
+
+Fourth, the posterior field contains modest probabilistic information about
+where growth occurs. It improves balanced Brier score by 9.0% across the
+whole raster and 6.0% in the active domain. Its ordinary whole-raster Brier
+score is 5.5% worse than persistence, and the thresholded advancing-front F1
+is only 0.096. The probability result is useful for uncertainty-aware MARL
+stress testing; the localization result is still below a credible historical
+spread forecast.
 
 ## Suppression-evidence audit
 
@@ -155,7 +199,7 @@ engagement label is also an outcome of the final-perimeter overlay, not a
 randomized treatment effect. It cannot by itself establish how a line changed
 the fire.
 
-Aeolus-IA v0.3 represents aerial water or retardant placement and only an
+Aeolus-IA v0.4 represents aerial water or retardant placement and only an
 implicit ground-hold behavior. It does not yet expose explicit ground-line
 construction as a resource-constrained agent action. No public, event-level
 aerial drop sequence matched to the six study incidents was identified.
@@ -194,19 +238,21 @@ also a reconstruction problem. Direct comparison with the present free
 one-step forecast would conflate observation assimilation with propagation
 skill.
 
-Relative to these systems, Aeolus-IA v0.3 now has a credible validation harness
-and a spatial fire-behavior kernel suitable for high-throughput policy
-experiments. Its empirical spread skill is behind the level required for
-historical forecast claims. The highest-value next model work is:
+Relative to these systems, Aeolus-IA v0.4 has a high-order level-set front,
+probabilistic fire state and a validation harness suitable for high-throughput
+policy experiments. Its empirical advancing-front skill is behind the level
+required for historical forecast claims. The highest-value next model work is:
 
-1. perimeter state assimilation with uncertainty-aware ensembles;
+1. two-perimeter arrival-history reconstruction and coupled-state spin-up;
 2. incident-grade RAWS or gridded mesoscale weather, with spatial and temporal
    wind fields;
 3. dead/live fuel-moisture initialization and updating;
 4. calibrated spotting with explicit ember transport and ignition delay;
-5. scale tests on smaller cells around active fronts;
-6. explicit line construction and firing operations; and
-7. probabilistic scoring for containment and resource outcomes.
+5. coupled-model correction fields learned from WRF-Fire/CFBM or QUIC-Fire
+   ensembles;
+6. scale tests on smaller cells around active fronts;
+7. explicit line construction and firing operations; and
+8. probabilistic scoring for containment and resource outcomes.
 
 MARL training should use parameter ensembles spanning the empirical
 uncertainty set. A policy trained against one fitted deterministic fire is
@@ -214,8 +260,10 @@ likely to exploit simulator error.
 
 ## Reproduction
 
-The frozen result files live under `results/historical_validation/`. To rebuild
-source bundles and rerun the study:
+The v0.4 frozen result files live under
+`results/frontier_fire/historical_validation/`; the archived v0.3 result
+remains under `results/historical_validation/`. To rebuild source bundles and
+rerun the study:
 
 ```bash
 aeolus-study prepare \

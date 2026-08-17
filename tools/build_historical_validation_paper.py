@@ -321,9 +321,18 @@ def _metric_summary(results: dict[str, Any], styles: dict[str, ParagraphStyle]) 
     persistence = results["summaries"]["persistence"]
     cells = [
         [
-            [_p(f"{calibrated['metrics.iou']['mean']:.3f}", styles, "metric"), _p("calibrated cumulative IoU", styles, "metric_label")],
-            [_p(f"{persistence['metrics.iou']['mean']:.3f}", styles, "metric"), _p("persistence cumulative IoU", styles, "metric_label")],
-            [_p(f"{growth['growth_tolerance_1_cell.f1']['mean']:.3f}", styles, "metric"), _p("active-growth tolerance F1", styles, "metric_label")],
+            [
+                _p(f"{calibrated['metrics.iou']['mean']:.3f}", styles, "metric"),
+                _p("calibrated cumulative IoU", styles, "metric_label"),
+            ],
+            [
+                _p(f"{persistence['metrics.iou']['mean']:.3f}", styles, "metric"),
+                _p("persistence cumulative IoU", styles, "metric_label"),
+            ],
+            [
+                _p(f"{growth['growth_tolerance_1_cell.f1']['mean']:.3f}", styles, "metric"),
+                _p("active-growth tolerance F1", styles, "metric_label"),
+            ],
             [_p("24", styles, "metric"), _p("held-out forecast intervals", styles, "metric_label")],
         ]
     ]
@@ -380,33 +389,21 @@ def _incident_means(results: dict[str, Any], code: str, method: str) -> dict[str
         for item in results["forecasts"]
         if item["incident_code"] == code and item["method"] == method
     ]
-    active = [
-        item
-        for item in records
-        if item["growth_metrics"]["observed_area_km2"] > 0
-    ]
+    active = [item for item in records if item["growth_metrics"]["observed_area_km2"] > 0]
     return {
         "iou": sum(item["metrics"]["iou"] for item in records) / len(records),
         "growth_f1": (
-            sum(item["growth_tolerance_1_cell"]["f1"] for item in active) / len(active)
-            if active
-            else 0.0
+            sum(item["growth_tolerance_1_cell"]["f1"] for item in active) / len(active) if active else 0.0
         ),
-        "boundary": sum(
-            item["boundary"]["mean_symmetric_distance_m"] for item in records
-        )
-        / len(records),
-        "symmetric_difference": sum(
-            item["metrics"]["symmetric_difference_km2"] for item in records
-        )
+        "boundary": sum(item["boundary"]["mean_symmetric_distance_m"] for item in records) / len(records),
+        "symmetric_difference": sum(item["metrics"]["symmetric_difference_km2"] for item in records)
         / len(records),
     }
 
 
 def _incident_table(results: dict[str, Any], styles: dict[str, ParagraphStyle]) -> Table:
     calibration_by_code = {
-        item["incident_code"]: item["selected_spread_adjustment"]
-        for item in results["calibrations"]
+        item["incident_code"]: item["selected_spread_adjustment"] for item in results["calibrations"]
     }
     rows: list[list[Any]] = [
         [
@@ -603,7 +600,14 @@ def _build_story(
             Spacer(1, 0.06 * inch),
             _table(
                 [
-                    ["Incident", "State", "NIROPS frames", "Cell size", "Calibration pair", "Validation pairs"],
+                    [
+                        "Incident",
+                        "State",
+                        "NIROPS frames",
+                        "Cell size",
+                        "Calibration pair",
+                        "Validation pairs",
+                    ],
                     ["Electra", "CA", "8", "143 m", "1 -> 2", "2->3, 3->4, 4->5, 5->6"],
                     ["Crockets Knob", "OR", "16", "134 m", "0 -> 1", "1->2, 2->3, 3->4, 4->5"],
                     ["Dry Lake", "AZ", "12", "134 m", "0 -> 1", "1->2, 2->3, 3->4, 4->5"],
@@ -654,19 +658,48 @@ def _build_story(
             _table(
                 [
                     ["Stage", "Operation", "Leakage control"],
-                    ["1. Align", "Project and rasterize observed perimeters on the simulator landscape.", "One common grid per incident."],
-                    ["2. Calibrate", "Select one shared surface/crown spread multiplier on one earlier interval.", "Validation intervals are excluded."],
-                    ["3. Initialize", "Set burned state from the observed start perimeter.", "No ignition-location reconstruction."],
-                    ["4. Integrate", "Apply hourly weather and run for the exact observation interval.", "No simulated suppression."],
-                    ["5. Score", "Compare cumulative extent, new growth, and perimeter boundary.", "Same target and tolerance for all methods."],
-                    ["6. Quantify", "Bootstrap 2,000 times by incident.", "Four intervals from one fire remain clustered."],
+                    [
+                        "1. Align",
+                        "Project and rasterize observed perimeters on the simulator landscape.",
+                        "One common grid per incident.",
+                    ],
+                    [
+                        "2. Calibrate",
+                        "Select one shared surface/crown spread multiplier on one earlier interval.",
+                        "Validation intervals are excluded.",
+                    ],
+                    [
+                        "3. Initialize",
+                        "Set burned state from the observed start perimeter.",
+                        "No ignition-location reconstruction.",
+                    ],
+                    [
+                        "4. Integrate",
+                        "Apply hourly weather and run for the exact observation interval.",
+                        "No simulated suppression.",
+                    ],
+                    [
+                        "5. Score",
+                        "Compare cumulative extent, new growth, and perimeter boundary.",
+                        "Same target and tolerance for all methods.",
+                    ],
+                    [
+                        "6. Quantify",
+                        "Bootstrap 2,000 times by incident.",
+                        "Four intervals from one fire remain clustered.",
+                    ],
                 ],
                 [0.82 * inch, 3.34 * inch, 2.64 * inch],
                 styles,
             ),
             _p("Forecasts", styles, "h2"),
-            _bullet("<b>Persistence.</b> The start perimeter remains fixed. This is the required conservative baseline.", styles),
-            _bullet("<b>Raw physics.</b> Aeolus-IA v0.3 with surface and crown spread adjustment 1.0.", styles),
+            _bullet(
+                "<b>Persistence.</b> The start perimeter remains fixed. This is the required conservative baseline.",
+                styles,
+            ),
+            _bullet(
+                "<b>Raw physics.</b> Aeolus-IA v0.3 with surface and crown spread adjustment 1.0.", styles
+            ),
             _bullet(
                 "<b>Calibrated physics.</b> The same model with one incident-specific multiplier selected by "
                 "new-growth IoU and an area-ratio penalty.",
@@ -676,12 +709,36 @@ def _build_story(
             _table(
                 [
                     ["Metric", "Definition", "Interpretation"],
-                    ["Cumulative IoU", "|predicted intersection observed| / |predicted union observed|", "Rewards overlap of the full burned interior."],
-                    ["Growth IoU", "IoU after subtracting the observed start mask", "Tests localization of newly burned cells."],
-                    ["Tolerance F1", "Growth precision/recall after one-cell radial dilation", "Allows 134-188 m raster localization error."],
-                    ["Boundary mean", "Mean of bidirectional nearest-boundary distances", "Physical perimeter displacement in meters."],
-                    ["Hausdorff 95", "95th percentile of bidirectional boundary distances", "Robust near-worst boundary error."],
-                    ["Symmetric difference", "Area predicted or observed, but not both", "Absolute spatial disagreement in km2."],
+                    [
+                        "Cumulative IoU",
+                        "|predicted intersection observed| / |predicted union observed|",
+                        "Rewards overlap of the full burned interior.",
+                    ],
+                    [
+                        "Growth IoU",
+                        "IoU after subtracting the observed start mask",
+                        "Tests localization of newly burned cells.",
+                    ],
+                    [
+                        "Tolerance F1",
+                        "Growth precision/recall after one-cell radial dilation",
+                        "Allows 134-188 m raster localization error.",
+                    ],
+                    [
+                        "Boundary mean",
+                        "Mean of bidirectional nearest-boundary distances",
+                        "Physical perimeter displacement in meters.",
+                    ],
+                    [
+                        "Hausdorff 95",
+                        "95th percentile of bidirectional boundary distances",
+                        "Robust near-worst boundary error.",
+                    ],
+                    [
+                        "Symmetric difference",
+                        "Area predicted or observed, but not both",
+                        "Absolute spatial disagreement in km2.",
+                    ],
                 ],
                 [1.08 * inch, 3.02 * inch, 2.70 * inch],
                 styles,
@@ -798,11 +855,27 @@ def _build_story(
                 [
                     ["Archive quantity", "Value", "Use in Aeolus-IA"],
                     ["Line features", f"{audit['features']:,}", "Spatial action/outcome distribution"],
-                    ["IRWIN incident identifiers", f"{audit['incidents_by_irwin_id']:,}", "Cross-incident sampling"],
+                    [
+                        "IRWIN incident identifiers",
+                        f"{audit['incidents_by_irwin_id']:,}",
+                        "Cross-incident sampling",
+                    ],
                     ["Held", f"{audit['engagement']['Held']['features']:,}", "Line outcome label"],
-                    ["Burned Over", f"{audit['engagement']['Burned Over']['features']:,}", "Line outcome label"],
-                    ["Not Engaged", f"{audit['engagement']['Not Engaged']['features']:,}", "Line outcome label"],
-                    ["LineDateTime present", f"{audit['line_datetime_present_fraction'] * 100:.2f}%", "Chronology coverage is insufficient"],
+                    [
+                        "Burned Over",
+                        f"{audit['engagement']['Burned Over']['features']:,}",
+                        "Line outcome label",
+                    ],
+                    [
+                        "Not Engaged",
+                        f"{audit['engagement']['Not Engaged']['features']:,}",
+                        "Line outcome label",
+                    ],
+                    [
+                        "LineDateTime present",
+                        f"{audit['line_datetime_present_fraction'] * 100:.2f}%",
+                        "Chronology coverage is insufficient",
+                    ],
                 ],
                 [2.13 * inch, 1.23 * inch, 3.44 * inch],
                 styles,
@@ -852,13 +925,41 @@ def _build_story(
             _table(
                 [
                     ["Evidence", "Required fields", "Reason"],
-                    ["Aerial drops", "Time, polygon, material, coverage level, platform", "Reconstruct treatment placement and decay"],
-                    ["Aircraft state", "Dispatch, arrival, reload, turnaround, availability", "Constrain action feasibility"],
-                    ["Ground line", "Segment geometry, construction start/end, method, production rate", "Determine line state at fire arrival"],
-                    ["Firing operations", "Ignition geometry, time, method", "Represent intentional fire spread"],
-                    ["Assignments", "Resource-to-division/task history and handoffs", "Recover coordination constraints"],
-                    ["Observations", "Perimeter acquisition time and uncertainty", "Separate action timing from observation delay"],
-                    ["Counterfactual design", "Matched controls, causal model, or calibrated ensemble", "Estimate effect rather than association"],
+                    [
+                        "Aerial drops",
+                        "Time, polygon, material, coverage level, platform",
+                        "Reconstruct treatment placement and decay",
+                    ],
+                    [
+                        "Aircraft state",
+                        "Dispatch, arrival, reload, turnaround, availability",
+                        "Constrain action feasibility",
+                    ],
+                    [
+                        "Ground line",
+                        "Segment geometry, construction start/end, method, production rate",
+                        "Determine line state at fire arrival",
+                    ],
+                    [
+                        "Firing operations",
+                        "Ignition geometry, time, method",
+                        "Represent intentional fire spread",
+                    ],
+                    [
+                        "Assignments",
+                        "Resource-to-division/task history and handoffs",
+                        "Recover coordination constraints",
+                    ],
+                    [
+                        "Observations",
+                        "Perimeter acquisition time and uncertainty",
+                        "Separate action timing from observation delay",
+                    ],
+                    [
+                        "Counterfactual design",
+                        "Matched controls, causal model, or calibrated ensemble",
+                        "Estimate effect rather than association",
+                    ],
                 ],
                 [1.20 * inch, 3.12 * inch, 2.48 * inch],
                 styles,
@@ -942,11 +1043,18 @@ def _build_story(
                 accent=BLUE,
             ),
             _p("What this benchmark adds", styles, "h2"),
-            _bullet("A reproducible importer for a current, high-resolution NIROPS progression archive.", styles),
-            _bullet("Frozen incident bundles with aligned terrain, fuels, canopy, weather, and observation times.", styles),
+            _bullet(
+                "A reproducible importer for a current, high-resolution NIROPS progression archive.", styles
+            ),
+            _bullet(
+                "Frozen incident bundles with aligned terrain, fuels, canopy, weather, and observation times.",
+                styles,
+            ),
             _bullet("Held-out interval selection and persistence as a mandatory baseline.", styles),
             _bullet("Growth, boundary, and area metrics with incident-cluster uncertainty.", styles),
-            _bullet("A concrete evidence audit separating spread validation from suppression validation.", styles),
+            _bullet(
+                "A concrete evidence audit separating spread validation from suppression validation.", styles
+            ),
         ]
     )
 
@@ -1123,19 +1231,34 @@ def _build_story(
             _table(
                 [
                     ["Artifact", "Contents"],
-                    ["historical_validation_results.json", "Manifest, calibrations, 72 method-interval forecasts, cluster summaries, interpretation constraints"],
+                    [
+                        "historical_validation_results.json",
+                        "Manifest, calibrations, 72 method-interval forecasts, cluster summaries, interpretation constraints",
+                    ],
                     ["forecast_metrics.csv", "Flat interval-level metrics for independent analysis"],
-                    ["historical_validation_examples.npz", "Six final-interval raster examples used in the error atlas"],
+                    [
+                        "historical_validation_examples.npz",
+                        "Six final-interval raster examples used in the error atlas",
+                    ],
                     ["fireline_archive_audit.json", "National and Crockets Knob feature/timestamp counts"],
-                    ["figures/*.png", "Publication-ready aggregate, transfer, atlas, location, and fireline figures"],
+                    [
+                        "figures/*.png",
+                        "Publication-ready aggregate, transfer, atlas, location, and fireline figures",
+                    ],
                 ],
                 [2.30 * inch, 4.50 * inch],
                 styles,
             ),
             _p("Verification", styles, "h2"),
-            _bullet("30 Python tests pass, including importer, metric, fire-behavior, environment, training, bundle, and replay coverage.", styles),
+            _bullet(
+                "30 Python tests pass, including importer, metric, fire-behavior, environment, training, bundle, and replay coverage.",
+                styles,
+            ),
             _bullet("Ruff static checks pass across source, tests, and tools.", styles),
-            _bullet("The source and binary distributions build, and the installed console entry point exposes prepare/run workflows.", styles),
+            _bullet(
+                "The source and binary distributions build, and the installed console entry point exposes prepare/run workflows.",
+                styles,
+            ),
             _bullet("The PDF is rendered to page images and visually inspected before delivery.", styles),
             Spacer(1, 0.10 * inch),
             _callout(

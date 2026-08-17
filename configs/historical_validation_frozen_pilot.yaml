@@ -1,0 +1,32 @@
+schema_version: 1
+title: Six-incident chronological holdout pilot on metric grids
+base_manifest: historical_validation.yaml
+base_manifest_sha256: 9e8bb2e3ce9887a3405f282b5f8603e721b592e6fca8f7aca91d223b1a2ca53f
+frozen_at: '2026-08-04'
+partition_unit: incident
+ignore_incident_specific_candidates_outside_train: true
+incident_assignments:
+  train:
+    - AZ-SCA-001418_DryLake
+    - UT-VLD-000127_Bear
+  development:
+    - CA-AEU-017769_Electra
+    - OR-MAF-022199_CrocketsKnob
+  test:
+    - ID-IPF-000447_RidgeCreek
+    - NM-GNF-000382_Davis
+prohibited_information:
+  - test target perimeters during fitting or method selection
+  - incident-specific test spread calibration
+  - post-incident landscape products
+  - verifying future weather analyses in an operational forecast claim
+physics_candidates: [0.01, 0.03, 0.1, 0.3]
+baselines:
+  global_isotropic:
+    candidates: [0.0, 0.02, 0.04, 0.08, 0.16, 0.32, 0.64, 1.28, 2.56]
+  last_growth_trend:
+    candidates: [0.0, 0.25, 0.5, 0.75, 1.0, 1.5, 2.0]
+  wind_ellipse:
+    candidates: [0.0, 0.04, 0.08, 0.16, 0.32, 0.64, 1.28, 2.56]
+    flank_ratio: 0.35
+    backing_ratio: 0.15

@@ -2,7 +2,9 @@
 
 from __future__ import annotations
 
+import os
 from collections.abc import Callable
+from concurrent.futures import Executor, ThreadPoolExecutor
 from dataclasses import dataclass, replace
 from datetime import datetime
 from typing import Any
@@ -14,6 +16,21 @@ from aeolus.core.simulator import AeolusSimulator
 from aeolus.data.incident import IncidentBundle
 
 Policy = Callable[[AeolusSimulator], dict[str, int]]
+
+
+def evaluation_worker_count(
+    task_count: int,
+    requested: int | None = None,
+) -> int:
+    """Resolve bounded local parallelism for independent hindcasts."""
+
+    configured = requested
+    if configured is None:
+        raw = os.environ.get("AEOLUS_EVAL_WORKERS")
+        configured = int(raw) if raw else min(8, os.cpu_count() or 1)
+    if configured < 1:
+        raise ValueError("evaluation worker count must be positive")
+    return min(task_count, configured)
 
 
 def _parse_datetime(value: str) -> datetime:
@@ -52,7 +69,7 @@ class PerimeterSeries:
         affine = Affine(*[float(value) for value in transform_values])
         target_crs = str(metadata["crs"])
         transformer = Transformer.from_crs("EPSG:4326", target_crs, always_xy=True)
-        frames: list[PerimeterFrame] = []
+        frames_by_time: dict[datetime, list[tuple[np.ndarray, dict[str, Any]]]] = {}
         for feature in incident.perimeter_collection()["features"]:
             properties = dict(feature.get("properties", {}))
             observed_at = properties.get("observed_at")
@@ -64,15 +81,39 @@ class PerimeterSeries:
                 out_shape=landscape.elevation_m.shape,
                 transform=affine,
                 fill=0,
-                all_touched=True,
+                # Model state and level-set values live at cell centres.
+                # all_touched would dilate an observation by about half a cell.
+                all_touched=False,
                 dtype=np.uint8,
             ).astype(np.bool_)
             if mask.any():
-                frames.append(PerimeterFrame(_parse_datetime(observed_at), mask, properties))
+                timestamp = _parse_datetime(observed_at)
+                frames_by_time.setdefault(timestamp, []).append((mask, properties))
+        frames: list[PerimeterFrame] = []
+        for timestamp, observations in frames_by_time.items():
+            merged_mask = np.logical_or.reduce([mask for mask, _ in observations])
+            properties = dict(observations[0][1])
+            properties["source_feature_count"] = len(observations)
+            properties["coalesced_duplicate_features"] = max(0, len(observations) - 1)
+            properties["rasterization"] = "cell_center_in_polygon"
+            if len(observations) > 1:
+                properties["source_properties"] = [item for _, item in observations]
+            frames.append(PerimeterFrame(timestamp, merged_mask, properties))
         frames.sort(key=lambda item: item.timestamp)
         if len(frames) < 2:
             raise ValueError("historical evaluation requires at least two non-empty perimeter frames")
         return cls(tuple(frames), float(metadata["cell_size_m"]))
+
+
+@dataclass(frozen=True)
+class HindcastJob:
+    config: ScenarioConfig
+    series: PerimeterSeries
+    policy: Policy
+    start_index: int
+    target_index: int
+    return_prediction: bool = False
+    use_arrival_history: bool = False
 
 
 def perimeter_metrics(predicted: np.ndarray, observed: np.ndarray, cell_size_m: float) -> dict[str, float]:
@@ -125,16 +166,8 @@ def tolerance_metrics(
     observed_count = int(observed_mask.sum())
     matched_predicted = int((predicted_mask & dilate(observed_mask)).sum())
     matched_observed = int((observed_mask & dilate(predicted_mask)).sum())
-    precision = (
-        matched_predicted / predicted_count
-        if predicted_count
-        else float(observed_count == 0)
-    )
-    recall = (
-        matched_observed / observed_count
-        if observed_count
-        else float(predicted_count == 0)
-    )
+    precision = matched_predicted / predicted_count if predicted_count else float(observed_count == 0)
+    recall = matched_observed / observed_count if observed_count else float(predicted_count == 0)
     return {
         "radius_cells": float(radius_cells),
         "precision": precision,
@@ -190,6 +223,7 @@ def run_hindcast(
     start_index: int = 0,
     target_index: int = 1,
     return_prediction: bool = False,
+    use_arrival_history: bool = False,
 ) -> dict[str, Any]:
     """Initialize at one observation and forecast toward a later perimeter."""
 
@@ -199,7 +233,35 @@ def run_hindcast(
     target = series.frames[target_index]
     requested_minutes = max(1, round((target.timestamp - start.timestamp).total_seconds() / 60.0))
     simulator.reset(simulator.config.seed)
-    simulator.initialize_from_observed_perimeter(start.mask, source="historical-hindcast-start")
+    forcing_minute_offset = simulator.set_simulation_start(start.timestamp)
+    initialization: dict[str, Any]
+    if use_arrival_history:
+        if start_index < 1:
+            raise IndexError("two-perimeter arrival history requires a frame before start_index")
+        earlier = series.frames[start_index - 1]
+        history_minutes = max(
+            1,
+            round((start.timestamp - earlier.timestamp).total_seconds() / 60.0),
+        )
+        diagnostics = simulator.initialize_from_arrival_history(
+            earlier.mask,
+            start.mask,
+            history_minutes,
+            source="historical-two-perimeter-arrival-history",
+        )
+        initialization = {
+            "method": "two_perimeter_harmonic_arrival_history",
+            "history_start_time": earlier.timestamp.isoformat(),
+            "history_end_time": start.timestamp.isoformat(),
+            "history_elapsed_min": history_minutes,
+            "diagnostics": diagnostics,
+        }
+    else:
+        simulator.initialize_from_observed_perimeter(
+            start.mask,
+            source="historical-hindcast-start",
+        )
+        initialization = {"method": "single_perimeter_boundary_ring"}
     # An operational episode may terminate when fire reaches the finite raster
     # boundary. A hindcast still has to integrate for the full observation
     # interval so its area error cannot improve merely by stopping early.
@@ -224,26 +286,65 @@ def run_hindcast(
         "terminated": simulator.state.terminated,
         "truncated": simulator.state.truncated,
         "escaped": simulator.state.escaped,
+        "forcing_clock": {
+            "forecast_start_offset_min": forcing_minute_offset,
+            "forecast_end_offset_min": simulator.forcing_minute,
+            "weather_time_origin": (
+                simulator.weather.time_origin.isoformat()
+                if simulator.weather is not None and simulator.weather.time_origin is not None
+                else simulator.config.time_origin
+            ),
+        },
         "metrics": perimeter_metrics(predicted, target.mask, series.cell_size_m),
         "growth_metrics": perimeter_metrics(
             predicted_growth,
             observed_growth,
             series.cell_size_m,
         ),
-        "perimeter_tolerance_1_cell": tolerance_metrics(
-            predicted, target.mask, radius_cells=1
-        ),
-        "growth_tolerance_1_cell": tolerance_metrics(
-            predicted_growth, observed_growth, radius_cells=1
-        ),
-        "boundary": boundary_distance_metrics(
-            predicted, target.mask, series.cell_size_m
-        ),
+        "perimeter_tolerance_1_cell": tolerance_metrics(predicted, target.mask, radius_cells=1),
+        "growth_tolerance_1_cell": tolerance_metrics(predicted_growth, observed_growth, radius_cells=1),
+        "boundary": boundary_distance_metrics(predicted, target.mask, series.cell_size_m),
         "episode": simulator.episode_record(),
+        "initialization": initialization,
     }
     if return_prediction:
         result["prediction_mask"] = predicted
+        result["arrival_time_min"] = simulator.state.truth.arrival_time_min.copy()
     return result
+
+
+def execute_hindcast_job(job: HindcastJob) -> dict[str, Any]:
+    """Pickle-safe entry point for local or cluster process pools."""
+
+    return run_hindcast(
+        AeolusSimulator(job.config),
+        job.series,
+        job.policy,
+        start_index=job.start_index,
+        target_index=job.target_index,
+        return_prediction=job.return_prediction,
+        use_arrival_history=job.use_arrival_history,
+    )
+
+
+def execute_hindcast_jobs(
+    jobs: list[HindcastJob],
+    *,
+    parallel_workers: int | None = None,
+    executor: Executor | None = None,
+) -> list[dict[str, Any]]:
+    if not jobs:
+        return []
+    if executor is not None:
+        return list(executor.map(execute_hindcast_job, jobs))
+    workers = evaluation_worker_count(len(jobs), parallel_workers)
+    if workers == 1:
+        return [execute_hindcast_job(job) for job in jobs]
+    with ThreadPoolExecutor(
+        max_workers=workers,
+        thread_name_prefix="aeolus-hindcast",
+    ) as local_executor:
+        return list(local_executor.map(execute_hindcast_job, jobs))
 
 
 def calibrate_spread_adjustment(
@@ -255,6 +356,8 @@ def calibrate_spread_adjustment(
     target_index: int = 1,
     validation_target_index: int | None = None,
     candidates: list[float] | None = None,
+    parallel_workers: int | None = None,
+    executor: Executor | None = None,
 ) -> dict[str, Any]:
     """Fit one effective spread multiplier and evaluate the next interval.
 
@@ -267,7 +370,7 @@ def calibrate_spread_adjustment(
     values = candidates or np.geomspace(0.005, 1.0, 16).tolist()
     if not values or any(value <= 0.0 for value in values):
         raise ValueError("spread-adjustment candidates must be positive")
-    trials: list[dict[str, Any]] = []
+    trial_configs: list[ScenarioConfig] = []
     for adjustment in values:
         fire = replace(
             config.fire,
@@ -279,30 +382,37 @@ def calibrate_spread_adjustment(
             fire=fire,
             terminate_on_escape=False,
         )
-        result = run_hindcast(
-            AeolusSimulator(trial_config),
-            series,
-            policy,
+        trial_configs.append(trial_config)
+    jobs = [
+        HindcastJob(
+            config=trial_config,
+            series=series,
+            policy=policy,
             start_index=start_index,
             target_index=target_index,
         )
+        for trial_config in trial_configs
+    ]
+    results = execute_hindcast_jobs(
+        jobs,
+        parallel_workers=parallel_workers,
+        executor=executor,
+    )
+    trials: list[dict[str, Any]] = []
+    for adjustment, result in zip(values, results, strict=True):
         metrics = result["metrics"]
         growth_metrics = result["growth_metrics"]
         area_ratio = max(growth_metrics["predicted_area_km2"], 1e-9) / max(
             growth_metrics["observed_area_km2"], 1e-9
         )
-        score = float(
-            growth_metrics["iou"] - 0.15 * abs(np.log(area_ratio))
-        )
+        score = float(growth_metrics["iou"] - 0.15 * abs(np.log(area_ratio)))
         trials.append(
             {
                 "spread_adjustment": float(adjustment),
                 "score": score,
                 "metrics": metrics,
                 "growth_metrics": growth_metrics,
-                "growth_tolerance_1_cell": result[
-                    "growth_tolerance_1_cell"
-                ],
+                "growth_tolerance_1_cell": result["growth_tolerance_1_cell"],
             }
         )
     best = max(trials, key=lambda item: item["score"])
@@ -379,6 +489,7 @@ def run_shadow_replay(
         for frame in series.frames[start_index + 1 : final_index + 1]
     ]
     simulator.reset(simulator.config.seed)
+    forcing_minute_offset = simulator.set_simulation_start(start.timestamp)
     simulator.initialize_from_observed_perimeter(start.mask, source="historical-shadow-start")
     assimilated = 0
     while (
@@ -400,6 +511,10 @@ def run_shadow_replay(
         "requested_minutes": requested_minutes,
         "simulated_minutes": simulator.state.minute,
         "assimilated_perimeters": assimilated,
+        "forcing_clock": {
+            "forecast_start_offset_min": forcing_minute_offset,
+            "forecast_end_offset_min": simulator.forcing_minute,
+        },
         "episode": simulator.episode_record(),
     }
 
@@ -426,6 +541,7 @@ def compare_counterfactual_policies(
         records[name] = []
         for seed in seeds:
             simulator = AeolusSimulator(replace(branch_config, seed=seed))
+            simulator.set_simulation_start(start.timestamp)
             simulator.initialize_from_observed_perimeter(
                 start.mask,
                 source="historical-counterfactual-start",
@@ -451,16 +567,10 @@ def compare_counterfactual_policies(
     summary = {
         name: {
             "episodes": len(items),
-            "mean_weighted_loss": float(
-                np.mean([item["episode"]["weighted_loss"] for item in items])
-            ),
+            "mean_weighted_loss": float(np.mean([item["episode"]["weighted_loss"] for item in items])),
             "escape_rate": float(np.mean([item["episode"]["escaped"] for item in items])),
-            "containment_rate": float(
-                np.mean([item["episode"]["contained"] for item in items])
-            ),
-            "mean_iou_to_observed": float(
-                np.mean([item["metrics_to_observed"]["iou"] for item in items])
-            ),
+            "containment_rate": float(np.mean([item["episode"]["contained"] for item in items])),
+            "mean_iou_to_observed": float(np.mean([item["metrics_to_observed"]["iou"] for item in items])),
         }
         for name, items in records.items()
     }

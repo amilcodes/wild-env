@@ -46,8 +46,7 @@ def main() -> None:
     series = PerimeterSeries.from_incident(incident)
     delta = round(
         (
-            series.frames[args.target_index].timestamp
-            - series.frames[args.start_index].timestamp
+            series.frames[args.target_index].timestamp - series.frames[args.start_index].timestamp
         ).total_seconds()
         / 60.0
     )
@@ -74,10 +73,7 @@ def main() -> None:
         )
     elif args.mode == "counterfactual":
         policy_names = [name.strip() for name in args.policies.split(",") if name.strip()]
-        policies = {
-            name: resolve_policy(name, checkpoint=args.checkpoint)[0]
-            for name in policy_names
-        }
+        policies = {name: resolve_policy(name, checkpoint=args.checkpoint)[0] for name in policy_names}
         seeds = [args.seed + index * 7919 for index in range(args.seeds)]
         result = compare_counterfactual_policies(
             config,

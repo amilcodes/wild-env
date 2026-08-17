@@ -49,21 +49,15 @@ def main() -> None:
             }
         return result
 
-    crockets = frame[
-        frame["IncidentName"].str.contains("Crocket", case=False, na=False)
-    ]
+    crockets = frame[frame["IncidentName"].str.contains("Crocket", case=False, na=False)]
     result = {
         "schema_version": 1,
         "source": {
             "title": (
-                "Fireline engagement from the National Interagency Fire Center "
-                "Feature Service from 2017-2024"
+                "Fireline engagement from the National Interagency Fire Center Feature Service from 2017-2024"
             ),
             "doi": "https://doi.org/10.2737/RDS-2025-0011",
-            "archive_sha256": (
-                "7698cccb39a07369b1dcc3f1bf83bfa12f8a6ee7afdd2c2f"
-                "473599487b4bc64d"
-            ),
+            "archive_sha256": ("7698cccb39a07369b1dcc3f1bf83bfa12f8a6ee7afdd2c2f473599487b4bc64d"),
         },
         "features": int(len(frame)),
         "incidents_by_irwin_id": int(frame["IRWINID"].nunique()),
@@ -75,18 +69,14 @@ def main() -> None:
         "year": grouped(["Year"]),
         "crockets_knob": {
             "features": int(len(crockets)),
-            "line_datetime_present_fraction": float(
-                crockets["LineDateTime"].notna().mean()
-            ),
+            "line_datetime_present_fraction": float(crockets["LineDateTime"].notna().mean()),
             "engagement": {
                 str(key): {
                     "features": int(row["features"]),
                     "length_km": float(row["length_km"]),
                     "line_datetime_present": int(row["line_datetime_present"]),
                 }
-                for key, row in crockets.groupby(
-                    "FirelineEngagement", dropna=False
-                )
+                for key, row in crockets.groupby("FirelineEngagement", dropna=False)
                 .agg(
                     features=("IRWINID", "size"),
                     length_km=("LineLengthGeodesicKM", "sum"),
