@@ -1,11 +1,46 @@
 .venv/
+.DS_Store
 __pycache__/
 *.py[cod]
 .pytest_cache/
 .ruff_cache/
+.coverage
+htmlcov/
+tmp/
 runs/
+output/
+outputs/
 build/
 dist/
 native/aeolus_native_smoke
-src/*.egg-info/
+*.egg-info/
 *.sif
+
+# Training products and local execution state.
+*.ckpt
+*.pt
+*.pth
+*.log
+
+# Materialized geospatial and replay stores are regenerated from manifests.
+*.nc
+*.nc4
+*.parquet
+*.tif
+*.tiff
+*.zarr/
+*.pickle
+*.mp4
+
+# Research summaries and figures under results/ remain versioned. Large raw
+# source payloads, simulator caches, and machine-specific run state do not.
+results/**/physics_cache/
+results/**/physics_operational_hrrr_cache/
+results/**/replay/
+results/**/perimeters.geojson
+results/**/concurrent_active_lines.geojson
+results/**/retrospective_active_lines.geojson
+results/**/local_run_status.json
+results/**/execution_source_manifest*.json
+results/aviation_fuel_p0/fuel_ablation/before_results.json
+results/aviation_fuel_p0/fuel_ablation/after_results.json
