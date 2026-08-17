@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "config": "/Users/AmilAgrawal/Documents/Codex/2026-07-26/le/aeolus_py/configs/cluster_tensor_operations.yaml",
+  "device": "cpu",
+  "hardware": {
+    "platform": "macOS-15.3.1-arm64-arm-64bit",
+    "torch": "2.13.0",
+    "cuda": null,
+    "gpu": null
+  },
+  "environment": {
+    "batch_size": 32,
+    "resources": 12,
+    "service_sites": 6,
+    "segments": 12,
+    "decision_interval_min": 3
+  },
+  "policies": [
+    {
+      "policy": "uniform_valid",
+      "steps": 40,
+      "batch_size": 32,
+      "mean_completion_fraction": 0.963415801525116,
+      "complete_episode_fraction": 0.625,
+      "mean_return": 11.386734962463379,
+      "mean_weighted_delivered_l": 80481.9375,
+      "mean_wasted_l": 38817.796875,
+      "environment_decisions_per_second": 2689.1408308530476,
+      "agent_decisions_per_second": 32269.689970236574,
+      "elapsed_s": 0.47598845895845443
+    },
+    {
+      "policy": "cycle_time_greedy",
+      "steps": 40,
+      "batch_size": 32,
+      "mean_completion_fraction": 0.9874902367591858,
+      "complete_episode_fraction": 0.78125,
+      "mean_return": 12.12160873413086,
+      "mean_weighted_delivered_l": 82312.828125,
+      "mean_wasted_l": 34815.5234375,
+      "environment_decisions_per_second": 2621.783416857792,
+      "agent_decisions_per_second": 31461.401002293504,
+      "elapsed_s": 0.4882172920042649
+    }
+  ],
+  "model_throughput": {
+    "iterations": 20,
+    "agent_actions_per_second": 61466.286933968186,
+    "elapsed_s": 0.12494654196780175
+  },
+  "interpretation": "CPU results validate mechanics and the benchmark harness. Cluster throughput claims require rerunning this exact manifest on the target accelerator and retaining the emitted artifact."
+}

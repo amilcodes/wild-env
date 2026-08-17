@@ -1,0 +1,130 @@
+{
+  "schema_version": 1,
+  "study": "paired fixed-parameter historical fuel sensitivity",
+  "before_root": "/Users/AmilAgrawal/Documents/Codex/2026-07-26/le/outputs/historical-validation-v4-electra",
+  "after_root": "/Users/AmilAgrawal/Documents/Codex/2026-07-26/le/outputs/historical-validation-v5-time-admissible",
+  "reference_calibration": "/Users/AmilAgrawal/Documents/Codex/2026-07-26/le/aeolus_py/results/frontier_fire/historical_validation_v3/historical_validation_results.json",
+  "forecast_count_per_corpus": 48,
+  "paired_comparison": {
+    "design": "The source bundle and time-admissible bundle share elevation, weather, observations, initialization, code, parameter values, and random seeds. Only fuel and canopy state change.",
+    "solver": "adaptive_huygens computational-screening ablation; primary WENO5 hindcasts remain a cluster evaluation item",
+    "methods": {
+      "raw_physics": {
+        "paired_forecasts": 24,
+        "metrics": {
+          "perimeter_iou": {
+            "path": "metrics.iou",
+            "direction": "higher_is_better",
+            "before_mean": 0.32467371971502207,
+            "after_mean": 0.3901310998997168,
+            "mean_delta_after_minus_before": 0.06545738018469476,
+            "paired_improvement_fraction": 0.6666666666666666,
+            "paired_delta_ci95": [
+              0.015516776351669006,
+              0.11883146600543917
+            ]
+          },
+          "growth_tolerance_f1": {
+            "path": "growth_tolerance_1_cell.f1",
+            "direction": "higher_is_better",
+            "before_mean": 0.12049934462170653,
+            "after_mean": 0.1435504047345791,
+            "mean_delta_after_minus_before": 0.02305106011287256,
+            "paired_improvement_fraction": 0.5833333333333334,
+            "paired_delta_ci95": [
+              -0.0009583041478074079,
+              0.04832911474913114
+            ]
+          },
+          "boundary_mean_distance_m": {
+            "path": "boundary.mean_symmetric_distance_m",
+            "direction": "lower_is_better",
+            "before_mean": 1913.0965485251988,
+            "after_mean": 1506.936794886713,
+            "mean_delta_after_minus_before": -406.1597536384861,
+            "paired_improvement_fraction": 0.7083333333333334,
+            "paired_delta_ci95": [
+              -631.0004776741179,
+              -167.26942949014494
+            ]
+          },
+          "symmetric_difference_km2": {
+            "path": "metrics.symmetric_difference_km2",
+            "direction": "lower_is_better",
+            "before_mean": 90.23963288290987,
+            "after_mean": 67.35573017039714,
+            "mean_delta_after_minus_before": -22.883902712512747,
+            "paired_improvement_fraction": 0.6666666666666666,
+            "paired_delta_ci95": [
+              -44.125104553071715,
+              -1.8654294906782969
+            ]
+          }
+        }
+      },
+      "fixed_calibrated_physics": {
+        "paired_forecasts": 24,
+        "metrics": {
+          "perimeter_iou": {
+            "path": "metrics.iou",
+            "direction": "higher_is_better",
+            "before_mean": 0.22098094073948019,
+            "after_mean": 0.2807907620495546,
+            "mean_delta_after_minus_before": 0.0598098213100744,
+            "paired_improvement_fraction": 0.6666666666666666,
+            "paired_delta_ci95": [
+              0.028376389354929248,
+              0.0940377605782914
+            ]
+          },
+          "growth_tolerance_f1": {
+            "path": "growth_tolerance_1_cell.f1",
+            "direction": "higher_is_better",
+            "before_mean": 0.07174171788171102,
+            "after_mean": 0.09477145861701074,
+            "mean_delta_after_minus_before": 0.023029740735299717,
+            "paired_improvement_fraction": 0.5833333333333334,
+            "paired_delta_ci95": [
+              0.007217673731319527,
+              0.04019889742837687
+            ]
+          },
+          "boundary_mean_distance_m": {
+            "path": "boundary.mean_symmetric_distance_m",
+            "direction": "lower_is_better",
+            "before_mean": 2737.3506393004204,
+            "after_mean": 2230.4361280378803,
+            "mean_delta_after_minus_before": -506.9145112625395,
+            "paired_improvement_fraction": 0.6666666666666666,
+            "paired_delta_ci95": [
+              -752.0047262075356,
+              -261.7829500228527
+            ]
+          },
+          "symmetric_difference_km2": {
+            "path": "metrics.symmetric_difference_km2",
+            "direction": "lower_is_better",
+            "before_mean": 165.591422652989,
+            "after_mean": 134.90160826644635,
+            "mean_delta_after_minus_before": -30.689814386542704,
+            "paired_improvement_fraction": 0.6666666666666666,
+            "paired_delta_ci95": [
+              -52.50832910694401,
+              -7.969223240625182
+            ]
+          }
+        }
+      }
+    }
+  },
+  "artifacts": {
+    "before": "/Users/AmilAgrawal/Documents/Codex/2026-07-26/le/aeolus_py/results/aviation_fuel_p0/fuel_ablation/before_results.json",
+    "after": "/Users/AmilAgrawal/Documents/Codex/2026-07-26/le/aeolus_py/results/aviation_fuel_p0/fuel_ablation/after_results.json"
+  },
+  "interpretation_constraints": [
+    "The legacy adaptive-Huygens solver is used for computational screening.",
+    "Fixed reference calibration values isolate fuel/canopy sensitivity.",
+    "This result does not replace the WENO5 posterior-ensemble benchmark.",
+    "Observed growth still includes unobserved historical suppression."
+  ]
+}

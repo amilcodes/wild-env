@@ -1,0 +1,561 @@
+{
+  "schema_version": 1,
+  "study": "non-compute-bound P1 mechanism and validity controls",
+  "seed": 20260730,
+  "observation": {
+    "monte_carlo_acquisitions": 800,
+    "evaluation_cells": 4148,
+    "window": {
+      "start_minute": 0.0,
+      "end_minute": 120.0,
+      "available_minute": 165.0
+    },
+    "scores": {
+      "acquisition_window": {
+        "mean_brier": 0.11268610242095906,
+        "standard_deviation": 0.05318541645881239
+      },
+      "end_timestamp": {
+        "mean_brier": 0.38148143683702984,
+        "standard_deviation": 0.19650426871899013
+      },
+      "midpoint_timestamp": {
+        "mean_brier": 0.17126928640308584,
+        "standard_deviation": 0.09989540542070982
+      },
+      "relative_brier_reduction_vs_end_timestamp": 0.7046092115116497
+    },
+    "interpretation": "Observed masks were sampled at a uniformly unknown time within the acquisition window. Brier score is evaluated on the temporal ambiguity band."
+  },
+  "fuel_provenance": {
+    "prepared_root": "../outputs/historical-validation-v4-electra",
+    "incident_count": 6,
+    "status_counts": {
+      "potential_post_incident_information": 6
+    },
+    "incidents": [
+      {
+        "incident_id": "nirops-az-sca-001418-drylake",
+        "incident_start": "2020-06-07T04:00:00+00:00",
+        "fuel_sources": [
+          "LANDFIRE 2025"
+        ],
+        "product_years": [
+          2025
+        ],
+        "missing_product_year_sources": [],
+        "post_incident_product_sources": [
+          "LANDFIRE 2025"
+        ],
+        "same_year_ambiguous_sources": [],
+        "status": "potential_post_incident_information"
+      },
+      {
+        "incident_id": "nirops-ca-aeu-017769-electra",
+        "incident_start": "2022-07-05T02:54:00+00:00",
+        "fuel_sources": [
+          "LANDFIRE 2025"
+        ],
+        "product_years": [
+          2025
+        ],
+        "missing_product_year_sources": [],
+        "post_incident_product_sources": [
+          "LANDFIRE 2025"
+        ],
+        "same_year_ambiguous_sources": [],
+        "status": "potential_post_incident_information"
+      },
+      {
+        "incident_id": "nirops-id-ipf-000447-ridgecreek",
+        "incident_start": "2023-08-05T04:01:00+00:00",
+        "fuel_sources": [
+          "LANDFIRE 2025"
+        ],
+        "product_years": [
+          2025
+        ],
+        "missing_product_year_sources": [],
+        "post_incident_product_sources": [
+          "LANDFIRE 2025"
+        ],
+        "same_year_ambiguous_sources": [],
+        "status": "potential_post_incident_information"
+      },
+      {
+        "incident_id": "nirops-nm-gnf-000382-davis",
+        "incident_start": "2023-07-19T03:21:00+00:00",
+        "fuel_sources": [
+          "LANDFIRE 2025"
+        ],
+        "product_years": [
+          2025
+        ],
+        "missing_product_year_sources": [],
+        "post_incident_product_sources": [
+          "LANDFIRE 2025"
+        ],
+        "same_year_ambiguous_sources": [],
+        "status": "potential_post_incident_information"
+      },
+      {
+        "incident_id": "nirops-or-maf-022199-crocketsknob",
+        "incident_start": "2022-08-25T02:54:00+00:00",
+        "fuel_sources": [
+          "LANDFIRE 2025"
+        ],
+        "product_years": [
+          2025
+        ],
+        "missing_product_year_sources": [],
+        "post_incident_product_sources": [
+          "LANDFIRE 2025"
+        ],
+        "same_year_ambiguous_sources": [],
+        "status": "potential_post_incident_information"
+      },
+      {
+        "incident_id": "nirops-ut-vld-000127-bear",
+        "incident_start": "2021-06-09T01:22:00+00:00",
+        "fuel_sources": [
+          "LANDFIRE 2025"
+        ],
+        "product_years": [
+          2025
+        ],
+        "missing_product_year_sources": [],
+        "post_incident_product_sources": [
+          "LANDFIRE 2025"
+        ],
+        "same_year_ambiguous_sources": [],
+        "status": "potential_post_incident_information"
+      }
+    ],
+    "gate_passes": false,
+    "interpretation": "A later product year is a potential leakage flag. Pixel-level disturbance history is still required to determine whether the landscape actually changed after each incident."
+  },
+  "fire_regime": {
+    "available": true,
+    "incident_id": "nirops-ca-aeu-017769-electra",
+    "classification": "surface_lookup_domain",
+    "supports_current_accuracy_claim": true,
+    "lookup_domain": {
+      "wind_speed_m_s": {
+        "minimum": 0.0,
+        "maximum": 30.0,
+        "evaluated_values": 2441216,
+        "outside_values": 0,
+        "outside_fraction": 0.0
+      },
+      "slope_tan": {
+        "minimum": 0.0,
+        "maximum": 1.0,
+        "evaluated_values": 16384,
+        "outside_values": 0,
+        "outside_fraction": 0.0
+      },
+      "moisture_dead_1h": {
+        "minimum": 0.029999999329447746,
+        "maximum": 0.4000000059604645,
+        "evaluated_values": 2441216,
+        "outside_values": 0,
+        "outside_fraction": 0.0
+      },
+      "moisture_live_herbaceous": {
+        "minimum": 0.30000001192092896,
+        "maximum": 2.5,
+        "evaluated_values": 2441216,
+        "outside_values": 0,
+        "outside_fraction": 0.0
+      },
+      "moisture_live_woody": {
+        "minimum": 0.6000000238418579,
+        "maximum": 2.0,
+        "evaluated_values": 2441216,
+        "outside_values": 0,
+        "outside_fraction": 0.0
+      }
+    },
+    "outside_value_count": 0,
+    "evaluated_value_count": 9781248,
+    "passive_crown_cells": 0,
+    "active_crown_cells": 0,
+    "spot_ignition_count": 0,
+    "interpretation": "Lookup-domain checks detect numerical clipping. Crown and spotting are marked mechanism-only until independently calibrated."
+  },
+  "aviation": {
+    "performance_surface": "configs/aviation/generic_research_rotorcraft_v1.json",
+    "altitude_sweep": [
+      {
+        "elevation_m_msl": 0.0,
+        "distance_m": 500.0,
+        "track_heading_deg": 90.0,
+        "maximum_terrain_m_msl": 0.0,
+        "planned_altitude_m_msl": 150.0,
+        "density_altitude_m": 548.64,
+        "true_airspeed_m_s": 51.90272,
+        "tailwind_m_s": 6.0,
+        "crosswind_m_s": 1.102182119232618e-15,
+        "groundspeed_m_s": 57.90272,
+        "travel_min": 0.14391954874198196,
+        "available_endurance_min": 117.366528,
+        "maximum_payload_fraction": 0.9634240000000001,
+        "intersected_airspace_volumes": [],
+        "violations": [],
+        "feasible": true
+      },
+      {
+        "elevation_m_msl": 1000.0,
+        "distance_m": 500.0,
+        "track_heading_deg": 90.0,
+        "maximum_terrain_m_msl": 1000.0,
+        "planned_altitude_m_msl": 1150.0,
+        "density_altitude_m": 1786.384,
+        "true_airspeed_m_s": 49.045386666666666,
+        "tailwind_m_s": 6.0,
+        "crosswind_m_s": 1.102182119232618e-15,
+        "groundspeed_m_s": 55.045386666666666,
+        "travel_min": 0.15139022246853748,
+        "available_endurance_min": 110.7380352,
+        "maximum_payload_fraction": 0.86563392,
+        "intersected_airspace_volumes": [],
+        "violations": [],
+        "feasible": true
+      },
+      {
+        "elevation_m_msl": 2000.0,
+        "distance_m": 500.0,
+        "track_heading_deg": 90.0,
+        "maximum_terrain_m_msl": 2000.0,
+        "planned_altitude_m_msl": 2150.0,
+        "density_altitude_m": 3024.1279999999997,
+        "true_airspeed_m_s": 44.903487999999996,
+        "tailwind_m_s": 6.0,
+        "crosswind_m_s": 1.102182119232618e-15,
+        "groundspeed_m_s": 50.903487999999996,
+        "travel_min": 0.16370849347953,
+        "available_endurance_min": 101.78767359999999,
+        "maximum_payload_fraction": 0.7164612266666667,
+        "intersected_airspace_volumes": [],
+        "violations": [],
+        "feasible": true
+      },
+      {
+        "elevation_m_msl": 3000.0,
+        "distance_m": 500.0,
+        "track_heading_deg": 90.0,
+        "maximum_terrain_m_msl": 3000.0,
+        "planned_altitude_m_msl": 3150.0,
+        "density_altitude_m": 4261.872,
+        "true_airspeed_m_s": 39.952512,
+        "tailwind_m_s": 6.0,
+        "crosswind_m_s": 1.102182119232618e-15,
+        "groundspeed_m_s": 45.952512,
+        "travel_min": 0.1813466330922961,
+        "available_endurance_min": 90.8955264,
+        "maximum_payload_fraction": 0.53492544,
+        "intersected_airspace_volumes": [],
+        "violations": [],
+        "feasible": true
+      }
+    ],
+    "airspace_crossing": {
+      "distance_m": 1600.0,
+      "track_heading_deg": 90.0,
+      "maximum_terrain_m_msl": 0.0,
+      "planned_altitude_m_msl": 150.0,
+      "density_altitude_m": 182.88,
+      "true_airspeed_m_s": 52.634240000000005,
+      "tailwind_m_s": 4.0,
+      "crosswind_m_s": 7.347880794884119e-16,
+      "groundspeed_m_s": 56.634240000000005,
+      "travel_min": 0.47085767667521744,
+      "available_endurance_min": 119.122176,
+      "maximum_payload_fraction": 0.987808,
+      "intersected_airspace_volumes": [
+        "study-volume"
+      ],
+      "violations": [
+        "airspace_volume"
+      ],
+      "feasible": false
+    },
+    "data_status": "The bundled surface verifies the interface and is explicitly synthetic. Vehicle-specific use requires reviewed flight-manual data."
+  },
+  "planning": {
+    "cases": 4,
+    "policies": [
+      "no_aerial",
+      "joint_assignment",
+      "rollout_lookahead"
+    ],
+    "records": [
+      {
+        "case_id": "planning-wind-3-seed-0",
+        "seed": 20263730,
+        "policy": "no_aerial",
+        "weighted_loss": 9.034135818481445,
+        "cumulative_cost": 0.0,
+        "loss_cost_objective": 9.034135818481445,
+        "blocked_actions": 0,
+        "escaped": false,
+        "contained": false,
+        "minute": 24
+      },
+      {
+        "case_id": "planning-wind-3-seed-0",
+        "seed": 20263730,
+        "policy": "joint_assignment",
+        "weighted_loss": 8.856422424316406,
+        "cumulative_cost": 4.0,
+        "loss_cost_objective": 10.456422424316406,
+        "blocked_actions": 0,
+        "escaped": false,
+        "contained": false,
+        "minute": 24
+      },
+      {
+        "case_id": "planning-wind-3-seed-0",
+        "seed": 20263730,
+        "policy": "rollout_lookahead",
+        "weighted_loss": 9.034135818481445,
+        "cumulative_cost": 0.0,
+        "loss_cost_objective": 9.034135818481445,
+        "blocked_actions": 0,
+        "escaped": false,
+        "contained": false,
+        "minute": 24
+      },
+      {
+        "case_id": "planning-wind-3-seed-1",
+        "seed": 20271649,
+        "policy": "no_aerial",
+        "weighted_loss": 9.553937911987305,
+        "cumulative_cost": 0.0,
+        "loss_cost_objective": 9.553937911987305,
+        "blocked_actions": 0,
+        "escaped": false,
+        "contained": false,
+        "minute": 24
+      },
+      {
+        "case_id": "planning-wind-3-seed-1",
+        "seed": 20271649,
+        "policy": "joint_assignment",
+        "weighted_loss": 9.380051612854004,
+        "cumulative_cost": 4.0,
+        "loss_cost_objective": 10.980051612854004,
+        "blocked_actions": 0,
+        "escaped": false,
+        "contained": false,
+        "minute": 24
+      },
+      {
+        "case_id": "planning-wind-3-seed-1",
+        "seed": 20271649,
+        "policy": "rollout_lookahead",
+        "weighted_loss": 9.553937911987305,
+        "cumulative_cost": 0.0,
+        "loss_cost_objective": 9.553937911987305,
+        "blocked_actions": 0,
+        "escaped": false,
+        "contained": false,
+        "minute": 24
+      },
+      {
+        "case_id": "planning-wind-7-seed-0",
+        "seed": 20267730,
+        "policy": "no_aerial",
+        "weighted_loss": 11.505916595458984,
+        "cumulative_cost": 0.0,
+        "loss_cost_objective": 11.505916595458984,
+        "blocked_actions": 0,
+        "escaped": false,
+        "contained": false,
+        "minute": 24
+      },
+      {
+        "case_id": "planning-wind-7-seed-0",
+        "seed": 20267730,
+        "policy": "joint_assignment",
+        "weighted_loss": 10.056273460388184,
+        "cumulative_cost": 4.0,
+        "loss_cost_objective": 11.656273460388183,
+        "blocked_actions": 0,
+        "escaped": false,
+        "contained": false,
+        "minute": 24
+      },
+      {
+        "case_id": "planning-wind-7-seed-0",
+        "seed": 20267730,
+        "policy": "rollout_lookahead",
+        "weighted_loss": 11.14925765991211,
+        "cumulative_cost": 0.8,
+        "loss_cost_objective": 11.46925765991211,
+        "blocked_actions": 0,
+        "escaped": false,
+        "contained": false,
+        "minute": 24
+      },
+      {
+        "case_id": "planning-wind-7-seed-1",
+        "seed": 20275649,
+        "policy": "no_aerial",
+        "weighted_loss": 11.936612129211426,
+        "cumulative_cost": 0.0,
+        "loss_cost_objective": 11.936612129211426,
+        "blocked_actions": 0,
+        "escaped": false,
+        "contained": false,
+        "minute": 24
+      },
+      {
+        "case_id": "planning-wind-7-seed-1",
+        "seed": 20275649,
+        "policy": "joint_assignment",
+        "weighted_loss": 11.29748249053955,
+        "cumulative_cost": 4.0,
+        "loss_cost_objective": 12.89748249053955,
+        "blocked_actions": 0,
+        "escaped": false,
+        "contained": false,
+        "minute": 24
+      },
+      {
+        "case_id": "planning-wind-7-seed-1",
+        "seed": 20275649,
+        "policy": "rollout_lookahead",
+        "weighted_loss": 11.936612129211426,
+        "cumulative_cost": 0.0,
+        "loss_cost_objective": 11.936612129211426,
+        "blocked_actions": 0,
+        "escaped": false,
+        "contained": false,
+        "minute": 24
+      }
+    ],
+    "lookahead_vs_joint_assignment": {
+      "terminal_weighted_loss": {
+        "candidate_policy": "rollout_lookahead",
+        "baseline_policy": "joint_assignment",
+        "metric": "weighted_loss",
+        "lower_is_better": true,
+        "paired_records": 4,
+        "case_clusters": 4,
+        "candidate_mean": 10.418485879898071,
+        "baseline_mean": 9.897557497024536,
+        "raw_candidate_minus_baseline": 0.5209283828735352,
+        "mean_improvement": -0.5209283828735352,
+        "median_paired_improvement": -0.40842151641845703,
+        "ci95_improvement_low": -0.8660569190979004,
+        "ci95_improvement_high": -0.17579984664916992,
+        "probability_improvement_positive": 0.0,
+        "missing_candidate_pairs": [],
+        "missing_baseline_pairs": [],
+        "passes_positive_cluster_interval": false,
+        "definition": "case-cluster bootstrap over within-case paired-seed mean effects; positive improvement favors the candidate"
+      },
+      "configured_loss_cost_objective": {
+        "candidate_policy": "rollout_lookahead",
+        "baseline_policy": "joint_assignment",
+        "metric": "loss_cost_objective",
+        "lower_is_better": true,
+        "paired_records": 4,
+        "case_clusters": 4,
+        "candidate_mean": 10.498485879898071,
+        "baseline_mean": 11.497557497024536,
+        "raw_candidate_minus_baseline": -0.9990716171264644,
+        "mean_improvement": 0.9990716171264644,
+        "median_paired_improvement": 1.1915784835815426,
+        "ci95_improvement_low": 0.49583350181579533,
+        "ci95_improvement_high": 1.4242001533508297,
+        "probability_improvement_positive": 1.0,
+        "missing_candidate_pairs": [],
+        "missing_baseline_pairs": [],
+        "passes_positive_cluster_interval": true,
+        "definition": "case-cluster bootstrap over within-case paired-seed mean effects; positive improvement favors the candidate"
+      }
+    },
+    "lookahead_vs_no_action": {
+      "weighted_loss": {
+        "candidate_policy": "rollout_lookahead",
+        "baseline_policy": "no_aerial",
+        "metric": "weighted_loss",
+        "lower_is_better": true,
+        "paired_records": 4,
+        "case_clusters": 4,
+        "candidate_mean": 10.418485879898071,
+        "baseline_mean": 10.50765061378479,
+        "raw_candidate_minus_baseline": -0.08916473388671875,
+        "mean_improvement": 0.08916473388671875,
+        "median_paired_improvement": 0.0,
+        "ci95_improvement_low": 0.0,
+        "ci95_improvement_high": 0.26749420166015625,
+        "probability_improvement_positive": 0.691,
+        "missing_candidate_pairs": [],
+        "missing_baseline_pairs": [],
+        "passes_positive_cluster_interval": false,
+        "definition": "case-cluster bootstrap over within-case paired-seed mean effects; positive improvement favors the candidate"
+      },
+      "loss_cost_objective": {
+        "candidate_policy": "rollout_lookahead",
+        "baseline_policy": "no_aerial",
+        "metric": "loss_cost_objective",
+        "lower_is_better": true,
+        "paired_records": 4,
+        "case_clusters": 4,
+        "candidate_mean": 10.498485879898071,
+        "baseline_mean": 10.50765061378479,
+        "raw_candidate_minus_baseline": -0.009164733886718679,
+        "mean_improvement": 0.009164733886718679,
+        "median_paired_improvement": 0.0,
+        "ci95_improvement_low": 0.0,
+        "ci95_improvement_high": 0.027494201660156037,
+        "probability_improvement_positive": 0.6885,
+        "missing_candidate_pairs": [],
+        "missing_baseline_pairs": [],
+        "passes_positive_cluster_interval": false,
+        "definition": "case-cluster bootstrap over within-case paired-seed mean effects; positive improvement favors the candidate"
+      }
+    },
+    "loss_cost_objective_definition": "weighted_loss + (0.02 / reward_loss_scale) * cumulative_cost + (0.01 / reward_loss_scale) * blocked_actions; terminal escape and containment terms are absent because neither occurred",
+    "interpretation": "The paired objectives expose reward calibration separately from terminal fire loss. Small synthetic mechanism cases do not establish policy quality or operational effect."
+  },
+  "benchmark_protocol": {
+    "manifest": "configs/historical_validation_expanded.yaml",
+    "incident_count": 36,
+    "missing_required_fields": {
+      "split": 36,
+      "fuel_family": 36,
+      "weather_regime": 36,
+      "ecoregion": 36
+    },
+    "states": [
+      "AZ",
+      "CA",
+      "CO",
+      "ID",
+      "MT",
+      "NM",
+      "NV",
+      "OR",
+      "UT"
+    ],
+    "years": [
+      2020,
+      2021,
+      2022,
+      2023,
+      2024
+    ],
+    "passes_partition_gate": false
+  },
+  "interpretation_constraints": [
+    "Synthetic observation trials verify likelihood semantics, not sensor calibration.",
+    "Fuel-product chronology flags potential leakage without proving pixel-level change.",
+    "The aviation surface is synthetic and cannot support vehicle-performance claims.",
+    "Planning trials are small internal mechanism cases without learned policies.",
+    "Crown and spotting remain mechanism-only regimes until independent calibration."
+  ]
+}

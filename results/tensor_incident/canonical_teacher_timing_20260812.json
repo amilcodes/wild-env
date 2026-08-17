@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "status": "diagnostic_not_calibrated",
+  "config": "/Users/AmilAgrawal/Documents/Codex/2026-07-26/le/aeolus_py/configs/cluster_tensor_incident.yaml",
+  "device": "cpu",
+  "cases": [
+    {
+      "seed": 38117,
+      "start_minute": 12,
+      "forecast_minutes": 120,
+      "ignition_rate_multiplier": 1.0,
+      "canonical_initial": {
+        "burning_fraction": 0.0005784167906131218,
+        "burned_fraction": 0.0002754365669586294,
+        "cumulative_fire_fraction": 0.0008538533575717512,
+        "expected_loss": 0.0
+      },
+      "canonical_final": {
+        "burning_fraction": 0.0022585798490607615,
+        "burned_fraction": 0.0022861235057566242,
+        "cumulative_fire_fraction": 0.004544703354817385,
+        "expected_loss": 0.0
+      },
+      "canonical_delta_expected_loss": 0.0,
+      "canonical_delta_cumulative_fire_fraction": 0.003690849997245634,
+      "tensor_delta_expected_loss": {
+        "mean": 0.0,
+        "p05": 0.0,
+        "median": 0.0,
+        "p95": 0.0
+      },
+      "tensor_delta_cumulative_fire_fraction": {
+        "mean": 0.005023667588829994,
+        "p05": 0.0014203302562236786,
+        "median": 0.004449919331818819,
+        "p95": 0.01240544207394123
+      },
+      "absolute_error_delta_expected_loss": 0.0,
+      "absolute_error_delta_cumulative_fire_fraction": 0.00133281759158436,
+      "canonical_loss_in_tensor_90pct_interval": true,
+      "canonical_cumulative_in_tensor_90pct_interval": true
+    },
+    {
+      "seed": 39126,
+      "start_minute": 12,
+      "forecast_minutes": 120,
+      "ignition_rate_multiplier": 1.0,
+      "canonical_initial": {
+        "burning_fraction": 0.0006059604473089848,
+        "burned_fraction": 0.0001928055968710406,
+        "cumulative_fire_fraction": 0.0007987660441800253,
+        "expected_loss": 0.0
+      },
+      "canonical_final": {
+        "burning_fraction": 0.002423841789235939,
+        "burned_fraction": 0.0020657742521897208,
+        "cumulative_fire_fraction": 0.00448961604142566,
+        "expected_loss": 0.0
+      },
+      "canonical_delta_expected_loss": 0.0,
+      "canonical_delta_cumulative_fire_fraction": 0.0036908499972456345,
+      "tensor_delta_expected_loss": {
+        "mean": 0.0,
+        "p05": 0.0,
+        "median": 0.0,
+        "p95": 0.0
+      },
+      "tensor_delta_cumulative_fire_fraction": {
+        "mean": 0.005641567520797253,
+        "p05": 0.002008664421737194,
+        "median": 0.005127336829900742,
+        "p95": 0.011742224916815758
+      },
+      "absolute_error_delta_expected_loss": 0.0,
+      "absolute_error_delta_cumulative_fire_fraction": 0.001950717523551618,
+      "canonical_loss_in_tensor_90pct_interval": true,
+      "canonical_cumulative_in_tensor_90pct_interval": true
+    }
+  ],
+  "summary": {
+    "case_count": 2,
+    "mean_absolute_error_delta_expected_loss": 0.0,
+    "mean_absolute_error_delta_cumulative_fire_fraction": 0.001641767557567989,
+    "loss_interval_coverage": 1.0,
+    "cumulative_fire_interval_coverage": 1.0
+  },
+  "interpretation": "This projects canonical snapshots into the coarse tensor state and checks uncontrolled forecast deltas. It is an initial teacher diagnostic, not a calibrated suppression or historical-validity result."
+}

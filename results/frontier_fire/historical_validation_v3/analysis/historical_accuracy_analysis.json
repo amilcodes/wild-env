@@ -1,0 +1,1205 @@
+{
+  "schema_version": 1,
+  "study": "NIROPS multi-incident held-out spread hindcast",
+  "forecast_records": 168,
+  "held_out_intervals": 24,
+  "incidents": 6,
+  "aggregate_summaries": {
+    "persistence": {
+      "metrics.iou": {
+        "n_forecasts": 24,
+        "n_incidents": 6,
+        "mean": 0.8731636544917465,
+        "median": 0.9233761425849553,
+        "ci95_low": 0.8304535291931238,
+        "ci95_high": 0.9231822340232586
+      },
+      "growth_metrics.iou": {
+        "n_forecasts": 24,
+        "n_incidents": 6,
+        "mean": 0.0,
+        "median": 0.0,
+        "ci95_low": 0.0,
+        "ci95_high": 0.0
+      },
+      "growth_tolerance_1_cell.f1": {
+        "n_forecasts": 24,
+        "n_incidents": 6,
+        "mean": 0.125,
+        "median": 0.0,
+        "ci95_low": 0.0,
+        "ci95_high": 0.2916666666666667
+      },
+      "boundary.mean_symmetric_distance_m": {
+        "n_forecasts": 24,
+        "n_incidents": 6,
+        "mean": 156.4791051227767,
+        "median": 72.09608877689101,
+        "ci95_low": 88.89274810168041,
+        "ci95_high": 219.67438012703988
+      },
+      "boundary.hausdorff_95_m": {
+        "n_forecasts": 24,
+        "n_incidents": 6,
+        "mean": 609.6077609246545,
+        "median": 425.7401128558216,
+        "ci95_low": 377.8439818450385,
+        "ci95_high": 795.2310458489079
+      },
+      "metrics.symmetric_difference_km2": {
+        "n_forecasts": 24,
+        "n_incidents": 6,
+        "mean": 4.4094254862030935,
+        "median": 2.2041611510784445,
+        "ci95_low": 2.0663876449320724,
+        "ci95_high": 7.120148284158563
+      }
+    },
+    "raw_physics": {
+      "metrics.iou": {
+        "n_forecasts": 24,
+        "n_incidents": 6,
+        "mean": 0.7274055248222687,
+        "median": 0.8307536787617431,
+        "ci95_low": 0.5587790199329317,
+        "ci95_high": 0.8559693098117714
+      },
+      "growth_metrics.iou": {
+        "n_forecasts": 24,
+        "n_incidents": 6,
+        "mean": 0.04692564654492478,
+        "median": 0.034290780141843974,
+        "ci95_low": 0.025550927585201205,
+        "ci95_high": 0.06976502908260135
+      },
+      "growth_tolerance_1_cell.f1": {
+        "n_forecasts": 24,
+        "n_incidents": 6,
+        "mean": 0.13178650391730548,
+        "median": 0.10665561115664174,
+        "ci95_low": 0.07945458655493569,
+        "ci95_high": 0.18896912406714436
+      },
+      "boundary.mean_symmetric_distance_m": {
+        "n_forecasts": 24,
+        "n_incidents": 6,
+        "mean": 492.93902312469527,
+        "median": 335.8934720542765,
+        "ci95_low": 215.1887515642867,
+        "ci95_high": 912.1498915871335
+      },
+      "boundary.hausdorff_95_m": {
+        "n_forecasts": 24,
+        "n_incidents": 6,
+        "mean": 1786.1822867833191,
+        "median": 1614.8117606204205,
+        "ci95_low": 1006.4066371209997,
+        "ci95_high": 2757.539586898176
+      },
+      "metrics.symmetric_difference_km2": {
+        "n_forecasts": 24,
+        "n_incidents": 6,
+        "mean": 14.182931828585085,
+        "median": 6.492220339366966,
+        "ci95_low": 5.6731705393526655,
+        "ci95_high": 28.372867988391054
+      }
+    },
+    "history_raw_physics": {
+      "metrics.iou": {
+        "n_forecasts": 24,
+        "n_incidents": 6,
+        "mean": 0.7397538539406541,
+        "median": 0.827848733798253,
+        "ci95_low": 0.5933697337607748,
+        "ci95_high": 0.8563407153337712
+      },
+      "growth_metrics.iou": {
+        "n_forecasts": 24,
+        "n_incidents": 6,
+        "mean": 0.05250980311804796,
+        "median": 0.03457446808510638,
+        "ci95_low": 0.028023499290545168,
+        "ci95_high": 0.07876607480238987
+      },
+      "growth_tolerance_1_cell.f1": {
+        "n_forecasts": 24,
+        "n_incidents": 6,
+        "mean": 0.14172544999428802,
+        "median": 0.0920912082157543,
+        "ci95_low": 0.08646050454971194,
+        "ci95_high": 0.19980423720804788
+      },
+      "boundary.mean_symmetric_distance_m": {
+        "n_forecasts": 24,
+        "n_incidents": 6,
+        "mean": 454.02512648560213,
+        "median": 314.39643516429066,
+        "ci95_low": 217.3488469877765,
+        "ci95_high": 796.4060129562912
+      },
+      "boundary.hausdorff_95_m": {
+        "n_forecasts": 24,
+        "n_incidents": 6,
+        "mean": 1687.4411244839578,
+        "median": 1460.111393776593,
+        "ci95_low": 1005.404691410356,
+        "ci95_high": 2410.2722324700867
+      },
+      "metrics.symmetric_difference_km2": {
+        "n_forecasts": 24,
+        "n_incidents": 6,
+        "mean": 12.315694860764696,
+        "median": 6.616809087281569,
+        "ci95_low": 5.624561512101854,
+        "ci95_high": 22.826635095527998
+      }
+    },
+    "calibrated_physics": {
+      "metrics.iou": {
+        "n_forecasts": 24,
+        "n_incidents": 6,
+        "mean": 0.5929772325488041,
+        "median": 0.5423196627600583,
+        "ci95_low": 0.43170481205870664,
+        "ci95_high": 0.7626702367243601
+      },
+      "growth_metrics.iou": {
+        "n_forecasts": 24,
+        "n_incidents": 6,
+        "mean": 0.04493857949835938,
+        "median": 0.031538183352419986,
+        "ci95_low": 0.02779384395355767,
+        "ci95_high": 0.06059192834532814
+      },
+      "growth_tolerance_1_cell.f1": {
+        "n_forecasts": 24,
+        "n_incidents": 6,
+        "mean": 0.12377093905556069,
+        "median": 0.09224865687956085,
+        "ci95_low": 0.07724307948072985,
+        "ci95_high": 0.1710758398885103
+      },
+      "boundary.mean_symmetric_distance_m": {
+        "n_forecasts": 24,
+        "n_incidents": 6,
+        "mean": 950.8998432634595,
+        "median": 896.1150750550063,
+        "ci95_low": 502.07926616905996,
+        "ci95_high": 1397.8269007321605
+      },
+      "boundary.hausdorff_95_m": {
+        "n_forecasts": 24,
+        "n_incidents": 6,
+        "mean": 3123.536817149639,
+        "median": 3608.2881813136355,
+        "ci95_low": 1783.6065200560272,
+        "ci95_high": 4336.255833932994
+      },
+      "metrics.symmetric_difference_km2": {
+        "n_forecasts": 24,
+        "n_incidents": 6,
+        "mean": 29.412396801327507,
+        "median": 22.871032418319096,
+        "ci95_low": 12.863490421158508,
+        "ci95_high": 47.13963132900903
+      }
+    },
+    "history_calibrated_physics": {
+      "metrics.iou": {
+        "n_forecasts": 24,
+        "n_incidents": 6,
+        "mean": 0.6098229211374013,
+        "median": 0.5517178003611904,
+        "ci95_low": 0.4610266740276976,
+        "ci95_high": 0.7741583848671926
+      },
+      "growth_metrics.iou": {
+        "n_forecasts": 24,
+        "n_incidents": 6,
+        "mean": 0.04620180280597153,
+        "median": 0.03482537133681252,
+        "ci95_low": 0.028746338624416074,
+        "ci95_high": 0.06154814921311308
+      },
+      "growth_tolerance_1_cell.f1": {
+        "n_forecasts": 24,
+        "n_incidents": 6,
+        "mean": 0.12739009018214043,
+        "median": 0.09869261173609001,
+        "ci95_low": 0.08311169946188487,
+        "ci95_high": 0.17485201798809769
+      },
+      "boundary.mean_symmetric_distance_m": {
+        "n_forecasts": 24,
+        "n_incidents": 6,
+        "mean": 883.0823560241873,
+        "median": 800.7969051930462,
+        "ci95_low": 444.8527814041897,
+        "ci95_high": 1316.171090010437
+      },
+      "boundary.hausdorff_95_m": {
+        "n_forecasts": 24,
+        "n_incidents": 6,
+        "mean": 2978.0222552898927,
+        "median": 3401.386081546393,
+        "ci95_low": 1702.406090009009,
+        "ci95_high": 4113.270171460394
+      },
+      "metrics.symmetric_difference_km2": {
+        "n_forecasts": 24,
+        "n_incidents": 6,
+        "mean": 25.456450233533236,
+        "median": 20.306929589552272,
+        "ci95_low": 11.537474060012181,
+        "ci95_high": 40.43403097270398
+      }
+    },
+    "calibrated_ensemble": {
+      "metrics.iou": {
+        "n_forecasts": 24,
+        "n_incidents": 6,
+        "mean": 0.7334891037975876,
+        "median": 0.7264956183583825,
+        "ci95_low": 0.6398915808202137,
+        "ci95_high": 0.8270866267749617
+      },
+      "growth_metrics.iou": {
+        "n_forecasts": 24,
+        "n_incidents": 6,
+        "mean": 0.05795743398675401,
+        "median": 0.03481950431034483,
+        "ci95_low": 0.027247562249929472,
+        "ci95_high": 0.08975668301975677
+      },
+      "growth_tolerance_1_cell.f1": {
+        "n_forecasts": 24,
+        "n_incidents": 6,
+        "mean": 0.15306612633873581,
+        "median": 0.11800975638654412,
+        "ci95_low": 0.08533156381158329,
+        "ci95_high": 0.2273546932929382
+      },
+      "boundary.mean_symmetric_distance_m": {
+        "n_forecasts": 24,
+        "n_incidents": 6,
+        "mean": 424.21163381716536,
+        "median": 484.0308165686613,
+        "ci95_low": 265.9488833296776,
+        "ci95_high": 557.9854174187582
+      },
+      "boundary.hausdorff_95_m": {
+        "n_forecasts": 24,
+        "n_incidents": 6,
+        "mean": 1722.683938158565,
+        "median": 1529.8704227775977,
+        "ci95_low": 1004.3813234991993,
+        "ci95_high": 2394.223510623387
+      },
+      "metrics.symmetric_difference_km2": {
+        "n_forecasts": 24,
+        "n_incidents": 6,
+        "mean": 10.752545560302536,
+        "median": 9.606847575870898,
+        "ci95_low": 7.082462971798509,
+        "ci95_high": 13.44992341199287
+      }
+    },
+    "history_calibrated_ensemble": {
+      "metrics.iou": {
+        "n_forecasts": 24,
+        "n_incidents": 6,
+        "mean": 0.745817229414862,
+        "median": 0.7310082675821545,
+        "ci95_low": 0.6608485896954647,
+        "ci95_high": 0.8326566038635251
+      },
+      "growth_metrics.iou": {
+        "n_forecasts": 24,
+        "n_incidents": 6,
+        "mean": 0.058412725806319864,
+        "median": 0.03463268365817092,
+        "ci95_low": 0.02770913172875954,
+        "ci95_high": 0.08911631988388019
+      },
+      "growth_tolerance_1_cell.f1": {
+        "n_forecasts": 24,
+        "n_incidents": 6,
+        "mean": 0.15541038034944463,
+        "median": 0.11978623136993576,
+        "ci95_low": 0.08787330740459402,
+        "ci95_high": 0.23079563195702887
+      },
+      "boundary.mean_symmetric_distance_m": {
+        "n_forecasts": 24,
+        "n_incidents": 6,
+        "mean": 396.33665673047034,
+        "median": 404.8236285479648,
+        "ci95_low": 247.9308088548572,
+        "ci95_high": 516.4931245376506
+      },
+      "boundary.hausdorff_95_m": {
+        "n_forecasts": 24,
+        "n_incidents": 6,
+        "mean": 1635.241925422389,
+        "median": 1397.1686128053054,
+        "ci95_low": 951.2999641389018,
+        "ci95_high": 2275.272031009716
+      },
+      "metrics.symmetric_difference_km2": {
+        "n_forecasts": 24,
+        "n_incidents": 6,
+        "mean": 10.054107533872129,
+        "median": 8.594581129468335,
+        "ci95_low": 6.772213733863804,
+        "ci95_high": 12.594677050201488
+      }
+    }
+  },
+  "active_growth_summaries": {
+    "persistence": {
+      "growth_metrics.iou": {
+        "n_forecasts": 21,
+        "n_incidents": 6,
+        "mean": 0.0,
+        "median": 0.0,
+        "ci95_low": 0.0,
+        "ci95_high": 0.0
+      },
+      "growth_tolerance_1_cell.f1": {
+        "n_forecasts": 21,
+        "n_incidents": 6,
+        "mean": 0.0,
+        "median": 0.0,
+        "ci95_low": 0.0,
+        "ci95_high": 0.0
+      }
+    },
+    "raw_physics": {
+      "growth_metrics.iou": {
+        "n_forecasts": 21,
+        "n_incidents": 6,
+        "mean": 0.05362931033705688,
+        "median": 0.03980099502487562,
+        "ci95_low": 0.031602567066927906,
+        "ci95_high": 0.076690980088632
+      },
+      "growth_tolerance_1_cell.f1": {
+        "n_forecasts": 21,
+        "n_incidents": 6,
+        "mean": 0.15061314733406342,
+        "median": 0.11382113821138212,
+        "ci95_low": 0.10231695454163864,
+        "ci95_high": 0.20728622360287477
+      }
+    },
+    "history_raw_physics": {
+      "growth_metrics.iou": {
+        "n_forecasts": 21,
+        "n_incidents": 6,
+        "mean": 0.06001120356348338,
+        "median": 0.039285714285714285,
+        "ci95_low": 0.034993678694121115,
+        "ci95_high": 0.08824913543389876
+      },
+      "growth_tolerance_1_cell.f1": {
+        "n_forecasts": 21,
+        "n_incidents": 6,
+        "mean": 0.1619719428506149,
+        "median": 0.11030478955007257,
+        "ci95_low": 0.10983732540448375,
+        "ci95_high": 0.2152973362201008
+      }
+    },
+    "calibrated_physics": {
+      "growth_metrics.iou": {
+        "n_forecasts": 21,
+        "n_incidents": 6,
+        "mean": 0.051358376569553575,
+        "median": 0.03642384105960265,
+        "ci95_low": 0.03584036947829153,
+        "ci95_high": 0.06630079673524496
+      },
+      "growth_tolerance_1_cell.f1": {
+        "n_forecasts": 21,
+        "n_incidents": 6,
+        "mean": 0.14145250177778365,
+        "median": 0.12446891269223864,
+        "ci95_low": 0.10497248029415143,
+        "ci95_high": 0.18393496384126531
+      }
+    },
+    "history_calibrated_physics": {
+      "growth_metrics.iou": {
+        "n_forecasts": 21,
+        "n_incidents": 6,
+        "mean": 0.052802060349681754,
+        "median": 0.03870967741935484,
+        "ci95_low": 0.03878398703960441,
+        "ci95_high": 0.0671039117439108
+      },
+      "growth_tolerance_1_cell.f1": {
+        "n_forecasts": 21,
+        "n_incidents": 6,
+        "mean": 0.14558867449387475,
+        "median": 0.1310636404094348,
+        "ci95_low": 0.11086215508104019,
+        "ci95_high": 0.18666021994279883
+      }
+    },
+    "calibrated_ensemble": {
+      "growth_metrics.iou": {
+        "n_forecasts": 21,
+        "n_incidents": 6,
+        "mean": 0.06623706741343315,
+        "median": 0.03757225433526012,
+        "ci95_low": 0.03289253946287423,
+        "ci95_high": 0.10645410932041428
+      },
+      "growth_tolerance_1_cell.f1": {
+        "n_forecasts": 21,
+        "n_incidents": 6,
+        "mean": 0.1749327158156981,
+        "median": 0.12969283276450513,
+        "ci95_low": 0.0994070734663203,
+        "ci95_high": 0.2545901996265067
+      }
+    },
+    "history_calibrated_ensemble": {
+      "growth_metrics.iou": {
+        "n_forecasts": 21,
+        "n_incidents": 6,
+        "mean": 0.06675740092150842,
+        "median": 0.036211699164345405,
+        "ci95_low": 0.03421172552653557,
+        "ci95_high": 0.10445708226053838
+      },
+      "growth_tolerance_1_cell.f1": {
+        "n_forecasts": 21,
+        "n_incidents": 6,
+        "mean": 0.17761186325650813,
+        "median": 0.14020420749674503,
+        "ci95_low": 0.10164173473576014,
+        "ci95_high": 0.2566105077445812
+      }
+    }
+  },
+  "probabilistic_skill_against_persistence": {
+    "calibrated_ensemble": {
+      "whole_domain_brier_skill": -1.0276239538693375,
+      "whole_domain_balanced_brier_skill": 0.1844896633975811,
+      "active_domain_brier_skill": 0.14051738952285509,
+      "active_domain_balanced_brier_skill": 0.22304347022208548,
+      "definition": "1 - aggregate posterior score / aggregate persistence score; computed over intervals with observed growth"
+    },
+    "history_calibrated_ensemble": {
+      "whole_domain_brier_skill": -0.9379784278883572,
+      "whole_domain_balanced_brier_skill": 0.18876616902979992,
+      "active_domain_brier_skill": 0.142630234640314,
+      "active_domain_balanced_brier_skill": 0.21384925121019116,
+      "definition": "1 - aggregate posterior score / aggregate persistence score; computed over intervals with observed growth"
+    }
+  },
+  "paired_arrival_history_ablation": {
+    "raw_physics__to__history_raw_physics": {
+      "metrics.iou": {
+        "baseline": "raw_physics",
+        "treatment": "history_raw_physics",
+        "metric": "metrics.iou",
+        "n_pairs": 24,
+        "mean_delta": 0.012348329118385319,
+        "median_delta": 0.0007749607490131205,
+        "ci95_low": -6.398183836496078e-05,
+        "ci95_high": 0.03534202223081325,
+        "improved_pairs": 13
+      },
+      "growth_metrics.iou": {
+        "baseline": "raw_physics",
+        "treatment": "history_raw_physics",
+        "metric": "growth_metrics.iou",
+        "n_pairs": 24,
+        "mean_delta": 0.00558415657312319,
+        "median_delta": 0.0,
+        "ci95_low": -0.001355580234784304,
+        "ci95_high": 0.014489655267485727,
+        "improved_pairs": 7
+      },
+      "growth_tolerance_1_cell.f1": {
+        "baseline": "raw_physics",
+        "treatment": "history_raw_physics",
+        "metric": "growth_tolerance_1_cell.f1",
+        "n_pairs": 24,
+        "mean_delta": 0.009938946076982527,
+        "median_delta": 0.0,
+        "ci95_low": -0.005651976957204291,
+        "ci95_high": 0.02728357982495998,
+        "improved_pairs": 8
+      },
+      "boundary.mean_symmetric_distance_m": {
+        "baseline": "raw_physics",
+        "treatment": "history_raw_physics",
+        "metric": "boundary.mean_symmetric_distance_m",
+        "n_pairs": 24,
+        "mean_delta": -38.91389663909318,
+        "median_delta": -0.1536596976481519,
+        "ci95_low": -121.94997207715413,
+        "ci95_high": 12.870788545426336,
+        "improved_pairs": 12
+      },
+      "boundary.hausdorff_95_m": {
+        "baseline": "raw_physics",
+        "treatment": "history_raw_physics",
+        "metric": "boundary.hausdorff_95_m",
+        "n_pairs": 24,
+        "mean_delta": -98.74116229936156,
+        "median_delta": 0.0,
+        "ci95_low": -429.6842473348203,
+        "ci95_high": 163.70814559339792,
+        "improved_pairs": 8
+      },
+      "metrics.symmetric_difference_km2": {
+        "baseline": "raw_physics",
+        "treatment": "history_raw_physics",
+        "metric": "metrics.symmetric_difference_km2",
+        "n_pairs": 24,
+        "mean_delta": -1.86723696782039,
+        "median_delta": -0.03301215717141659,
+        "ci95_low": -5.540120303231842,
+        "ci95_high": 0.00447399185098742,
+        "improved_pairs": 13
+      },
+      "metrics.area_bias_km2": {
+        "baseline": "raw_physics",
+        "treatment": "history_raw_physics",
+        "metric": "metrics.area_bias_km2",
+        "n_pairs": 24,
+        "mean_delta": -1.917317982746183,
+        "median_delta": -0.042394327772870444,
+        "ci95_low": -5.6969234001213,
+        "ci95_high": 0.02035913747186707,
+        "improved_pairs": 9
+      }
+    },
+    "calibrated_physics__to__history_calibrated_physics": {
+      "metrics.iou": {
+        "baseline": "calibrated_physics",
+        "treatment": "history_calibrated_physics",
+        "metric": "metrics.iou",
+        "n_pairs": 24,
+        "mean_delta": 0.016845688588597255,
+        "median_delta": 0.006226480753888125,
+        "ci95_low": 0.004519198558197857,
+        "ci95_high": 0.03268934412685038,
+        "improved_pairs": 19
+      },
+      "growth_metrics.iou": {
+        "baseline": "calibrated_physics",
+        "treatment": "history_calibrated_physics",
+        "metric": "growth_metrics.iou",
+        "n_pairs": 24,
+        "mean_delta": 0.0012632233076121495,
+        "median_delta": 9.825136781531005e-05,
+        "ci95_low": -0.00044746529093581995,
+        "ci95_high": 0.003456137133451045,
+        "improved_pairs": 13
+      },
+      "growth_tolerance_1_cell.f1": {
+        "baseline": "calibrated_physics",
+        "treatment": "history_calibrated_physics",
+        "metric": "growth_tolerance_1_cell.f1",
+        "n_pairs": 24,
+        "mean_delta": 0.0036191511265797186,
+        "median_delta": 0.0004301010160362448,
+        "ci95_low": -0.0013354686297468849,
+        "ci95_high": 0.009673159276069043,
+        "improved_pairs": 13
+      },
+      "boundary.mean_symmetric_distance_m": {
+        "baseline": "calibrated_physics",
+        "treatment": "history_calibrated_physics",
+        "metric": "boundary.mean_symmetric_distance_m",
+        "n_pairs": 24,
+        "mean_delta": -67.81748723927227,
+        "median_delta": -21.55610402824999,
+        "ci95_low": -153.44924392940743,
+        "ci95_high": -13.49545181694124,
+        "improved_pairs": 19
+      },
+      "boundary.hausdorff_95_m": {
+        "baseline": "calibrated_physics",
+        "treatment": "history_calibrated_physics",
+        "metric": "boundary.hausdorff_95_m",
+        "n_pairs": 24,
+        "mean_delta": -145.51456185974635,
+        "median_delta": -2.621248359473782,
+        "ci95_low": -324.2762697797443,
+        "ci95_high": -29.6529576456156,
+        "improved_pairs": 13
+      },
+      "metrics.symmetric_difference_km2": {
+        "baseline": "calibrated_physics",
+        "treatment": "history_calibrated_physics",
+        "metric": "metrics.symmetric_difference_km2",
+        "n_pairs": 24,
+        "mean_delta": -3.95594656779427,
+        "median_delta": -0.8137977093749083,
+        "ci95_low": -8.363217622511085,
+        "ci95_high": -0.5500880254603873,
+        "improved_pairs": 19
+      },
+      "metrics.area_bias_km2": {
+        "baseline": "calibrated_physics",
+        "treatment": "history_calibrated_physics",
+        "metric": "metrics.area_bias_km2",
+        "n_pairs": 24,
+        "mean_delta": -4.062000215419963,
+        "median_delta": -0.8137977093749084,
+        "ci95_low": -8.937982808890348,
+        "ci95_high": -0.5796156878579025,
+        "improved_pairs": 16
+      }
+    },
+    "calibrated_ensemble__to__history_calibrated_ensemble": {
+      "metrics.iou": {
+        "baseline": "calibrated_ensemble",
+        "treatment": "history_calibrated_ensemble",
+        "metric": "metrics.iou",
+        "n_pairs": 24,
+        "mean_delta": 0.01232812561727416,
+        "median_delta": 0.003716802611310299,
+        "ci95_low": 0.004007580167976993,
+        "ci95_high": 0.021370029414605463,
+        "improved_pairs": 17
+      },
+      "growth_metrics.iou": {
+        "baseline": "calibrated_ensemble",
+        "treatment": "history_calibrated_ensemble",
+        "metric": "growth_metrics.iou",
+        "n_pairs": 24,
+        "mean_delta": 0.00045529181956585965,
+        "median_delta": 0.0,
+        "ci95_low": -0.002642566936648233,
+        "ci95_high": 0.0037508827989904668,
+        "improved_pairs": 11
+      },
+      "growth_tolerance_1_cell.f1": {
+        "baseline": "calibrated_ensemble",
+        "treatment": "history_calibrated_ensemble",
+        "metric": "growth_tolerance_1_cell.f1",
+        "n_pairs": 24,
+        "mean_delta": 0.0023442540107087863,
+        "median_delta": 0.00024893945029025354,
+        "ci95_low": -0.005248000166922354,
+        "ci95_high": 0.010114118763853685,
+        "improved_pairs": 13
+      },
+      "boundary.mean_symmetric_distance_m": {
+        "baseline": "calibrated_ensemble",
+        "treatment": "history_calibrated_ensemble",
+        "metric": "boundary.mean_symmetric_distance_m",
+        "n_pairs": 24,
+        "mean_delta": -27.874977086695015,
+        "median_delta": -5.390630787010608,
+        "ci95_low": -52.4899517215139,
+        "ci95_high": -8.064801337778013,
+        "improved_pairs": 19
+      },
+      "boundary.hausdorff_95_m": {
+        "baseline": "calibrated_ensemble",
+        "treatment": "history_calibrated_ensemble",
+        "metric": "boundary.hausdorff_95_m",
+        "n_pairs": 24,
+        "mean_delta": -87.44201273617621,
+        "median_delta": -20.044993694799928,
+        "ci95_low": -165.54260602127582,
+        "ci95_high": -22.139603391362225,
+        "improved_pairs": 16
+      },
+      "metrics.symmetric_difference_km2": {
+        "baseline": "calibrated_ensemble",
+        "treatment": "history_calibrated_ensemble",
+        "metric": "metrics.symmetric_difference_km2",
+        "n_pairs": 24,
+        "mean_delta": -0.698438026430408,
+        "median_delta": -0.3051181761186452,
+        "ci95_low": -1.223577246375737,
+        "ci95_high": -0.24246279737228185,
+        "improved_pairs": 17
+      },
+      "metrics.area_bias_km2": {
+        "baseline": "calibrated_ensemble",
+        "treatment": "history_calibrated_ensemble",
+        "metric": "metrics.area_bias_km2",
+        "n_pairs": 24,
+        "mean_delta": -0.7747273232961248,
+        "median_delta": -0.3884629669732108,
+        "ci95_low": -1.3987438821781122,
+        "ci95_high": -0.27533183851402754,
+        "improved_pairs": 13
+      }
+    }
+  },
+  "incident_summary": {
+    "CA-AEU-017769_Electra": {
+      "persistence": {
+        "metrics.iou": 0.9704681924250846,
+        "growth_metrics.iou": 0.0,
+        "growth_tolerance_1_cell.f1": 0.5,
+        "boundary.mean_symmetric_distance_m": 28.49000716122897,
+        "boundary.hausdorff_95_m": 113.75091018987644,
+        "metrics.symmetric_difference_km2": 0.9588180700394721,
+        "metrics.area_bias_km2": -0.8698555686956035
+      },
+      "raw_physics": {
+        "metrics.iou": 0.818231846418231,
+        "growth_metrics.iou": 0.010135135135135136,
+        "growth_tolerance_1_cell.f1": 0.028059811703895144,
+        "boundary.mean_symmetric_distance_m": 325.62487164138025,
+        "boundary.hausdorff_95_m": 1820.77416558269,
+        "metrics.symmetric_difference_km2": 7.121942468695255,
+        "metrics.area_bias_km2": 5.41188549841867
+      },
+      "history_raw_physics": {
+        "metrics.iou": 0.8165320372137704,
+        "growth_metrics.iou": 0.009966777408637873,
+        "growth_tolerance_1_cell.f1": 0.027576197387518143,
+        "boundary.mean_symmetric_distance_m": 360.3203558953247,
+        "boundary.hausdorff_95_m": 2190.250983904609,
+        "metrics.symmetric_difference_km2": 7.196077886481811,
+        "metrics.area_bias_km2": 5.486020916205227
+      },
+      "calibrated_physics": {
+        "metrics.iou": 0.4873486143524907,
+        "growth_metrics.iou": 0.00998366652587199,
+        "growth_tolerance_1_cell.f1": 0.033477110178959366,
+        "boundary.mean_symmetric_distance_m": 1090.2665222270398,
+        "boundary.hausdorff_95_m": 4060.901371598765,
+        "metrics.symmetric_difference_km2": 34.76951094189529,
+        "metrics.area_bias_km2": 33.43507342173726
+      },
+      "history_calibrated_physics": {
+        "metrics.iou": 0.5105995512863739,
+        "growth_metrics.iou": 0.01061844821305703,
+        "growth_tolerance_1_cell.f1": 0.03529755567197895,
+        "boundary.mean_symmetric_distance_m": 1048.1836776808195,
+        "boundary.hausdorff_95_m": 3916.5947209483165,
+        "metrics.symmetric_difference_km2": 31.73984353501799,
+        "metrics.area_bias_km2": 30.38563657011688
+      },
+      "calibrated_ensemble": {
+        "metrics.iou": 0.7114216161171121,
+        "growth_metrics.iou": 0.010717475876497068,
+        "growth_tolerance_1_cell.f1": 0.033447545737113296,
+        "boundary.mean_symmetric_distance_m": 559.567168026584,
+        "boundary.hausdorff_95_m": 3132.703428579995,
+        "metrics.symmetric_difference_km2": 13.11702658703484,
+        "metrics.area_bias_km2": 11.495932118102123
+      },
+      "history_calibrated_ensemble": {
+        "metrics.iou": 0.7181887581061441,
+        "growth_metrics.iou": 0.011704590228526398,
+        "growth_tolerance_1_cell.f1": 0.03651518071752447,
+        "boundary.mean_symmetric_distance_m": 545.7976490226423,
+        "boundary.hausdorff_95_m": 3076.90652784898,
+        "metrics.symmetric_difference_km2": 12.741407136916283,
+        "metrics.area_bias_km2": 11.120312667983567
+      }
+    },
+    "OR-MAF-022199_CrocketsKnob": {
+      "persistence": {
+        "metrics.iou": 0.8392172613001458,
+        "growth_metrics.iou": 0.0,
+        "growth_tolerance_1_cell.f1": 0.0,
+        "boundary.mean_symmetric_distance_m": 121.45424350416258,
+        "boundary.hausdorff_95_m": 547.3643117393174,
+        "metrics.symmetric_difference_km2": 2.4767102345446976,
+        "metrics.area_bias_km2": -2.4232175728914642
+      },
+      "raw_physics": {
+        "metrics.iou": 0.669733554163927,
+        "growth_metrics.iou": 0.09210971129774437,
+        "growth_tolerance_1_cell.f1": 0.2593418417054357,
+        "boundary.mean_symmetric_distance_m": 449.7660076095965,
+        "boundary.hausdorff_95_m": 1965.1147013785503,
+        "metrics.symmetric_difference_km2": 7.301748315666334,
+        "metrics.area_bias_km2": 4.134982745794927
+      },
+      "history_raw_physics": {
+        "metrics.iou": 0.6740925153434296,
+        "growth_metrics.iou": 0.09237894638314517,
+        "growth_tolerance_1_cell.f1": 0.2569968037625763,
+        "boundary.mean_symmetric_distance_m": 429.9698369035973,
+        "boundary.hausdorff_95_m": 1901.6791130751462,
+        "metrics.symmetric_difference_km2": 7.157318129202603,
+        "metrics.area_bias_km2": 3.979854027000551
+      },
+      "calibrated_physics": {
+        "metrics.iou": 0.49188632883493294,
+        "growth_metrics.iou": 0.07473174792767454,
+        "growth_tolerance_1_cell.f1": 0.2221621649479417,
+        "boundary.mean_symmetric_distance_m": 858.7565525647868,
+        "boundary.hausdorff_95_m": 3133.887554014518,
+        "metrics.symmetric_difference_km2": 15.812430784695737,
+        "metrics.area_bias_km2": 13.565738995259942
+      },
+      "history_calibrated_physics": {
+        "metrics.iou": 0.4981523536814174,
+        "growth_metrics.iou": 0.07523336337270105,
+        "growth_tolerance_1_cell.f1": 0.22595301854848765,
+        "boundary.mean_symmetric_distance_m": 794.1837553711168,
+        "boundary.hausdorff_95_m": 3036.550582874531,
+        "metrics.symmetric_difference_km2": 15.454029951619074,
+        "metrics.area_bias_km2": 13.17524256519134
+      },
+      "calibrated_ensemble": {
+        "metrics.iou": 0.6025970902493935,
+        "growth_metrics.iou": 0.10127742659388794,
+        "growth_tolerance_1_cell.f1": 0.28737795102084995,
+        "boundary.mean_symmetric_distance_m": 576.558265840906,
+        "boundary.hausdorff_95_m": 2284.437528911909,
+        "metrics.symmetric_difference_km2": 10.03522332614655,
+        "metrics.area_bias_km2": 7.48897263145265
+      },
+      "history_calibrated_ensemble": {
+        "metrics.iou": 0.6276796758021569,
+        "growth_metrics.iou": 0.10832840515124281,
+        "growth_tolerance_1_cell.f1": 0.3063405366585784,
+        "boundary.mean_symmetric_distance_m": 494.2135226702869,
+        "boundary.hausdorff_95_m": 2014.050984833462,
+        "metrics.symmetric_difference_km2": 8.901178899098007,
+        "metrics.area_bias_km2": 6.365626736734752
+      }
+    },
+    "AZ-SCA-001418_DryLake": {
+      "persistence": {
+        "metrics.iou": 0.823681054481708,
+        "growth_metrics.iou": 0.0,
+        "growth_tolerance_1_cell.f1": 0.25,
+        "boundary.mean_symmetric_distance_m": 252.686200513816,
+        "boundary.hausdorff_95_m": 844.2688682025309,
+        "metrics.symmetric_difference_km2": 4.166036022356355,
+        "metrics.area_bias_km2": -4.166036022356355
+      },
+      "raw_physics": {
+        "metrics.iou": 0.33626069532166203,
+        "growth_metrics.iou": 0.067502886440899,
+        "growth_tolerance_1_cell.f1": 0.14752815080794324,
+        "boundary.mean_symmetric_distance_m": 1471.5617992564626,
+        "boundary.hausdorff_95_m": 4008.662931175507,
+        "metrics.symmetric_difference_km2": 48.41050704727364,
+        "metrics.area_bias_km2": 45.561244007172306
+      },
+      "history_raw_physics": {
+        "metrics.iou": 0.4048834094183021,
+        "growth_metrics.iou": 0.0936167107182553,
+        "growth_tolerance_1_cell.f1": 0.19142445958890053,
+        "boundary.mean_symmetric_distance_m": 1232.1561933124724,
+        "boundary.hausdorff_95_m": 3173.175607469231,
+        "metrics.symmetric_difference_km2": 37.395453874894535,
+        "metrics.area_bias_km2": 34.23160343288928
+      },
+      "calibrated_physics": {
+        "metrics.iou": 0.28633200979263235,
+        "growth_metrics.iou": 0.056728314039321145,
+        "growth_tolerance_1_cell.f1": 0.12701781471922632,
+        "boundary.mean_symmetric_distance_m": 1776.8204248771615,
+        "boundary.hausdorff_95_m": 4624.577855079744,
+        "metrics.symmetric_difference_km2": 62.18943525066585,
+        "metrics.area_bias_km2": 59.61880676653658
+      },
+      "history_calibrated_physics": {
+        "metrics.iou": 0.30169513070286136,
+        "growth_metrics.iou": 0.05867476612389243,
+        "growth_tolerance_1_cell.f1": 0.13183691458925262,
+        "boundary.mean_symmetric_distance_m": 1753.4264830721002,
+        "boundary.hausdorff_95_m": 4579.625035869589,
+        "metrics.symmetric_difference_km2": 56.33361546951124,
+        "metrics.area_bias_km2": 53.71804592796712
+      },
+      "calibrated_ensemble": {
+        "metrics.iou": 0.6001189670132661,
+        "growth_metrics.iou": 0.1218403491262848,
+        "growth_tolerance_1_cell.f1": 0.2488362388307712,
+        "boundary.mean_symmetric_distance_m": 554.8879400019625,
+        "boundary.hausdorff_95_m": 1595.634890100272,
+        "metrics.symmetric_difference_km2": 15.131654031579124,
+        "metrics.area_bias_km2": 10.727430404924078
+      },
+      "history_calibrated_ensemble": {
+        "metrics.iou": 0.6283816059776424,
+        "growth_metrics.iou": 0.11592144235029847,
+        "growth_tolerance_1_cell.f1": 0.23707458660694763,
+        "boundary.mean_symmetric_distance_m": 509.8453090158781,
+        "boundary.hausdorff_95_m": 1460.7153151293348,
+        "metrics.symmetric_difference_km2": 13.3429999464682,
+        "metrics.area_bias_km2": 8.579247860494371
+      }
+    },
+    "ID-IPF-000447_RidgeCreek": {
+      "persistence": {
+        "metrics.iou": 0.9356164725438674,
+        "growth_metrics.iou": 0.0,
+        "growth_tolerance_1_cell.f1": 0.0,
+        "boundary.mean_symmetric_distance_m": 82.40729382681694,
+        "boundary.hausdorff_95_m": 472.4167236059215,
+        "metrics.symmetric_difference_km2": 1.9189717363062175,
+        "metrics.area_bias_km2": -1.9189717363062175
+      },
+      "raw_physics": {
+        "metrics.iou": 0.926583430066955,
+        "growth_metrics.iou": 0.05352900531630917,
+        "growth_tolerance_1_cell.f1": 0.15569432177804066,
+        "boundary.mean_symmetric_distance_m": 86.88833889284075,
+        "boundary.hausdorff_95_m": 420.3419222977146,
+        "metrics.symmetric_difference_km2": 2.2369408902871895,
+        "metrics.area_bias_km2": -1.3443958966563907
+      },
+      "history_raw_physics": {
+        "metrics.iou": 0.9274959450246836,
+        "growth_metrics.iou": 0.05030256730576912,
+        "growth_tolerance_1_cell.f1": 0.1413699115363785,
+        "boundary.mean_symmetric_distance_m": 86.20943611042168,
+        "boundary.hausdorff_95_m": 421.0315174991546,
+        "metrics.symmetric_difference_km2": 2.2034704530260347,
+        "metrics.area_bias_km2": -1.4001799587583157
+      },
+      "calibrated_physics": {
+        "metrics.iou": 0.926927892494302,
+        "growth_metrics.iou": 0.05158124640719908,
+        "growth_tolerance_1_cell.f1": 0.14515011210290743,
+        "boundary.mean_symmetric_distance_m": 87.08174226890208,
+        "boundary.hausdorff_95_m": 420.3419222977146,
+        "metrics.symmetric_difference_km2": 2.2257840778668045,
+        "metrics.area_bias_km2": -1.3667095214971605
+      },
+      "history_calibrated_physics": {
+        "metrics.iou": 0.9278548257351431,
+        "growth_metrics.iou": 0.05073631814274576,
+        "growth_tolerance_1_cell.f1": 0.14266713650099913,
+        "boundary.mean_symmetric_distance_m": 86.11635651646723,
+        "boundary.hausdorff_95_m": 421.26138256630134,
+        "metrics.symmetric_difference_km2": 2.19231364060565,
+        "metrics.area_bias_km2": -1.4113367711787006
+      },
+      "calibrated_ensemble": {
+        "metrics.iou": 0.93137522353418,
+        "growth_metrics.iou": 0.02814106942272848,
+        "growth_tolerance_1_cell.f1": 0.08140525341369433,
+        "boundary.mean_symmetric_distance_m": 82.43930255181013,
+        "boundary.hausdorff_95_m": 420.3419222977146,
+        "metrics.symmetric_difference_km2": 2.0751671101916074,
+        "metrics.area_bias_km2": -1.6288946133762081
+      },
+      "history_calibrated_ensemble": {
+        "metrics.iou": 0.9321671336114956,
+        "growth_metrics.iou": 0.028323692807652918,
+        "growth_tolerance_1_cell.f1": 0.08264633413013453,
+        "boundary.mean_symmetric_distance_m": 82.60393539242078,
+        "boundary.hausdorff_95_m": 428.96239410735143,
+        "metrics.symmetric_difference_km2": 2.047275079140645,
+        "metrics.area_bias_km2": -1.6567866444271706
+      }
+    },
+    "NM-GNF-000382_Davis": {
+      "persistence": {
+        "metrics.iou": 0.8171438531793882,
+        "growth_metrics.iou": 0.0,
+        "growth_tolerance_1_cell.f1": 0.0,
+        "boundary.mean_symmetric_distance_m": 238.79019269698722,
+        "boundary.hausdorff_95_m": 824.4245762863612,
+        "metrics.symmetric_difference_km2": 5.968114487548948,
+        "metrics.area_bias_km2": -5.968114487548948
+      },
+      "raw_physics": {
+        "metrics.iou": 0.7628300936071863,
+        "growth_metrics.iou": 0.037047992234294135,
+        "growth_tolerance_1_cell.f1": 0.11064778801423883,
+        "boundary.mean_symmetric_distance_m": 406.9642084706535,
+        "boundary.hausdorff_95_m": 1624.4996035683002,
+        "metrics.symmetric_difference_km2": 8.846609740818888,
+        "metrics.area_bias_km2": -2.059746156186004
+      },
+      "history_raw_physics": {
+        "metrics.iou": 0.7645180685479862,
+        "growth_metrics.iou": 0.035938454455080454,
+        "growth_tolerance_1_cell.f1": 0.11055843695643326,
+        "boundary.mean_symmetric_distance_m": 400.5775604697963,
+        "boundary.hausdorff_95_m": 1588.3330495225327,
+        "metrics.symmetric_difference_km2": 8.779667990742842,
+        "metrics.area_bias_km2": -2.167882829385769
+      },
+      "calibrated_physics": {
+        "metrics.iou": 0.7434264355075411,
+        "growth_metrics.iou": 0.04555973624766457,
+        "growth_tolerance_1_cell.f1": 0.12498961844858474,
+        "boundary.mean_symmetric_distance_m": 450.32507771946035,
+        "boundary.hausdorff_95_m": 1796.5900838558491,
+        "metrics.symmetric_difference_km2": 10.046411876797235,
+        "metrics.area_bias_km2": -0.5818782891225462
+      },
+      "history_calibrated_physics": {
+        "metrics.iou": 0.7452425250629368,
+        "growth_metrics.iou": 0.044494070073204654,
+        "growth_tolerance_1_cell.f1": 0.12093315793537843,
+        "boundary.mean_symmetric_distance_m": 445.4804011408609,
+        "boundary.hausdorff_95_m": 1777.8566458254868,
+        "metrics.symmetric_difference_km2": 10.123652357654212,
+        "metrics.area_bias_km2": -0.5561314621702214
+      },
+      "calibrated_ensemble": {
+        "metrics.iou": 0.7224957542788514,
+        "growth_metrics.iou": 0.043600554723069875,
+        "growth_tolerance_1_cell.f1": 0.11597382876698795,
+        "boundary.mean_symmetric_distance_m": 516.0944687509848,
+        "boundary.hausdorff_95_m": 1935.424258656243,
+        "metrics.symmetric_difference_km2": 11.148376070356749,
+        "metrics.area_bias_km2": 0.5509820967797563
+      },
+      "history_calibrated_ensemble": {
+        "metrics.iou": 0.73407828633156,
+        "growth_metrics.iou": 0.04621570504157724,
+        "growth_tolerance_1_cell.f1": 0.12385438295412689,
+        "boundary.mean_symmetric_distance_m": 493.459308478576,
+        "boundary.hausdorff_95_m": 1884.670028066646,
+        "metrics.symmetric_difference_km2": 10.442913011863041,
+        "metrics.area_bias_km2": -0.17507842327581002
+      }
+    },
+    "UT-VLD-000127_Bear": {
+      "persistence": {
+        "metrics.iou": 0.8528550930202851,
+        "growth_metrics.iou": 0.0,
+        "growth_tolerance_1_cell.f1": 0.0,
+        "boundary.mean_symmetric_distance_m": 215.0466930336485,
+        "boundary.hausdorff_95_m": 855.4211755239195,
+        "metrics.symmetric_difference_km2": 10.967902366422873,
+        "metrics.area_bias_km2": -10.950240687894011
+      },
+      "raw_physics": {
+        "metrics.iou": 0.8507935293556507,
+        "growth_metrics.iou": 0.02122914884516681,
+        "growth_tolerance_1_cell.f1": 0.08944710949427931,
+        "boundary.mean_symmetric_distance_m": 216.82891287723848,
+        "boundary.hausdorff_95_m": 877.700396697154,
+        "metrics.symmetric_difference_km2": 11.179842508769209,
+        "metrics.area_bias_km2": -10.491037046143617
+      },
+      "history_raw_physics": {
+        "metrics.iou": 0.851001148095752,
+        "growth_metrics.iou": 0.03285536243739982,
+        "growth_tolerance_1_cell.f1": 0.12242689073392132,
+        "boundary.mean_symmetric_distance_m": 214.9173762220006,
+        "boundary.hausdorff_95_m": 850.1764754330735,
+        "metrics.symmetric_difference_km2": 11.162180830240347,
+        "metrics.area_bias_km2": -10.420390332028171
+      },
+      "calibrated_physics": {
+        "metrics.iou": 0.6219421143109258,
+        "growth_metrics.iou": 0.03104676584242499,
+        "growth_tolerance_1_cell.f1": 0.08982881393574468,
+        "boundary.mean_symmetric_distance_m": 1442.1487399234065,
+        "boundary.hausdorff_95_m": 4704.922116051244,
+        "metrics.symmetric_difference_km2": 51.43080787604413,
+        "metrics.area_bias_km2": 33.486542490721035
+      },
+      "history_calibrated_physics": {
+        "metrics.iou": 0.675393140355676,
+        "growth_metrics.iou": 0.03745385091022828,
+        "growth_tolerance_1_cell.f1": 0.1076527578467457,
+        "boundary.mean_symmetric_distance_m": 1171.1034623637588,
+        "boundary.hausdorff_95_m": 4136.245163655132,
+        "metrics.symmetric_difference_km2": 36.895246446791276,
+        "metrics.area_bias_km2": 18.47411574118893
+      },
+      "calibrated_ensemble": {
+        "metrics.iou": 0.8329259715927233,
+        "growth_metrics.iou": 0.04216772817805586,
+        "growth_tolerance_1_cell.f1": 0.1513559402629983,
+        "boundary.mean_symmetric_distance_m": 255.7226577307446,
+        "boundary.hausdorff_95_m": 967.5616004052579,
+        "metrics.symmetric_difference_km2": 13.007826236506355,
+        "metrics.area_bias_km2": -7.885939463136573
+      },
+      "history_calibrated_ensemble": {
+        "metrics.iou": 0.8344079166601724,
+        "growth_metrics.iou": 0.03998251925862137,
+        "growth_tolerance_1_cell.f1": 0.14603126102935582,
+        "boundary.mean_symmetric_distance_m": 252.10021580301782,
+        "boundary.hausdorff_95_m": 946.1463025485589,
+        "metrics.symmetric_difference_km2": 12.848871129746602,
+        "metrics.area_bias_km2": -8.133202962540633
+      }
+    }
+  },
+  "calibration_diagnostics": [
+    {
+      "incident_code": "CA-AEU-017769_Electra",
+      "selected_spread_adjustment": 2.0,
+      "at_lower_search_boundary": false,
+      "at_upper_search_boundary": false,
+      "raw_effective_sample_size": 2.031477434659188,
+      "tempered_effective_sample_size": 4.2000000000000295,
+      "likelihood_tempering_beta": 0.32245878102680336
+    },
+    {
+      "incident_code": "OR-MAF-022199_CrocketsKnob",
+      "selected_spread_adjustment": 2.0,
+      "at_lower_search_boundary": false,
+      "at_upper_search_boundary": false,
+      "raw_effective_sample_size": 1.297611871365357,
+      "tempered_effective_sample_size": 4.200000000000017,
+      "likelihood_tempering_beta": 0.24128349720692555
+    },
+    {
+      "incident_code": "AZ-SCA-001418_DryLake",
+      "selected_spread_adjustment": 1.2,
+      "at_lower_search_boundary": false,
+      "at_upper_search_boundary": false,
+      "raw_effective_sample_size": 2.0916781542942973,
+      "tempered_effective_sample_size": 4.20000000000003,
+      "likelihood_tempering_beta": 0.2613517130006464
+    },
+    {
+      "incident_code": "ID-IPF-000447_RidgeCreek",
+      "selected_spread_adjustment": 0.987,
+      "at_lower_search_boundary": false,
+      "at_upper_search_boundary": false,
+      "raw_effective_sample_size": 2.0604746431047247,
+      "tempered_effective_sample_size": 4.2000000000000295,
+      "likelihood_tempering_beta": 0.644777278167453
+    },
+    {
+      "incident_code": "NM-GNF-000382_Davis",
+      "selected_spread_adjustment": 1.2,
+      "at_lower_search_boundary": false,
+      "at_upper_search_boundary": false,
+      "raw_effective_sample_size": 1.5689373038536112,
+      "tempered_effective_sample_size": 4.200000000000018,
+      "likelihood_tempering_beta": 0.12014404059224049
+    },
+    {
+      "incident_code": "UT-VLD-000127_Bear",
+      "selected_spread_adjustment": 5.0,
+      "at_lower_search_boundary": false,
+      "at_upper_search_boundary": true,
+      "raw_effective_sample_size": 1.017093582855222,
+      "tempered_effective_sample_size": 4.2000000000000695,
+      "likelihood_tempering_beta": 0.19783344781995993
+    }
+  ],
+  "protocol_checks": {
+    "records_per_method": {
+      "persistence": 24,
+      "raw_physics": 24,
+      "history_raw_physics": 24,
+      "calibrated_physics": 24,
+      "history_calibrated_physics": 24,
+      "calibrated_ensemble": 24,
+      "history_calibrated_ensemble": 24
+    },
+    "maximum_time_overshoot_min": 2,
+    "minimum_time_overshoot_min": 0,
+    "all_physics_forecasts_reached_requested_time": true,
+    "all_history_forecasts_are_causal": true
+  }
+}

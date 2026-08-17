@@ -1,0 +1,122 @@
+{
+  "artifacts": {
+    "figure": "/Users/AmilAgrawal/Documents/Codex/2026-07-26/le/aeolus_py/results/frontier_fire/front_numerics/front_numerics.png"
+  },
+  "front_equation": "anisotropic Hamilton-Jacobi",
+  "radial_grid_refinement": [
+    {
+      "cell_size_m": 60.0,
+      "equivalent_radius_error_m": -6.581269117609622,
+      "equivalent_radius_m": 353.4187308823904,
+      "expected_radius_m": 360.0,
+      "grid_size": 25,
+      "maximum_radius_error_m": -10.14288330078125,
+      "maximum_radius_m": 349.85711669921875,
+      "solver": "godunov",
+      "steps": 7
+    },
+    {
+      "cell_size_m": 30.0,
+      "equivalent_radius_error_m": -6.17620453665802,
+      "equivalent_radius_m": 353.823795463342,
+      "expected_radius_m": 360.0,
+      "grid_size": 49,
+      "maximum_radius_error_m": -8.8590087890625,
+      "maximum_radius_m": 351.1409912109375,
+      "solver": "godunov",
+      "steps": 14
+    },
+    {
+      "cell_size_m": 15.0,
+      "equivalent_radius_error_m": -2.0507201625761695,
+      "equivalent_radius_m": 357.94927983742383,
+      "expected_radius_m": 360.0,
+      "grid_size": 97,
+      "maximum_radius_error_m": -2.194183349609375,
+      "maximum_radius_m": 357.8058166503906,
+      "solver": "godunov",
+      "steps": 27
+    },
+    {
+      "cell_size_m": 60.0,
+      "equivalent_radius_error_m": -6.581269117609622,
+      "equivalent_radius_m": 353.4187308823904,
+      "expected_radius_m": 360.0,
+      "grid_size": 25,
+      "maximum_radius_error_m": -10.14288330078125,
+      "maximum_radius_m": 349.85711669921875,
+      "solver": "weno5",
+      "steps": 7
+    },
+    {
+      "cell_size_m": 30.0,
+      "equivalent_radius_error_m": -6.17620453665802,
+      "equivalent_radius_m": 353.823795463342,
+      "expected_radius_m": 360.0,
+      "grid_size": 49,
+      "maximum_radius_error_m": -8.8590087890625,
+      "maximum_radius_m": 351.1409912109375,
+      "solver": "weno5",
+      "steps": 14
+    },
+    {
+      "cell_size_m": 15.0,
+      "equivalent_radius_error_m": -1.6507767083961653,
+      "equivalent_radius_m": 358.34922329160383,
+      "expected_radius_m": 360.0,
+      "grid_size": 97,
+      "maximum_radius_error_m": 0.0,
+      "maximum_radius_m": 360.0,
+      "solver": "weno5",
+      "steps": 27
+    }
+  ],
+  "rotation_invariance": {
+    "area_coefficient_of_variation": 0.005959475566150183,
+    "cases": [
+      {
+        "area_km2": 0.093825,
+        "heading_deg": 0.0,
+        "heading_extent_m": 225.0
+      },
+      {
+        "area_km2": 0.09495,
+        "heading_deg": 45.0,
+        "heading_extent_m": 233.3452377915607
+      },
+      {
+        "area_km2": 0.093825,
+        "heading_deg": 90.0,
+        "heading_extent_m": 225.0
+      },
+      {
+        "area_km2": 0.09495,
+        "heading_deg": 135.0,
+        "heading_extent_m": 233.3452377915607
+      },
+      {
+        "area_km2": 0.093825,
+        "heading_deg": 180.0,
+        "heading_extent_m": 225.0
+      },
+      {
+        "area_km2": 0.09495,
+        "heading_deg": 225.0,
+        "heading_extent_m": 233.3452377915607
+      },
+      {
+        "area_km2": 0.093825,
+        "heading_deg": 270.0,
+        "heading_extent_m": 225.0
+      },
+      {
+        "area_km2": 0.09495,
+        "heading_deg": 315.0,
+        "heading_extent_m": 233.3452377915607
+      }
+    ],
+    "heading_extent_coefficient_of_variation": 0.01820731863991966
+  },
+  "spatial_discretization": "Jiang-Shu WENO5 with Godunov comparator",
+  "time_integration": "SSP-RK3"
+}

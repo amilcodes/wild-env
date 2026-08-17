@@ -1,0 +1,5122 @@
+{
+  "schema_version": 1,
+  "study": "NIROPS multi-incident held-out spread hindcast",
+  "manifest": {
+    "schema_version": 1,
+    "title": "Electra forcing and live-fuel fidelity ablation",
+    "seed": 20260730,
+    "grid_size": 128,
+    "weather_spinup_hours": 1440,
+    "incident_weather_source": "hrrr-analysis",
+    "buffer_m": 4500.0,
+    "spotting_rate": 0.0,
+    "ensemble_particles": 12,
+    "perimeter_localization_sigma_m": 350.0,
+    "parallel_workers": 8,
+    "spread_candidates": [
+      0.003,
+      0.008,
+      0.021,
+      0.055,
+      0.144,
+      0.233,
+      0.377,
+      0.48,
+      0.61,
+      0.987,
+      1.5,
+      2.75,
+      5.0
+    ],
+    "incidents": [
+      {
+        "incident_code": "CA-AEU-017769_Electra",
+        "calibration_pair": [
+          1,
+          2
+        ],
+        "validation_pairs": [
+          [
+            2,
+            3
+          ],
+          [
+            3,
+            4
+          ],
+          [
+            4,
+            5
+          ],
+          [
+            5,
+            6
+          ]
+        ]
+      }
+    ]
+  },
+  "calibrations": [
+    {
+      "incident_code": "CA-AEU-017769_Electra",
+      "calibration_pair": [
+        1,
+        2
+      ],
+      "selected_spread_adjustment": 1.5,
+      "calibration_metrics": {
+        "iou": 0.6274101094319958,
+        "precision": 0.7377450980392157,
+        "recall": 0.8075117370892019,
+        "symmetric_difference_km2": 14.135152991303558,
+        "predicted_area_km2": 32.26373382070966,
+        "observed_area_km2": 29.47624211193511,
+        "area_bias_km2": 2.7874917087745477
+      },
+      "calibration_growth_metrics": {
+        "iou": 0.015172413793103448,
+        "precision": 0.02511415525114155,
+        "recall": 0.03691275167785235,
+        "symmetric_difference_km2": 14.115383546560476,
+        "predicted_area_km2": 8.65901679746987,
+        "observed_area_km2": 5.891294533438406,
+        "area_bias_km2": 2.767722264031466
+      },
+      "candidate_trials": [
+        {
+          "spread_adjustment": 0.003,
+          "score": -3.3745112393137204,
+          "metrics": {
+            "iou": 0.7995978552278821,
+            "precision": 0.9991624790619765,
+            "recall": 0.8001341381623072,
+            "symmetric_difference_km2": 5.911063978181487,
+            "predicted_area_km2": 23.604717023239786,
+            "observed_area_km2": 29.47624211193511,
+            "area_bias_km2": -5.871525088695324
+          },
+          "growth_metrics": {
+            "iou": 0.0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "symmetric_difference_km2": 5.891294533438406,
+            "predicted_area_km2": 0.0,
+            "observed_area_km2": 5.891294533438406,
+            "area_bias_km2": -5.891294533438406
+          },
+          "growth_tolerance_1_cell": {
+            "radius_cells": 1.0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          }
+        },
+        {
+          "spread_adjustment": 0.008,
+          "score": -3.3745112393137204,
+          "metrics": {
+            "iou": 0.7995978552278821,
+            "precision": 0.9991624790619765,
+            "recall": 0.8001341381623072,
+            "symmetric_difference_km2": 5.911063978181487,
+            "predicted_area_km2": 23.604717023239786,
+            "observed_area_km2": 29.47624211193511,
+            "area_bias_km2": -5.871525088695324
+          },
+          "growth_metrics": {
+            "iou": 0.0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "symmetric_difference_km2": 5.891294533438406,
+            "predicted_area_km2": 0.0,
+            "observed_area_km2": 5.891294533438406,
+            "area_bias_km2": -5.891294533438406
+          },
+          "growth_tolerance_1_cell": {
+            "radius_cells": 1.0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          }
+        },
+        {
+          "spread_adjustment": 0.021,
+          "score": -3.3745112393137204,
+          "metrics": {
+            "iou": 0.7995978552278821,
+            "precision": 0.9991624790619765,
+            "recall": 0.8001341381623072,
+            "symmetric_difference_km2": 5.911063978181487,
+            "predicted_area_km2": 23.604717023239786,
+            "observed_area_km2": 29.47624211193511,
+            "area_bias_km2": -5.871525088695324
+          },
+          "growth_metrics": {
+            "iou": 0.0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "symmetric_difference_km2": 5.891294533438406,
+            "predicted_area_km2": 0.0,
+            "observed_area_km2": 5.891294533438406,
+            "area_bias_km2": -5.891294533438406
+          },
+          "growth_tolerance_1_cell": {
+            "radius_cells": 1.0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          }
+        },
+        {
+          "spread_adjustment": 0.055,
+          "score": -3.3745112393137204,
+          "metrics": {
+            "iou": 0.7995978552278821,
+            "precision": 0.9991624790619765,
+            "recall": 0.8001341381623072,
+            "symmetric_difference_km2": 5.911063978181487,
+            "predicted_area_km2": 23.604717023239786,
+            "observed_area_km2": 29.47624211193511,
+            "area_bias_km2": -5.871525088695324
+          },
+          "growth_metrics": {
+            "iou": 0.0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "symmetric_difference_km2": 5.891294533438406,
+            "predicted_area_km2": 0.0,
+            "observed_area_km2": 5.891294533438406,
+            "area_bias_km2": -5.891294533438406
+          },
+          "growth_tolerance_1_cell": {
+            "radius_cells": 1.0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          }
+        },
+        {
+          "spread_adjustment": 0.144,
+          "score": -3.3745112393137204,
+          "metrics": {
+            "iou": 0.7995978552278821,
+            "precision": 0.9991624790619765,
+            "recall": 0.8001341381623072,
+            "symmetric_difference_km2": 5.911063978181487,
+            "predicted_area_km2": 23.604717023239786,
+            "observed_area_km2": 29.47624211193511,
+            "area_bias_km2": -5.871525088695324
+          },
+          "growth_metrics": {
+            "iou": 0.0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "symmetric_difference_km2": 5.891294533438406,
+            "predicted_area_km2": 0.0,
+            "observed_area_km2": 5.891294533438406,
+            "area_bias_km2": -5.891294533438406
+          },
+          "growth_tolerance_1_cell": {
+            "radius_cells": 1.0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          }
+        },
+        {
+          "spread_adjustment": 0.233,
+          "score": -0.8545640229758107,
+          "metrics": {
+            "iou": 0.7990622906898861,
+            "precision": 0.998326359832636,
+            "recall": 0.8001341381623072,
+            "symmetric_difference_km2": 5.93083342292457,
+            "predicted_area_km2": 23.62448646798287,
+            "observed_area_km2": 29.47624211193511,
+            "area_bias_km2": -5.851755643952242
+          },
+          "growth_metrics": {
+            "iou": 0.0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "symmetric_difference_km2": 5.911063978181487,
+            "predicted_area_km2": 0.0197694447430819,
+            "observed_area_km2": 5.891294533438406,
+            "area_bias_km2": -5.871525088695324
+          },
+          "growth_tolerance_1_cell": {
+            "radius_cells": 1.0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          }
+        },
+        {
+          "spread_adjustment": 0.377,
+          "score": -0.8545640229758107,
+          "metrics": {
+            "iou": 0.7990622906898861,
+            "precision": 0.998326359832636,
+            "recall": 0.8001341381623072,
+            "symmetric_difference_km2": 5.93083342292457,
+            "predicted_area_km2": 23.62448646798287,
+            "observed_area_km2": 29.47624211193511,
+            "area_bias_km2": -5.851755643952242
+          },
+          "growth_metrics": {
+            "iou": 0.0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "symmetric_difference_km2": 5.911063978181487,
+            "predicted_area_km2": 0.0197694447430819,
+            "observed_area_km2": 5.891294533438406,
+            "area_bias_km2": -5.871525088695324
+          },
+          "growth_tolerance_1_cell": {
+            "radius_cells": 1.0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          }
+        },
+        {
+          "spread_adjustment": 0.48,
+          "score": -0.5426477917238353,
+          "metrics": {
+            "iou": 0.7953333333333333,
+            "precision": 0.9925124792013311,
+            "recall": 0.8001341381623072,
+            "symmetric_difference_km2": 6.069219536126143,
+            "predicted_area_km2": 23.762872581184443,
+            "observed_area_km2": 29.47624211193511,
+            "area_bias_km2": -5.7133695307506684
+          },
+          "growth_metrics": {
+            "iou": 0.0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "symmetric_difference_km2": 6.049450091383061,
+            "predicted_area_km2": 0.1581555579446552,
+            "observed_area_km2": 5.891294533438406,
+            "area_bias_km2": -5.733138975493751
+          },
+          "growth_tolerance_1_cell": {
+            "radius_cells": 1.0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          }
+        },
+        {
+          "spread_adjustment": 0.61,
+          "score": -0.5091762590267038,
+          "metrics": {
+            "iou": 0.7942743009320905,
+            "precision": 0.9908637873754153,
+            "recall": 0.8001341381623072,
+            "symmetric_difference_km2": 6.108758425612307,
+            "predicted_area_km2": 23.802411470670606,
+            "observed_area_km2": 29.47624211193511,
+            "area_bias_km2": -5.673830641264505
+          },
+          "growth_metrics": {
+            "iou": 0.0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "symmetric_difference_km2": 6.088988980869225,
+            "predicted_area_km2": 0.197694447430819,
+            "observed_area_km2": 5.891294533438406,
+            "area_bias_km2": -5.693600086007587
+          },
+          "growth_tolerance_1_cell": {
+            "radius_cells": 1.0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          }
+        },
+        {
+          "spread_adjustment": 0.987,
+          "score": -0.2376112181943163,
+          "metrics": {
+            "iou": 0.769825918762089,
+            "precision": 0.9521531100478469,
+            "recall": 0.8008048289738431,
+            "symmetric_difference_km2": 7.057691773280238,
+            "predicted_area_km2": 24.7908837078247,
+            "observed_area_km2": 29.47624211193511,
+            "area_bias_km2": -4.68535840411041
+          },
+          "growth_metrics": {
+            "iou": 0.0028011204481792717,
+            "precision": 0.016666666666666666,
+            "recall": 0.003355704697986577,
+            "symmetric_difference_km2": 7.037922328537156,
+            "predicted_area_km2": 1.186166684584914,
+            "observed_area_km2": 5.891294533438406,
+            "area_bias_km2": -4.705127848853492
+          },
+          "growth_tolerance_1_cell": {
+            "radius_cells": 1.0,
+            "precision": 0.016666666666666666,
+            "recall": 0.006711409395973154,
+            "f1": 0.009569377990430622
+          }
+        },
+        {
+          "spread_adjustment": 1.5,
+          "score": -0.0425963997875528,
+          "metrics": {
+            "iou": 0.6274101094319958,
+            "precision": 0.7377450980392157,
+            "recall": 0.8075117370892019,
+            "symmetric_difference_km2": 14.135152991303558,
+            "predicted_area_km2": 32.26373382070966,
+            "observed_area_km2": 29.47624211193511,
+            "area_bias_km2": 2.7874917087745477
+          },
+          "growth_metrics": {
+            "iou": 0.015172413793103448,
+            "precision": 0.02511415525114155,
+            "recall": 0.03691275167785235,
+            "symmetric_difference_km2": 14.115383546560476,
+            "predicted_area_km2": 8.65901679746987,
+            "observed_area_km2": 5.891294533438406,
+            "area_bias_km2": 2.767722264031466
+          },
+          "growth_tolerance_1_cell": {
+            "radius_cells": 1.0,
+            "precision": 0.03424657534246575,
+            "recall": 0.09060402684563758,
+            "f1": 0.04970544918998527
+          }
+        },
+        {
+          "spread_adjustment": 2.75,
+          "score": -0.3293071968812978,
+          "metrics": {
+            "iou": 0.2817028985507246,
+            "precision": 0.2983928999760134,
+            "recall": 0.8343393695506371,
+            "symmetric_difference_km2": 62.70867872505578,
+            "predicted_area_km2": 82.41881513390844,
+            "observed_area_km2": 29.47624211193511,
+            "area_bias_km2": 52.942573021973324
+          },
+          "growth_metrics": {
+            "iou": 0.015828677839851025,
+            "precision": 0.017142857142857144,
+            "recall": 0.17114093959731544,
+            "symmetric_difference_km2": 62.6889092803127,
+            "predicted_area_km2": 58.814098110668645,
+            "observed_area_km2": 5.891294533438406,
+            "area_bias_km2": 52.92280357723024
+          },
+          "growth_tolerance_1_cell": {
+            "radius_cells": 1.0,
+            "precision": 0.02319327731092437,
+            "recall": 0.2516778523489933,
+            "f1": 0.04247251597335928
+          }
+        },
+        {
+          "spread_adjustment": 5.0,
+          "score": -0.4024924071605426,
+          "metrics": {
+            "iou": 0.2035301468291159,
+            "precision": 0.20968780173801094,
+            "recall": 0.8739101274312542,
+            "symmetric_difference_km2": 100.8043987449746,
+            "predicted_area_km2": 122.84732963351092,
+            "observed_area_km2": 29.47624211193511,
+            "area_bias_km2": 93.3710875215758
+          },
+          "growth_metrics": {
+            "iou": 0.021121351766513058,
+            "precision": 0.021912350597609563,
+            "recall": 0.3691275167785235,
+            "symmetric_difference_km2": 100.78462930023152,
+            "predicted_area_km2": 99.24261261027114,
+            "observed_area_km2": 5.891294533438406,
+            "area_bias_km2": 93.35131807683273
+          },
+          "growth_tolerance_1_cell": {
+            "radius_cells": 1.0,
+            "precision": 0.02908366533864542,
+            "recall": 0.47315436241610737,
+            "f1": 0.05479896929170748
+          }
+        }
+      ],
+      "ensemble": {
+        "method": "localization-aware parameter particle filter",
+        "calibration_interval": {
+          "start_index": 1,
+          "target_index": 2
+        },
+        "localization_sigma_m": 350.0,
+        "particles": [
+          {
+            "spread_adjustment": 0.2365038750841571,
+            "wind_speed_adjustment": 1.4955867998373802,
+            "wind_direction_bias_deg": 8.604814677839839,
+            "dead_fuel_moisture_bias": -0.011420107472337376,
+            "seed_offset": 104729
+          },
+          {
+            "spread_adjustment": 1.5808056671630974,
+            "wind_speed_adjustment": 0.9374627919070919,
+            "wind_direction_bias_deg": -19.044028951508675,
+            "dead_fuel_moisture_bias": -0.00967149687576768,
+            "seed_offset": 209458
+          },
+          {
+            "spread_adjustment": 0.6692952976102913,
+            "wind_speed_adjustment": 0.9006878786681466,
+            "wind_direction_bias_deg": -18.40107323838372,
+            "dead_fuel_moisture_bias": -0.001100885325855723,
+            "seed_offset": 314187
+          },
+          {
+            "spread_adjustment": 0.9113283271138956,
+            "wind_speed_adjustment": 0.9373564369971303,
+            "wind_direction_bias_deg": -10.552879543546027,
+            "dead_fuel_moisture_bias": -0.003044159748573428,
+            "seed_offset": 418916
+          },
+          {
+            "spread_adjustment": 0.47011962936565577,
+            "wind_speed_adjustment": 1.0622031280640676,
+            "wind_direction_bias_deg": -10.782166499279796,
+            "dead_fuel_moisture_bias": 0.02325923648797534,
+            "seed_offset": 523645
+          },
+          {
+            "spread_adjustment": 2.754728340051501,
+            "wind_speed_adjustment": 1.0834792172813708,
+            "wind_direction_bias_deg": 16.034605401969284,
+            "dead_fuel_moisture_bias": 0.00761118886237479,
+            "seed_offset": 628374
+          },
+          {
+            "spread_adjustment": 0.022047630198177175,
+            "wind_speed_adjustment": 0.8424503504491934,
+            "wind_direction_bias_deg": 2.8728492669543457,
+            "dead_fuel_moisture_bias": 0.015497759750400011,
+            "seed_offset": 733103
+          },
+          {
+            "spread_adjustment": 4.949821488632039,
+            "wind_speed_adjustment": 1.1058796356694531,
+            "wind_direction_bias_deg": 16.62416608666161,
+            "dead_fuel_moisture_bias": 0.010596018797003505,
+            "seed_offset": 837832
+          },
+          {
+            "spread_adjustment": 0.002689856124155026,
+            "wind_speed_adjustment": 0.9893076206686181,
+            "wind_direction_bias_deg": -24.844457794145832,
+            "dead_fuel_moisture_bias": 0.017214947349648207,
+            "seed_offset": 942561
+          },
+          {
+            "spread_adjustment": 0.05021011184451172,
+            "wind_speed_adjustment": 1.1395888700644379,
+            "wind_direction_bias_deg": -7.615785740656855,
+            "dead_fuel_moisture_bias": 0.0010362169115313766,
+            "seed_offset": 1047290
+          },
+          {
+            "spread_adjustment": 0.12891627469266007,
+            "wind_speed_adjustment": 1.2148748921759873,
+            "wind_direction_bias_deg": 6.117497677166697,
+            "dead_fuel_moisture_bias": -0.011084662608883392,
+            "seed_offset": 1152019
+          },
+          {
+            "spread_adjustment": 0.008073678248293683,
+            "wind_speed_adjustment": 0.8294801278507066,
+            "wind_direction_bias_deg": 11.25240233424476,
+            "dead_fuel_moisture_bias": -0.010949556424996348,
+            "seed_offset": 1256748
+          }
+        ],
+        "posterior_weights": [
+          0.0793914919186303,
+          0.38707748081717586,
+          0.1578689198806782,
+          0.23168927235900807,
+          0.02365226458128902,
+          0.002039621469285072,
+          0.02365226458128902,
+          1.9626067488204086e-05,
+          0.02365226458128902,
+          0.02365226458128902,
+          0.02365226458128902,
+          0.02365226458128902
+        ],
+        "effective_sample_size": 4.200000000000037,
+        "raw_effective_sample_size": 1.488417099262388,
+        "likelihood_tempering_beta": 0.3033485134127467,
+        "entropy": 1.7429664260288549,
+        "trials": [
+          {
+            "particle": {
+              "spread_adjustment": 0.2365038750841571,
+              "wind_speed_adjustment": 1.4955867998373802,
+              "wind_direction_bias_deg": 8.604814677839839,
+              "dead_fuel_moisture_bias": -0.011420107472337376,
+              "seed_offset": 104729
+            },
+            "likelihood": {
+              "log_likelihood": -7.901981987790323,
+              "cumulative": {
+                "log_likelihood": -0.350155672521038,
+                "boundary_residual_m": 271.3613900823797,
+                "log_area_ratio": -0.22046438025416137,
+                "boundary_log_likelihood": -0.30055920011200593,
+                "area_log_likelihood": -0.04959647240903211
+              },
+              "incremental_growth": {
+                "log_likelihood": -7.551826315269285,
+                "log_area_ratio": -4.782479200958502,
+                "tolerance_f1": 0.0,
+                "area_log_likelihood": -5.0826905128001485,
+                "localization_log_likelihood": -2.469135802469136
+              }
+            },
+            "metrics": {
+              "iou": 0.7985274431057564,
+              "precision": 0.9974916387959866,
+              "recall": 0.8001341381623072,
+              "symmetric_difference_km2": 5.9506028676676515,
+              "predicted_area_km2": 23.64425591272595,
+              "observed_area_km2": 29.47624211193511,
+              "area_bias_km2": -5.83198619920916
+            },
+            "growth_metrics": {
+              "iou": 0.0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "symmetric_difference_km2": 5.93083342292457,
+              "predicted_area_km2": 0.0395388894861638,
+              "observed_area_km2": 5.891294533438406,
+              "area_bias_km2": -5.851755643952242
+            },
+            "posterior_weight": 0.0793914919186303
+          },
+          {
+            "particle": {
+              "spread_adjustment": 1.5808056671630974,
+              "wind_speed_adjustment": 0.9374627919070919,
+              "wind_direction_bias_deg": -19.044028951508675,
+              "dead_fuel_moisture_bias": -0.00967149687576768,
+              "seed_offset": 209458
+            },
+            "likelihood": {
+              "log_likelihood": -2.6794949672899158,
+              "cumulative": {
+                "log_likelihood": -0.6977847380758185,
+                "boundary_residual_m": 412.6856299430617,
+                "log_area_ratio": -0.050905075074057934,
+                "boundary_log_likelihood": -0.6951405271898028,
+                "area_log_likelihood": -0.002644210886015791
+              },
+              "incremental_growth": {
+                "log_likelihood": -1.9817102292140973,
+                "log_area_ratio": -0.28935851877903324,
+                "tolerance_f1": 0.1083402604599612,
+                "area_log_likelihood": -0.018606300531110252,
+                "localization_log_likelihood": -1.963103928682987
+              }
+            },
+            "metrics": {
+              "iou": 0.7126030624263839,
+              "precision": 0.8539167254763586,
+              "recall": 0.8115358819584172,
+              "symmetric_difference_km2": 9.647489034623966,
+              "predicted_area_km2": 28.01330320094705,
+              "observed_area_km2": 29.47624211193511,
+              "area_bias_km2": -1.4629389109880604
+            },
+            "growth_metrics": {
+              "iou": 0.03373015873015873,
+              "precision": 0.07623318385650224,
+              "recall": 0.05704697986577181,
+              "symmetric_difference_km2": 9.627719589880884,
+              "predicted_area_km2": 4.408586177707264,
+              "observed_area_km2": 5.891294533438406,
+              "area_bias_km2": -1.4827083557311425
+            },
+            "posterior_weight": 0.38707748081717586
+          },
+          {
+            "particle": {
+              "spread_adjustment": 0.6692952976102913,
+              "wind_speed_adjustment": 0.9006878786681466,
+              "wind_direction_bias_deg": -18.40107323838372,
+              "dead_fuel_moisture_bias": -0.001100885325855723,
+              "seed_offset": 314187
+            },
+            "likelihood": {
+              "log_likelihood": -5.636027715837269,
+              "cumulative": {
+                "log_likelihood": -0.35258690939279935,
+                "boundary_residual_m": 273.455697309128,
+                "log_area_ratio": -0.2154601996695855,
+                "boundary_log_likelihood": -0.30521640159518953,
+                "area_log_likelihood": -0.047370507797609845
+              },
+              "incremental_growth": {
+                "log_likelihood": -5.28344080644447,
+                "log_area_ratio": -3.558703769336386,
+                "tolerance_f1": 0.0,
+                "area_log_likelihood": -2.814305003975334,
+                "localization_log_likelihood": -2.469135802469136
+              }
+            },
+            "metrics": {
+              "iou": 0.7953333333333333,
+              "precision": 0.9925124792013311,
+              "recall": 0.8001341381623072,
+              "symmetric_difference_km2": 6.069219536126143,
+              "predicted_area_km2": 23.762872581184443,
+              "observed_area_km2": 29.47624211193511,
+              "area_bias_km2": -5.7133695307506684
+            },
+            "growth_metrics": {
+              "iou": 0.0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "symmetric_difference_km2": 6.049450091383061,
+              "predicted_area_km2": 0.1581555579446552,
+              "observed_area_km2": 5.891294533438406,
+              "area_bias_km2": -5.733138975493751
+            },
+            "posterior_weight": 0.1578689198806782
+          },
+          {
+            "particle": {
+              "spread_adjustment": 0.9113283271138956,
+              "wind_speed_adjustment": 0.9373564369971303,
+              "wind_direction_bias_deg": -10.552879543546027,
+              "dead_fuel_moisture_bias": -0.003044159748573428,
+              "seed_offset": 418916
+            },
+            "likelihood": {
+              "log_likelihood": -4.371369917927847,
+              "cumulative": {
+                "log_likelihood": -0.36621113006073763,
+                "boundary_residual_m": 281.3564597325097,
+                "log_area_ratio": -0.2055263431452949,
+                "boundary_log_likelihood": -0.3231079895233116,
+                "area_log_likelihood": -0.04310314053742603
+              },
+              "incremental_growth": {
+                "log_likelihood": -4.005158787867109,
+                "log_area_ratio": -2.6783450466882943,
+                "tolerance_f1": 0.01183431952662722,
+                "area_log_likelihood": -1.594118264248827,
+                "localization_log_likelihood": -2.411040523618282
+              }
+            },
+            "metrics": {
+              "iou": 0.7902051621442753,
+              "precision": 0.9835255354200988,
+              "recall": 0.8008048289738431,
+              "symmetric_difference_km2": 6.266913983556962,
+              "predicted_area_km2": 24.000105918101426,
+              "observed_area_km2": 29.47624211193511,
+              "area_bias_km2": -5.476136193833686
+            },
+            "growth_metrics": {
+              "iou": 0.0031545741324921135,
+              "precision": 0.05,
+              "recall": 0.003355704697986577,
+              "symmetric_difference_km2": 6.24714453881388,
+              "predicted_area_km2": 0.395388894861638,
+              "observed_area_km2": 5.891294533438406,
+              "area_bias_km2": -5.495905638576768
+            },
+            "posterior_weight": 0.23168927235900807
+          },
+          {
+            "particle": {
+              "spread_adjustment": 0.47011962936565577,
+              "wind_speed_adjustment": 1.0622031280640676,
+              "wind_direction_bias_deg": -10.782166499279796,
+              "dead_fuel_moisture_bias": 0.02325923648797534,
+              "seed_offset": 523645
+            },
+            "likelihood": {
+              "log_likelihood": -11.89386686598403,
+              "cumulative": {
+                "log_likelihood": -0.3454856447412923,
+                "boundary_residual_m": 268.90083281579336,
+                "log_area_ratio": -0.222138020812191,
+                "boundary_log_likelihood": -0.29513329750623374,
+                "area_log_likelihood": -0.050352347235058575
+              },
+              "incremental_growth": {
+                "log_likelihood": -11.548381221242739,
+                "log_area_ratio": -6.391917113392602,
+                "tolerance_f1": 0.0,
+                "area_log_likelihood": -9.079245418773603,
+                "localization_log_likelihood": -2.469135802469136
+              }
+            },
+            "metrics": {
+              "iou": 0.7995978552278821,
+              "precision": 0.9991624790619765,
+              "recall": 0.8001341381623072,
+              "symmetric_difference_km2": 5.911063978181487,
+              "predicted_area_km2": 23.604717023239786,
+              "observed_area_km2": 29.47624211193511,
+              "area_bias_km2": -5.871525088695324
+            },
+            "growth_metrics": {
+              "iou": 0.0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "symmetric_difference_km2": 5.891294533438406,
+              "predicted_area_km2": 0.0,
+              "observed_area_km2": 5.891294533438406,
+              "area_bias_km2": -5.891294533438406
+            },
+            "posterior_weight": 0.02365226458128902
+          },
+          {
+            "particle": {
+              "spread_adjustment": 2.754728340051501,
+              "wind_speed_adjustment": 1.0834792172813708,
+              "wind_direction_bias_deg": 16.034605401969284,
+              "dead_fuel_moisture_bias": 0.00761118886237479,
+              "seed_offset": 628374
+            },
+            "likelihood": {
+              "log_likelihood": -19.97267562750334,
+              "cumulative": {
+                "log_likelihood": -16.676566644175413,
+                "boundary_residual_m": 1970.2643864441422,
+                "log_area_ratio": 0.902922090399528,
+                "boundary_log_likelihood": -15.844660214245357,
+                "area_log_likelihood": -0.8319064299300547
+              },
+              "incremental_growth": {
+                "log_likelihood": -3.2961089833279273,
+                "log_area_ratio": 2.1190567782097185,
+                "tolerance_f1": 0.03522645578720345,
+                "area_log_likelihood": -0.9978670287281228,
+                "localization_log_likelihood": -2.2982419545998045
+              }
+            },
+            "metrics": {
+              "iou": 0.31292862585725173,
+              "precision": 0.3349646547036433,
+              "recall": 0.8262910798122066,
+              "symmetric_difference_km2": 53.47634803003653,
+              "predicted_area_km2": 72.71201776505522,
+              "observed_area_km2": 29.47624211193511,
+              "area_bias_km2": 43.235775653120115
+            },
+            "growth_metrics": {
+              "iou": 0.014218009478672985,
+              "precision": 0.01570048309178744,
+              "recall": 0.13087248322147652,
+              "symmetric_difference_km2": 53.45657858529346,
+              "predicted_area_km2": 49.107300741815436,
+              "observed_area_km2": 5.891294533438406,
+              "area_bias_km2": 43.21600620837703
+            },
+            "posterior_weight": 0.002039621469285072
+          },
+          {
+            "particle": {
+              "spread_adjustment": 0.022047630198177175,
+              "wind_speed_adjustment": 0.8424503504491934,
+              "wind_direction_bias_deg": 2.8728492669543457,
+              "dead_fuel_moisture_bias": 0.015497759750400011,
+              "seed_offset": 733103
+            },
+            "likelihood": {
+              "log_likelihood": -11.89386686598403,
+              "cumulative": {
+                "log_likelihood": -0.3454856447412923,
+                "boundary_residual_m": 268.90083281579336,
+                "log_area_ratio": -0.222138020812191,
+                "boundary_log_likelihood": -0.29513329750623374,
+                "area_log_likelihood": -0.050352347235058575
+              },
+              "incremental_growth": {
+                "log_likelihood": -11.548381221242739,
+                "log_area_ratio": -6.391917113392602,
+                "tolerance_f1": 0.0,
+                "area_log_likelihood": -9.079245418773603,
+                "localization_log_likelihood": -2.469135802469136
+              }
+            },
+            "metrics": {
+              "iou": 0.7995978552278821,
+              "precision": 0.9991624790619765,
+              "recall": 0.8001341381623072,
+              "symmetric_difference_km2": 5.911063978181487,
+              "predicted_area_km2": 23.604717023239786,
+              "observed_area_km2": 29.47624211193511,
+              "area_bias_km2": -5.871525088695324
+            },
+            "growth_metrics": {
+              "iou": 0.0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "symmetric_difference_km2": 5.891294533438406,
+              "predicted_area_km2": 0.0,
+              "observed_area_km2": 5.891294533438406,
+              "area_bias_km2": -5.891294533438406
+            },
+            "posterior_weight": 0.02365226458128902
+          },
+          {
+            "particle": {
+              "spread_adjustment": 4.949821488632039,
+              "wind_speed_adjustment": 1.1058796356694531,
+              "wind_direction_bias_deg": 16.62416608666161,
+              "dead_fuel_moisture_bias": 0.010596018797003505,
+              "seed_offset": 837832
+            },
+            "likelihood": {
+              "log_likelihood": -35.280681612480876,
+              "cumulative": {
+                "log_likelihood": -31.366963220585323,
+                "boundary_residual_m": 2691.49774261322,
+                "log_area_ratio": 1.3277739123078824,
+                "boundary_log_likelihood": -29.568000402008405,
+                "area_log_likelihood": -1.7989628185769189
+              },
+              "incremental_growth": {
+                "log_likelihood": -3.913718391895557,
+                "log_area_ratio": 2.6977234733457958,
+                "tolerance_f1": 0.03560284413524988,
+                "area_log_likelihood": -1.6172693196979788,
+                "localization_log_likelihood": -2.296449072197578
+              }
+            },
+            "metrics": {
+              "iou": 0.21350613915416097,
+              "precision": 0.2225777777777778,
+              "recall": 0.8397048960429242,
+              "symmetric_difference_km2": 91.17667915509372,
+              "predicted_area_km2": 111.20312667983568,
+              "observed_area_km2": 29.47624211193511,
+              "area_bias_km2": 81.72688456790057
+            },
+            "growth_metrics": {
+              "iou": 0.012633832976445396,
+              "precision": 0.01331527871812232,
+              "recall": 0.19798657718120805,
+              "symmetric_difference_km2": 91.15690971035063,
+              "predicted_area_km2": 87.59840965659589,
+              "observed_area_km2": 5.891294533438406,
+              "area_bias_km2": 81.7071151231575
+            },
+            "posterior_weight": 1.9626067488204086e-05
+          },
+          {
+            "particle": {
+              "spread_adjustment": 0.002689856124155026,
+              "wind_speed_adjustment": 0.9893076206686181,
+              "wind_direction_bias_deg": -24.844457794145832,
+              "dead_fuel_moisture_bias": 0.017214947349648207,
+              "seed_offset": 942561
+            },
+            "likelihood": {
+              "log_likelihood": -11.89386686598403,
+              "cumulative": {
+                "log_likelihood": -0.3454856447412923,
+                "boundary_residual_m": 268.90083281579336,
+                "log_area_ratio": -0.222138020812191,
+                "boundary_log_likelihood": -0.29513329750623374,
+                "area_log_likelihood": -0.050352347235058575
+              },
+              "incremental_growth": {
+                "log_likelihood": -11.548381221242739,
+                "log_area_ratio": -6.391917113392602,
+                "tolerance_f1": 0.0,
+                "area_log_likelihood": -9.079245418773603,
+                "localization_log_likelihood": -2.469135802469136
+              }
+            },
+            "metrics": {
+              "iou": 0.7995978552278821,
+              "precision": 0.9991624790619765,
+              "recall": 0.8001341381623072,
+              "symmetric_difference_km2": 5.911063978181487,
+              "predicted_area_km2": 23.604717023239786,
+              "observed_area_km2": 29.47624211193511,
+              "area_bias_km2": -5.871525088695324
+            },
+            "growth_metrics": {
+              "iou": 0.0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "symmetric_difference_km2": 5.891294533438406,
+              "predicted_area_km2": 0.0,
+              "observed_area_km2": 5.891294533438406,
+              "area_bias_km2": -5.891294533438406
+            },
+            "posterior_weight": 0.02365226458128902
+          },
+          {
+            "particle": {
+              "spread_adjustment": 0.05021011184451172,
+              "wind_speed_adjustment": 1.1395888700644379,
+              "wind_direction_bias_deg": -7.615785740656855,
+              "dead_fuel_moisture_bias": 0.0010362169115313766,
+              "seed_offset": 1047290
+            },
+            "likelihood": {
+              "log_likelihood": -11.89386686598403,
+              "cumulative": {
+                "log_likelihood": -0.3454856447412923,
+                "boundary_residual_m": 268.90083281579336,
+                "log_area_ratio": -0.222138020812191,
+                "boundary_log_likelihood": -0.29513329750623374,
+                "area_log_likelihood": -0.050352347235058575
+              },
+              "incremental_growth": {
+                "log_likelihood": -11.548381221242739,
+                "log_area_ratio": -6.391917113392602,
+                "tolerance_f1": 0.0,
+                "area_log_likelihood": -9.079245418773603,
+                "localization_log_likelihood": -2.469135802469136
+              }
+            },
+            "metrics": {
+              "iou": 0.7995978552278821,
+              "precision": 0.9991624790619765,
+              "recall": 0.8001341381623072,
+              "symmetric_difference_km2": 5.911063978181487,
+              "predicted_area_km2": 23.604717023239786,
+              "observed_area_km2": 29.47624211193511,
+              "area_bias_km2": -5.871525088695324
+            },
+            "growth_metrics": {
+              "iou": 0.0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "symmetric_difference_km2": 5.891294533438406,
+              "predicted_area_km2": 0.0,
+              "observed_area_km2": 5.891294533438406,
+              "area_bias_km2": -5.891294533438406
+            },
+            "posterior_weight": 0.02365226458128902
+          },
+          {
+            "particle": {
+              "spread_adjustment": 0.12891627469266007,
+              "wind_speed_adjustment": 1.2148748921759873,
+              "wind_direction_bias_deg": 6.117497677166697,
+              "dead_fuel_moisture_bias": -0.011084662608883392,
+              "seed_offset": 1152019
+            },
+            "likelihood": {
+              "log_likelihood": -11.89386686598403,
+              "cumulative": {
+                "log_likelihood": -0.3454856447412923,
+                "boundary_residual_m": 268.90083281579336,
+                "log_area_ratio": -0.222138020812191,
+                "boundary_log_likelihood": -0.29513329750623374,
+                "area_log_likelihood": -0.050352347235058575
+              },
+              "incremental_growth": {
+                "log_likelihood": -11.548381221242739,
+                "log_area_ratio": -6.391917113392602,
+                "tolerance_f1": 0.0,
+                "area_log_likelihood": -9.079245418773603,
+                "localization_log_likelihood": -2.469135802469136
+              }
+            },
+            "metrics": {
+              "iou": 0.7995978552278821,
+              "precision": 0.9991624790619765,
+              "recall": 0.8001341381623072,
+              "symmetric_difference_km2": 5.911063978181487,
+              "predicted_area_km2": 23.604717023239786,
+              "observed_area_km2": 29.47624211193511,
+              "area_bias_km2": -5.871525088695324
+            },
+            "growth_metrics": {
+              "iou": 0.0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "symmetric_difference_km2": 5.891294533438406,
+              "predicted_area_km2": 0.0,
+              "observed_area_km2": 5.891294533438406,
+              "area_bias_km2": -5.891294533438406
+            },
+            "posterior_weight": 0.02365226458128902
+          },
+          {
+            "particle": {
+              "spread_adjustment": 0.008073678248293683,
+              "wind_speed_adjustment": 0.8294801278507066,
+              "wind_direction_bias_deg": 11.25240233424476,
+              "dead_fuel_moisture_bias": -0.010949556424996348,
+              "seed_offset": 1256748
+            },
+            "likelihood": {
+              "log_likelihood": -11.89386686598403,
+              "cumulative": {
+                "log_likelihood": -0.3454856447412923,
+                "boundary_residual_m": 268.90083281579336,
+                "log_area_ratio": -0.222138020812191,
+                "boundary_log_likelihood": -0.29513329750623374,
+                "area_log_likelihood": -0.050352347235058575
+              },
+              "incremental_growth": {
+                "log_likelihood": -11.548381221242739,
+                "log_area_ratio": -6.391917113392602,
+                "tolerance_f1": 0.0,
+                "area_log_likelihood": -9.079245418773603,
+                "localization_log_likelihood": -2.469135802469136
+              }
+            },
+            "metrics": {
+              "iou": 0.7995978552278821,
+              "precision": 0.9991624790619765,
+              "recall": 0.8001341381623072,
+              "symmetric_difference_km2": 5.911063978181487,
+              "predicted_area_km2": 23.604717023239786,
+              "observed_area_km2": 29.47624211193511,
+              "area_bias_km2": -5.871525088695324
+            },
+            "growth_metrics": {
+              "iou": 0.0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "symmetric_difference_km2": 5.891294533438406,
+              "predicted_area_km2": 0.0,
+              "observed_area_km2": 5.891294533438406,
+              "area_bias_km2": -5.891294533438406
+            },
+            "posterior_weight": 0.02365226458128902
+          }
+        ],
+        "identifiability_note": "weights represent predictive adequacy of joint parameter particles; they do not identify causal errors in wind, moisture, or fuels"
+      }
+    }
+  ],
+  "forecasts": [
+    {
+      "incident_code": "CA-AEU-017769_Electra",
+      "method": "persistence",
+      "start_index": 2,
+      "target_index": 3,
+      "spread_adjustment": null,
+      "forecast": {
+        "start_time": "2022-07-06T07:30:00+00:00",
+        "target_time": "2022-07-07T06:59:00+00:00",
+        "requested_minutes": 1409,
+        "metrics": {
+          "iou": 0.9058679706601467,
+          "precision": 0.993963782696177,
+          "recall": 0.9108789182544561,
+          "symmetric_difference_km2": 3.0444944904346123,
+          "predicted_area_km2": 29.47624211193511,
+          "observed_area_km2": 32.16488659699425,
+          "area_bias_km2": -2.6886444850591382
+        },
+        "growth_metrics": {
+          "iou": 0.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "symmetric_difference_km2": 2.8665694877468755,
+          "predicted_area_km2": 0.0,
+          "observed_area_km2": 2.8665694877468755,
+          "area_bias_km2": -2.8665694877468755
+        },
+        "perimeter_tolerance_1_cell": {
+          "radius_cells": 1.0,
+          "precision": 1.0,
+          "recall": 0.9496004917025199,
+          "f1": 0.9741488020176545
+        },
+        "growth_tolerance_1_cell": {
+          "radius_cells": 1.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        "boundary": {
+          "mean_symmetric_distance_m": 82.92773082817834,
+          "hausdorff_95_m": 314.39978326234495,
+          "maximum_distance_m": 1273.222081544581
+        }
+      }
+    },
+    {
+      "incident_code": "CA-AEU-017769_Electra",
+      "method": "raw_physics",
+      "start_index": 2,
+      "target_index": 3,
+      "spread_adjustment": null,
+      "forecast": {
+        "start_time": "2022-07-06T07:30:00+00:00",
+        "target_time": "2022-07-07T06:59:00+00:00",
+        "requested_minutes": 1409,
+        "simulated_minutes": 1410,
+        "terminated": false,
+        "truncated": false,
+        "escaped": false,
+        "forcing_clock": {
+          "forecast_start_offset_min": 1716.0,
+          "forecast_end_offset_min": 3126.0,
+          "weather_time_origin": "2022-07-05T02:54:00+00:00"
+        },
+        "metrics": {
+          "iou": 0.8457598178713717,
+          "precision": 0.9195544554455446,
+          "recall": 0.9133374308543332,
+          "symmetric_difference_km2": 5.357519525375195,
+          "predicted_area_km2": 31.947422704820347,
+          "observed_area_km2": 32.16488659699425,
+          "area_bias_km2": -0.21746389217390089
+        },
+        "growth_metrics": {
+          "iou": 0.015037593984962405,
+          "precision": 0.032,
+          "recall": 0.027586206896551724,
+          "symmetric_difference_km2": 5.179594522687458,
+          "predicted_area_km2": 2.4711805928852373,
+          "observed_area_km2": 2.8665694877468755,
+          "area_bias_km2": -0.395388894861638
+        },
+        "perimeter_tolerance_1_cell": {
+          "radius_cells": 1.0,
+          "precision": 0.942450495049505,
+          "recall": 0.9502151198524893,
+          "f1": 0.946316880337973
+        },
+        "growth_tolerance_1_cell": {
+          "radius_cells": 1.0,
+          "precision": 0.056,
+          "recall": 0.05517241379310345,
+          "f1": 0.055583126550868486
+        },
+        "boundary": {
+          "mean_symmetric_distance_m": 143.66290004785066,
+          "hausdorff_95_m": 718.9534696682714,
+          "maximum_distance_m": 1447.6053131868098
+        },
+        "initialization": {
+          "method": "single_perimeter_boundary_ring"
+        }
+      }
+    },
+    {
+      "incident_code": "CA-AEU-017769_Electra",
+      "method": "history_raw_physics",
+      "start_index": 2,
+      "target_index": 3,
+      "spread_adjustment": null,
+      "forecast": {
+        "start_time": "2022-07-06T07:30:00+00:00",
+        "target_time": "2022-07-07T06:59:00+00:00",
+        "requested_minutes": 1409,
+        "simulated_minutes": 1410,
+        "terminated": false,
+        "truncated": false,
+        "escaped": false,
+        "forcing_clock": {
+          "forecast_start_offset_min": 1716.0,
+          "forecast_end_offset_min": 3126.0,
+          "weather_time_origin": "2022-07-05T02:54:00+00:00"
+        },
+        "metrics": {
+          "iou": 0.8481735159817352,
+          "precision": 0.9224084419615146,
+          "recall": 0.9133374308543332,
+          "symmetric_difference_km2": 5.258672301659785,
+          "predicted_area_km2": 31.848575481104938,
+          "observed_area_km2": 32.16488659699425,
+          "area_bias_km2": -0.3163111158893104
+        },
+        "growth_metrics": {
+          "iou": 0.01532567049808429,
+          "precision": 0.03333333333333333,
+          "recall": 0.027586206896551724,
+          "symmetric_difference_km2": 5.080747298972048,
+          "predicted_area_km2": 2.372333369169828,
+          "observed_area_km2": 2.8665694877468755,
+          "area_bias_km2": -0.49423611857704747
+        },
+        "perimeter_tolerance_1_cell": {
+          "radius_cells": 1.0,
+          "precision": 0.9441340782122905,
+          "recall": 0.9502151198524893,
+          "f1": 0.947164838670502
+        },
+        "growth_tolerance_1_cell": {
+          "radius_cells": 1.0,
+          "precision": 0.05,
+          "recall": 0.04827586206896552,
+          "f1": 0.04912280701754386
+        },
+        "boundary": {
+          "mean_symmetric_distance_m": 141.0976727049302,
+          "hausdorff_95_m": 724.9884394797662,
+          "maximum_distance_m": 1447.6053131868098
+        },
+        "initialization": {
+          "method": "two_perimeter_harmonic_arrival_history",
+          "history_start_time": "2022-07-05T07:11:00+00:00",
+          "history_end_time": "2022-07-06T07:30:00+00:00",
+          "history_elapsed_min": 1459,
+          "diagnostics": {
+            "elapsed_min": 1459.0,
+            "earlier_cells": 1193,
+            "later_cells": 1491,
+            "growth_cells": 298,
+            "non_nested_earlier_cells_removed": 1,
+            "growth_components": 8,
+            "harmonic_iterations": 253,
+            "harmonic_residual_min": 0.0009593395574202246,
+            "reference_speed_m_min": 0.77695993114952,
+            "front_speed_median_m_min": 0.05,
+            "front_speed_p95_m_min": 1.4326433253536441
+          }
+        }
+      }
+    },
+    {
+      "incident_code": "CA-AEU-017769_Electra",
+      "method": "calibrated_physics",
+      "start_index": 2,
+      "target_index": 3,
+      "spread_adjustment": 1.5,
+      "forecast": {
+        "start_time": "2022-07-06T07:30:00+00:00",
+        "target_time": "2022-07-07T06:59:00+00:00",
+        "requested_minutes": 1409,
+        "simulated_minutes": 1410,
+        "terminated": false,
+        "truncated": false,
+        "escaped": false,
+        "forcing_clock": {
+          "forecast_start_offset_min": 1716.0,
+          "forecast_end_offset_min": 3126.0,
+          "weather_time_origin": "2022-07-05T02:54:00+00:00"
+        },
+        "metrics": {
+          "iou": 0.7607269056032306,
+          "precision": 0.8097796883396023,
+          "recall": 0.9262446220036877,
+          "symmetric_difference_km2": 9.37071680822082,
+          "predicted_area_km2": 36.79093666687541,
+          "observed_area_km2": 32.16488659699425,
+          "area_bias_km2": 4.626050069881164
+        },
+        "growth_metrics": {
+          "iou": 0.05102040816326531,
+          "precision": 0.06756756756756757,
+          "recall": 0.1724137931034483,
+          "symmetric_difference_km2": 9.192791805533084,
+          "predicted_area_km2": 7.314694554940303,
+          "observed_area_km2": 2.8665694877468755,
+          "area_bias_km2": 4.448125067193427
+        },
+        "perimeter_tolerance_1_cell": {
+          "radius_cells": 1.0,
+          "precision": 0.84631918323482,
+          "recall": 0.9551321450522434,
+          "f1": 0.89743935258086
+        },
+        "growth_tolerance_1_cell": {
+          "radius_cells": 1.0,
+          "precision": 0.10810810810810811,
+          "recall": 0.2413793103448276,
+          "f1": 0.14933333333333335
+        },
+        "boundary": {
+          "mean_symmetric_distance_m": 307.87922471078895,
+          "hausdorff_95_m": 1193.0632931667526,
+          "maximum_distance_m": 2671.473292446055
+        },
+        "initialization": {
+          "method": "single_perimeter_boundary_ring"
+        }
+      }
+    },
+    {
+      "incident_code": "CA-AEU-017769_Electra",
+      "method": "history_calibrated_physics",
+      "start_index": 2,
+      "target_index": 3,
+      "spread_adjustment": 1.5,
+      "forecast": {
+        "start_time": "2022-07-06T07:30:00+00:00",
+        "target_time": "2022-07-07T06:59:00+00:00",
+        "requested_minutes": 1409,
+        "simulated_minutes": 1410,
+        "terminated": false,
+        "truncated": false,
+        "escaped": false,
+        "forcing_clock": {
+          "forecast_start_offset_min": 1716.0,
+          "forecast_end_offset_min": 3126.0,
+          "weather_time_origin": "2022-07-05T02:54:00+00:00"
+        },
+        "metrics": {
+          "iou": 0.7514970059880239,
+          "precision": 0.7997875730217737,
+          "recall": 0.9256299938537185,
+          "symmetric_difference_km2": 9.845183482054786,
+          "predicted_area_km2": 37.22586445122322,
+          "observed_area_km2": 32.16488659699425,
+          "area_bias_km2": 5.060977854228966
+        },
+        "growth_metrics": {
+          "iou": 0.04678362573099415,
+          "precision": 0.061224489795918366,
+          "recall": 0.16551724137931034,
+          "symmetric_difference_km2": 9.667258479367048,
+          "predicted_area_km2": 7.749622339288104,
+          "observed_area_km2": 2.8665694877468755,
+          "area_bias_km2": 4.883052851541229
+        },
+        "perimeter_tolerance_1_cell": {
+          "radius_cells": 1.0,
+          "precision": 0.8348380244291025,
+          "recall": 0.9551321450522434,
+          "f1": 0.8909429292614317
+        },
+        "growth_tolerance_1_cell": {
+          "radius_cells": 1.0,
+          "precision": 0.09693877551020408,
+          "recall": 0.22758620689655173,
+          "f1": 0.13596443673425132
+        },
+        "boundary": {
+          "mean_symmetric_distance_m": 306.30883637888854,
+          "hausdorff_95_m": 1193.0632931667526,
+          "maximum_distance_m": 2671.473292446055
+        },
+        "initialization": {
+          "method": "two_perimeter_harmonic_arrival_history",
+          "history_start_time": "2022-07-05T07:11:00+00:00",
+          "history_end_time": "2022-07-06T07:30:00+00:00",
+          "history_elapsed_min": 1459,
+          "diagnostics": {
+            "elapsed_min": 1459.0,
+            "earlier_cells": 1193,
+            "later_cells": 1491,
+            "growth_cells": 298,
+            "non_nested_earlier_cells_removed": 1,
+            "growth_components": 8,
+            "harmonic_iterations": 253,
+            "harmonic_residual_min": 0.0009593395574202246,
+            "reference_speed_m_min": 0.77695993114952,
+            "front_speed_median_m_min": 0.05,
+            "front_speed_p95_m_min": 1.4326433253536441
+          }
+        }
+      }
+    },
+    {
+      "incident_code": "CA-AEU-017769_Electra",
+      "method": "calibrated_ensemble",
+      "start_index": 2,
+      "target_index": 3,
+      "spread_adjustment": 1.5,
+      "forecast": {
+        "method": "posterior parameter ensemble",
+        "start_time": "2022-07-06T07:30:00+00:00",
+        "target_time": "2022-07-07T06:59:00+00:00",
+        "requested_minutes": 1409,
+        "member_count": 12,
+        "effective_sample_size": 4.200000000000035,
+        "metrics": {
+          "iou": 0.8939759036144578,
+          "precision": 0.978246539222149,
+          "recall": 0.9121081745543946,
+          "symmetric_difference_km2": 3.479422274782414,
+          "predicted_area_km2": 29.99024767525524,
+          "observed_area_km2": 32.16488659699425,
+          "area_bias_km2": -2.174638921739009
+        },
+        "growth_metrics": {
+          "iou": 0.011834319526627219,
+          "precision": 0.07692307692307693,
+          "recall": 0.013793103448275862,
+          "symmetric_difference_km2": 3.301497272094677,
+          "predicted_area_km2": 0.5140055633201294,
+          "observed_area_km2": 2.8665694877468755,
+          "area_bias_km2": -2.352563924426746
+        },
+        "perimeter_tolerance_1_cell": {
+          "radius_cells": 1.0,
+          "precision": 0.996044825313118,
+          "recall": 0.9496004917025199,
+          "f1": 0.9722683241423341
+        },
+        "growth_tolerance_1_cell": {
+          "radius_cells": 1.0,
+          "precision": 0.19230769230769232,
+          "recall": 0.020689655172413793,
+          "f1": 0.037359900373599
+        },
+        "boundary": {
+          "mean_symmetric_distance_m": 95.04097141511586,
+          "hausdorff_95_m": 314.39978326234495,
+          "maximum_distance_m": 1273.222081544581
+        },
+        "probabilistic_metrics": {
+          "brier_score": 0.01130097545949773,
+          "balanced_brier_score": 0.041669097110813805,
+          "event_brier_score": 0.07956333207921917,
+          "nonevent_brier_score": 0.0037748621424084326,
+          "log_score": 0.11294222091379805,
+          "expected_calibration_error": 0.013422893721571023,
+          "mean_predictive_variance": 0.004353790584124962,
+          "mean_probability": 0.09845800181947084,
+          "observed_frequency": 0.09930419921875,
+          "evaluated_cells": 16384,
+          "reliability": [
+            {
+              "lower": 0.0,
+              "upper": 0.1,
+              "count": 14608,
+              "mean_probability": 0.00028118876903034334,
+              "observed_frequency": 0.008283132530120483
+            },
+            {
+              "lower": 0.30000000000000004,
+              "upper": 0.4,
+              "count": 259,
+              "mean_probability": 0.3891209059010141,
+              "observed_frequency": 0.08494208494208494
+            },
+            {
+              "lower": 0.6000000000000001,
+              "upper": 0.7000000000000001,
+              "count": 19,
+              "mean_probability": 0.620826005935669,
+              "observed_frequency": 0.10526315789473684
+            },
+            {
+              "lower": 0.7000000000000001,
+              "upper": 0.8,
+              "count": 6,
+              "mean_probability": 0.7656153539816538,
+              "observed_frequency": 0.0
+            },
+            {
+              "lower": 0.8,
+              "upper": 0.9,
+              "count": 1,
+              "mean_probability": 0.8580864071846008,
+              "observed_frequency": 0.0
+            },
+            {
+              "lower": 0.9,
+              "upper": 1.0,
+              "count": 1491,
+              "mean_probability": 0.999999,
+              "observed_frequency": 0.993963782696177
+            }
+          ]
+        },
+        "active_domain_probabilistic_metrics": {
+          "brier_score": 0.2664780857884351,
+          "balanced_brier_score": 0.45384084509734945,
+          "event_brier_score": 0.8927554571821211,
+          "nonevent_brier_score": 0.014926233012577776,
+          "log_score": 3.148853015064497,
+          "expected_calibration_error": 0.26257575344029455,
+          "mean_predictive_variance": 0.0209737255960873,
+          "mean_probability": 0.03972686860091763,
+          "observed_frequency": 0.2865612648221344,
+          "evaluated_cells": 506,
+          "reliability": [
+            {
+              "lower": 0.0,
+              "upper": 0.1,
+              "count": 461,
+              "mean_probability": 0.00024817496651085224,
+              "observed_frequency": 0.26247288503253796
+            },
+            {
+              "lower": 0.30000000000000004,
+              "upper": 0.4,
+              "count": 36,
+              "mean_probability": 0.38902287433544797,
+              "observed_frequency": 0.6111111111111112
+            },
+            {
+              "lower": 0.6000000000000001,
+              "upper": 0.7000000000000001,
+              "count": 7,
+              "mean_probability": 0.620826005935669,
+              "observed_frequency": 0.2857142857142857
+            },
+            {
+              "lower": 0.7000000000000001,
+              "upper": 0.8,
+              "count": 1,
+              "mean_probability": 0.7786949276924133,
+              "observed_frequency": 0.0
+            },
+            {
+              "lower": 0.8,
+              "upper": 0.9,
+              "count": 1,
+              "mean_probability": 0.8580864071846008,
+              "observed_frequency": 0.0
+            }
+          ]
+        },
+        "persistence_probabilistic_metrics": {
+          "brier_score": 0.009399395264671873,
+          "balanced_brier_score": 0.044865391171271245,
+          "event_brier_score": 0.08912090350438047,
+          "nonevent_brier_score": 0.0006098788381620247,
+          "log_score": 0.1298586948202121,
+          "expected_calibration_error": 0.009398414062500002,
+          "mean_predictive_variance": 9.999990000026166e-07,
+          "mean_probability": 0.09100423596191407,
+          "observed_frequency": 0.09930419921875,
+          "evaluated_cells": 16384,
+          "reliability": [
+            {
+              "lower": 0.0,
+              "upper": 0.1,
+              "count": 14893,
+              "mean_probability": 1.0000000000000002e-06,
+              "observed_frequency": 0.009736117639159337
+            },
+            {
+              "lower": 0.9,
+              "upper": 1.0,
+              "count": 1491,
+              "mean_probability": 0.999999,
+              "observed_frequency": 0.993963782696177
+            }
+          ]
+        },
+        "persistence_active_domain_probabilistic_metrics": {
+          "brier_score": 0.2865606917006047,
+          "balanced_brier_score": 0.499999000001,
+          "event_brier_score": 0.999998000001,
+          "nonevent_brier_score": 1e-12,
+          "log_score": 3.958990893092886,
+          "expected_calibration_error": 0.2865602648221344,
+          "mean_predictive_variance": 9.999989999999995e-07,
+          "mean_probability": 1.0000000000000002e-06,
+          "observed_frequency": 0.2865612648221344,
+          "evaluated_cells": 506,
+          "reliability": [
+            {
+              "lower": 0.0,
+              "upper": 0.1,
+              "count": 506,
+              "mean_probability": 1.0000000000000002e-06,
+              "observed_frequency": 0.2865612648221344
+            }
+          ]
+        },
+        "probabilistic_skill_against_persistence": {
+          "brier_skill_score": -0.20230878064816005,
+          "balanced_brier_skill_score": 0.07124186320488679,
+          "active_domain_brier_skill_score": 0.07008150975972538,
+          "active_domain_balanced_brier_skill_score": 0.09231649444010537
+        },
+        "member_area_km2": {
+          "weighted_mean": 31.890625777105768,
+          "minimum": 29.476242111935107,
+          "maximum": 118.97251846386686,
+          "p10": 29.476242111935107,
+          "p50": 29.49601155667819,
+          "p90": 70.09058939212258
+        }
+      }
+    },
+    {
+      "incident_code": "CA-AEU-017769_Electra",
+      "method": "history_calibrated_ensemble",
+      "start_index": 2,
+      "target_index": 3,
+      "spread_adjustment": 1.5,
+      "forecast": {
+        "method": "posterior parameter ensemble",
+        "start_time": "2022-07-06T07:30:00+00:00",
+        "target_time": "2022-07-07T06:59:00+00:00",
+        "requested_minutes": 1409,
+        "member_count": 12,
+        "effective_sample_size": 4.200000000000035,
+        "metrics": {
+          "iou": 0.8955944477972239,
+          "precision": 0.9801849405548216,
+          "recall": 0.9121081745543946,
+          "symmetric_difference_km2": 3.4201139405531684,
+          "predicted_area_km2": 29.930939341025994,
+          "observed_area_km2": 32.16488659699425,
+          "area_bias_km2": -2.2339472559682547
+        },
+        "growth_metrics": {
+          "iou": 0.012048192771084338,
+          "precision": 0.08695652173913043,
+          "recall": 0.013793103448275862,
+          "symmetric_difference_km2": 3.242188937865431,
+          "predicted_area_km2": 0.45469722909088367,
+          "observed_area_km2": 2.8665694877468755,
+          "area_bias_km2": -2.4118722586559915
+        },
+        "perimeter_tolerance_1_cell": {
+          "radius_cells": 1.0,
+          "precision": 0.9980184940554822,
+          "recall": 0.9496004917025199,
+          "f1": 0.9732076546937619
+        },
+        "growth_tolerance_1_cell": {
+          "radius_cells": 1.0,
+          "precision": 0.21739130434782608,
+          "recall": 0.020689655172413793,
+          "f1": 0.03778337531486146
+        },
+        "boundary": {
+          "mean_symmetric_distance_m": 94.57996888216705,
+          "hausdorff_95_m": 314.39978326234495,
+          "maximum_distance_m": 1273.222081544581
+        },
+        "probabilistic_metrics": {
+          "brier_score": 0.01123520556152215,
+          "balanced_brier_score": 0.04163258650539157,
+          "event_brier_score": 0.07956333207921917,
+          "nonevent_brier_score": 0.0037018409315639563,
+          "log_score": 0.1127901810920199,
+          "expected_calibration_error": 0.013348199424284928,
+          "mean_predictive_variance": 0.004342136529997764,
+          "mean_probability": 0.09838057786736806,
+          "observed_frequency": 0.09930419921875,
+          "evaluated_cells": 16384,
+          "reliability": [
+            {
+              "lower": 0.0,
+              "upper": 0.1,
+              "count": 14609,
+              "mean_probability": 0.0002796388668448904,
+              "observed_frequency": 0.008282565541789308
+            },
+            {
+              "lower": 0.30000000000000004,
+              "upper": 0.4,
+              "count": 261,
+              "mean_probability": 0.3891053979652595,
+              "observed_frequency": 0.0842911877394636
+            },
+            {
+              "lower": 0.6000000000000001,
+              "upper": 0.7000000000000001,
+              "count": 17,
+              "mean_probability": 0.620826005935669,
+              "observed_frequency": 0.11764705882352941
+            },
+            {
+              "lower": 0.7000000000000001,
+              "upper": 0.8,
+              "count": 5,
+              "mean_probability": 0.762999439239502,
+              "observed_frequency": 0.0
+            },
+            {
+              "lower": 0.8,
+              "upper": 0.9,
+              "count": 1,
+              "mean_probability": 0.8580864071846008,
+              "observed_frequency": 0.0
+            },
+            {
+              "lower": 0.9,
+              "upper": 1.0,
+              "count": 1491,
+              "mean_probability": 0.999999,
+              "observed_frequency": 0.993963782696177
+            }
+          ]
+        },
+        "active_domain_probabilistic_metrics": {
+          "brier_score": 0.26557900643191534,
+          "balanced_brier_score": 0.45321074239042564,
+          "event_brier_score": 0.8927554571821211,
+          "nonevent_brier_score": 0.013666027598730101,
+          "log_score": 3.1468504671613333,
+          "expected_calibration_error": 0.260263754861586,
+          "mean_predictive_variance": 0.021106957967314058,
+          "mean_probability": 0.038961021615624605,
+          "observed_frequency": 0.2865612648221344,
+          "evaluated_cells": 506,
+          "reliability": [
+            {
+              "lower": 0.0,
+              "upper": 0.1,
+              "count": 461,
+              "mean_probability": 0.0002525993081801339,
+              "observed_frequency": 0.26247288503253796
+            },
+            {
+              "lower": 0.30000000000000004,
+              "upper": 0.4,
+              "count": 37,
+              "mean_probability": 0.38902595155947917,
+              "observed_frequency": 0.5945945945945946
+            },
+            {
+              "lower": 0.6000000000000001,
+              "upper": 0.7000000000000001,
+              "count": 7,
+              "mean_probability": 0.620826005935669,
+              "observed_frequency": 0.2857142857142857
+            },
+            {
+              "lower": 0.8,
+              "upper": 0.9,
+              "count": 1,
+              "mean_probability": 0.8580864071846008,
+              "observed_frequency": 0.0
+            }
+          ]
+        },
+        "persistence_probabilistic_metrics": {
+          "brier_score": 0.009399395264671873,
+          "balanced_brier_score": 0.044865391171271245,
+          "event_brier_score": 0.08912090350438047,
+          "nonevent_brier_score": 0.0006098788381620247,
+          "log_score": 0.1298586948202121,
+          "expected_calibration_error": 0.009398414062500002,
+          "mean_predictive_variance": 9.999990000026166e-07,
+          "mean_probability": 0.09100423596191407,
+          "observed_frequency": 0.09930419921875,
+          "evaluated_cells": 16384,
+          "reliability": [
+            {
+              "lower": 0.0,
+              "upper": 0.1,
+              "count": 14893,
+              "mean_probability": 1.0000000000000002e-06,
+              "observed_frequency": 0.009736117639159337
+            },
+            {
+              "lower": 0.9,
+              "upper": 1.0,
+              "count": 1491,
+              "mean_probability": 0.999999,
+              "observed_frequency": 0.993963782696177
+            }
+          ]
+        },
+        "persistence_active_domain_probabilistic_metrics": {
+          "brier_score": 0.2865606917006047,
+          "balanced_brier_score": 0.499999000001,
+          "event_brier_score": 0.999998000001,
+          "nonevent_brier_score": 1e-12,
+          "log_score": 3.958990893092886,
+          "expected_calibration_error": 0.2865602648221344,
+          "mean_predictive_variance": 9.999989999999995e-07,
+          "mean_probability": 1.0000000000000002e-06,
+          "observed_frequency": 0.2865612648221344,
+          "evaluated_cells": 506,
+          "reliability": [
+            {
+              "lower": 0.0,
+              "upper": 0.1,
+              "count": 506,
+              "mean_probability": 1.0000000000000002e-06,
+              "observed_frequency": 0.2865612648221344
+            }
+          ]
+        },
+        "probabilistic_skill_against_persistence": {
+          "brier_skill_score": -0.1953115328334225,
+          "balanced_brier_skill_score": 0.0720556442612662,
+          "active_domain_brier_skill_score": 0.07321899296157064,
+          "active_domain_balanced_brier_skill_score": 0.09357670237436633
+        },
+        "member_area_km2": {
+          "weighted_mean": 31.865548037961126,
+          "minimum": 29.476242111935107,
+          "maximum": 119.0318267980961,
+          "p10": 29.476242111935107,
+          "p50": 29.49601155667819,
+          "p90": 69.83951744388544
+        }
+      }
+    },
+    {
+      "incident_code": "CA-AEU-017769_Electra",
+      "method": "persistence",
+      "start_index": 3,
+      "target_index": 4,
+      "spread_adjustment": null,
+      "forecast": {
+        "start_time": "2022-07-07T06:59:00+00:00",
+        "target_time": "2022-07-08T06:59:00+00:00",
+        "requested_minutes": 1440,
+        "metrics": {
+          "iou": 0.976004799040192,
+          "precision": 1.0,
+          "recall": 0.976004799040192,
+          "symmetric_difference_km2": 0.790777789723276,
+          "predicted_area_km2": 32.16488659699425,
+          "observed_area_km2": 32.95566438671752,
+          "area_bias_km2": -0.790777789723276
+        },
+        "growth_metrics": {
+          "iou": 0.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "symmetric_difference_km2": 0.790777789723276,
+          "predicted_area_km2": 0.0,
+          "observed_area_km2": 0.790777789723276,
+          "area_bias_km2": -0.790777789723276
+        },
+        "perimeter_tolerance_1_cell": {
+          "radius_cells": 1.0,
+          "precision": 1.0,
+          "recall": 0.9880023995200959,
+          "f1": 0.9939649969824985
+        },
+        "growth_tolerance_1_cell": {
+          "radius_cells": 1.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        "boundary": {
+          "mean_symmetric_distance_m": 31.032297816737543,
+          "hausdorff_95_m": 140.6038574971608,
+          "maximum_distance_m": 1201.3198850618342
+        }
+      }
+    },
+    {
+      "incident_code": "CA-AEU-017769_Electra",
+      "method": "raw_physics",
+      "start_index": 3,
+      "target_index": 4,
+      "spread_adjustment": null,
+      "forecast": {
+        "start_time": "2022-07-07T06:59:00+00:00",
+        "target_time": "2022-07-08T06:59:00+00:00",
+        "requested_minutes": 1440,
+        "simulated_minutes": 1440,
+        "terminated": false,
+        "truncated": false,
+        "escaped": false,
+        "forcing_clock": {
+          "forecast_start_offset_min": 3125.0,
+          "forecast_end_offset_min": 4565.0,
+          "weather_time_origin": "2022-07-05T02:54:00+00:00"
+        },
+        "metrics": {
+          "iou": 0.6929936305732484,
+          "precision": 0.7034482758620689,
+          "recall": 0.979004199160168,
+          "symmetric_difference_km2": 14.293308549248213,
+          "predicted_area_km2": 45.86511180395001,
+          "observed_area_km2": 32.95566438671752,
+          "area_bias_km2": 12.90944741723248
+        },
+        "growth_metrics": {
+          "iou": 0.006868131868131868,
+          "precision": 0.007215007215007215,
+          "recall": 0.125,
+          "symmetric_difference_km2": 14.293308549248213,
+          "predicted_area_km2": 13.700225206955755,
+          "observed_area_km2": 0.790777789723276,
+          "area_bias_km2": 12.90944741723248
+        },
+        "perimeter_tolerance_1_cell": {
+          "radius_cells": 1.0,
+          "precision": 0.7318965517241379,
+          "recall": 0.9892021595680864,
+          "f1": 0.8413156605089416
+        },
+        "growth_tolerance_1_cell": {
+          "radius_cells": 1.0,
+          "precision": 0.007215007215007215,
+          "recall": 0.25,
+          "f1": 0.014025245441795231
+        },
+        "boundary": {
+          "mean_symmetric_distance_m": 609.0977772782335,
+          "hausdorff_95_m": 2322.3021220596597,
+          "maximum_distance_m": 3159.6787170939324
+        },
+        "initialization": {
+          "method": "single_perimeter_boundary_ring"
+        }
+      }
+    },
+    {
+      "incident_code": "CA-AEU-017769_Electra",
+      "method": "history_raw_physics",
+      "start_index": 3,
+      "target_index": 4,
+      "spread_adjustment": null,
+      "forecast": {
+        "start_time": "2022-07-07T06:59:00+00:00",
+        "target_time": "2022-07-08T06:59:00+00:00",
+        "requested_minutes": 1440,
+        "simulated_minutes": 1440,
+        "terminated": false,
+        "truncated": false,
+        "escaped": false,
+        "forcing_clock": {
+          "forecast_start_offset_min": 3125.0,
+          "forecast_end_offset_min": 4565.0,
+          "weather_time_origin": "2022-07-05T02:54:00+00:00"
+        },
+        "metrics": {
+          "iou": 0.6921119592875318,
+          "precision": 0.7025398191993112,
+          "recall": 0.979004199160168,
+          "symmetric_difference_km2": 14.352616883477458,
+          "predicted_area_km2": 45.92442013817925,
+          "observed_area_km2": 32.95566438671752,
+          "area_bias_km2": 12.968755751461725
+        },
+        "growth_metrics": {
+          "iou": 0.006839945280437756,
+          "precision": 0.007183908045977011,
+          "recall": 0.125,
+          "symmetric_difference_km2": 14.352616883477458,
+          "predicted_area_km2": 13.759533541185002,
+          "observed_area_km2": 0.790777789723276,
+          "area_bias_km2": 12.968755751461725
+        },
+        "perimeter_tolerance_1_cell": {
+          "radius_cells": 1.0,
+          "precision": 0.7313818338355574,
+          "recall": 0.9892021595680864,
+          "f1": 0.8409754970087921
+        },
+        "growth_tolerance_1_cell": {
+          "radius_cells": 1.0,
+          "precision": 0.007183908045977011,
+          "recall": 0.25,
+          "f1": 0.013966480446927373
+        },
+        "boundary": {
+          "mean_symmetric_distance_m": 587.6648994874913,
+          "hausdorff_95_m": 2326.131508141384,
+          "maximum_distance_m": 3159.6787170939324
+        },
+        "initialization": {
+          "method": "two_perimeter_harmonic_arrival_history",
+          "history_start_time": "2022-07-06T07:30:00+00:00",
+          "history_end_time": "2022-07-07T06:59:00+00:00",
+          "history_elapsed_min": 1409,
+          "diagnostics": {
+            "elapsed_min": 1409.0,
+            "earlier_cells": 1482,
+            "later_cells": 1627,
+            "growth_cells": 145,
+            "non_nested_earlier_cells_removed": 9,
+            "growth_components": 18,
+            "harmonic_iterations": 101,
+            "harmonic_residual_min": 0.0009313662933233546,
+            "reference_speed_m_min": 0.22313682275539032,
+            "front_speed_median_m_min": 0.05,
+            "front_speed_p95_m_min": 0.4348229996834869
+          }
+        }
+      }
+    },
+    {
+      "incident_code": "CA-AEU-017769_Electra",
+      "method": "calibrated_physics",
+      "start_index": 3,
+      "target_index": 4,
+      "spread_adjustment": 1.5,
+      "forecast": {
+        "start_time": "2022-07-07T06:59:00+00:00",
+        "target_time": "2022-07-08T06:59:00+00:00",
+        "requested_minutes": 1440,
+        "simulated_minutes": 1440,
+        "terminated": false,
+        "truncated": false,
+        "escaped": true,
+        "forcing_clock": {
+          "forecast_start_offset_min": 3125.0,
+          "forecast_end_offset_min": 4565.0,
+          "weather_time_origin": "2022-07-05T02:54:00+00:00"
+        },
+        "metrics": {
+          "iou": 0.46955772544514646,
+          "precision": 0.47391304347826085,
+          "recall": 0.9808038392321535,
+          "symmetric_difference_km2": 36.514164440472264,
+          "predicted_area_km2": 68.20458436363255,
+          "observed_area_km2": 32.95566438671752,
+          "area_bias_km2": 35.248919976915026
+        },
+        "growth_metrics": {
+          "iou": 0.00431266846361186,
+          "precision": 0.004388370817334065,
+          "recall": 0.2,
+          "symmetric_difference_km2": 36.514164440472264,
+          "predicted_area_km2": 36.0396977666383,
+          "observed_area_km2": 0.790777789723276,
+          "area_bias_km2": 35.248919976915026
+        },
+        "perimeter_tolerance_1_cell": {
+          "radius_cells": 1.0,
+          "precision": 0.5008695652173913,
+          "recall": 0.991001799640072,
+          "f1": 0.6654228403436094
+        },
+        "growth_tolerance_1_cell": {
+          "radius_cells": 1.0,
+          "precision": 0.004936917169500823,
+          "recall": 0.425,
+          "f1": 0.009760454211986859
+        },
+        "boundary": {
+          "mean_symmetric_distance_m": 1324.374269324702,
+          "hausdorff_95_m": 3804.4600611159535,
+          "maximum_distance_m": 4805.279540247337
+        },
+        "initialization": {
+          "method": "single_perimeter_boundary_ring"
+        }
+      }
+    },
+    {
+      "incident_code": "CA-AEU-017769_Electra",
+      "method": "history_calibrated_physics",
+      "start_index": 3,
+      "target_index": 4,
+      "spread_adjustment": 1.5,
+      "forecast": {
+        "start_time": "2022-07-07T06:59:00+00:00",
+        "target_time": "2022-07-08T06:59:00+00:00",
+        "requested_minutes": 1440,
+        "simulated_minutes": 1440,
+        "terminated": false,
+        "truncated": false,
+        "escaped": true,
+        "forcing_clock": {
+          "forecast_start_offset_min": 3125.0,
+          "forecast_end_offset_min": 4565.0,
+          "weather_time_origin": "2022-07-05T02:54:00+00:00"
+        },
+        "metrics": {
+          "iou": 0.48144876325088337,
+          "precision": 0.48602853745541025,
+          "recall": 0.9808038392321535,
+          "symmetric_difference_km2": 34.81399219256723,
+          "predicted_area_km2": 66.5044121157275,
+          "observed_area_km2": 32.95566438671752,
+          "area_bias_km2": 33.54874772900998
+        },
+        "growth_metrics": {
+          "iou": 0.0045223289994347085,
+          "precision": 0.004605641911341394,
+          "recall": 0.2,
+          "symmetric_difference_km2": 34.81399219256723,
+          "predicted_area_km2": 34.33952551873326,
+          "observed_area_km2": 0.790777789723276,
+          "area_bias_km2": 33.54874772900998
+        },
+        "perimeter_tolerance_1_cell": {
+          "radius_cells": 1.0,
+          "precision": 0.512782401902497,
+          "recall": 0.991001799640072,
+          "f1": 0.675852669003782
+        },
+        "growth_tolerance_1_cell": {
+          "radius_cells": 1.0,
+          "precision": 0.0051813471502590676,
+          "recall": 0.425,
+          "f1": 0.010237880156579343
+        },
+        "boundary": {
+          "mean_symmetric_distance_m": 1285.7721928266728,
+          "hausdorff_95_m": 3785.8747257053255,
+          "maximum_distance_m": 4805.279540247337
+        },
+        "initialization": {
+          "method": "two_perimeter_harmonic_arrival_history",
+          "history_start_time": "2022-07-06T07:30:00+00:00",
+          "history_end_time": "2022-07-07T06:59:00+00:00",
+          "history_elapsed_min": 1409,
+          "diagnostics": {
+            "elapsed_min": 1409.0,
+            "earlier_cells": 1482,
+            "later_cells": 1627,
+            "growth_cells": 145,
+            "non_nested_earlier_cells_removed": 9,
+            "growth_components": 18,
+            "harmonic_iterations": 101,
+            "harmonic_residual_min": 0.0009313662933233546,
+            "reference_speed_m_min": 0.22313682275539032,
+            "front_speed_median_m_min": 0.05,
+            "front_speed_p95_m_min": 0.4348229996834869
+          }
+        }
+      }
+    },
+    {
+      "incident_code": "CA-AEU-017769_Electra",
+      "method": "calibrated_ensemble",
+      "start_index": 3,
+      "target_index": 4,
+      "spread_adjustment": 1.5,
+      "forecast": {
+        "method": "posterior parameter ensemble",
+        "start_time": "2022-07-07T06:59:00+00:00",
+        "target_time": "2022-07-08T06:59:00+00:00",
+        "requested_minutes": 1440,
+        "member_count": 12,
+        "effective_sample_size": 4.200000000000035,
+        "metrics": {
+          "iou": 0.8004914004914004,
+          "precision": 0.8157235853780671,
+          "recall": 0.9772045590881824,
+          "symmetric_difference_km2": 8.02639456569125,
+          "predicted_area_km2": 39.47958115193455,
+          "observed_area_km2": 32.95566438671752,
+          "area_bias_km2": 6.5239167652170265
+        },
+        "growth_metrics": {
+          "iou": 0.004901960784313725,
+          "precision": 0.005405405405405406,
+          "recall": 0.05,
+          "symmetric_difference_km2": 8.02639456569125,
+          "predicted_area_km2": 7.314694554940303,
+          "observed_area_km2": 0.790777789723276,
+          "area_bias_km2": 6.5239167652170265
+        },
+        "perimeter_tolerance_1_cell": {
+          "radius_cells": 1.0,
+          "precision": 0.8432648973460191,
+          "recall": 0.9892021595680864,
+          "f1": 0.9104223231683918
+        },
+        "growth_tolerance_1_cell": {
+          "radius_cells": 1.0,
+          "precision": 0.005405405405405406,
+          "recall": 0.125,
+          "f1": 0.010362694300518135
+        },
+        "boundary": {
+          "mean_symmetric_distance_m": 346.33639757884384,
+          "hausdorff_95_m": 1808.6186940680707,
+          "maximum_distance_m": 3159.6787170939324
+        },
+        "probabilistic_metrics": {
+          "brier_score": 0.022592616653168283,
+          "balanced_brier_score": 0.021693981514715716,
+          "event_brier_score": 0.020565764035144297,
+          "nonevent_brier_score": 0.02282219899428713,
+          "log_score": 0.07955256879374697,
+          "expected_calibration_error": 0.042084930387592395,
+          "mean_predictive_variance": 0.020836146745899516,
+          "mean_probability": 0.14076976489077297,
+          "observed_frequency": 0.10174560546875,
+          "evaluated_cells": 16384,
+          "reliability": [
+            {
+              "lower": 0.0,
+              "upper": 0.1,
+              "count": 13306,
+              "mean_probability": 0.000520651679697521,
+              "observed_frequency": 0.0024049301067187736
+            },
+            {
+              "lower": 0.2,
+              "upper": 0.30000000000000004,
+              "count": 3,
+              "mean_probability": 0.23374852538108826,
+              "observed_frequency": 0.0
+            },
+            {
+              "lower": 0.30000000000000004,
+              "upper": 0.4,
+              "count": 1078,
+              "mean_probability": 0.38902870356926006,
+              "observed_frequency": 0.0055658627087198514
+            },
+            {
+              "lower": 0.6000000000000001,
+              "upper": 0.7000000000000001,
+              "count": 235,
+              "mean_probability": 0.620773930752531,
+              "observed_frequency": 0.0
+            },
+            {
+              "lower": 0.7000000000000001,
+              "upper": 0.8,
+              "count": 116,
+              "mean_probability": 0.7780183980177189,
+              "observed_frequency": 0.017241379310344827
+            },
+            {
+              "lower": 0.8,
+              "upper": 0.9,
+              "count": 19,
+              "mean_probability": 0.8547088315612391,
+              "observed_frequency": 0.0
+            },
+            {
+              "lower": 0.9,
+              "upper": 1.0,
+              "count": 1627,
+              "mean_probability": 0.9999990000000002,
+              "observed_frequency": 1.0
+            }
+          ]
+        },
+        "active_domain_probabilistic_metrics": {
+          "brier_score": 0.36884490131867687,
+          "balanced_brier_score": 0.4354221715193979,
+          "event_brier_score": 0.8570782161239638,
+          "nonevent_brier_score": 0.013766126914831957,
+          "log_score": 3.512333213461929,
+          "expected_calibration_error": 0.3593170302072845,
+          "mean_predictive_variance": 0.03143572699932473,
+          "mean_probability": 0.061735601371662875,
+          "observed_frequency": 0.42105263157894735,
+          "evaluated_cells": 95,
+          "reliability": [
+            {
+              "lower": 0.0,
+              "upper": 0.1,
+              "count": 82,
+              "mean_probability": 0.00032912472015256977,
+              "observed_frequency": 0.3902439024390244
+            },
+            {
+              "lower": 0.30000000000000004,
+              "upper": 0.4,
+              "count": 11,
+              "mean_probability": 0.38913673162460327,
+              "observed_frequency": 0.5454545454545454
+            },
+            {
+              "lower": 0.7000000000000001,
+              "upper": 0.8,
+              "count": 2,
+              "mean_probability": 0.7786949276924133,
+              "observed_frequency": 1.0
+            }
+          ]
+        },
+        "persistence_probabilistic_metrics": {
+          "brier_score": 0.0024414013681874997,
+          "balanced_brier_score": 0.011997576485703057,
+          "event_brier_score": 0.023995152970406115,
+          "nonevent_brier_score": 1e-12,
+          "log_score": 0.03373027138224752,
+          "expected_calibration_error": 0.002440604858398418,
+          "mean_predictive_variance": 9.999990000028553e-07,
+          "mean_probability": 0.09930500061035158,
+          "observed_frequency": 0.10174560546875,
+          "evaluated_cells": 16384,
+          "reliability": [
+            {
+              "lower": 0.0,
+              "upper": 0.1,
+              "count": 14757,
+              "mean_probability": 1.0000000000000002e-06,
+              "observed_frequency": 0.0027105780307650606
+            },
+            {
+              "lower": 0.9,
+              "upper": 1.0,
+              "count": 1627,
+              "mean_probability": 0.9999990000000002,
+              "observed_frequency": 1.0
+            }
+          ]
+        },
+        "persistence_active_domain_probabilistic_metrics": {
+          "brier_score": 0.4210517894746843,
+          "balanced_brier_score": 0.499999000001,
+          "event_brier_score": 0.999998000001,
+          "nonevent_brier_score": 1.0000000000000004e-12,
+          "log_score": 5.817057655985243,
+          "expected_calibration_error": 0.42105163157894737,
+          "mean_predictive_variance": 9.999989999999997e-07,
+          "mean_probability": 1e-06,
+          "observed_frequency": 0.42105263157894735,
+          "evaluated_cells": 95,
+          "reliability": [
+            {
+              "lower": 0.0,
+              "upper": 0.1,
+              "count": 95,
+              "mean_probability": 1e-06,
+              "observed_frequency": 0.42105263157894735
+            }
+          ]
+        },
+        "probabilistic_skill_against_persistence": {
+          "brier_skill_score": -8.25395428525588,
+          "balanced_brier_skill_score": -0.8081969754947931,
+          "active_domain_brier_skill_score": 0.12399160735343784,
+          "active_domain_balanced_brier_skill_score": 0.12915391527077646
+        },
+        "member_area_km2": {
+          "weighted_mean": 45.59554413385812,
+          "minimum": 32.16488659699425,
+          "maximum": 145.2658799721658,
+          "p10": 32.16488659699425,
+          "p50": 32.38235048916815,
+          "p90": 119.34616096951115
+        }
+      }
+    },
+    {
+      "incident_code": "CA-AEU-017769_Electra",
+      "method": "history_calibrated_ensemble",
+      "start_index": 3,
+      "target_index": 4,
+      "spread_adjustment": 1.5,
+      "forecast": {
+        "method": "posterior parameter ensemble",
+        "start_time": "2022-07-07T06:59:00+00:00",
+        "target_time": "2022-07-08T06:59:00+00:00",
+        "requested_minutes": 1440,
+        "member_count": 12,
+        "effective_sample_size": 4.200000000000035,
+        "metrics": {
+          "iou": 0.8004914004914004,
+          "precision": 0.8157235853780671,
+          "recall": 0.9772045590881824,
+          "symmetric_difference_km2": 8.02639456569125,
+          "predicted_area_km2": 39.47958115193455,
+          "observed_area_km2": 32.95566438671752,
+          "area_bias_km2": 6.5239167652170265
+        },
+        "growth_metrics": {
+          "iou": 0.004901960784313725,
+          "precision": 0.005405405405405406,
+          "recall": 0.05,
+          "symmetric_difference_km2": 8.02639456569125,
+          "predicted_area_km2": 7.314694554940303,
+          "observed_area_km2": 0.790777789723276,
+          "area_bias_km2": 6.5239167652170265
+        },
+        "perimeter_tolerance_1_cell": {
+          "radius_cells": 1.0,
+          "precision": 0.8432648973460191,
+          "recall": 0.9892021595680864,
+          "f1": 0.9104223231683918
+        },
+        "growth_tolerance_1_cell": {
+          "radius_cells": 1.0,
+          "precision": 0.005405405405405406,
+          "recall": 0.125,
+          "f1": 0.010362694300518135
+        },
+        "boundary": {
+          "mean_symmetric_distance_m": 347.24147935660426,
+          "hausdorff_95_m": 1797.6714416749858,
+          "maximum_distance_m": 3159.6787170939324
+        },
+        "probabilistic_metrics": {
+          "brier_score": 0.02212282098194232,
+          "balanced_brier_score": 0.02145768946046354,
+          "event_brier_score": 0.020622630851428417,
+          "nonevent_brier_score": 0.022292748069498665,
+          "log_score": 0.07811624009061748,
+          "expected_calibration_error": 0.04106320397604867,
+          "mean_predictive_variance": 0.020309771118494184,
+          "mean_probability": 0.13975432248352881,
+          "observed_frequency": 0.10174560546875,
+          "evaluated_cells": 16384,
+          "reliability": [
+            {
+              "lower": 0.0,
+              "upper": 0.1,
+              "count": 13345,
+              "mean_probability": 0.0005229876218266847,
+              "observed_frequency": 0.002397901835893593
+            },
+            {
+              "lower": 0.2,
+              "upper": 0.30000000000000004,
+              "count": 3,
+              "mean_probability": 0.23374852538108826,
+              "observed_frequency": 0.0
+            },
+            {
+              "lower": 0.30000000000000004,
+              "upper": 0.4,
+              "count": 1039,
+              "mean_probability": 0.38903055667762465,
+              "observed_frequency": 0.005774783445620789
+            },
+            {
+              "lower": 0.5,
+              "upper": 0.6000000000000001,
+              "count": 1,
+              "mean_probability": 0.5470056533813477,
+              "observed_frequency": 0.0
+            },
+            {
+              "lower": 0.6000000000000001,
+              "upper": 0.7000000000000001,
+              "count": 243,
+              "mean_probability": 0.6207756451618525,
+              "observed_frequency": 0.00411522633744856
+            },
+            {
+              "lower": 0.7000000000000001,
+              "upper": 0.8,
+              "count": 108,
+              "mean_probability": 0.7779682847084822,
+              "observed_frequency": 0.009259259259259259
+            },
+            {
+              "lower": 0.8,
+              "upper": 0.9,
+              "count": 18,
+              "mean_probability": 0.8576178120242225,
+              "observed_frequency": 0.0
+            },
+            {
+              "lower": 0.9,
+              "upper": 1.0,
+              "count": 1627,
+              "mean_probability": 0.9999990000000002,
+              "observed_frequency": 1.0
+            }
+          ]
+        },
+        "active_domain_probabilistic_metrics": {
+          "brier_score": 0.3698427642949467,
+          "balanced_brier_score": 0.4366071338037182,
+          "event_brier_score": 0.8594481406926044,
+          "nonevent_brier_score": 0.013766126914831957,
+          "log_score": 3.5147181449329885,
+          "expected_calibration_error": 0.3609788083310397,
+          "mean_predictive_variance": 0.03209964214681013,
+          "mean_probability": 0.06007382324790767,
+          "observed_frequency": 0.42105263157894735,
+          "evaluated_cells": 95,
+          "reliability": [
+            {
+              "lower": 0.0,
+              "upper": 0.1,
+              "count": 82,
+              "mean_probability": 0.00032912472015256977,
+              "observed_frequency": 0.3902439024390244
+            },
+            {
+              "lower": 0.30000000000000004,
+              "upper": 0.4,
+              "count": 11,
+              "mean_probability": 0.38913673162460327,
+              "observed_frequency": 0.5454545454545454
+            },
+            {
+              "lower": 0.6000000000000001,
+              "upper": 0.7000000000000001,
+              "count": 1,
+              "mean_probability": 0.620826005935669,
+              "observed_frequency": 1.0
+            },
+            {
+              "lower": 0.7000000000000001,
+              "upper": 0.8,
+              "count": 1,
+              "mean_probability": 0.7786949276924133,
+              "observed_frequency": 1.0
+            }
+          ]
+        },
+        "persistence_probabilistic_metrics": {
+          "brier_score": 0.0024414013681874997,
+          "balanced_brier_score": 0.011997576485703057,
+          "event_brier_score": 0.023995152970406115,
+          "nonevent_brier_score": 1e-12,
+          "log_score": 0.03373027138224752,
+          "expected_calibration_error": 0.002440604858398418,
+          "mean_predictive_variance": 9.999990000028553e-07,
+          "mean_probability": 0.09930500061035158,
+          "observed_frequency": 0.10174560546875,
+          "evaluated_cells": 16384,
+          "reliability": [
+            {
+              "lower": 0.0,
+              "upper": 0.1,
+              "count": 14757,
+              "mean_probability": 1.0000000000000002e-06,
+              "observed_frequency": 0.0027105780307650606
+            },
+            {
+              "lower": 0.9,
+              "upper": 1.0,
+              "count": 1627,
+              "mean_probability": 0.9999990000000002,
+              "observed_frequency": 1.0
+            }
+          ]
+        },
+        "persistence_active_domain_probabilistic_metrics": {
+          "brier_score": 0.4210517894746843,
+          "balanced_brier_score": 0.499999000001,
+          "event_brier_score": 0.999998000001,
+          "nonevent_brier_score": 1.0000000000000004e-12,
+          "log_score": 5.817057655985243,
+          "expected_calibration_error": 0.42105163157894737,
+          "mean_predictive_variance": 9.999989999999997e-07,
+          "mean_probability": 1e-06,
+          "observed_frequency": 0.42105263157894735,
+          "evaluated_cells": 95,
+          "reliability": [
+            {
+              "lower": 0.0,
+              "upper": 0.1,
+              "count": 95,
+              "mean_probability": 1e-06,
+              "observed_frequency": 0.42105263157894735
+            }
+          ]
+        },
+        "probabilistic_skill_against_persistence": {
+          "brier_skill_score": -8.061525593543161,
+          "balanced_brier_skill_score": -0.7885019933845516,
+          "active_domain_brier_skill_score": 0.12162167804494395,
+          "active_domain_balanced_brier_skill_score": 0.12678398596228202
+        },
+        "member_area_km2": {
+          "weighted_mean": 45.26663938250949,
+          "minimum": 32.16488659699425,
+          "maximum": 144.98910774576265,
+          "p10": 32.16488659699425,
+          "p50": 32.37246576679661,
+          "p90": 119.07334263205661
+        }
+      }
+    },
+    {
+      "incident_code": "CA-AEU-017769_Electra",
+      "method": "persistence",
+      "start_index": 4,
+      "target_index": 5,
+      "spread_adjustment": null,
+      "forecast": {
+        "start_time": "2022-07-08T06:59:00+00:00",
+        "target_time": "2022-07-09T05:30:00+00:00",
+        "requested_minutes": 1351,
+        "metrics": {
+          "iou": 1.0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "symmetric_difference_km2": 0.0,
+          "predicted_area_km2": 32.95566438671752,
+          "observed_area_km2": 32.95566438671752,
+          "area_bias_km2": 0.0
+        },
+        "growth_metrics": {
+          "iou": 0.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "symmetric_difference_km2": 0.0,
+          "predicted_area_km2": 0.0,
+          "observed_area_km2": 0.0,
+          "area_bias_km2": 0.0
+        },
+        "perimeter_tolerance_1_cell": {
+          "radius_cells": 1.0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0
+        },
+        "growth_tolerance_1_cell": {
+          "radius_cells": 1.0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0
+        },
+        "boundary": {
+          "mean_symmetric_distance_m": 0.0,
+          "hausdorff_95_m": 0.0,
+          "maximum_distance_m": 0.0
+        }
+      }
+    },
+    {
+      "incident_code": "CA-AEU-017769_Electra",
+      "method": "raw_physics",
+      "start_index": 4,
+      "target_index": 5,
+      "spread_adjustment": null,
+      "forecast": {
+        "start_time": "2022-07-08T06:59:00+00:00",
+        "target_time": "2022-07-09T05:30:00+00:00",
+        "requested_minutes": 1351,
+        "simulated_minutes": 1353,
+        "terminated": false,
+        "truncated": false,
+        "escaped": false,
+        "forcing_clock": {
+          "forecast_start_offset_min": 4565.0,
+          "forecast_end_offset_min": 5918.0,
+          "weather_time_origin": "2022-07-05T02:54:00+00:00"
+        },
+        "metrics": {
+          "iou": 0.7428698752228164,
+          "precision": 0.7428698752228164,
+          "recall": 1.0,
+          "symmetric_difference_km2": 11.406969616758255,
+          "predicted_area_km2": 44.36263400347578,
+          "observed_area_km2": 32.95566438671752,
+          "area_bias_km2": 11.406969616758255
+        },
+        "growth_metrics": {
+          "iou": 0.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "symmetric_difference_km2": 11.406969616758255,
+          "predicted_area_km2": 11.406969616758255,
+          "observed_area_km2": 0.0,
+          "area_bias_km2": 11.406969616758255
+        },
+        "perimeter_tolerance_1_cell": {
+          "radius_cells": 1.0,
+          "precision": 0.7696078431372549,
+          "recall": 1.0,
+          "f1": 0.8698060941828256
+        },
+        "growth_tolerance_1_cell": {
+          "radius_cells": 1.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        "boundary": {
+          "mean_symmetric_distance_m": 459.45060688049347,
+          "hausdorff_95_m": 2002.0249497229788,
+          "maximum_distance_m": 3005.7671645668806
+        },
+        "initialization": {
+          "method": "single_perimeter_boundary_ring"
+        }
+      }
+    },
+    {
+      "incident_code": "CA-AEU-017769_Electra",
+      "method": "history_raw_physics",
+      "start_index": 4,
+      "target_index": 5,
+      "spread_adjustment": null,
+      "forecast": {
+        "start_time": "2022-07-08T06:59:00+00:00",
+        "target_time": "2022-07-09T05:30:00+00:00",
+        "requested_minutes": 1351,
+        "simulated_minutes": 1353,
+        "terminated": false,
+        "truncated": false,
+        "escaped": false,
+        "forcing_clock": {
+          "forecast_start_offset_min": 4565.0,
+          "forecast_end_offset_min": 5918.0,
+          "weather_time_origin": "2022-07-05T02:54:00+00:00"
+        },
+        "metrics": {
+          "iou": 0.7546401086464464,
+          "precision": 0.7546401086464464,
+          "recall": 1.0,
+          "symmetric_difference_km2": 10.71503905075039,
+          "predicted_area_km2": 43.670703437467914,
+          "observed_area_km2": 32.95566438671752,
+          "area_bias_km2": 10.71503905075039
+        },
+        "growth_metrics": {
+          "iou": 0.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "symmetric_difference_km2": 10.71503905075039,
+          "predicted_area_km2": 10.71503905075039,
+          "observed_area_km2": 0.0,
+          "area_bias_km2": 10.71503905075039
+        },
+        "perimeter_tolerance_1_cell": {
+          "radius_cells": 1.0,
+          "precision": 0.7827071072883658,
+          "recall": 1.0,
+          "f1": 0.8781107160995429
+        },
+        "growth_tolerance_1_cell": {
+          "radius_cells": 1.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        "boundary": {
+          "mean_symmetric_distance_m": 441.6481151803882,
+          "hausdorff_95_m": 2013.1408724507555,
+          "maximum_distance_m": 2982.6582329168814
+        },
+        "initialization": {
+          "method": "two_perimeter_harmonic_arrival_history",
+          "history_start_time": "2022-07-07T06:59:00+00:00",
+          "history_end_time": "2022-07-08T06:59:00+00:00",
+          "history_elapsed_min": 1440,
+          "diagnostics": {
+            "elapsed_min": 1440.0,
+            "earlier_cells": 1627,
+            "later_cells": 1667,
+            "growth_cells": 40,
+            "non_nested_earlier_cells_removed": 0,
+            "growth_components": 1,
+            "harmonic_iterations": 58,
+            "harmonic_residual_min": 0.0008865646424194296,
+            "reference_speed_m_min": 0.1380860293017075,
+            "front_speed_median_m_min": 0.05,
+            "front_speed_p95_m_min": 0.05
+          }
+        }
+      }
+    },
+    {
+      "incident_code": "CA-AEU-017769_Electra",
+      "method": "calibrated_physics",
+      "start_index": 4,
+      "target_index": 5,
+      "spread_adjustment": 1.5,
+      "forecast": {
+        "start_time": "2022-07-08T06:59:00+00:00",
+        "target_time": "2022-07-09T05:30:00+00:00",
+        "requested_minutes": 1351,
+        "simulated_minutes": 1353,
+        "terminated": false,
+        "truncated": false,
+        "escaped": true,
+        "forcing_clock": {
+          "forecast_start_offset_min": 4565.0,
+          "forecast_end_offset_min": 5918.0,
+          "weather_time_origin": "2022-07-05T02:54:00+00:00"
+        },
+        "metrics": {
+          "iou": 0.4653824678950307,
+          "precision": 0.4653824678950307,
+          "recall": 1.0,
+          "symmetric_difference_km2": 37.858486683001836,
+          "predicted_area_km2": 70.81415106971936,
+          "observed_area_km2": 32.95566438671752,
+          "area_bias_km2": 37.858486683001836
+        },
+        "growth_metrics": {
+          "iou": 0.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "symmetric_difference_km2": 37.858486683001836,
+          "predicted_area_km2": 37.858486683001836,
+          "observed_area_km2": 0.0,
+          "area_bias_km2": 37.858486683001836
+        },
+        "perimeter_tolerance_1_cell": {
+          "radius_cells": 1.0,
+          "precision": 0.4949748743718593,
+          "recall": 1.0,
+          "f1": 0.6621848739495798
+        },
+        "growth_tolerance_1_cell": {
+          "radius_cells": 1.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        "boundary": {
+          "mean_symmetric_distance_m": 1287.8323789930325,
+          "hausdorff_95_m": 4303.139356658566,
+          "maximum_distance_m": 5401.823806899747
+        },
+        "initialization": {
+          "method": "single_perimeter_boundary_ring"
+        }
+      }
+    },
+    {
+      "incident_code": "CA-AEU-017769_Electra",
+      "method": "history_calibrated_physics",
+      "start_index": 4,
+      "target_index": 5,
+      "spread_adjustment": 1.5,
+      "forecast": {
+        "start_time": "2022-07-08T06:59:00+00:00",
+        "target_time": "2022-07-09T05:30:00+00:00",
+        "requested_minutes": 1351,
+        "simulated_minutes": 1353,
+        "terminated": false,
+        "truncated": false,
+        "escaped": true,
+        "forcing_clock": {
+          "forecast_start_offset_min": 4565.0,
+          "forecast_end_offset_min": 5918.0,
+          "weather_time_origin": "2022-07-05T02:54:00+00:00"
+        },
+        "metrics": {
+          "iou": 0.45998896247240617,
+          "precision": 0.45998896247240617,
+          "recall": 1.0,
+          "symmetric_difference_km2": 38.688803362211274,
+          "predicted_area_km2": 71.6444677489288,
+          "observed_area_km2": 32.95566438671752,
+          "area_bias_km2": 38.688803362211274
+        },
+        "growth_metrics": {
+          "iou": 0.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "symmetric_difference_km2": 38.688803362211274,
+          "predicted_area_km2": 38.688803362211274,
+          "observed_area_km2": 0.0,
+          "area_bias_km2": 38.688803362211274
+        },
+        "perimeter_tolerance_1_cell": {
+          "radius_cells": 1.0,
+          "precision": 0.48758278145695366,
+          "recall": 1.0,
+          "f1": 0.6555370061213134
+        },
+        "growth_tolerance_1_cell": {
+          "radius_cells": 1.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        "boundary": {
+          "mean_symmetric_distance_m": 1402.4448023746052,
+          "hausdorff_95_m": 4367.781379267285,
+          "maximum_distance_m": 5401.823806899747
+        },
+        "initialization": {
+          "method": "two_perimeter_harmonic_arrival_history",
+          "history_start_time": "2022-07-07T06:59:00+00:00",
+          "history_end_time": "2022-07-08T06:59:00+00:00",
+          "history_elapsed_min": 1440,
+          "diagnostics": {
+            "elapsed_min": 1440.0,
+            "earlier_cells": 1627,
+            "later_cells": 1667,
+            "growth_cells": 40,
+            "non_nested_earlier_cells_removed": 0,
+            "growth_components": 1,
+            "harmonic_iterations": 58,
+            "harmonic_residual_min": 0.0008865646424194296,
+            "reference_speed_m_min": 0.1380860293017075,
+            "front_speed_median_m_min": 0.05,
+            "front_speed_p95_m_min": 0.05
+          }
+        }
+      }
+    },
+    {
+      "incident_code": "CA-AEU-017769_Electra",
+      "method": "calibrated_ensemble",
+      "start_index": 4,
+      "target_index": 5,
+      "spread_adjustment": 1.5,
+      "forecast": {
+        "method": "posterior parameter ensemble",
+        "start_time": "2022-07-08T06:59:00+00:00",
+        "target_time": "2022-07-09T05:30:00+00:00",
+        "requested_minutes": 1351,
+        "member_count": 12,
+        "effective_sample_size": 4.200000000000035,
+        "metrics": {
+          "iou": 0.8570694087403599,
+          "precision": 0.8570694087403599,
+          "recall": 1.0,
+          "symmetric_difference_km2": 5.495905638576768,
+          "predicted_area_km2": 38.451570025294295,
+          "observed_area_km2": 32.95566438671752,
+          "area_bias_km2": 5.495905638576768
+        },
+        "growth_metrics": {
+          "iou": 0.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "symmetric_difference_km2": 5.495905638576768,
+          "predicted_area_km2": 5.495905638576768,
+          "observed_area_km2": 0.0,
+          "area_bias_km2": 5.495905638576768
+        },
+        "perimeter_tolerance_1_cell": {
+          "radius_cells": 1.0,
+          "precision": 0.8838046272493574,
+          "recall": 1.0,
+          "f1": 0.9383187772925764
+        },
+        "growth_tolerance_1_cell": {
+          "radius_cells": 1.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        "boundary": {
+          "mean_symmetric_distance_m": 253.0216765541031,
+          "hausdorff_95_m": 1326.4541387225902,
+          "maximum_distance_m": 2979.3423250180185
+        },
+        "probabilistic_metrics": {
+          "brier_score": 0.024324400571694098,
+          "balanced_brier_score": 0.013539817183518585,
+          "event_brier_score": 1.0000000000575112e-12,
+          "nonevent_brier_score": 0.02707963436603717,
+          "log_score": 0.0733673802505116,
+          "expected_calibration_error": 0.05302601565498967,
+          "mean_predictive_variance": 0.028701615083295606,
+          "mean_probability": 0.15477141763252877,
+          "observed_frequency": 0.10174560546875,
+          "evaluated_cells": 16384,
+          "reliability": [
+            {
+              "lower": 0.0,
+              "upper": 0.1,
+              "count": 12721,
+              "mean_probability": 0.000472677208514367,
+              "observed_frequency": 0.0
+            },
+            {
+              "lower": 0.2,
+              "upper": 0.30000000000000004,
+              "count": 3,
+              "mean_probability": 0.23374852538108826,
+              "observed_frequency": 0.0
+            },
+            {
+              "lower": 0.30000000000000004,
+              "upper": 0.4,
+              "count": 1715,
+              "mean_probability": 0.3890891490629046,
+              "observed_frequency": 0.0
+            },
+            {
+              "lower": 0.5,
+              "upper": 0.6000000000000001,
+              "count": 1,
+              "mean_probability": 0.5470056533813477,
+              "observed_frequency": 0.0
+            },
+            {
+              "lower": 0.6000000000000001,
+              "upper": 0.7000000000000001,
+              "count": 149,
+              "mean_probability": 0.6207438739354179,
+              "observed_frequency": 0.0
+            },
+            {
+              "lower": 0.7000000000000001,
+              "upper": 0.8,
+              "count": 99,
+              "mean_probability": 0.7778198177164252,
+              "observed_frequency": 0.0
+            },
+            {
+              "lower": 0.8,
+              "upper": 0.9,
+              "count": 29,
+              "mean_probability": 0.8528450234182949,
+              "observed_frequency": 0.0
+            },
+            {
+              "lower": 0.9,
+              "upper": 1.0,
+              "count": 1667,
+              "mean_probability": 0.9999990000000003,
+              "observed_frequency": 1.0
+            }
+          ]
+        },
+        "active_domain_probabilistic_metrics": {
+          "brier_score": 0.07715465101766848,
+          "balanced_brier_score": 0.07715465101766848,
+          "event_brier_score": NaN,
+          "nonevent_brier_score": 0.07715465101766848,
+          "log_score": 0.21405899459097621,
+          "expected_calibration_error": 0.1332614773554575,
+          "mean_predictive_variance": 0.05610682633778906,
+          "mean_probability": 0.1332614773554575,
+          "observed_frequency": 0.0,
+          "evaluated_cells": 848,
+          "reliability": [
+            {
+              "lower": 0.0,
+              "upper": 0.1,
+              "count": 631,
+              "mean_probability": 0.0002765330460420574,
+              "observed_frequency": 0.0
+            },
+            {
+              "lower": 0.30000000000000004,
+              "upper": 0.4,
+              "count": 133,
+              "mean_probability": 0.3890599068394281,
+              "observed_frequency": 0.0
+            },
+            {
+              "lower": 0.6000000000000001,
+              "upper": 0.7000000000000001,
+              "count": 38,
+              "mean_probability": 0.620826005935669,
+              "observed_frequency": 0.0
+            },
+            {
+              "lower": 0.7000000000000001,
+              "upper": 0.8,
+              "count": 22,
+              "mean_probability": 0.7751277712258425,
+              "observed_frequency": 0.0
+            },
+            {
+              "lower": 0.8,
+              "upper": 0.9,
+              "count": 24,
+              "mean_probability": 0.8517530684669813,
+              "observed_frequency": 0.0
+            }
+          ]
+        },
+        "persistence_probabilistic_metrics": {
+          "brier_score": 1.0000000000058514e-12,
+          "balanced_brier_score": 1.0000000000287556e-12,
+          "event_brier_score": 1.0000000000575112e-12,
+          "nonevent_brier_score": 1e-12,
+          "log_score": 1.000000500029089e-06,
+          "expected_calibration_error": 9.999999999690377e-07,
+          "mean_predictive_variance": 9.999990000029256e-07,
+          "mean_probability": 0.10174640197753906,
+          "observed_frequency": 0.10174560546875,
+          "evaluated_cells": 16384,
+          "reliability": [
+            {
+              "lower": 0.0,
+              "upper": 0.1,
+              "count": 14717,
+              "mean_probability": 1.0000000000000002e-06,
+              "observed_frequency": 0.0
+            },
+            {
+              "lower": 0.9,
+              "upper": 1.0,
+              "count": 1667,
+              "mean_probability": 0.9999990000000003,
+              "observed_frequency": 1.0
+            }
+          ]
+        },
+        "persistence_active_domain_probabilistic_metrics": {
+          "brier_score": 1e-12,
+          "balanced_brier_score": 1e-12,
+          "event_brier_score": NaN,
+          "nonevent_brier_score": 1e-12,
+          "log_score": 1.000000500029089e-06,
+          "expected_calibration_error": 1.0000000000000002e-06,
+          "mean_predictive_variance": 9.999989999999997e-07,
+          "mean_probability": 1.0000000000000002e-06,
+          "observed_frequency": 0.0,
+          "evaluated_cells": 848,
+          "reliability": [
+            {
+              "lower": 0.0,
+              "upper": 0.1,
+              "count": 848,
+              "mean_probability": 1.0000000000000002e-06,
+              "observed_frequency": 0.0
+            }
+          ]
+        },
+        "probabilistic_skill_against_persistence": {
+          "brier_skill_score": -24324400570.551765,
+          "balanced_brier_skill_score": -13539817182.12924,
+          "active_domain_brier_skill_score": -77154651016.66849,
+          "active_domain_balanced_brier_skill_score": -77154651016.66849
+        },
+        "member_area_km2": {
+          "weighted_mean": 50.1307338373732,
+          "minimum": 32.95566438671752,
+          "maximum": 162.939763572481,
+          "p10": 32.95566438671752,
+          "p50": 33.281860224978374,
+          "p90": 123.11817102649117
+        }
+      }
+    },
+    {
+      "incident_code": "CA-AEU-017769_Electra",
+      "method": "history_calibrated_ensemble",
+      "start_index": 4,
+      "target_index": 5,
+      "spread_adjustment": 1.5,
+      "forecast": {
+        "method": "posterior parameter ensemble",
+        "start_time": "2022-07-08T06:59:00+00:00",
+        "target_time": "2022-07-09T05:30:00+00:00",
+        "requested_minutes": 1351,
+        "member_count": 12,
+        "effective_sample_size": 4.200000000000035,
+        "metrics": {
+          "iou": 0.8557494866529775,
+          "precision": 0.8557494866529775,
+          "recall": 1.0,
+          "symmetric_difference_km2": 5.555213972806014,
+          "predicted_area_km2": 38.51087835952354,
+          "observed_area_km2": 32.95566438671752,
+          "area_bias_km2": 5.555213972806014
+        },
+        "growth_metrics": {
+          "iou": 0.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "symmetric_difference_km2": 5.555213972806014,
+          "predicted_area_km2": 5.555213972806014,
+          "observed_area_km2": 0.0,
+          "area_bias_km2": 5.555213972806014
+        },
+        "perimeter_tolerance_1_cell": {
+          "radius_cells": 1.0,
+          "precision": 0.8824435318275154,
+          "recall": 1.0,
+          "f1": 0.9375511317152987
+        },
+        "growth_tolerance_1_cell": {
+          "radius_cells": 1.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        "boundary": {
+          "mean_symmetric_distance_m": 246.42077905528845,
+          "hausdorff_95_m": 1324.9466075395578,
+          "maximum_distance_m": 2979.3423250180185
+        },
+        "probabilistic_metrics": {
+          "brier_score": 0.02445993889700076,
+          "balanced_brier_score": 0.013615262584137748,
+          "event_brier_score": 1.0000000000575112e-12,
+          "nonevent_brier_score": 0.027230525167275497,
+          "log_score": 0.07378635809239498,
+          "expected_calibration_error": 0.053464553439268765,
+          "mean_predictive_variance": 0.029004614542268034,
+          "mean_probability": 0.15520995541680788,
+          "observed_frequency": 0.10174560546875,
+          "evaluated_cells": 16384,
+          "reliability": [
+            {
+              "lower": 0.0,
+              "upper": 0.1,
+              "count": 12702,
+              "mean_probability": 0.00046922256376875443,
+              "observed_frequency": 0.0
+            },
+            {
+              "lower": 0.2,
+              "upper": 0.30000000000000004,
+              "count": 2,
+              "mean_probability": 0.23374852538108826,
+              "observed_frequency": 0.0
+            },
+            {
+              "lower": 0.30000000000000004,
+              "upper": 0.4,
+              "count": 1732,
+              "mean_probability": 0.38904131162593325,
+              "observed_frequency": 0.0
+            },
+            {
+              "lower": 0.6000000000000001,
+              "upper": 0.7000000000000001,
+              "count": 157,
+              "mean_probability": 0.620709085540407,
+              "observed_frequency": 0.0
+            },
+            {
+              "lower": 0.7000000000000001,
+              "upper": 0.8,
+              "count": 101,
+              "mean_probability": 0.7778977291418774,
+              "observed_frequency": 0.0
+            },
+            {
+              "lower": 0.8,
+              "upper": 0.9,
+              "count": 23,
+              "mean_probability": 0.8563245949537858,
+              "observed_frequency": 0.0
+            },
+            {
+              "lower": 0.9,
+              "upper": 1.0,
+              "count": 1667,
+              "mean_probability": 0.9999990000000003,
+              "observed_frequency": 1.0
+            }
+          ]
+        },
+        "active_domain_probabilistic_metrics": {
+          "brier_score": 0.07369631636605337,
+          "balanced_brier_score": 0.07369631636605337,
+          "event_brier_score": NaN,
+          "nonevent_brier_score": 0.07369631636605337,
+          "log_score": 0.20335858869084814,
+          "expected_calibration_error": 0.1257768020425437,
+          "mean_predictive_variance": 0.052080485676490346,
+          "mean_probability": 0.12577680204254368,
+          "observed_frequency": 0.0,
+          "evaluated_cells": 848,
+          "reliability": [
+            {
+              "lower": 0.0,
+              "upper": 0.1,
+              "count": 646,
+              "mean_probability": 0.0002830527844751307,
+              "observed_frequency": 0.0
+            },
+            {
+              "lower": 0.30000000000000004,
+              "upper": 0.4,
+              "count": 119,
+              "mean_probability": 0.389033563998567,
+              "observed_frequency": 0.0
+            },
+            {
+              "lower": 0.6000000000000001,
+              "upper": 0.7000000000000001,
+              "count": 38,
+              "mean_probability": 0.620826005935669,
+              "observed_frequency": 0.0
+            },
+            {
+              "lower": 0.7000000000000001,
+              "upper": 0.8,
+              "count": 24,
+              "mean_probability": 0.7754250342647234,
+              "observed_frequency": 0.0
+            },
+            {
+              "lower": 0.8,
+              "upper": 0.9,
+              "count": 21,
+              "mean_probability": 0.8561568033127558,
+              "observed_frequency": 0.0
+            }
+          ]
+        },
+        "persistence_probabilistic_metrics": {
+          "brier_score": 1.0000000000058514e-12,
+          "balanced_brier_score": 1.0000000000287556e-12,
+          "event_brier_score": 1.0000000000575112e-12,
+          "nonevent_brier_score": 1e-12,
+          "log_score": 1.000000500029089e-06,
+          "expected_calibration_error": 9.999999999690377e-07,
+          "mean_predictive_variance": 9.999990000029256e-07,
+          "mean_probability": 0.10174640197753906,
+          "observed_frequency": 0.10174560546875,
+          "evaluated_cells": 16384,
+          "reliability": [
+            {
+              "lower": 0.0,
+              "upper": 0.1,
+              "count": 14717,
+              "mean_probability": 1.0000000000000002e-06,
+              "observed_frequency": 0.0
+            },
+            {
+              "lower": 0.9,
+              "upper": 1.0,
+              "count": 1667,
+              "mean_probability": 0.9999990000000003,
+              "observed_frequency": 1.0
+            }
+          ]
+        },
+        "persistence_active_domain_probabilistic_metrics": {
+          "brier_score": 1e-12,
+          "balanced_brier_score": 1e-12,
+          "event_brier_score": NaN,
+          "nonevent_brier_score": 1e-12,
+          "log_score": 1.000000500029089e-06,
+          "expected_calibration_error": 1.0000000000000002e-06,
+          "mean_predictive_variance": 9.999989999999997e-07,
+          "mean_probability": 1.0000000000000002e-06,
+          "observed_frequency": 0.0,
+          "evaluated_cells": 848,
+          "reliability": [
+            {
+              "lower": 0.0,
+              "upper": 0.1,
+              "count": 848,
+              "mean_probability": 1.0000000000000002e-06,
+              "observed_frequency": 0.0
+            }
+          ]
+        },
+        "probabilistic_skill_against_persistence": {
+          "brier_skill_score": -24459938895.85763,
+          "balanced_brier_skill_score": -13615262582.746233,
+          "active_domain_brier_skill_score": -73696316365.05336,
+          "active_domain_balanced_brier_skill_score": -73696316365.05336
+        },
+        "member_area_km2": {
+          "weighted_mean": 50.27277357219432,
+          "minimum": 32.95566438671752,
+          "maximum": 159.14403018180928,
+          "p10": 32.95566438671752,
+          "p50": 33.22255189074913,
+          "p90": 122.33925490361372
+        }
+      }
+    },
+    {
+      "incident_code": "CA-AEU-017769_Electra",
+      "method": "persistence",
+      "start_index": 5,
+      "target_index": 6,
+      "spread_adjustment": null,
+      "forecast": {
+        "start_time": "2022-07-09T05:30:00+00:00",
+        "target_time": "2022-07-10T05:30:00+00:00",
+        "requested_minutes": 1440,
+        "metrics": {
+          "iou": 1.0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "symmetric_difference_km2": 0.0,
+          "predicted_area_km2": 32.95566438671752,
+          "observed_area_km2": 32.95566438671752,
+          "area_bias_km2": 0.0
+        },
+        "growth_metrics": {
+          "iou": 0.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "symmetric_difference_km2": 0.0,
+          "predicted_area_km2": 0.0,
+          "observed_area_km2": 0.0,
+          "area_bias_km2": 0.0
+        },
+        "perimeter_tolerance_1_cell": {
+          "radius_cells": 1.0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0
+        },
+        "growth_tolerance_1_cell": {
+          "radius_cells": 1.0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0
+        },
+        "boundary": {
+          "mean_symmetric_distance_m": 0.0,
+          "hausdorff_95_m": 0.0,
+          "maximum_distance_m": 0.0
+        }
+      }
+    },
+    {
+      "incident_code": "CA-AEU-017769_Electra",
+      "method": "raw_physics",
+      "start_index": 5,
+      "target_index": 6,
+      "spread_adjustment": null,
+      "forecast": {
+        "start_time": "2022-07-09T05:30:00+00:00",
+        "target_time": "2022-07-10T05:30:00+00:00",
+        "requested_minutes": 1440,
+        "simulated_minutes": 1440,
+        "terminated": false,
+        "truncated": false,
+        "escaped": false,
+        "forcing_clock": {
+          "forecast_start_offset_min": 5916.0,
+          "forecast_end_offset_min": 7356.0,
+          "weather_time_origin": "2022-07-05T02:54:00+00:00"
+        },
+        "metrics": {
+          "iou": 0.6922757475083057,
+          "precision": 0.6922757475083057,
+          "recall": 1.0,
+          "symmetric_difference_km2": 14.649158554623687,
+          "predicted_area_km2": 47.60482294134121,
+          "observed_area_km2": 32.95566438671752,
+          "area_bias_km2": 14.649158554623687
+        },
+        "growth_metrics": {
+          "iou": 0.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "symmetric_difference_km2": 14.649158554623687,
+          "predicted_area_km2": 14.649158554623687,
+          "observed_area_km2": 0.0,
+          "area_bias_km2": 14.649158554623687
+        },
+        "perimeter_tolerance_1_cell": {
+          "radius_cells": 1.0,
+          "precision": 0.7209302325581395,
+          "recall": 1.0,
+          "f1": 0.8378378378378378
+        },
+        "growth_tolerance_1_cell": {
+          "radius_cells": 1.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        "boundary": {
+          "mean_symmetric_distance_m": 683.9611784508861,
+          "hausdorff_95_m": 2662.557828835755,
+          "maximum_distance_m": 3614.9139651141263
+        },
+        "initialization": {
+          "method": "single_perimeter_boundary_ring"
+        }
+      }
+    },
+    {
+      "incident_code": "CA-AEU-017769_Electra",
+      "method": "history_raw_physics",
+      "start_index": 5,
+      "target_index": 6,
+      "spread_adjustment": null,
+      "forecast": {
+        "start_time": "2022-07-09T05:30:00+00:00",
+        "target_time": "2022-07-10T05:30:00+00:00",
+        "requested_minutes": 1440,
+        "simulated_minutes": 1440,
+        "terminated": false,
+        "truncated": false,
+        "escaped": false,
+        "forcing_clock": {
+          "forecast_start_offset_min": 5916.0,
+          "forecast_end_offset_min": 7356.0,
+          "weather_time_origin": "2022-07-05T02:54:00+00:00"
+        },
+        "metrics": {
+          "iou": 0.6914143508917462,
+          "precision": 0.6914143508917462,
+          "recall": 1.0,
+          "symmetric_difference_km2": 14.708466888852932,
+          "predicted_area_km2": 47.664131275570455,
+          "observed_area_km2": 32.95566438671752,
+          "area_bias_km2": 14.708466888852932
+        },
+        "growth_metrics": {
+          "iou": 0.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "symmetric_difference_km2": 14.708466888852932,
+          "predicted_area_km2": 14.708466888852932,
+          "observed_area_km2": 0.0,
+          "area_bias_km2": 14.708466888852932
+        },
+        "perimeter_tolerance_1_cell": {
+          "radius_cells": 1.0,
+          "precision": 0.7196184155951887,
+          "recall": 1.0,
+          "f1": 0.8369512783405693
+        },
+        "growth_tolerance_1_cell": {
+          "radius_cells": 1.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        "boundary": {
+          "mean_symmetric_distance_m": 705.8623140872852,
+          "hausdorff_95_m": 2691.7338078574644,
+          "maximum_distance_m": 3614.9139651141263
+        },
+        "initialization": {
+          "method": "two_perimeter_harmonic_arrival_history",
+          "history_start_time": "2022-07-08T06:59:00+00:00",
+          "history_end_time": "2022-07-09T05:30:00+00:00",
+          "history_elapsed_min": 1351,
+          "diagnostics": {
+            "elapsed_min": 1351.0,
+            "earlier_cells": 1667,
+            "later_cells": 1667,
+            "growth_cells": 0,
+            "non_nested_earlier_cells_removed": 0,
+            "growth_components": 0,
+            "harmonic_iterations": 1,
+            "harmonic_residual_min": 0.0,
+            "reference_speed_m_min": 0.104073913765478,
+            "front_speed_median_m_min": 0.05,
+            "front_speed_p95_m_min": 0.05
+          }
+        }
+      }
+    },
+    {
+      "incident_code": "CA-AEU-017769_Electra",
+      "method": "calibrated_physics",
+      "start_index": 5,
+      "target_index": 6,
+      "spread_adjustment": 1.5,
+      "forecast": {
+        "start_time": "2022-07-09T05:30:00+00:00",
+        "target_time": "2022-07-10T05:30:00+00:00",
+        "requested_minutes": 1440,
+        "simulated_minutes": 1440,
+        "terminated": false,
+        "truncated": false,
+        "escaped": true,
+        "forcing_clock": {
+          "forecast_start_offset_min": 5916.0,
+          "forecast_end_offset_min": 7356.0,
+          "weather_time_origin": "2022-07-05T02:54:00+00:00"
+        },
+        "metrics": {
+          "iou": 0.4156070805285465,
+          "precision": 0.4156070805285465,
+          "recall": 1.0,
+          "symmetric_difference_km2": 46.339578477783974,
+          "predicted_area_km2": 79.29524286450149,
+          "observed_area_km2": 32.95566438671752,
+          "area_bias_km2": 46.339578477783974
+        },
+        "growth_metrics": {
+          "iou": 0.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "symmetric_difference_km2": 46.339578477783974,
+          "predicted_area_km2": 46.339578477783974,
+          "observed_area_km2": 0.0,
+          "area_bias_km2": 46.339578477783974
+        },
+        "perimeter_tolerance_1_cell": {
+          "radius_cells": 1.0,
+          "precision": 0.44178509099975066,
+          "recall": 1.0,
+          "f1": 0.6128307107037869
+        },
+        "growth_tolerance_1_cell": {
+          "radius_cells": 1.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        "boundary": {
+          "mean_symmetric_distance_m": 1741.5371203824843,
+          "hausdorff_95_m": 4673.8887921200585,
+          "maximum_distance_m": 5232.655250364621
+        },
+        "initialization": {
+          "method": "single_perimeter_boundary_ring"
+        }
+      }
+    },
+    {
+      "incident_code": "CA-AEU-017769_Electra",
+      "method": "history_calibrated_physics",
+      "start_index": 5,
+      "target_index": 6,
+      "spread_adjustment": 1.5,
+      "forecast": {
+        "start_time": "2022-07-09T05:30:00+00:00",
+        "target_time": "2022-07-10T05:30:00+00:00",
+        "requested_minutes": 1440,
+        "simulated_minutes": 1440,
+        "terminated": false,
+        "truncated": false,
+        "escaped": true,
+        "forcing_clock": {
+          "forecast_start_offset_min": 5916.0,
+          "forecast_end_offset_min": 7356.0,
+          "weather_time_origin": "2022-07-05T02:54:00+00:00"
+        },
+        "metrics": {
+          "iou": 0.44441482271394295,
+          "precision": 0.44441482271394295,
+          "recall": 1.0,
+          "symmetric_difference_km2": 41.199522844582674,
+          "predicted_area_km2": 74.1551872313002,
+          "observed_area_km2": 32.95566438671752,
+          "area_bias_km2": 41.199522844582674
+        },
+        "growth_metrics": {
+          "iou": 0.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "symmetric_difference_km2": 41.199522844582674,
+          "predicted_area_km2": 41.199522844582674,
+          "observed_area_km2": 0.0,
+          "area_bias_km2": 41.199522844582674
+        },
+        "perimeter_tolerance_1_cell": {
+          "radius_cells": 1.0,
+          "precision": 0.46974140229272193,
+          "recall": 1.0,
+          "f1": 0.6392163976056593
+        },
+        "growth_tolerance_1_cell": {
+          "radius_cells": 1.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        "boundary": {
+          "mean_symmetric_distance_m": 1469.0460601502991,
+          "hausdorff_95_m": 4478.167416575304,
+          "maximum_distance_m": 5225.093605878856
+        },
+        "initialization": {
+          "method": "two_perimeter_harmonic_arrival_history",
+          "history_start_time": "2022-07-08T06:59:00+00:00",
+          "history_end_time": "2022-07-09T05:30:00+00:00",
+          "history_elapsed_min": 1351,
+          "diagnostics": {
+            "elapsed_min": 1351.0,
+            "earlier_cells": 1667,
+            "later_cells": 1667,
+            "growth_cells": 0,
+            "non_nested_earlier_cells_removed": 0,
+            "growth_components": 0,
+            "harmonic_iterations": 1,
+            "harmonic_residual_min": 0.0,
+            "reference_speed_m_min": 0.104073913765478,
+            "front_speed_median_m_min": 0.05,
+            "front_speed_p95_m_min": 0.05
+          }
+        }
+      }
+    },
+    {
+      "incident_code": "CA-AEU-017769_Electra",
+      "method": "calibrated_ensemble",
+      "start_index": 5,
+      "target_index": 6,
+      "spread_adjustment": 1.5,
+      "forecast": {
+        "method": "posterior parameter ensemble",
+        "start_time": "2022-07-09T05:30:00+00:00",
+        "target_time": "2022-07-10T05:30:00+00:00",
+        "requested_minutes": 1440,
+        "member_count": 12,
+        "effective_sample_size": 4.200000000000035,
+        "metrics": {
+          "iou": 0.8351703406813628,
+          "precision": 0.8351703406813628,
+          "recall": 1.0,
+          "symmetric_difference_km2": 6.504147320473945,
+          "predicted_area_km2": 39.45981170719147,
+          "observed_area_km2": 32.95566438671752,
+          "area_bias_km2": 6.504147320473945
+        },
+        "growth_metrics": {
+          "iou": 0.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "symmetric_difference_km2": 6.504147320473945,
+          "predicted_area_km2": 6.504147320473945,
+          "observed_area_km2": 0.0,
+          "area_bias_km2": 6.504147320473945
+        },
+        "perimeter_tolerance_1_cell": {
+          "radius_cells": 1.0,
+          "precision": 0.8612224448897795,
+          "recall": 1.0,
+          "f1": 0.9254374158815613
+        },
+        "growth_tolerance_1_cell": {
+          "radius_cells": 1.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        "boundary": {
+          "mean_symmetric_distance_m": 282.6359720314692,
+          "hausdorff_95_m": 1528.762146789529,
+          "maximum_distance_m": 3159.6787170939324
+        },
+        "probabilistic_metrics": {
+          "brier_score": 0.02930828796766118,
+          "balanced_brier_score": 0.016314024260216445,
+          "event_brier_score": 1.0000000000575112e-12,
+          "nonevent_brier_score": 0.03262804851943289,
+          "log_score": 0.08854550738794367,
+          "expected_calibration_error": 0.06421933412432063,
+          "mean_predictive_variance": 0.03491104615665948,
+          "mean_probability": 0.1659647361018597,
+          "observed_frequency": 0.10174560546875,
+          "evaluated_cells": 16384,
+          "reliability": [
+            {
+              "lower": 0.0,
+              "upper": 0.1,
+              "count": 12284,
+              "mean_probability": 0.0004303955510262759,
+              "observed_frequency": 0.0
+            },
+            {
+              "lower": 0.2,
+              "upper": 0.30000000000000004,
+              "count": 4,
+              "mean_probability": 0.23374852538108826,
+              "observed_frequency": 0.0
+            },
+            {
+              "lower": 0.30000000000000004,
+              "upper": 0.4,
+              "count": 2100,
+              "mean_probability": 0.3890356100740887,
+              "observed_frequency": 0.0
+            },
+            {
+              "lower": 0.5,
+              "upper": 0.6000000000000001,
+              "count": 8,
+              "mean_probability": 0.5470056533813477,
+              "observed_frequency": 0.0
+            },
+            {
+              "lower": 0.6000000000000001,
+              "upper": 0.7000000000000001,
+              "count": 176,
+              "mean_probability": 0.6209603937512095,
+              "observed_frequency": 0.0
+            },
+            {
+              "lower": 0.7000000000000001,
+              "upper": 0.8,
+              "count": 116,
+              "mean_probability": 0.7786949276924133,
+              "observed_frequency": 0.0
+            },
+            {
+              "lower": 0.8,
+              "upper": 0.9,
+              "count": 29,
+              "mean_probability": 0.8612918257713318,
+              "observed_frequency": 0.0
+            },
+            {
+              "lower": 0.9,
+              "upper": 1.0,
+              "count": 1667,
+              "mean_probability": 0.9999990000000003,
+              "observed_frequency": 1.0
+            }
+          ]
+        },
+        "active_domain_probabilistic_metrics": {
+          "brier_score": 0.07868845698665046,
+          "balanced_brier_score": 0.07868845698665046,
+          "event_brier_score": NaN,
+          "nonevent_brier_score": 0.07868845698665046,
+          "log_score": 0.22079875306565314,
+          "expected_calibration_error": 0.13771355837294103,
+          "mean_predictive_variance": 0.059025101386290586,
+          "mean_probability": 0.13771355837294103,
+          "observed_frequency": 0.0,
+          "evaluated_cells": 848,
+          "reliability": [
+            {
+              "lower": 0.0,
+              "upper": 0.1,
+              "count": 620,
+              "mean_probability": 0.0002379927403331967,
+              "observed_frequency": 0.0
+            },
+            {
+              "lower": 0.2,
+              "upper": 0.30000000000000004,
+              "count": 1,
+              "mean_probability": 0.23374852538108826,
+              "observed_frequency": 0.0
+            },
+            {
+              "lower": 0.30000000000000004,
+              "upper": 0.4,
+              "count": 143,
+              "mean_probability": 0.38875121816054925,
+              "observed_frequency": 0.0
+            },
+            {
+              "lower": 0.5,
+              "upper": 0.6000000000000001,
+              "count": 1,
+              "mean_probability": 0.5470056533813477,
+              "observed_frequency": 0.0
+            },
+            {
+              "lower": 0.6000000000000001,
+              "upper": 0.7000000000000001,
+              "count": 42,
+              "mean_probability": 0.6213891548769814,
+              "observed_frequency": 0.0
+            },
+            {
+              "lower": 0.7000000000000001,
+              "upper": 0.8,
+              "count": 14,
+              "mean_probability": 0.7786949276924133,
+              "observed_frequency": 0.0
+            },
+            {
+              "lower": 0.8,
+              "upper": 0.9,
+              "count": 27,
+              "mean_probability": 0.8615292641851637,
+              "observed_frequency": 0.0
+            }
+          ]
+        },
+        "persistence_probabilistic_metrics": {
+          "brier_score": 1.0000000000058514e-12,
+          "balanced_brier_score": 1.0000000000287556e-12,
+          "event_brier_score": 1.0000000000575112e-12,
+          "nonevent_brier_score": 1e-12,
+          "log_score": 1.000000500029089e-06,
+          "expected_calibration_error": 9.999999999690377e-07,
+          "mean_predictive_variance": 9.999990000029256e-07,
+          "mean_probability": 0.10174640197753906,
+          "observed_frequency": 0.10174560546875,
+          "evaluated_cells": 16384,
+          "reliability": [
+            {
+              "lower": 0.0,
+              "upper": 0.1,
+              "count": 14717,
+              "mean_probability": 1.0000000000000002e-06,
+              "observed_frequency": 0.0
+            },
+            {
+              "lower": 0.9,
+              "upper": 1.0,
+              "count": 1667,
+              "mean_probability": 0.9999990000000003,
+              "observed_frequency": 1.0
+            }
+          ]
+        },
+        "persistence_active_domain_probabilistic_metrics": {
+          "brier_score": 1e-12,
+          "balanced_brier_score": 1e-12,
+          "event_brier_score": NaN,
+          "nonevent_brier_score": 1e-12,
+          "log_score": 1.000000500029089e-06,
+          "expected_calibration_error": 1.0000000000000002e-06,
+          "mean_predictive_variance": 9.999989999999997e-07,
+          "mean_probability": 1.0000000000000002e-06,
+          "observed_frequency": 0.0,
+          "evaluated_cells": 848,
+          "reliability": [
+            {
+              "lower": 0.0,
+              "upper": 0.1,
+              "count": 848,
+              "mean_probability": 1.0000000000000002e-06,
+              "observed_frequency": 0.0
+            }
+          ]
+        },
+        "probabilistic_skill_against_persistence": {
+          "brier_skill_score": -29308287966.489685,
+          "balanced_brier_skill_score": -16314024258.747326,
+          "active_domain_brier_skill_score": -78688456985.65047,
+          "active_domain_balanced_brier_skill_score": -78688456985.65047
+        },
+        "member_area_km2": {
+          "weighted_mean": 53.756274884073015,
+          "minimum": 32.95566438671752,
+          "maximum": 159.00564406860772,
+          "p10": 32.95566438671752,
+          "p50": 33.36093800395071,
+          "p90": 124.56727132615906
+        }
+      }
+    },
+    {
+      "incident_code": "CA-AEU-017769_Electra",
+      "method": "history_calibrated_ensemble",
+      "start_index": 5,
+      "target_index": 6,
+      "spread_adjustment": 1.5,
+      "forecast": {
+        "method": "posterior parameter ensemble",
+        "start_time": "2022-07-09T05:30:00+00:00",
+        "target_time": "2022-07-10T05:30:00+00:00",
+        "requested_minutes": 1440,
+        "member_count": 12,
+        "effective_sample_size": 4.200000000000035,
+        "metrics": {
+          "iou": 0.8248391885205344,
+          "precision": 0.8248391885205344,
+          "recall": 1.0,
+          "symmetric_difference_km2": 6.9983834390509925,
+          "predicted_area_km2": 39.95404782576852,
+          "observed_area_km2": 32.95566438671752,
+          "area_bias_km2": 6.9983834390509925
+        },
+        "growth_metrics": {
+          "iou": 0.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "symmetric_difference_km2": 6.9983834390509925,
+          "predicted_area_km2": 6.9983834390509925,
+          "observed_area_km2": 0.0,
+          "area_bias_km2": 6.9983834390509925
+        },
+        "perimeter_tolerance_1_cell": {
+          "radius_cells": 1.0,
+          "precision": 0.8500742206828302,
+          "recall": 1.0,
+          "f1": 0.9189622893821877
+        },
+        "growth_tolerance_1_cell": {
+          "radius_cells": 1.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        "boundary": {
+          "mean_symmetric_distance_m": 271.44535237245753,
+          "hausdorff_95_m": 1698.9228742029336,
+          "maximum_distance_m": 3159.6787170939324
+        },
+        "probabilistic_metrics": {
+          "brier_score": 0.02495434833930127,
+          "balanced_brier_score": 0.013890468274925663,
+          "event_brier_score": 1.0000000000575112e-12,
+          "nonevent_brier_score": 0.027780936548851328,
+          "log_score": 0.07381889568066281,
+          "expected_calibration_error": 0.052256209083052306,
+          "mean_predictive_variance": 0.027301860743751065,
+          "mean_probability": 0.15400161106059138,
+          "observed_frequency": 0.10174560546875,
+          "evaluated_cells": 16384,
+          "reliability": [
+            {
+              "lower": 0.0,
+              "upper": 0.1,
+              "count": 12810,
+              "mean_probability": 0.0004739115121790533,
+              "observed_frequency": 0.0
+            },
+            {
+              "lower": 0.2,
+              "upper": 0.30000000000000004,
+              "count": 2,
+              "mean_probability": 0.23374852538108826,
+              "observed_frequency": 0.0
+            },
+            {
+              "lower": 0.30000000000000004,
+              "upper": 0.4,
+              "count": 1551,
+              "mean_probability": 0.3890616356327332,
+              "observed_frequency": 0.0
+            },
+            {
+              "lower": 0.6000000000000001,
+              "upper": 0.7000000000000001,
+              "count": 201,
+              "mean_probability": 0.6209233842085843,
+              "observed_frequency": 0.0
+            },
+            {
+              "lower": 0.7000000000000001,
+              "upper": 0.8,
+              "count": 125,
+              "mean_probability": 0.7786296601295472,
+              "observed_frequency": 0.0
+            },
+            {
+              "lower": 0.8,
+              "upper": 0.9,
+              "count": 28,
+              "mean_probability": 0.8591733745166233,
+              "observed_frequency": 0.0
+            },
+            {
+              "lower": 0.9,
+              "upper": 1.0,
+              "count": 1667,
+              "mean_probability": 0.9999990000000003,
+              "observed_frequency": 1.0
+            }
+          ]
+        },
+        "active_domain_probabilistic_metrics": {
+          "brier_score": 0.07654567487485618,
+          "balanced_brier_score": 0.07654567487485618,
+          "event_brier_score": NaN,
+          "nonevent_brier_score": 0.07654567487485618,
+          "log_score": 0.21266154024541256,
+          "expected_calibration_error": 0.13101862344505527,
+          "mean_predictive_variance": 0.05447294857019911,
+          "mean_probability": 0.13101862344505527,
+          "observed_frequency": 0.0,
+          "evaluated_cells": 848,
+          "reliability": [
+            {
+              "lower": 0.0,
+              "upper": 0.1,
+              "count": 636,
+              "mean_probability": 0.0002067866223396694,
+              "observed_frequency": 0.0
+            },
+            {
+              "lower": 0.30000000000000004,
+              "upper": 0.4,
+              "count": 128,
+              "mean_probability": 0.3887374494224787,
+              "observed_frequency": 0.0
+            },
+            {
+              "lower": 0.6000000000000001,
+              "upper": 0.7000000000000001,
+              "count": 40,
+              "mean_probability": 0.6214173123240471,
+              "observed_frequency": 0.0
+            },
+            {
+              "lower": 0.7000000000000001,
+              "upper": 0.8,
+              "count": 18,
+              "mean_probability": 0.7786949276924133,
+              "observed_frequency": 0.0
+            },
+            {
+              "lower": 0.8,
+              "upper": 0.9,
+              "count": 26,
+              "mean_probability": 0.8592569873883174,
+              "observed_frequency": 0.0
+            }
+          ]
+        },
+        "persistence_probabilistic_metrics": {
+          "brier_score": 1.0000000000058514e-12,
+          "balanced_brier_score": 1.0000000000287556e-12,
+          "event_brier_score": 1.0000000000575112e-12,
+          "nonevent_brier_score": 1e-12,
+          "log_score": 1.000000500029089e-06,
+          "expected_calibration_error": 9.999999999690377e-07,
+          "mean_predictive_variance": 9.999990000029256e-07,
+          "mean_probability": 0.10174640197753906,
+          "observed_frequency": 0.10174560546875,
+          "evaluated_cells": 16384,
+          "reliability": [
+            {
+              "lower": 0.0,
+              "upper": 0.1,
+              "count": 14717,
+              "mean_probability": 1.0000000000000002e-06,
+              "observed_frequency": 0.0
+            },
+            {
+              "lower": 0.9,
+              "upper": 1.0,
+              "count": 1667,
+              "mean_probability": 0.9999990000000003,
+              "observed_frequency": 1.0
+            }
+          ]
+        },
+        "persistence_active_domain_probabilistic_metrics": {
+          "brier_score": 1e-12,
+          "balanced_brier_score": 1e-12,
+          "event_brier_score": NaN,
+          "nonevent_brier_score": 1e-12,
+          "log_score": 1.000000500029089e-06,
+          "expected_calibration_error": 1.0000000000000002e-06,
+          "mean_predictive_variance": 9.999989999999997e-07,
+          "mean_probability": 1.0000000000000002e-06,
+          "observed_frequency": 0.0,
+          "evaluated_cells": 848,
+          "reliability": [
+            {
+              "lower": 0.0,
+              "upper": 0.1,
+              "count": 848,
+              "mean_probability": 1.0000000000000002e-06,
+              "observed_frequency": 0.0
+            }
+          ]
+        },
+        "probabilistic_skill_against_persistence": {
+          "brier_skill_score": -24954348338.15525,
+          "balanced_brier_skill_score": -13890468273.526234,
+          "active_domain_brier_skill_score": -76545674873.85619,
+          "active_domain_balanced_brier_skill_score": -76545674873.85619
+        },
+        "member_area_km2": {
+          "weighted_mean": 49.881386303523236,
+          "minimum": 32.95566438671752,
+          "maximum": 157.384549599675,
+          "p10": 32.95566438671752,
+          "p50": 33.30162966972146,
+          "p90": 121.66313989340033
+        }
+      }
+    }
+  ],
+  "summaries": {
+    "persistence": {
+      "metrics.iou": {
+        "n_forecasts": 4,
+        "n_incidents": 1,
+        "mean": 0.9704681924250846,
+        "median": 0.9880023995200959,
+        "ci95_low": 0.9704681924250846,
+        "ci95_high": 0.9704681924250846
+      },
+      "growth_metrics.iou": {
+        "n_forecasts": 4,
+        "n_incidents": 1,
+        "mean": 0.0,
+        "median": 0.0,
+        "ci95_low": 0.0,
+        "ci95_high": 0.0
+      },
+      "growth_tolerance_1_cell.f1": {
+        "n_forecasts": 4,
+        "n_incidents": 1,
+        "mean": 0.5,
+        "median": 0.5,
+        "ci95_low": 0.5,
+        "ci95_high": 0.5
+      },
+      "boundary.mean_symmetric_distance_m": {
+        "n_forecasts": 4,
+        "n_incidents": 1,
+        "mean": 28.49000716122897,
+        "median": 15.516148908368772,
+        "ci95_low": 28.49000716122897,
+        "ci95_high": 28.49000716122897
+      },
+      "boundary.hausdorff_95_m": {
+        "n_forecasts": 4,
+        "n_incidents": 1,
+        "mean": 113.75091018987644,
+        "median": 70.3019287485804,
+        "ci95_low": 113.75091018987644,
+        "ci95_high": 113.75091018987644
+      },
+      "metrics.symmetric_difference_km2": {
+        "n_forecasts": 4,
+        "n_incidents": 1,
+        "mean": 0.9588180700394721,
+        "median": 0.395388894861638,
+        "ci95_low": 0.9588180700394721,
+        "ci95_high": 0.9588180700394721
+      }
+    },
+    "raw_physics": {
+      "metrics.iou": {
+        "n_forecasts": 4,
+        "n_incidents": 1,
+        "mean": 0.7434747677939355,
+        "median": 0.7179317528980325,
+        "ci95_low": 0.7434747677939355,
+        "ci95_high": 0.7434747677939355
+      },
+      "growth_metrics.iou": {
+        "n_forecasts": 4,
+        "n_incidents": 1,
+        "mean": 0.005476431463273568,
+        "median": 0.003434065934065934,
+        "ci95_low": 0.005476431463273568,
+        "ci95_high": 0.005476431463273568
+      },
+      "growth_tolerance_1_cell.f1": {
+        "n_forecasts": 4,
+        "n_incidents": 1,
+        "mean": 0.01740209299816593,
+        "median": 0.0070126227208976155,
+        "ci95_low": 0.01740209299816593,
+        "ci95_high": 0.01740209299816593
+      },
+      "boundary.mean_symmetric_distance_m": {
+        "n_forecasts": 4,
+        "n_incidents": 1,
+        "mean": 474.0431156643659,
+        "median": 534.2741920793635,
+        "ci95_low": 474.0431156643659,
+        "ci95_high": 474.0431156643659
+      },
+      "boundary.hausdorff_95_m": {
+        "n_forecasts": 4,
+        "n_incidents": 1,
+        "mean": 1926.4595925716662,
+        "median": 2162.163535891319,
+        "ci95_low": 1926.4595925716662,
+        "ci95_high": 1926.4595925716662
+      },
+      "metrics.symmetric_difference_km2": {
+        "n_forecasts": 4,
+        "n_incidents": 1,
+        "mean": 11.426739061501339,
+        "median": 12.850139083003235,
+        "ci95_low": 11.426739061501339,
+        "ci95_high": 11.426739061501339
+      }
+    },
+    "history_raw_physics": {
+      "metrics.iou": {
+        "n_forecasts": 4,
+        "n_incidents": 1,
+        "mean": 0.7465849837018649,
+        "median": 0.723376033966989,
+        "ci95_low": 0.7465849837018649,
+        "ci95_high": 0.7465849837018649
+      },
+      "growth_metrics.iou": {
+        "n_forecasts": 4,
+        "n_incidents": 1,
+        "mean": 0.005541403944630511,
+        "median": 0.003419972640218878,
+        "ci95_low": 0.005541403944630511,
+        "ci95_high": 0.005541403944630511
+      },
+      "growth_tolerance_1_cell.f1": {
+        "n_forecasts": 4,
+        "n_incidents": 1,
+        "mean": 0.01577232186611781,
+        "median": 0.006983240223463687,
+        "ci95_low": 0.01577232186611781,
+        "ci95_high": 0.01577232186611781
+      },
+      "boundary.mean_symmetric_distance_m": {
+        "n_forecasts": 4,
+        "n_incidents": 1,
+        "mean": 469.0682503650237,
+        "median": 514.6565073339398,
+        "ci95_low": 469.0682503650237,
+        "ci95_high": 469.0682503650237
+      },
+      "boundary.hausdorff_95_m": {
+        "n_forecasts": 4,
+        "n_incidents": 1,
+        "mean": 1938.9986569823427,
+        "median": 2169.63619029607,
+        "ci95_low": 1938.9986569823427,
+        "ci95_high": 1938.9986569823427
+      },
+      "metrics.symmetric_difference_km2": {
+        "n_forecasts": 4,
+        "n_incidents": 1,
+        "mean": 11.25869878118514,
+        "median": 12.533827967113924,
+        "ci95_low": 11.25869878118514,
+        "ci95_high": 11.25869878118514
+      }
+    },
+    "calibrated_physics": {
+      "metrics.iou": {
+        "n_forecasts": 4,
+        "n_incidents": 1,
+        "mean": 0.5278185448679885,
+        "median": 0.46747009667008854,
+        "ci95_low": 0.5278185448679885,
+        "ci95_high": 0.5278185448679885
+      },
+      "growth_metrics.iou": {
+        "n_forecasts": 4,
+        "n_incidents": 1,
+        "mean": 0.013833269156719293,
+        "median": 0.00215633423180593,
+        "ci95_low": 0.013833269156719293,
+        "ci95_high": 0.013833269156719293
+      },
+      "growth_tolerance_1_cell.f1": {
+        "n_forecasts": 4,
+        "n_incidents": 1,
+        "mean": 0.03977344688633005,
+        "median": 0.004880227105993429,
+        "ci95_low": 0.03977344688633005,
+        "ci95_high": 0.03977344688633005
+      },
+      "boundary.mean_symmetric_distance_m": {
+        "n_forecasts": 4,
+        "n_incidents": 1,
+        "mean": 1165.405748352752,
+        "median": 1306.1033241588673,
+        "ci95_low": 1165.405748352752,
+        "ci95_high": 1165.405748352752
+      },
+      "boundary.hausdorff_95_m": {
+        "n_forecasts": 4,
+        "n_incidents": 1,
+        "mean": 3493.637875765333,
+        "median": 4053.79970888726,
+        "ci95_low": 3493.637875765333,
+        "ci95_high": 3493.637875765333
+      },
+      "metrics.symmetric_difference_km2": {
+        "n_forecasts": 4,
+        "n_incidents": 1,
+        "mean": 32.52073660236972,
+        "median": 37.18632556173705,
+        "ci95_low": 32.52073660236972,
+        "ci95_high": 32.52073660236972
+      }
+    },
+    "history_calibrated_physics": {
+      "metrics.iou": {
+        "n_forecasts": 4,
+        "n_incidents": 1,
+        "mean": 0.5343373886063141,
+        "median": 0.47071886286164477,
+        "ci95_low": 0.5343373886063141,
+        "ci95_high": 0.5343373886063141
+      },
+      "growth_metrics.iou": {
+        "n_forecasts": 4,
+        "n_incidents": 1,
+        "mean": 0.012826488682607214,
+        "median": 0.0022611644997173543,
+        "ci95_low": 0.012826488682607214,
+        "ci95_high": 0.012826488682607214
+      },
+      "growth_tolerance_1_cell.f1": {
+        "n_forecasts": 4,
+        "n_incidents": 1,
+        "mean": 0.036550579222707665,
+        "median": 0.005118940078289671,
+        "ci95_low": 0.036550579222707665,
+        "ci95_high": 0.036550579222707665
+      },
+      "boundary.mean_symmetric_distance_m": {
+        "n_forecasts": 4,
+        "n_incidents": 1,
+        "mean": 1115.8929729326164,
+        "median": 1344.108497600639,
+        "ci95_low": 1115.8929729326164,
+        "ci95_high": 1115.8929729326164
+      },
+      "boundary.hausdorff_95_m": {
+        "n_forecasts": 4,
+        "n_incidents": 1,
+        "mean": 3456.221703678667,
+        "median": 4076.8280524863053,
+        "ci95_low": 3456.221703678667,
+        "ci95_high": 3456.221703678667
+      },
+      "metrics.symmetric_difference_km2": {
+        "n_forecasts": 4,
+        "n_incidents": 1,
+        "mean": 31.136875470353992,
+        "median": 36.75139777738925,
+        "ci95_low": 31.136875470353992,
+        "ci95_high": 31.136875470353992
+      }
+    },
+    "calibrated_ensemble": {
+      "metrics.iou": {
+        "n_forecasts": 4,
+        "n_incidents": 1,
+        "mean": 0.8466767633818952,
+        "median": 0.8461198747108614,
+        "ci95_low": 0.8466767633818952,
+        "ci95_high": 0.8466767633818952
+      },
+      "growth_metrics.iou": {
+        "n_forecasts": 4,
+        "n_incidents": 1,
+        "mean": 0.0041840700777352365,
+        "median": 0.0024509803921568627,
+        "ci95_low": 0.0041840700777352365,
+        "ci95_high": 0.0041840700777352365
+      },
+      "growth_tolerance_1_cell.f1": {
+        "n_forecasts": 4,
+        "n_incidents": 1,
+        "mean": 0.011930648668529284,
+        "median": 0.0051813471502590676,
+        "ci95_low": 0.011930648668529284,
+        "ci95_high": 0.011930648668529284
+      },
+      "boundary.mean_symmetric_distance_m": {
+        "n_forecasts": 4,
+        "n_incidents": 1,
+        "mean": 244.258754394883,
+        "median": 267.8288242927861,
+        "ci95_low": 244.258754394883,
+        "ci95_high": 244.258754394883
+      },
+      "boundary.hausdorff_95_m": {
+        "n_forecasts": 4,
+        "n_incidents": 1,
+        "mean": 1244.5586907106335,
+        "median": 1427.6081427560596,
+        "ci95_low": 1244.5586907106335,
+        "ci95_high": 1244.5586907106335
+      },
+      "metrics.symmetric_difference_km2": {
+        "n_forecasts": 4,
+        "n_incidents": 1,
+        "mean": 5.876467449881094,
+        "median": 6.000026479525356,
+        "ci95_low": 5.876467449881094,
+        "ci95_high": 5.876467449881094
+      }
+    },
+    "history_calibrated_ensemble": {
+      "metrics.iou": {
+        "n_forecasts": 4,
+        "n_incidents": 1,
+        "mean": 0.8441686308655341,
+        "median": 0.840294337586756,
+        "ci95_low": 0.8441686308655341,
+        "ci95_high": 0.8441686308655341
+      },
+      "growth_metrics.iou": {
+        "n_forecasts": 4,
+        "n_incidents": 1,
+        "mean": 0.004237538388849516,
+        "median": 0.0024509803921568627,
+        "ci95_low": 0.004237538388849516,
+        "ci95_high": 0.004237538388849516
+      },
+      "growth_tolerance_1_cell.f1": {
+        "n_forecasts": 4,
+        "n_incidents": 1,
+        "mean": 0.012036517403844899,
+        "median": 0.0051813471502590676,
+        "ci95_low": 0.012036517403844899,
+        "ci95_high": 0.012036517403844899
+      },
+      "boundary.mean_symmetric_distance_m": {
+        "n_forecasts": 4,
+        "n_incidents": 1,
+        "mean": 239.92189491662936,
+        "median": 258.933065713873,
+        "ci95_low": 239.92189491662936,
+        "ci95_high": 239.92189491662936
+      },
+      "boundary.hausdorff_95_m": {
+        "n_forecasts": 4,
+        "n_incidents": 1,
+        "mean": 1283.9851766699555,
+        "median": 1511.9347408712456,
+        "ci95_low": 1283.9851766699555,
+        "ci95_high": 1283.9851766699555
+      },
+      "metrics.symmetric_difference_km2": {
+        "n_forecasts": 4,
+        "n_incidents": 1,
+        "mean": 6.000026479525356,
+        "median": 6.276798705928503,
+        "ci95_low": 6.000026479525356,
+        "ci95_high": 6.000026479525356
+      }
+    }
+  },
+  "active_growth_summaries": {
+    "persistence": {
+      "growth_metrics.iou": {
+        "n_forecasts": 2,
+        "n_incidents": 1,
+        "mean": 0.0,
+        "median": 0.0,
+        "ci95_low": 0.0,
+        "ci95_high": 0.0
+      },
+      "growth_tolerance_1_cell.f1": {
+        "n_forecasts": 2,
+        "n_incidents": 1,
+        "mean": 0.0,
+        "median": 0.0,
+        "ci95_low": 0.0,
+        "ci95_high": 0.0
+      }
+    },
+    "raw_physics": {
+      "growth_metrics.iou": {
+        "n_forecasts": 2,
+        "n_incidents": 1,
+        "mean": 0.010952862926547137,
+        "median": 0.010952862926547137,
+        "ci95_low": 0.010952862926547137,
+        "ci95_high": 0.010952862926547137
+      },
+      "growth_tolerance_1_cell.f1": {
+        "n_forecasts": 2,
+        "n_incidents": 1,
+        "mean": 0.03480418599633186,
+        "median": 0.03480418599633186,
+        "ci95_low": 0.03480418599633186,
+        "ci95_high": 0.03480418599633186
+      }
+    },
+    "history_raw_physics": {
+      "growth_metrics.iou": {
+        "n_forecasts": 2,
+        "n_incidents": 1,
+        "mean": 0.011082807889261023,
+        "median": 0.011082807889261023,
+        "ci95_low": 0.011082807889261023,
+        "ci95_high": 0.011082807889261023
+      },
+      "growth_tolerance_1_cell.f1": {
+        "n_forecasts": 2,
+        "n_incidents": 1,
+        "mean": 0.03154464373223562,
+        "median": 0.03154464373223562,
+        "ci95_low": 0.03154464373223562,
+        "ci95_high": 0.03154464373223562
+      }
+    },
+    "calibrated_physics": {
+      "growth_metrics.iou": {
+        "n_forecasts": 2,
+        "n_incidents": 1,
+        "mean": 0.027666538313438585,
+        "median": 0.027666538313438585,
+        "ci95_low": 0.027666538313438585,
+        "ci95_high": 0.027666538313438585
+      },
+      "growth_tolerance_1_cell.f1": {
+        "n_forecasts": 2,
+        "n_incidents": 1,
+        "mean": 0.0795468937726601,
+        "median": 0.0795468937726601,
+        "ci95_low": 0.0795468937726601,
+        "ci95_high": 0.0795468937726601
+      }
+    },
+    "history_calibrated_physics": {
+      "growth_metrics.iou": {
+        "n_forecasts": 2,
+        "n_incidents": 1,
+        "mean": 0.02565297736521443,
+        "median": 0.02565297736521443,
+        "ci95_low": 0.02565297736521443,
+        "ci95_high": 0.02565297736521443
+      },
+      "growth_tolerance_1_cell.f1": {
+        "n_forecasts": 2,
+        "n_incidents": 1,
+        "mean": 0.07310115844541533,
+        "median": 0.07310115844541533,
+        "ci95_low": 0.07310115844541533,
+        "ci95_high": 0.07310115844541533
+      }
+    },
+    "calibrated_ensemble": {
+      "growth_metrics.iou": {
+        "n_forecasts": 2,
+        "n_incidents": 1,
+        "mean": 0.008368140155470473,
+        "median": 0.008368140155470473,
+        "ci95_low": 0.008368140155470473,
+        "ci95_high": 0.008368140155470473
+      },
+      "growth_tolerance_1_cell.f1": {
+        "n_forecasts": 2,
+        "n_incidents": 1,
+        "mean": 0.02386129733705857,
+        "median": 0.02386129733705857,
+        "ci95_low": 0.02386129733705857,
+        "ci95_high": 0.02386129733705857
+      }
+    },
+    "history_calibrated_ensemble": {
+      "growth_metrics.iou": {
+        "n_forecasts": 2,
+        "n_incidents": 1,
+        "mean": 0.008475076777699032,
+        "median": 0.008475076777699032,
+        "ci95_low": 0.008475076777699032,
+        "ci95_high": 0.008475076777699032
+      },
+      "growth_tolerance_1_cell.f1": {
+        "n_forecasts": 2,
+        "n_incidents": 1,
+        "mean": 0.024073034807689797,
+        "median": 0.024073034807689797,
+        "ci95_low": 0.024073034807689797,
+        "ci95_high": 0.024073034807689797
+      }
+    }
+  },
+  "probabilistic_summaries": {
+    "probabilistic_metrics.brier_score": {
+      "n_forecasts": 4,
+      "n_incidents": 1,
+      "mean": 0.021881570163005324,
+      "median": 0.023458508612431192,
+      "ci95_low": 0.021881570163005324,
+      "ci95_high": 0.021881570163005324
+    },
+    "probabilistic_metrics.balanced_brier_score": {
+      "n_forecasts": 4,
+      "n_incidents": 1,
+      "mean": 0.023304230017316137,
+      "median": 0.01900400288746608,
+      "ci95_low": 0.023304230017316137,
+      "ci95_high": 0.023304230017316137
+    },
+    "probabilistic_metrics.log_score": {
+      "n_forecasts": 4,
+      "n_incidents": 1,
+      "mean": 0.08860191933650008,
+      "median": 0.08404903809084532,
+      "ci95_low": 0.08860191933650008,
+      "ci95_high": 0.08860191933650008
+    },
+    "active_domain_probabilistic_metrics.brier_score": {
+      "n_forecasts": 4,
+      "n_incidents": 1,
+      "mean": 0.19779152377785775,
+      "median": 0.17258327138754279,
+      "ci95_low": 0.19779152377785775,
+      "ci95_high": 0.19779152377785775
+    },
+    "active_domain_probabilistic_metrics.balanced_brier_score": {
+      "n_forecasts": 4,
+      "n_incidents": 1,
+      "mean": 0.26127653115526656,
+      "median": 0.2570553142530242,
+      "ci95_low": 0.26127653115526656,
+      "ci95_high": 0.26127653115526656
+    },
+    "persistence_probabilistic_metrics.brier_score": {
+      "n_forecasts": 4,
+      "n_incidents": 1,
+      "mean": 0.0029601991587148435,
+      "median": 0.0012207006845937499,
+      "ci95_low": 0.0029601991587148435,
+      "ci95_high": 0.0029601991587148435
+    },
+    "persistence_probabilistic_metrics.balanced_brier_score": {
+      "n_forecasts": 4,
+      "n_incidents": 1,
+      "mean": 0.014215741914743575,
+      "median": 0.005998788243351529,
+      "ci95_low": 0.014215741914743575,
+      "ci95_high": 0.014215741914743575
+    },
+    "persistence_active_domain_probabilistic_metrics.brier_score": {
+      "n_forecasts": 4,
+      "n_incidents": 1,
+      "mean": 0.17690312029432226,
+      "median": 0.14328034585080235,
+      "ci95_low": 0.17690312029432226,
+      "ci95_high": 0.17690312029432226
+    },
+    "persistence_active_domain_probabilistic_metrics.balanced_brier_score": {
+      "n_forecasts": 4,
+      "n_incidents": 1,
+      "mean": 0.249999500001,
+      "median": 0.249999500001,
+      "ci95_low": 0.249999500001,
+      "ci95_high": 0.249999500001
+    }
+  },
+  "probabilistic_active_growth_summaries": {
+    "probabilistic_metrics.brier_score": {
+      "n_forecasts": 2,
+      "n_incidents": 1,
+      "mean": 0.016946796056333008,
+      "median": 0.016946796056333008,
+      "ci95_low": 0.016946796056333008,
+      "ci95_high": 0.016946796056333008
+    },
+    "probabilistic_metrics.balanced_brier_score": {
+      "n_forecasts": 2,
+      "n_incidents": 1,
+      "mean": 0.03168153931276476,
+      "median": 0.03168153931276476,
+      "ci95_low": 0.03168153931276476,
+      "ci95_high": 0.03168153931276476
+    },
+    "probabilistic_metrics.log_score": {
+      "n_forecasts": 2,
+      "n_incidents": 1,
+      "mean": 0.09624739485377251,
+      "median": 0.09624739485377251,
+      "ci95_low": 0.09624739485377251,
+      "ci95_high": 0.09624739485377251
+    },
+    "active_domain_probabilistic_metrics.brier_score": {
+      "n_forecasts": 2,
+      "n_incidents": 1,
+      "mean": 0.317661493553556,
+      "median": 0.317661493553556,
+      "ci95_low": 0.317661493553556,
+      "ci95_high": 0.317661493553556
+    },
+    "active_domain_probabilistic_metrics.balanced_brier_score": {
+      "n_forecasts": 2,
+      "n_incidents": 1,
+      "mean": 0.44463150830837367,
+      "median": 0.44463150830837367,
+      "ci95_low": 0.44463150830837367,
+      "ci95_high": 0.44463150830837367
+    },
+    "persistence_probabilistic_metrics.brier_score": {
+      "n_forecasts": 2,
+      "n_incidents": 1,
+      "mean": 0.005920398316429687,
+      "median": 0.005920398316429687,
+      "ci95_low": 0.005920398316429687,
+      "ci95_high": 0.005920398316429687
+    },
+    "persistence_probabilistic_metrics.balanced_brier_score": {
+      "n_forecasts": 2,
+      "n_incidents": 1,
+      "mean": 0.02843148382848715,
+      "median": 0.02843148382848715,
+      "ci95_low": 0.02843148382848715,
+      "ci95_high": 0.02843148382848715
+    },
+    "persistence_active_domain_probabilistic_metrics.brier_score": {
+      "n_forecasts": 2,
+      "n_incidents": 1,
+      "mean": 0.35380624058764454,
+      "median": 0.35380624058764454,
+      "ci95_low": 0.35380624058764454,
+      "ci95_high": 0.35380624058764454
+    },
+    "persistence_active_domain_probabilistic_metrics.balanced_brier_score": {
+      "n_forecasts": 2,
+      "n_incidents": 1,
+      "mean": 0.499999000001,
+      "median": 0.499999000001,
+      "ci95_low": 0.499999000001,
+      "ci95_high": 0.499999000001
+    }
+  },
+  "probabilistic_skill_against_persistence": {
+    "whole_domain_brier_skill": -1.8624418747812936,
+    "whole_domain_balanced_brier_skill": -0.11431184893069801,
+    "active_domain_brier_skill": 0.10215972158675024,
+    "active_domain_balanced_brier_skill": 0.11073520485544086,
+    "definition": "1 - aggregate posterior score / aggregate persistence score; computed over intervals with observed growth"
+  },
+  "probabilistic_summaries_by_method": {
+    "calibrated_ensemble": {
+      "probabilistic_metrics.brier_score": {
+        "n_forecasts": 4,
+        "n_incidents": 1,
+        "mean": 0.021881570163005324,
+        "median": 0.023458508612431192,
+        "ci95_low": 0.021881570163005324,
+        "ci95_high": 0.021881570163005324
+      },
+      "probabilistic_metrics.balanced_brier_score": {
+        "n_forecasts": 4,
+        "n_incidents": 1,
+        "mean": 0.023304230017316137,
+        "median": 0.01900400288746608,
+        "ci95_low": 0.023304230017316137,
+        "ci95_high": 0.023304230017316137
+      },
+      "probabilistic_metrics.log_score": {
+        "n_forecasts": 4,
+        "n_incidents": 1,
+        "mean": 0.08860191933650008,
+        "median": 0.08404903809084532,
+        "ci95_low": 0.08860191933650008,
+        "ci95_high": 0.08860191933650008
+      },
+      "active_domain_probabilistic_metrics.brier_score": {
+        "n_forecasts": 4,
+        "n_incidents": 1,
+        "mean": 0.19779152377785775,
+        "median": 0.17258327138754279,
+        "ci95_low": 0.19779152377785775,
+        "ci95_high": 0.19779152377785775
+      },
+      "active_domain_probabilistic_metrics.balanced_brier_score": {
+        "n_forecasts": 4,
+        "n_incidents": 1,
+        "mean": 0.26127653115526656,
+        "median": 0.2570553142530242,
+        "ci95_low": 0.26127653115526656,
+        "ci95_high": 0.26127653115526656
+      },
+      "persistence_probabilistic_metrics.brier_score": {
+        "n_forecasts": 4,
+        "n_incidents": 1,
+        "mean": 0.0029601991587148435,
+        "median": 0.0012207006845937499,
+        "ci95_low": 0.0029601991587148435,
+        "ci95_high": 0.0029601991587148435
+      },
+      "persistence_probabilistic_metrics.balanced_brier_score": {
+        "n_forecasts": 4,
+        "n_incidents": 1,
+        "mean": 0.014215741914743575,
+        "median": 0.005998788243351529,
+        "ci95_low": 0.014215741914743575,
+        "ci95_high": 0.014215741914743575
+      },
+      "persistence_active_domain_probabilistic_metrics.brier_score": {
+        "n_forecasts": 4,
+        "n_incidents": 1,
+        "mean": 0.17690312029432226,
+        "median": 0.14328034585080235,
+        "ci95_low": 0.17690312029432226,
+        "ci95_high": 0.17690312029432226
+      },
+      "persistence_active_domain_probabilistic_metrics.balanced_brier_score": {
+        "n_forecasts": 4,
+        "n_incidents": 1,
+        "mean": 0.249999500001,
+        "median": 0.249999500001,
+        "ci95_low": 0.249999500001,
+        "ci95_high": 0.249999500001
+      }
+    },
+    "history_calibrated_ensemble": {
+      "probabilistic_metrics.brier_score": {
+        "n_forecasts": 4,
+        "n_incidents": 1,
+        "mean": 0.020693078444941622,
+        "median": 0.02329137993947154,
+        "ci95_low": 0.020693078444941622,
+        "ci95_high": 0.020693078444941622
+      },
+      "probabilistic_metrics.balanced_brier_score": {
+        "n_forecasts": 4,
+        "n_incidents": 1,
+        "mean": 0.02264900170622963,
+        "median": 0.017674078867694603,
+        "ci95_low": 0.02264900170622963,
+        "ci95_high": 0.02264900170622963
+      },
+      "probabilistic_metrics.log_score": {
+        "n_forecasts": 4,
+        "n_incidents": 1,
+        "mean": 0.08462791873892378,
+        "median": 0.07596756788564014,
+        "ci95_low": 0.08462791873892378,
+        "ci95_high": 0.08462791873892378
+      },
+      "active_domain_probabilistic_metrics.brier_score": {
+        "n_forecasts": 4,
+        "n_incidents": 1,
+        "mean": 0.19641594049194291,
+        "median": 0.17106234065338577,
+        "ci95_low": 0.19641594049194291,
+        "ci95_high": 0.19641594049194291
+      },
+      "active_domain_probabilistic_metrics.balanced_brier_score": {
+        "n_forecasts": 4,
+        "n_incidents": 1,
+        "mean": 0.2600149668587633,
+        "median": 0.2565764043392872,
+        "ci95_low": 0.2600149668587633,
+        "ci95_high": 0.2600149668587633
+      },
+      "persistence_probabilistic_metrics.brier_score": {
+        "n_forecasts": 4,
+        "n_incidents": 1,
+        "mean": 0.0029601991587148435,
+        "median": 0.0012207006845937499,
+        "ci95_low": 0.0029601991587148435,
+        "ci95_high": 0.0029601991587148435
+      },
+      "persistence_probabilistic_metrics.balanced_brier_score": {
+        "n_forecasts": 4,
+        "n_incidents": 1,
+        "mean": 0.014215741914743575,
+        "median": 0.005998788243351529,
+        "ci95_low": 0.014215741914743575,
+        "ci95_high": 0.014215741914743575
+      },
+      "persistence_active_domain_probabilistic_metrics.brier_score": {
+        "n_forecasts": 4,
+        "n_incidents": 1,
+        "mean": 0.17690312029432226,
+        "median": 0.14328034585080235,
+        "ci95_low": 0.17690312029432226,
+        "ci95_high": 0.17690312029432226
+      },
+      "persistence_active_domain_probabilistic_metrics.balanced_brier_score": {
+        "n_forecasts": 4,
+        "n_incidents": 1,
+        "mean": 0.249999500001,
+        "median": 0.249999500001,
+        "ci95_low": 0.249999500001,
+        "ci95_high": 0.249999500001
+      }
+    }
+  },
+  "probabilistic_active_growth_summaries_by_method": {
+    "calibrated_ensemble": {
+      "probabilistic_metrics.brier_score": {
+        "n_forecasts": 2,
+        "n_incidents": 1,
+        "mean": 0.016946796056333008,
+        "median": 0.016946796056333008,
+        "ci95_low": 0.016946796056333008,
+        "ci95_high": 0.016946796056333008
+      },
+      "probabilistic_metrics.balanced_brier_score": {
+        "n_forecasts": 2,
+        "n_incidents": 1,
+        "mean": 0.03168153931276476,
+        "median": 0.03168153931276476,
+        "ci95_low": 0.03168153931276476,
+        "ci95_high": 0.03168153931276476
+      },
+      "probabilistic_metrics.log_score": {
+        "n_forecasts": 2,
+        "n_incidents": 1,
+        "mean": 0.09624739485377251,
+        "median": 0.09624739485377251,
+        "ci95_low": 0.09624739485377251,
+        "ci95_high": 0.09624739485377251
+      },
+      "active_domain_probabilistic_metrics.brier_score": {
+        "n_forecasts": 2,
+        "n_incidents": 1,
+        "mean": 0.317661493553556,
+        "median": 0.317661493553556,
+        "ci95_low": 0.317661493553556,
+        "ci95_high": 0.317661493553556
+      },
+      "active_domain_probabilistic_metrics.balanced_brier_score": {
+        "n_forecasts": 2,
+        "n_incidents": 1,
+        "mean": 0.44463150830837367,
+        "median": 0.44463150830837367,
+        "ci95_low": 0.44463150830837367,
+        "ci95_high": 0.44463150830837367
+      },
+      "persistence_probabilistic_metrics.brier_score": {
+        "n_forecasts": 2,
+        "n_incidents": 1,
+        "mean": 0.005920398316429687,
+        "median": 0.005920398316429687,
+        "ci95_low": 0.005920398316429687,
+        "ci95_high": 0.005920398316429687
+      },
+      "persistence_probabilistic_metrics.balanced_brier_score": {
+        "n_forecasts": 2,
+        "n_incidents": 1,
+        "mean": 0.02843148382848715,
+        "median": 0.02843148382848715,
+        "ci95_low": 0.02843148382848715,
+        "ci95_high": 0.02843148382848715
+      },
+      "persistence_active_domain_probabilistic_metrics.brier_score": {
+        "n_forecasts": 2,
+        "n_incidents": 1,
+        "mean": 0.35380624058764454,
+        "median": 0.35380624058764454,
+        "ci95_low": 0.35380624058764454,
+        "ci95_high": 0.35380624058764454
+      },
+      "persistence_active_domain_probabilistic_metrics.balanced_brier_score": {
+        "n_forecasts": 2,
+        "n_incidents": 1,
+        "mean": 0.499999000001,
+        "median": 0.499999000001,
+        "ci95_low": 0.499999000001,
+        "ci95_high": 0.499999000001
+      }
+    },
+    "history_calibrated_ensemble": {
+      "probabilistic_metrics.brier_score": {
+        "n_forecasts": 2,
+        "n_incidents": 1,
+        "mean": 0.016679013271732233,
+        "median": 0.016679013271732233,
+        "ci95_low": 0.016679013271732233,
+        "ci95_high": 0.016679013271732233
+      },
+      "probabilistic_metrics.balanced_brier_score": {
+        "n_forecasts": 2,
+        "n_incidents": 1,
+        "mean": 0.03154513798292755,
+        "median": 0.03154513798292755,
+        "ci95_low": 0.03154513798292755,
+        "ci95_high": 0.03154513798292755
+      },
+      "probabilistic_metrics.log_score": {
+        "n_forecasts": 2,
+        "n_incidents": 1,
+        "mean": 0.09545321059131869,
+        "median": 0.09545321059131869,
+        "ci95_low": 0.09545321059131869,
+        "ci95_high": 0.09545321059131869
+      },
+      "active_domain_probabilistic_metrics.brier_score": {
+        "n_forecasts": 2,
+        "n_incidents": 1,
+        "mean": 0.31771088536343106,
+        "median": 0.31771088536343106,
+        "ci95_low": 0.31771088536343106,
+        "ci95_high": 0.31771088536343106
+      },
+      "active_domain_probabilistic_metrics.balanced_brier_score": {
+        "n_forecasts": 2,
+        "n_incidents": 1,
+        "mean": 0.4449089380970719,
+        "median": 0.4449089380970719,
+        "ci95_low": 0.4449089380970719,
+        "ci95_high": 0.4449089380970719
+      },
+      "persistence_probabilistic_metrics.brier_score": {
+        "n_forecasts": 2,
+        "n_incidents": 1,
+        "mean": 0.005920398316429687,
+        "median": 0.005920398316429687,
+        "ci95_low": 0.005920398316429687,
+        "ci95_high": 0.005920398316429687
+      },
+      "persistence_probabilistic_metrics.balanced_brier_score": {
+        "n_forecasts": 2,
+        "n_incidents": 1,
+        "mean": 0.02843148382848715,
+        "median": 0.02843148382848715,
+        "ci95_low": 0.02843148382848715,
+        "ci95_high": 0.02843148382848715
+      },
+      "persistence_active_domain_probabilistic_metrics.brier_score": {
+        "n_forecasts": 2,
+        "n_incidents": 1,
+        "mean": 0.35380624058764454,
+        "median": 0.35380624058764454,
+        "ci95_low": 0.35380624058764454,
+        "ci95_high": 0.35380624058764454
+      },
+      "persistence_active_domain_probabilistic_metrics.balanced_brier_score": {
+        "n_forecasts": 2,
+        "n_incidents": 1,
+        "mean": 0.499999000001,
+        "median": 0.499999000001,
+        "ci95_low": 0.499999000001,
+        "ci95_high": 0.499999000001
+      }
+    }
+  },
+  "probabilistic_skill_against_persistence_by_method": {
+    "calibrated_ensemble": {
+      "whole_domain_brier_skill": -1.8624418747812936,
+      "whole_domain_balanced_brier_skill": -0.11431184893069801,
+      "active_domain_brier_skill": 0.10215972158675024,
+      "active_domain_balanced_brier_skill": 0.11073520485544086,
+      "definition": "1 - aggregate posterior score / aggregate persistence score; computed over intervals with observed growth"
+    },
+    "history_calibrated_ensemble": {
+      "whole_domain_brier_skill": -1.8172113395557075,
+      "whole_domain_balanced_brier_skill": -0.10951430369317028,
+      "active_domain_brier_skill": 0.10202012029030894,
+      "active_domain_balanced_brier_skill": 0.11018034416832423,
+      "definition": "1 - aggregate posterior score / aggregate persistence score; computed over intervals with observed growth"
+    }
+  },
+  "interpretation_constraints": [
+    "each forecast starts from the observed perimeter at its own start time",
+    "historical branches use only the perimeter preceding forecast initialization",
+    "only the designated earlier interval is used to select the spread adjustment",
+    "NASA POWER is coarse reanalysis forcing rather than incident-station weather",
+    "observed growth includes unobserved historical suppression effects",
+    "no historical aerial-drop sequence is available for causal policy scoring"
+  ]
+}

@@ -1,0 +1,777 @@
+{
+  "registry_id": "us-wildfire-reference-fleet-evidence-v1",
+  "researched_at": "2026-07-31",
+  "profile_count": 9,
+  "document_count": 19,
+  "field_closed_profile_count": 0,
+  "domain_status_counts": {
+    "closed": 0,
+    "open": 32,
+    "partial": 32,
+    "proxy": 5
+  },
+  "profiles": [
+    {
+      "profile_id": "calfire-s2t-retardant",
+      "display_name": "CAL FIRE Grumman S-2T airtanker",
+      "resource_kind": "retardant",
+      "closure_score": 0.28125,
+      "field_closed": false,
+      "closed_domains": [],
+      "unresolved_domains": [
+        "configuration_identity",
+        "delivery_pattern",
+        "delivery_system",
+        "dispatch_turnaround",
+        "endurance_reserve",
+        "environmental_performance",
+        "mass_balance",
+        "mission_mobility"
+      ],
+      "domains": {
+        "configuration_identity": {
+          "status": "partial",
+          "evidence_grade": "public_specification",
+          "applicability": "exact_current_configuration",
+          "document_ids": [
+            "calfire-s2t-current",
+            "nwcg-pms514-s2-2026"
+          ],
+          "finding": "Current fleet, engine, gross weight, role, and S-2 procedures are identified; tail equipment lists and weight-and-balance records are absent."
+        },
+        "delivery_pattern": {
+          "status": "partial",
+          "evidence_grade": "engineering_validated",
+          "applicability": "exact_historical_configuration",
+          "document_ids": [
+            "usfs-s2t-drop-guide-2006"
+          ],
+          "finding": "Measured line lengths and controller settings now drive the simulator; terrain, wind, and current configuration validation remain open."
+        },
+        "delivery_system": {
+          "status": "partial",
+          "evidence_grade": "engineering_validated",
+          "applicability": "exact_historical_configuration",
+          "document_ids": [
+            "usfs-s2t-drop-guide-2006"
+          ],
+          "finding": "Controlled testing covers the Marsh 1,200-gallon constant-flow system; current tail-level continuity is not established."
+        },
+        "dispatch_turnaround": {
+          "status": "open",
+          "evidence_grade": "scenario_assumption",
+          "applicability": "none",
+          "document_ids": [],
+          "finding": "No configuration-specific public evidence located."
+        },
+        "endurance_reserve": {
+          "status": "open",
+          "evidence_grade": "scenario_assumption",
+          "applicability": "none",
+          "document_ids": [],
+          "finding": "No configuration-specific public evidence located."
+        },
+        "environmental_performance": {
+          "status": "proxy",
+          "evidence_grade": "public_specification",
+          "applicability": "operational_standard",
+          "document_ids": [
+            "nwcg-pms514-2026"
+          ],
+          "finding": "Current minimum drop height and operational downloading rules are known; aircraft performance charts are not public."
+        },
+        "mass_balance": {
+          "status": "open",
+          "evidence_grade": "scenario_assumption",
+          "applicability": "none",
+          "document_ids": [],
+          "finding": "No configuration-specific public evidence located."
+        },
+        "mission_mobility": {
+          "status": "partial",
+          "evidence_grade": "public_specification",
+          "applicability": "exact_current_configuration",
+          "document_ids": [
+            "calfire-s2t-current"
+          ],
+          "finding": "Maximum speed and loaded/empty range are public; cruise, climb, reserve, and diversion schedules are absent."
+        }
+      }
+    },
+    {
+      "profile_id": "calfire-c130h-retardant",
+      "display_name": "CAL FIRE C-130H airtanker",
+      "resource_kind": "retardant",
+      "closure_score": 0.1875,
+      "field_closed": false,
+      "closed_domains": [],
+      "unresolved_domains": [
+        "configuration_identity",
+        "delivery_pattern",
+        "delivery_system",
+        "dispatch_turnaround",
+        "endurance_reserve",
+        "environmental_performance",
+        "mass_balance",
+        "mission_mobility"
+      ],
+      "domains": {
+        "configuration_identity": {
+          "status": "partial",
+          "evidence_grade": "public_specification",
+          "applicability": "exact_current_configuration",
+          "document_ids": [
+            "calfire-c130-current"
+          ],
+          "finding": "Ex-USCG HC-130H airframe, T56-A-15 engines, gross weight, and 4,000-gallon RDS are identified; tail configuration lists are absent."
+        },
+        "delivery_pattern": {
+          "status": "open",
+          "evidence_grade": "scenario_assumption",
+          "applicability": "none",
+          "document_ids": [],
+          "finding": "No public cup-grid or IAB test table for the CAL FIRE RDS was located."
+        },
+        "delivery_system": {
+          "status": "open",
+          "evidence_grade": "scenario_assumption",
+          "applicability": "none",
+          "document_ids": [],
+          "finding": "No public CAL FIRE 4,000-gallon RDS flight-manual supplement or engineering envelope was located."
+        },
+        "dispatch_turnaround": {
+          "status": "open",
+          "evidence_grade": "scenario_assumption",
+          "applicability": "none",
+          "document_ids": [],
+          "finding": "No configuration-specific public evidence located."
+        },
+        "endurance_reserve": {
+          "status": "open",
+          "evidence_grade": "scenario_assumption",
+          "applicability": "none",
+          "document_ids": [],
+          "finding": "No configuration-specific public evidence located."
+        },
+        "environmental_performance": {
+          "status": "proxy",
+          "evidence_grade": "flight_manual",
+          "applicability": "base_airframe_only",
+          "document_ids": [
+            "afman-c130h-maffs-2018"
+          ],
+          "finding": "MAFFS high/hot and engine-out rules demonstrate required axes but are inapplicable to the CAL FIRE RDS installation."
+        },
+        "mass_balance": {
+          "status": "proxy",
+          "evidence_grade": "flight_manual",
+          "applicability": "base_airframe_only",
+          "document_ids": [
+            "afman-c130h-weight-2021"
+          ],
+          "finding": "Military C-130H limits and planning rules cannot close CAL FIRE RDS weight and balance."
+        },
+        "mission_mobility": {
+          "status": "partial",
+          "evidence_grade": "public_specification",
+          "applicability": "exact_current_configuration",
+          "document_ids": [
+            "calfire-c130-current",
+            "afman-c130h-weight-2021"
+          ],
+          "finding": "Public range/endurance and base-airframe planning factors exist; RDS drag and exact operating weight are absent."
+        }
+      }
+    },
+    {
+      "profile_id": "calfire-s70i-water",
+      "display_name": "CAL FIRE S-70i FIREHAWK",
+      "resource_kind": "water",
+      "closure_score": 0.3333333333333333,
+      "field_closed": false,
+      "closed_domains": [],
+      "unresolved_domains": [
+        "configuration_identity",
+        "delivery_pattern",
+        "delivery_system",
+        "dispatch_turnaround",
+        "endurance_reserve",
+        "environmental_performance",
+        "mass_balance",
+        "mission_mobility",
+        "refill_site_envelope"
+      ],
+      "domains": {
+        "configuration_identity": {
+          "status": "partial",
+          "evidence_grade": "public_specification",
+          "applicability": "exact_current_configuration",
+          "document_ids": [
+            "calfire-firehawk-current"
+          ],
+          "finding": "CAL FIRE build, builder, gross weights, tank, crew, and roles are identified; tail equipment lists are absent."
+        },
+        "delivery_pattern": {
+          "status": "open",
+          "evidence_grade": "scenario_assumption",
+          "applicability": "none",
+          "document_ids": [],
+          "finding": "No public gridded deposition or line/area test data for the FIREHAWK belly tank were located."
+        },
+        "delivery_system": {
+          "status": "partial",
+          "evidence_grade": "public_specification",
+          "applicability": "exact_current_configuration",
+          "document_ids": [
+            "calfire-firehawk-current",
+            "lockheed-firehawk-2025"
+          ],
+          "finding": "Tank capacity, split-load capability, foam volume, and snorkel are public."
+        },
+        "dispatch_turnaround": {
+          "status": "open",
+          "evidence_grade": "scenario_assumption",
+          "applicability": "none",
+          "document_ids": [],
+          "finding": "No configuration-specific public evidence located."
+        },
+        "endurance_reserve": {
+          "status": "open",
+          "evidence_grade": "scenario_assumption",
+          "applicability": "none",
+          "document_ids": [],
+          "finding": "No configuration-specific public evidence located."
+        },
+        "environmental_performance": {
+          "status": "partial",
+          "evidence_grade": "public_specification",
+          "applicability": "exact_current_configuration",
+          "document_ids": [
+            "sikorsky-ifly-2019"
+          ],
+          "finding": "The exact calculation path is identified in Sikorsky iFly, including tank drag; operator data access is required."
+        },
+        "mass_balance": {
+          "status": "partial",
+          "evidence_grade": "public_specification",
+          "applicability": "exact_current_configuration",
+          "document_ids": [
+            "calfire-firehawk-current"
+          ],
+          "finding": "Internal/external gross weights are public; operating weight, crew/equipment state, and CG envelope are absent."
+        },
+        "mission_mobility": {
+          "status": "partial",
+          "evidence_grade": "public_specification",
+          "applicability": "exact_current_configuration",
+          "document_ids": [
+            "calfire-firehawk-current",
+            "lockheed-firehawk-2025"
+          ],
+          "finding": "Maximum speed and nominal endurance are known; mission fuel schedules are absent."
+        },
+        "refill_site_envelope": {
+          "status": "partial",
+          "evidence_grade": "public_specification",
+          "applicability": "exact_current_configuration",
+          "document_ids": [
+            "lockheed-firehawk-2025"
+          ],
+          "finding": "Manufacturer states tank refill in under 45 seconds; water-depth, hover-power, approach, and source-geometry limits remain open."
+        }
+      }
+    },
+    {
+      "profile_id": "calfire-uh1h-water",
+      "display_name": "CAL FIRE UH-1H Super Huey",
+      "resource_kind": "water",
+      "closure_score": 0.19444444444444445,
+      "field_closed": false,
+      "closed_domains": [],
+      "unresolved_domains": [
+        "configuration_identity",
+        "delivery_pattern",
+        "delivery_system",
+        "dispatch_turnaround",
+        "endurance_reserve",
+        "environmental_performance",
+        "mass_balance",
+        "mission_mobility",
+        "refill_site_envelope"
+      ],
+      "domains": {
+        "configuration_identity": {
+          "status": "partial",
+          "evidence_grade": "public_specification",
+          "applicability": "exact_current_configuration",
+          "document_ids": [
+            "calfire-uh1h-current",
+            "usfs-aircraft-inspector-guide-2018"
+          ],
+          "finding": "The -703 Super Huey is identified, but exact CAL FIRE STCs, blades, tail modifications, and equipment list are absent."
+        },
+        "delivery_pattern": {
+          "status": "open",
+          "evidence_grade": "scenario_assumption",
+          "applicability": "none",
+          "document_ids": [],
+          "finding": "No exact CAL FIRE fixed-tank or bucket deposition test was located."
+        },
+        "delivery_system": {
+          "status": "partial",
+          "evidence_grade": "public_specification",
+          "applicability": "exact_current_configuration",
+          "document_ids": [
+            "calfire-uh1h-current"
+          ],
+          "finding": "Fixed-tank and bucket capacities are public; installed tank model and limitations are absent."
+        },
+        "dispatch_turnaround": {
+          "status": "open",
+          "evidence_grade": "scenario_assumption",
+          "applicability": "none",
+          "document_ids": [],
+          "finding": "No configuration-specific public evidence located."
+        },
+        "endurance_reserve": {
+          "status": "open",
+          "evidence_grade": "scenario_assumption",
+          "applicability": "none",
+          "document_ids": [],
+          "finding": "No configuration-specific public evidence located."
+        },
+        "environmental_performance": {
+          "status": "proxy",
+          "evidence_grade": "engineering_validated",
+          "applicability": "base_airframe_only",
+          "document_ids": [
+            "usfs-aircraft-inspector-guide-2018",
+            "army-uh1h-manual"
+          ],
+          "finding": "The public Army charts are -13 configuration data; the Forest Service explicitly warns they do not represent the -703 airframe/engine combination."
+        },
+        "mass_balance": {
+          "status": "open",
+          "evidence_grade": "scenario_assumption",
+          "applicability": "none",
+          "document_ids": [],
+          "finding": "No configuration-specific public evidence located."
+        },
+        "mission_mobility": {
+          "status": "partial",
+          "evidence_grade": "public_specification",
+          "applicability": "exact_current_configuration",
+          "document_ids": [
+            "calfire-uh1h-current"
+          ],
+          "finding": "Cruise, range, endurance, gross weight, and capacity are public."
+        },
+        "refill_site_envelope": {
+          "status": "open",
+          "evidence_grade": "scenario_assumption",
+          "applicability": "none",
+          "document_ids": [],
+          "finding": "No configuration-specific public evidence located."
+        }
+      }
+    },
+    {
+      "profile_id": "calfire-king-air-200-intelligence",
+      "display_name": "CAL FIRE King Air 200 Intel 641",
+      "resource_kind": "sensor",
+      "closure_score": 0.21428571428571427,
+      "field_closed": false,
+      "closed_domains": [],
+      "unresolved_domains": [
+        "configuration_identity",
+        "dispatch_turnaround",
+        "endurance_reserve",
+        "environmental_performance",
+        "mass_balance",
+        "mission_mobility",
+        "mission_payload"
+      ],
+      "domains": {
+        "configuration_identity": {
+          "status": "partial",
+          "evidence_grade": "public_specification",
+          "applicability": "exact_current_configuration",
+          "document_ids": [
+            "calfire-kingair-current"
+          ],
+          "finding": "Operator and role are identified; tail equipment and sensor configuration are absent."
+        },
+        "dispatch_turnaround": {
+          "status": "open",
+          "evidence_grade": "scenario_assumption",
+          "applicability": "none",
+          "document_ids": [],
+          "finding": "No configuration-specific public evidence located."
+        },
+        "endurance_reserve": {
+          "status": "open",
+          "evidence_grade": "scenario_assumption",
+          "applicability": "none",
+          "document_ids": [],
+          "finding": "No configuration-specific public evidence located."
+        },
+        "environmental_performance": {
+          "status": "open",
+          "evidence_grade": "scenario_assumption",
+          "applicability": "none",
+          "document_ids": [],
+          "finding": "No configuration-specific public evidence located."
+        },
+        "mass_balance": {
+          "status": "open",
+          "evidence_grade": "scenario_assumption",
+          "applicability": "none",
+          "document_ids": [],
+          "finding": "No configuration-specific public evidence located."
+        },
+        "mission_mobility": {
+          "status": "partial",
+          "evidence_grade": "public_specification",
+          "applicability": "exact_current_configuration",
+          "document_ids": [
+            "calfire-kingair-current"
+          ],
+          "finding": "Nominal speed/endurance are public; flight-manual schedules are absent."
+        },
+        "mission_payload": {
+          "status": "partial",
+          "evidence_grade": "public_specification",
+          "applicability": "role_only",
+          "document_ids": [
+            "calfire-kingair-current"
+          ],
+          "finding": "IR/intelligence role is public; sensor detection, geolocation, latency, and downlink envelopes are absent."
+        }
+      }
+    },
+    {
+      "profile_id": "calfire-ov10a-air-tactical",
+      "display_name": "CAL FIRE OV-10A Bronco",
+      "resource_kind": "sensor",
+      "closure_score": 0.21428571428571427,
+      "field_closed": false,
+      "closed_domains": [],
+      "unresolved_domains": [
+        "configuration_identity",
+        "dispatch_turnaround",
+        "endurance_reserve",
+        "environmental_performance",
+        "mass_balance",
+        "mission_mobility",
+        "mission_payload"
+      ],
+      "domains": {
+        "configuration_identity": {
+          "status": "partial",
+          "evidence_grade": "public_specification",
+          "applicability": "exact_current_configuration",
+          "document_ids": [
+            "calfire-ov10-current"
+          ],
+          "finding": "Operator and role are identified; exact A/D model equipment and tail configuration are absent."
+        },
+        "dispatch_turnaround": {
+          "status": "open",
+          "evidence_grade": "scenario_assumption",
+          "applicability": "none",
+          "document_ids": [],
+          "finding": "No configuration-specific public evidence located."
+        },
+        "endurance_reserve": {
+          "status": "open",
+          "evidence_grade": "scenario_assumption",
+          "applicability": "none",
+          "document_ids": [],
+          "finding": "No configuration-specific public evidence located."
+        },
+        "environmental_performance": {
+          "status": "open",
+          "evidence_grade": "scenario_assumption",
+          "applicability": "none",
+          "document_ids": [],
+          "finding": "No configuration-specific public evidence located."
+        },
+        "mass_balance": {
+          "status": "open",
+          "evidence_grade": "scenario_assumption",
+          "applicability": "none",
+          "document_ids": [],
+          "finding": "No configuration-specific public evidence located."
+        },
+        "mission_mobility": {
+          "status": "partial",
+          "evidence_grade": "public_specification",
+          "applicability": "exact_current_configuration",
+          "document_ids": [
+            "calfire-ov10-current"
+          ],
+          "finding": "Nominal speed/endurance are public; flight-manual schedules are absent."
+        },
+        "mission_payload": {
+          "status": "partial",
+          "evidence_grade": "public_specification",
+          "applicability": "role_only",
+          "document_ids": [
+            "calfire-ov10-current",
+            "nwcg-pms514-2026"
+          ],
+          "finding": "Aerial-supervision role and procedural coupling are public; sensor/communications performance is absent."
+        }
+      }
+    },
+    {
+      "profile_id": "interagency-skydio-x10",
+      "display_name": "Skydio X10",
+      "resource_kind": "sensor",
+      "closure_score": 0.2857142857142857,
+      "field_closed": false,
+      "closed_domains": [],
+      "unresolved_domains": [
+        "configuration_identity",
+        "dispatch_turnaround",
+        "endurance_reserve",
+        "environmental_performance",
+        "mass_balance",
+        "mission_mobility",
+        "mission_payload"
+      ],
+      "domains": {
+        "configuration_identity": {
+          "status": "partial",
+          "evidence_grade": "public_specification",
+          "applicability": "exact_current_configuration",
+          "document_ids": [
+            "skydio-x10-spec",
+            "nifc-uas-ordering-2026"
+          ],
+          "finding": "Aircraft and supported interagency role are traceable; payload/software/waiver configuration is mission-specific."
+        },
+        "dispatch_turnaround": {
+          "status": "open",
+          "evidence_grade": "scenario_assumption",
+          "applicability": "none",
+          "document_ids": [],
+          "finding": "No configuration-specific public evidence located."
+        },
+        "endurance_reserve": {
+          "status": "open",
+          "evidence_grade": "scenario_assumption",
+          "applicability": "none",
+          "document_ids": [],
+          "finding": "No configuration-specific public evidence located."
+        },
+        "environmental_performance": {
+          "status": "partial",
+          "evidence_grade": "public_specification",
+          "applicability": "exact_current_configuration",
+          "document_ids": [
+            "skydio-x10-spec"
+          ],
+          "finding": "Published wind, temperature, ingress, and ceiling limits are available."
+        },
+        "mass_balance": {
+          "status": "open",
+          "evidence_grade": "scenario_assumption",
+          "applicability": "none",
+          "document_ids": [],
+          "finding": "No configuration-specific public evidence located."
+        },
+        "mission_mobility": {
+          "status": "partial",
+          "evidence_grade": "public_specification",
+          "applicability": "exact_current_configuration",
+          "document_ids": [
+            "skydio-x10-spec"
+          ],
+          "finding": "Nominal speed and endurance are public; wildfire mission-cycle validation is absent."
+        },
+        "mission_payload": {
+          "status": "partial",
+          "evidence_grade": "public_specification",
+          "applicability": "exact_current_configuration",
+          "document_ids": [
+            "skydio-x10-spec"
+          ],
+          "finding": "Published sensor suite exists; smoke/thermal detection and geolocation performance remain unvalidated here."
+        }
+      }
+    },
+    {
+      "profile_id": "interagency-parrot-anafi-usa",
+      "display_name": "Parrot ANAFI USA",
+      "resource_kind": "sensor",
+      "closure_score": 0.2857142857142857,
+      "field_closed": false,
+      "closed_domains": [],
+      "unresolved_domains": [
+        "configuration_identity",
+        "dispatch_turnaround",
+        "endurance_reserve",
+        "environmental_performance",
+        "mass_balance",
+        "mission_mobility",
+        "mission_payload"
+      ],
+      "domains": {
+        "configuration_identity": {
+          "status": "partial",
+          "evidence_grade": "public_specification",
+          "applicability": "exact_current_configuration",
+          "document_ids": [
+            "parrot-anafi-spec",
+            "nifc-uas-ordering-2026"
+          ],
+          "finding": "Aircraft and supported interagency role are traceable; payload/software/waiver configuration is mission-specific."
+        },
+        "dispatch_turnaround": {
+          "status": "open",
+          "evidence_grade": "scenario_assumption",
+          "applicability": "none",
+          "document_ids": [],
+          "finding": "No configuration-specific public evidence located."
+        },
+        "endurance_reserve": {
+          "status": "open",
+          "evidence_grade": "scenario_assumption",
+          "applicability": "none",
+          "document_ids": [],
+          "finding": "No configuration-specific public evidence located."
+        },
+        "environmental_performance": {
+          "status": "partial",
+          "evidence_grade": "public_specification",
+          "applicability": "exact_current_configuration",
+          "document_ids": [
+            "parrot-anafi-spec"
+          ],
+          "finding": "Published wind, temperature, ingress, and ceiling limits are available."
+        },
+        "mass_balance": {
+          "status": "open",
+          "evidence_grade": "scenario_assumption",
+          "applicability": "none",
+          "document_ids": [],
+          "finding": "No configuration-specific public evidence located."
+        },
+        "mission_mobility": {
+          "status": "partial",
+          "evidence_grade": "public_specification",
+          "applicability": "exact_current_configuration",
+          "document_ids": [
+            "parrot-anafi-spec"
+          ],
+          "finding": "Nominal speed and endurance are public; wildfire mission-cycle validation is absent."
+        },
+        "mission_payload": {
+          "status": "partial",
+          "evidence_grade": "public_specification",
+          "applicability": "exact_current_configuration",
+          "document_ids": [
+            "parrot-anafi-spec"
+          ],
+          "finding": "Published EO/IR sensor specifications exist; smoke/thermal detection and geolocation performance remain unvalidated here."
+        }
+      }
+    },
+    {
+      "profile_id": "interagency-freefly-alta-x-ignition",
+      "display_name": "Freefly Alta X with approved aerial-ignition role",
+      "resource_kind": "sensor",
+      "closure_score": 0.25,
+      "field_closed": false,
+      "closed_domains": [],
+      "unresolved_domains": [
+        "configuration_identity",
+        "dispatch_turnaround",
+        "endurance_reserve",
+        "environmental_performance",
+        "mass_balance",
+        "mission_mobility",
+        "mission_payload"
+      ],
+      "domains": {
+        "configuration_identity": {
+          "status": "partial",
+          "evidence_grade": "public_specification",
+          "applicability": "exact_current_configuration",
+          "document_ids": [
+            "freefly-alta-x-spec",
+            "nifc-uas-ordering-2026"
+          ],
+          "finding": "Base aircraft and aerial-ignition role are traceable; ignition payload integration and waiver are mission-specific."
+        },
+        "dispatch_turnaround": {
+          "status": "open",
+          "evidence_grade": "scenario_assumption",
+          "applicability": "none",
+          "document_ids": [],
+          "finding": "No configuration-specific public evidence located."
+        },
+        "endurance_reserve": {
+          "status": "open",
+          "evidence_grade": "scenario_assumption",
+          "applicability": "none",
+          "document_ids": [],
+          "finding": "No configuration-specific public evidence located."
+        },
+        "environmental_performance": {
+          "status": "partial",
+          "evidence_grade": "public_specification",
+          "applicability": "exact_current_configuration",
+          "document_ids": [
+            "freefly-alta-x-spec"
+          ],
+          "finding": "Some nominal environmental limits are public; full payload-dependent wind and density-altitude closure is absent."
+        },
+        "mass_balance": {
+          "status": "open",
+          "evidence_grade": "scenario_assumption",
+          "applicability": "none",
+          "document_ids": [],
+          "finding": "No configuration-specific public evidence located."
+        },
+        "mission_mobility": {
+          "status": "partial",
+          "evidence_grade": "public_specification",
+          "applicability": "exact_current_configuration",
+          "document_ids": [
+            "freefly-alta-x-spec"
+          ],
+          "finding": "Payload/endurance examples are public; wildfire mission-cycle validation is absent."
+        },
+        "mission_payload": {
+          "status": "proxy",
+          "evidence_grade": "public_specification",
+          "applicability": "role_only",
+          "document_ids": [
+            "nifc-uas-ordering-2026",
+            "freefly-alta-x-spec"
+          ],
+          "finding": "Aerial ignition is an operational UAS role and the aircraft is payload-capable; exact ignition-system performance is absent."
+        }
+      }
+    }
+  ],
+  "interpretation": "Closed means exact-current configuration evidence from an approved flight manual or controlled engineering validation. Partial and proxy evidence can constrain research experiments but cannot support dispatch or flight-safety decisions.",
+  "implemented_public_evidence": {
+    "s2t_coverage_level_3": {
+      "line_length_m": 181.356,
+      "effective_width_m": 20.49075630252101,
+      "flow_rate_l_s": 1627.727067,
+      "controller_setting": "3",
+      "prior_generic_length_m": 650.0,
+      "prior_generic_width_m": 70.0,
+      "prior_to_measured_equivalent_bounding_area_ratio": 12.243948099007309
+    },
+    "firehawk_refill": {
+      "published_upper_bound_s": 45.0,
+      "canonical_simulator_ticks": 1,
+      "tick_duration_s": 60.0
+    }
+  }
+}

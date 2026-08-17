@@ -1,0 +1,125 @@
+{
+  "schema_version": 1,
+  "config": "/Users/AmilAgrawal/Documents/Codex/2026-07-26/le/aeolus_py/configs/cluster_tensor_incident.yaml",
+  "device": "cpu",
+  "compiled_transition": false,
+  "hardware": {
+    "platform": "macOS-15.3.1-arm64-arm-64bit",
+    "torch": "2.13.0",
+    "cuda": null,
+    "gpu": null
+  },
+  "environment": {
+    "batch_size": 32,
+    "resources": 12,
+    "service_sites": 6,
+    "segments": 32,
+    "grid_size": 64,
+    "fire_substeps": 2,
+    "decision_interval_min": 3,
+    "parameter_ranges": {
+      "spread_rate_scale": [
+        0.8,
+        1.6
+      ],
+      "wind_coefficient": [
+        0.052,
+        0.088
+      ],
+      "slope_coefficient": [
+        1.0,
+        1.7
+      ],
+      "burn_duration_min": [
+        15.0,
+        26.0
+      ],
+      "water_line_reduction": [
+        0.42,
+        0.68
+      ],
+      "retardant_line_reduction": [
+        0.66,
+        0.88
+      ],
+      "observation_weight": [
+        0.68,
+        0.94
+      ]
+    }
+  },
+  "policies": [
+    {
+      "policy": "hold",
+      "steps": 80,
+      "batch_size": 32,
+      "mean_initial_expected_loss": 0.0019774618558585644,
+      "mean_initial_burned_fraction": 0.0,
+      "mean_final_expected_loss": 0.015406128019094467,
+      "mean_final_burned_fraction": 0.009385807439684868,
+      "mean_return": 1.1147819757461548,
+      "mean_delivered_l": 0.0,
+      "mean_wasted_l": 0.0,
+      "mean_blocked_actions": 0.0,
+      "contained_fraction": 0.1875,
+      "escaped_fraction": 0.0,
+      "terminal_fraction": 0.0,
+      "environment_steps_per_second": 893.579586889012,
+      "agent_decisions_per_second": 10722.955042668144,
+      "elapsed_s": 2.86488191713579
+    },
+    {
+      "policy": "uniform_valid",
+      "steps": 80,
+      "batch_size": 32,
+      "mean_initial_expected_loss": 0.0019774618558585644,
+      "mean_initial_burned_fraction": 0.0,
+      "mean_final_expected_loss": 0.005182239226996899,
+      "mean_final_burned_fraction": 0.003133973106741905,
+      "mean_return": 10.770898818969727,
+      "mean_delivered_l": 326287.5,
+      "mean_wasted_l": 199332.640625,
+      "mean_blocked_actions": 0.0,
+      "contained_fraction": 0.9375,
+      "escaped_fraction": 0.0,
+      "terminal_fraction": 0.0,
+      "environment_steps_per_second": 846.5351971916855,
+      "agent_decisions_per_second": 10158.422366300227,
+      "elapsed_s": 3.02409162488766
+    },
+    {
+      "policy": "incident_risk_greedy",
+      "steps": 80,
+      "batch_size": 32,
+      "mean_initial_expected_loss": 0.0019774618558585644,
+      "mean_initial_burned_fraction": 0.0,
+      "mean_final_expected_loss": 0.005981521215289831,
+      "mean_final_burned_fraction": 0.0036959743592888117,
+      "mean_return": 8.7521333694458,
+      "mean_delivered_l": 93325.0,
+      "mean_wasted_l": 44667.67578125,
+      "mean_blocked_actions": 0.0,
+      "contained_fraction": 0.75,
+      "escaped_fraction": 0.0,
+      "terminal_fraction": 0.0,
+      "environment_steps_per_second": 843.3045910073553,
+      "agent_decisions_per_second": 10119.655092088264,
+      "elapsed_s": 3.0356765838805586
+    }
+  ],
+  "paired_greedy_minus_hold": {
+    "mean_paired_delta_return": 7.637351989746094,
+    "paired_improvement_fraction_return": 0.78125,
+    "mean_paired_delta_expected_loss": -0.009424606338143349,
+    "paired_improvement_fraction_expected_loss": 1.0,
+    "mean_paired_delta_burned_fraction": -0.0056898328475654125,
+    "paired_improvement_fraction_burned_fraction": 1.0
+  },
+  "end_to_end_policy_and_environment": {
+    "steps": 20,
+    "environment_steps_per_second": 727.1571464764831,
+    "agent_decisions_per_second": 8725.885757717797,
+    "elapsed_s": 0.8801398749928921
+  },
+  "interpretation": "This local result is a mechanism and CPU-throughput check. Accelerator throughput and learning claims require rerunning the same manifest on the target cluster and retaining this artifact."
+}

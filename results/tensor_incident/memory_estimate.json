@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "config": "/Users/AmilAgrawal/Documents/Codex/2026-07-26/le/aeolus_py/configs/cluster_tensor_incident.yaml",
+  "batch_size_per_rank": 2048,
+  "grid_size": 64,
+  "resources": 12,
+  "tasks": 55,
+  "rollout_steps": 128,
+  "recurrent_sequence_length": 16,
+  "bytes": {
+    "state_per_world": 251231,
+    "observation_per_world": 6239,
+    "rollout_per_world_step": 18731,
+    "diagnostics_per_world_step": 48,
+    "persistent_environment": 527298560,
+    "rollout_storage": 4910219264,
+    "policy_parameters": 24805464,
+    "policy_parameters_gradients_adam_estimate": 99221856,
+    "accounted_lower_bound": 5536739680
+  },
+  "gib": {
+    "persistent_environment": 0.4910850524902344,
+    "rollout_storage": 4.572998046875,
+    "policy_parameters_gradients_adam_estimate": 0.09240755438804626,
+    "accounted_lower_bound": 5.156490653753281
+  },
+  "exclusions": [
+    "compiled transition workspace and graph pools",
+    "fire and front-extraction intermediate tensors",
+    "attention and recurrent autograd activations",
+    "PPO temporary tensors and allocator fragmentation",
+    "CUDA context, NCCL buffers, and framework caches"
+  ],
+  "interpretation": "This is a persistent-storage lower bound. Select the actual batch only from peak allocated/reserved memory measured after compile and several complete PPO updates on the target accelerator."
+}
