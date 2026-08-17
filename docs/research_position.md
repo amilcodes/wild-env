@@ -18,13 +18,17 @@ The simulator landscape has three useful fidelity classes:
 | operational/semi-empirical spread tools | Behave/FlamMap/FARSITE family | mature fuel and fire-behavior workflows | weaker fit for millions of closed-loop MARL steps |
 | coupled physics models | WRF-Fire, FIRETEC, QUIC-Fire | atmosphere/fire or high-resolution plume/flow behavior | expensive setup and execution; unsuitable as the sole training kernel |
 
-Aeolus v0.3 spans the first and second classes: its raster propagation remains
+Aeolus v0.5 spans the first and second classes: its propagation remains
 optimized for repeated research episodes, while local surface behavior is
 derived from the operational Rothermel/Scott–Burgan implementation in
-Pyretechnics. Its distinguishing decision content is actor/critic information
+Pyretechnics and the fireline is represented by a WENO5/RK3 signed level set.
+Its distinguishing decision content is actor/critic information
 separation, heterogeneous logistics, belief-driven candidate tasks, capacity
 conflicts, an exact assignment baseline, historical timestamp assimilation and
-causal-mode separation. Crown and ember modules are implemented, but the
+causal-mode separation. Suppression includes conserved liquid coverage,
+multi-minute line production, engagement/breach, and explicit logistics.
+Two-perimeter replay initializes arrival history and a localized recent
+velocity correction. Crown and ember modules are implemented, but the
 integrated spread model still requires incident calibration and geographic
 holdout evidence.
 
@@ -55,13 +59,21 @@ response” on their own.
 
 ## Current validity envelope
 
-Version 0.3 is suitable for:
+Version 0.5 is suitable for:
 
 - software and MARL method development;
 - ablation of observation delay, resource mix and assignment semantics;
 - repeatable paired comparisons inside the stated kernel;
 - import/replay of public perimeter timestamps and terrain;
 - batched GPU fire ensembles and profiling the policy/environment boundary.
+- numerical grid-refinement and rotation tests of the front tracker;
+- probabilistic perimeter forecasts over a documented parameter ensemble; and
+- spatially varying time-dependent meteorological forcing on the fire grid;
+- mechanism experiments for air/ground tasking, queues, held/breached line, and
+  volume-conserving drops;
+- two-perimeter coupled-state initialization and sequential front-localization
+  ablations; and
+- station-conditioned gridded wind and fuel-moisture forcing experiments.
 
 It is not yet suitable for:
 
@@ -73,7 +85,8 @@ It is not yet suitable for:
 
 ## Evidence required for a defensible result
 
-1. Calibrate no-suppression spread parameters on training incidents only.
+1. Calibrate no-suppression spread parameters on training incidents only,
+   retaining a posterior predictive distribution rather than only a point fit.
 2. Report held-out spatial IoU, symmetric difference, area and arrival-time
    error with uncertainty intervals.
 3. Validate treatment response against independent experimental or operational
