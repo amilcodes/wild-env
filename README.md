@@ -17,11 +17,13 @@ import, paired evaluation, and deterministic replay. The installed package is
 vehicle table, event log, layers, camera, and timeline read the same immutable
 replay bundle.*
 
-![Paired rollout from the fire-coupled tensor MARL environment](docs/assets/rl/tensor-incident-rollout.png)
+![Paired tensor-environment rollout: maps of one world after 120 minutes with no dispatch and with the greedy baseline, mean expected asset loss and burned area over time, and expected loss in each of 16 worlds](docs/assets/rl/tensor-incident-rollout.png)
 
-*A reproducible 16-world CPU rollout from the tensor training environment. The
-figure compares a hold action with the belief-only greedy baseline; it is a
-mechanism check, not a learned-policy result.*
+*A reproducible 16-world CPU rollout from the tensor training environment. It
+compares no dispatch, where every aircraft holds, with the greedy baseline,
+which acts only on the delayed fire belief. Map shading is fuel load, and blue
+lines are sorties between service sites and the fire. It is a mechanism check,
+not a learned-policy result.*
 
 ## Two simulation paths
 
