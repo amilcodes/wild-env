@@ -135,7 +135,22 @@ def decode_cli(provider: str, stdout: str, stderr: str, returncode: int) -> Agen
                 if reply.dispatch is None and result.get("result") and not reply.error:
                     reply.dispatch = parse_json(result["result"])
                 model_usage = result.get("modelUsage") or {}
-                models.update(key for key in model_usage if isinstance(key, str))
+                # Claude Code can bill auxiliary models without using them to
+                # author the dispatch. Keep that accounting distinct from the
+                # init/assistant model identity; never hide auxiliary usage.
+                reply.metadata["usage_by_model"] = {
+                    model: {
+                        key: _count(usage.get(key))
+                        for key in (
+                            "inputTokens",
+                            "outputTokens",
+                            "cacheReadInputTokens",
+                            "cacheCreationInputTokens",
+                        )
+                    }
+                    for model, usage in model_usage.items()
+                    if isinstance(model, str) and isinstance(usage, dict)
+                }
             reply.metadata["model_rounds"] = rounds
         else:
             raise ValueError("unsupported CLI")
