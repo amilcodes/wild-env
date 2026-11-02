@@ -1,0 +1,182 @@
+[
+  {
+    "trace": "episode-0000.jsonl",
+    "verified": true,
+    "decisions": 30
+  },
+  {
+    "trace": "episode-0001.jsonl",
+    "verified": true,
+    "decisions": 30
+  },
+  {
+    "trace": "episode-0002.jsonl",
+    "verified": true,
+    "decisions": 30
+  },
+  {
+    "trace": "episode-0003.jsonl",
+    "verified": true,
+    "decisions": 30
+  },
+  {
+    "trace": "episode-0004.jsonl",
+    "verified": true,
+    "decisions": 30
+  },
+  {
+    "trace": "episode-0005.jsonl",
+    "verified": true,
+    "decisions": 30
+  },
+  {
+    "trace": "episode-0006.jsonl",
+    "verified": true,
+    "decisions": 30
+  },
+  {
+    "trace": "episode-0007.jsonl",
+    "verified": true,
+    "decisions": 30
+  },
+  {
+    "trace": "episode-0008.jsonl",
+    "verified": true,
+    "decisions": 30
+  },
+  {
+    "trace": "episode-0009.jsonl",
+    "verified": true,
+    "decisions": 30
+  },
+  {
+    "trace": "episode-0010.jsonl",
+    "verified": true,
+    "decisions": 30
+  },
+  {
+    "trace": "episode-0011.jsonl",
+    "verified": true,
+    "decisions": 30
+  },
+  {
+    "trace": "episode-0012.jsonl",
+    "verified": true,
+    "decisions": 30
+  },
+  {
+    "trace": "episode-0013.jsonl",
+    "verified": true,
+    "decisions": 30
+  },
+  {
+    "trace": "episode-0014.jsonl",
+    "verified": true,
+    "decisions": 30
+  },
+  {
+    "trace": "episode-0015.jsonl",
+    "verified": true,
+    "decisions": 30
+  },
+  {
+    "trace": "episode-0016.jsonl",
+    "verified": true,
+    "decisions": 30
+  },
+  {
+    "trace": "episode-0017.jsonl",
+    "verified": true,
+    "decisions": 30
+  },
+  {
+    "trace": "episode-0018.jsonl",
+    "verified": true,
+    "decisions": 30
+  },
+  {
+    "trace": "episode-0019.jsonl",
+    "verified": true,
+    "decisions": 30
+  },
+  {
+    "trace": "episode-0020.jsonl",
+    "verified": true,
+    "decisions": 30
+  },
+  {
+    "trace": "episode-0021.jsonl",
+    "verified": true,
+    "decisions": 30
+  },
+  {
+    "trace": "episode-0022.jsonl",
+    "verified": true,
+    "decisions": 30
+  },
+  {
+    "trace": "episode-0023.jsonl",
+    "verified": true,
+    "decisions": 30
+  },
+  {
+    "trace": "episode-0024.jsonl",
+    "verified": true,
+    "decisions": 30
+  },
+  {
+    "trace": "episode-0025.jsonl",
+    "verified": true,
+    "decisions": 30
+  },
+  {
+    "trace": "episode-0026.jsonl",
+    "verified": true,
+    "decisions": 30
+  },
+  {
+    "trace": "episode-0027.jsonl",
+    "verified": true,
+    "decisions": 30
+  },
+  {
+    "trace": "episode-0028.jsonl",
+    "verified": true,
+    "decisions": 30
+  },
+  {
+    "trace": "episode-0029.jsonl",
+    "verified": true,
+    "decisions": 30
+  },
+  {
+    "trace": "episode-0030.jsonl",
+    "verified": true,
+    "decisions": 30
+  },
+  {
+    "trace": "episode-0031.jsonl",
+    "verified": true,
+    "decisions": 30
+  },
+  {
+    "trace": "episode-0032.jsonl",
+    "verified": true,
+    "decisions": 30
+  },
+  {
+    "trace": "episode-0033.jsonl",
+    "verified": true,
+    "decisions": 30
+  },
+  {
+    "trace": "episode-0034.jsonl",
+    "verified": true,
+    "decisions": 30
+  },
+  {
+    "trace": "episode-0035.jsonl",
+    "verified": true,
+    "decisions": 30
+  }
+]
