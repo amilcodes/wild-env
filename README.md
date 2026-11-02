@@ -24,6 +24,11 @@ OpenAI Responses, Anthropic Messages, compatible tool-calling endpoints, and
 external command agents share the same observation/action contract. The default
 commands above run baselines without API credentials or charges.
 
+Existing Claude Code / Codex subscription logins can be used through the RSG
+inference bridges. See the [CLI evaluation guide](docs/cli_agent_evaluation.md)
+and `configs/agents/bridge.example.yaml`. Simulation and scoring stay on EC2;
+the logged-in host relays isolated, structured model decisions.
+
 The retained pilot has **36 baseline episodes / 1,080 dispatch decisions** across
 fleet coordination, delayed reconnaissance, wind restrictions, and scarce reload
 capacity. It contains **no live LLM results or human-operator comparison**.

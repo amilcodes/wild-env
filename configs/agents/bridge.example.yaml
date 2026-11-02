@@ -27,12 +27,11 @@ agents:
     max_output_tokens: null
     max_calls: 30
     timeout_s: 240
-# Add this entry only after a real development request succeeds with the Claude login:
-#  - name: opus-high
-#    provider: claude_cli
-#    model: claude-opus-5-5
-#    command: [claude]
-#    reasoning_effort: high
-#    max_output_tokens: null
-#    max_calls: 30
-#    timeout_s: 240
+  - name: opus-high
+    provider: claude_cli
+    model: claude-opus-5-5
+    command: [claude]
+    reasoning_effort: high
+    max_output_tokens: null
+    max_calls: 30
+    timeout_s: 240
