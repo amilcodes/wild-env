@@ -33,7 +33,7 @@ class AgentSpec:
     base_url: str | None = None
     api_key_env: str | None = None
     command: tuple[str, ...] = ()
-    max_output_tokens: int = 2048
+    max_output_tokens: int | None = 2048
     timeout_s: float = 60.0
     max_calls: int = 128
     reasoning_effort: str | None = None
@@ -41,7 +41,15 @@ class AgentSpec:
     def __post_init__(self) -> None:
         if not self.name.strip() or not self.model.strip():
             raise ValueError("agent name and model must be nonempty")
-        if self.provider not in {"baseline", "openai", "anthropic", "compatible", "command"}:
+        if self.provider not in {
+            "baseline",
+            "openai",
+            "anthropic",
+            "compatible",
+            "command",
+            "codex_cli",
+            "claude_cli",
+        }:
             raise ValueError("unknown agent provider")
         if self.provider == "baseline" and self.model not in BASELINES:
             raise ValueError("unknown desk baseline")
@@ -50,8 +58,10 @@ class AgentSpec:
         if not all(isinstance(arg, str) and arg for arg in self.command):
             raise ValueError("command argv must contain nonempty strings")
         if (
-            type(self.max_output_tokens) is not int
-            or self.max_output_tokens < 1
+            not (
+                (type(self.max_output_tokens) is int and self.max_output_tokens > 0)
+                or (self.provider in {"codex_cli", "claude_cli"} and self.max_output_tokens is None)
+            )
             or type(self.max_calls) is not int
             or self.max_calls < 1
             or not math.isfinite(self.timeout_s)
@@ -67,8 +77,18 @@ class AgentSpec:
                 raise ValueError("base_url must use HTTPS (HTTP is allowed only on loopback)")
             if url.username or url.password or url.query or url.fragment:
                 raise ValueError("base_url cannot contain credentials, query, or fragment")
-        if self.reasoning_effort and self.provider != "openai":
-            raise ValueError("reasoning_effort is supported by the openai adapter only")
+        if self.reasoning_effort and self.provider not in {"openai", "codex_cli", "claude_cli"}:
+            raise ValueError("reasoning_effort requires an OpenAI or CLI adapter")
+        if self.provider in {"codex_cli", "claude_cli"}:
+            if self.max_output_tokens is not None:
+                raise ValueError(
+                    "CLI adapters require max_output_tokens: null; the bridge cannot enforce this cap"
+                )
+            allowed = {"low", "medium", "high", "xhigh", "max"}
+            if self.provider == "codex_cli":
+                allowed.add("ultra")
+            if self.reasoning_effort not in allowed:
+                raise ValueError("CLI adapters require an explicit supported reasoning_effort")
 
     def public_dict(self) -> dict[str, Any]:
         return asdict(self)  # Environment variable names only; never resolved credentials.
@@ -81,6 +101,7 @@ class AgentReply:
     response_id: str | None = None
     model: str | None = None
     error: str | None = None
+    metadata: dict[str, Any] = field(default_factory=dict)
 
 
 class AgentFailure(RuntimeError):
@@ -131,7 +152,12 @@ class AgentAdapter:
     def __init__(self, spec: AgentSpec):
         self.spec = spec
         self._key: str | None = None
-        if spec.provider not in {"baseline", "command"}:
+        self.cli = None
+        if spec.provider in {"codex_cli", "claude_cli"}:
+            from aeolus.agents.cli_adapters import CliAdapter
+
+            self.cli = CliAdapter(spec)
+        if spec.provider not in {"baseline", "command", "codex_cli", "claude_cli"}:
             env = (
                 spec.api_key_env
                 or {
@@ -151,6 +177,8 @@ class AgentAdapter:
                 raise ValueError(f"agent {spec.name}: set environment variable {env}")
 
     def act(self, observation: dict[str, Any]) -> AgentReply:
+        if self.cli is not None:
+            return self.cli.act(observation)
         if self.spec.provider == "baseline":
             return AgentReply(
                 baseline_dispatch(observation, self.spec.model),

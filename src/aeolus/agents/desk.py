@@ -10,7 +10,7 @@ import numpy as np
 from aeolus.agents.contract import PROTOCOL_VERSION, digest, validate_dispatch
 from aeolus.config import ScenarioConfig
 from aeolus.core.simulator import AeolusSimulator
-from aeolus.core.tasks import action_mask, task_distance_min
+from aeolus.core.tasks import TaskKind, action_mask, task_distance_min
 
 
 class IncidentDesk:
@@ -53,6 +53,9 @@ class IncidentDesk:
                     "endurance_remaining_min": round(resource.endurance_remaining_min, 3),
                     "reserve_endurance_min": resource.spec.reserve_endurance_min,
                     "eta_min": resource.eta_min,
+                    "current_task_kind": TaskKind(resource.task_kind).name,
+                    "work_remaining_m": round(resource.work_remaining_m, 3),
+                    "dispatch_latency_min": resource.spec.dispatch_latency_min,
                     "destination_xy": resource.target_xy,
                     "service_site_id": resource.service_site_id,
                     "legal_tasks": legal,
@@ -112,6 +115,7 @@ class IncidentDesk:
             "horizon_min": config.horizon_min,
             "decision_interval_min": config.decision_interval_min,
             "observation_delay_min": config.observation_delay_min,
+            "observation_age_basis": "minutes_since_delivery_to_belief",
             "map": {"width": config.width, "height": config.height, "cell_size_m": config.cell_size_m},
             "weather_current_domain_mean": {
                 name: round(float(np.asarray(value).mean()), 4)
@@ -138,6 +142,9 @@ class IncidentDesk:
                     "mode": site.spec.service_mode,
                     "remaining_volume_l": round(site.remaining_volume_l, 3),
                     "bays": site.spec.bays,
+                    "approach_capacity": site.spec.approach_capacity,
+                    "refill_rate_l_min": site.spec.refill_rate_l_min,
+                    "fixed_turnaround_min": site.spec.fixed_turnaround_min,
                     "open_minute": site.spec.open_minute,
                     "close_minute": site.spec.close_minute,
                 }
