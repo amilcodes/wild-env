@@ -21,6 +21,7 @@ def main() -> None:
     run = commands.add_parser("run", help="execute matched-seed episodes and write JSON/JSONL results")
     run.add_argument("--suite", required=True)
     run.add_argument("--agents", help="YAML file with an agents list; default runs hold, nearest, greedy")
+    run.add_argument("--workers", type=int, default=1, help="independent episode workers (1–8; default 1)")
     run.add_argument(
         "--out", type=Path, required=True, help="new output directory (existing runs are never overwritten)"
     )
@@ -42,7 +43,11 @@ def main() -> None:
             else:
                 specs = [AgentSpec(name=name, model=name) for name in BASELINES]
             result = run_benchmark(
-                args.suite, specs, args.out, progress=lambda msg: print(msg, file=sys.stderr)
+                args.suite,
+                specs,
+                args.out,
+                progress=lambda msg: print(msg, file=sys.stderr),
+                workers=args.workers,
             )
             print(
                 json.dumps(

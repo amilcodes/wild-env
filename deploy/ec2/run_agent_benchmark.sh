@@ -18,8 +18,11 @@ python_bin=${WILD_ENV_PYTHON:-$repo_root/.venv/bin/python}
 "$python_bin" -m ruff check src tests tools examples > "$job_root/lint.txt" 2>&1
 "$python_bin" -m pytest > "$job_root/tests.txt" 2>&1
 args=(--suite "$suite_file" --out "$job_root/benchmark")
+args+=(--workers "${WILD_ENV_WORKERS:-1}")
 if [[ -n "$agents_file" ]]; then args+=(--agents "$agents_file"); fi
-"$python_bin" -m aeolus.agent_cli run "${args[@]}" > "$job_root/console.json" 2> "$job_root/progress.txt"
+benchmark_status=0
+"$python_bin" -m aeolus.agent_cli run "${args[@]}" > "$job_root/console.json" 2> "$job_root/progress.txt" || benchmark_status=$?
+if [[ $benchmark_status != 0 && $benchmark_status != 2 ]]; then exit "$benchmark_status"; fi
 "$python_bin" - "$job_root/benchmark" <<'PY'
 import json
 import sys
@@ -36,3 +39,4 @@ for record in summary["records"]:
 print(f"Verified {len(checks)} episodes / {sum(check['decisions'] for check in checks)} decisions.")
 PY
 printf 'Finished: %s\n' "$job_root"
+exit "$benchmark_status"
