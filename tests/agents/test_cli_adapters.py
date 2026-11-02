@@ -137,3 +137,24 @@ def test_codex_bridge_provenance_identifies_the_actual_session_configuration():
     assert reply.model == "gpt-example"
     assert reply.metadata["model_identity_source"] == "codex_turn_context"
     assert reply.metadata["reasoning_effort"] == "high"
+
+
+def test_claude_auxiliary_usage_is_preserved_without_misidentifying_dispatch_model():
+    events = stream(
+        {"type": "system", "subtype": "init", "model": "claude-opus-example"},
+        {"type": "assistant", "message": {"model": "claude-opus-example", "content": []}},
+        {
+            "type": "result",
+            "subtype": "success",
+            "structured_output": DISPATCH,
+            "modelUsage": {
+                "claude-opus-example": {"inputTokens": 100, "outputTokens": 30},
+                "claude-haiku-example": {"inputTokens": 10, "outputTokens": 5},
+            },
+        },
+    )
+    reply = decode_cli("claude_cli", events, "", 0)
+    assert reply.error is None
+    assert reply.model == "claude-opus-example"
+    assert reply.metadata["reported_models"] == ["claude-opus-example"]
+    assert reply.metadata["usage_by_model"]["claude-haiku-example"]["inputTokens"] == 10
