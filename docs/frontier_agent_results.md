@@ -5,6 +5,11 @@ No provider API keys were available for this run. Native model adapters were
 validated against local HTTP fixtures, and the command-agent path was executed
 with the explicitly labeled greedy fixture.
 
+The retained run was executed on the existing EC2 CPU host in a dedicated
+checkout, under `nice -n 15`, with one benchmark worker and numerical-library
+threads capped at one. Lint passed, 189 Python tests passed, one optional PyVista
+replay-rendering test was skipped, and the native solver smoke test passed.
+
 The fixed `configs/agents/frontier.yaml` suite contains four cases, three seeds
 per case, and a 90-minute horizon with three-minute decisions. Three baseline
 policies completed **36 episodes and 1,080 decisions**, with zero invalid
@@ -33,6 +38,9 @@ The configuration was not retuned in response to these scores.
 
 ## Reproduce and audit
 
+Run these commands in the dedicated EC2 checkout described in the
+[remote execution recipe](ec2_agent_benchmarks.md).
+
 ```bash
 python -m pip install -e '.[dev]'
 aeolus-agent-bench run --suite configs/agents/frontier.yaml --out runs/reproduce-desk-v1
@@ -46,6 +54,11 @@ The compact [summary](../results/agent_benchmark/baseline_summary.json) contains
 all 36 episode metrics, checksums of the original traces, and paired statistics.
 The [manifest](../results/agent_benchmark/baseline_manifest.json) pins the suite,
 prompt, source fingerprint, originating Git commit, and numerical dependencies.
+The [episode CSV](../results/agent_benchmark/baseline_episodes.csv) provides flat
+metrics, and the [replay verification](../results/agent_benchmark/replay_verification.json)
+records successful verification of every trace. The original logs remain on EC2
+under `runs/ec2-baselines-v1/benchmark/`; all 36 trace checksums were verified
+after retrieval.
 Timing and trace checksums can vary between reruns because latency is recorded;
 observations, dispatches, and simulator metrics replay deterministically in the
 same numerical environment. Full JSONL logs are regenerated into ignored `runs/` directories.

@@ -13,7 +13,9 @@ set locally to the existing authorized host and key path.
 ## Sync committed code
 
 Use the same Git-bundle approach as RSGbot. No private key or local model login
-is copied to EC2.
+is copied to EC2. If `git rev-parse --is-shallow-repository` prints `true`, run
+`git fetch --unshallow origin` before creating a bundle for a fresh clone.
+Use `git bundle verify` to check that it records complete history.
 
 ```bash
 mkdir -p runs/transfers
@@ -40,7 +42,7 @@ does not kill it. Choose a new run directory each time:
 
 ```bash
 mkdir -p runs
-nohup nice -n 15 bash deploy/ec2/run_agent_benchmark.sh \
+nohup setsid nice -n 15 bash deploy/ec2/run_agent_benchmark.sh \
   runs/ec2-baselines-v1 > runs/ec2-baselines-v1-launch.log 2>&1 < /dev/null &
 ```
 
