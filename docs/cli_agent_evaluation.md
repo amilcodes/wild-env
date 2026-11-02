@@ -36,8 +36,8 @@ codex --version
 A successful auth-status probe does not prove inference works: perform a real
 request on development cases before evaluation. In this execution, Claude
 reported logged in but its first request failed with an expired OAuth session;
-that failure is recorded separately and is not a model score. Authentication
-refresh requires the user's Claude login, not an invented API credential.
+that failure is recorded separately and is not a model score. The user completed
+`claude auth login`; actual Opus requests then succeeded before evaluation began.
 
 Copy `configs/agents/bridge.example.yaml` and select the actual available model
 IDs. Models, effort, timeouts, scenario settings and seeds must be frozen before
@@ -102,13 +102,41 @@ state, regenerate tasks, and require the public packet to remain identical.
 Invalid joint assignments consume time with all resources holding, and busy
 resources cannot be overwritten. Shared task capacities are checked atomically.
 
-A valid execution must finish its configured horizon, preserve all failures,
+A valid execution must reach its horizon or a simulator terminal state, preserve all failures,
 return real model-generated actions, show no disallowed tools, and replay its
 observations/transitions/metrics exactly. Variation in action choices and scores
 can establish a useful synthetic control task; it cannot establish operational
 wildfire validity. These four public synthetic cases, policy-dependent random
 number consumption, and only three seeds per case limit generalization and
 paired-effect inference. No human-operator comparison is available.
+
+## Collect completed runs
+
+The runner records replay verification even when invalid model dispatches make
+its exit code 2. Keep those episodes in the comparison. To combine separately
+executed model groups, use a checkout containing both recorded commits:
+
+```bash
+python tools/collect_agent_results.py \
+  --source codex=runs/codex-evaluation --source opus=runs/opus-evaluation \
+  --out runs/combined-evaluation
+python tools/audit_agent_results.py runs/combined-evaluation \
+  --baseline-reference results/agent_benchmark/baseline_summary.json
+```
+
+The collector rejects incomplete runs, changed protocols, prompts, scenarios,
+numerical dependencies, and source differences outside the CLI adapter and its
+tests. It copies original trace bytes and keeps each run's provenance. Repeated
+baseline episodes are deduplicated only if every observation and stable result
+field agrees. It never deduplicates stochastic model episodes. The audit verifies
+checksums, completed horizons or terminal states, initial observations, recorded
+model identities, usage, and failure accounting. It produces `episodes.csv`,
+`validity-audit.json`, and `paired-comparisons.json` with all episodes included.
+
+Claude Code may report auxiliary Haiku usage in addition to Opus dispatches.
+`adapter_metadata.usage_by_model` preserves this accounting separately from the
+init/assistant model identity. Report it as part of the CLI scaffold; do not
+present these results as an identical-budget comparison of bare API models.
 
 CLI reference: [OpenAI non-interactive mode](https://learn.chatgpt.com/docs/non-interactive-mode)
 and [Claude Code CLI reference](https://code.claude.com/docs/en/cli-reference).

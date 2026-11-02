@@ -58,3 +58,8 @@ suite as the third. Credentials remain in the remote environment or an existing
 approved inference bridge. RSG's Claude/Codex bridges are separate services;
 do not restart or change them to run simulator validation. A baseline run needs
 no model credentials and consumes no model quota.
+
+For explicitly requested live model evaluation, follow the
+[CLI bridge evaluation guide](cli_agent_evaluation.md). It uses dedicated ports
+and permits up to four independent episodes to overlap remote inference waits,
+while retaining low process priority and single-threaded numerical libraries.
