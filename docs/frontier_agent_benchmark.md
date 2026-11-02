@@ -58,6 +58,8 @@ aeolus-agent-bench run \
 | `anthropic` | Messages API, one forced `submit_dispatch` tool | `ANTHROPIC_API_KEY` |
 | `compatible` | Chat Completions tool calls; explicit `base_url` required | `OPENAI_API_KEY` |
 | `command` | One JSON request on stdin; one dispatch JSON on stdout | Managed by your command |
+| `codex_cli` | Fresh Codex session with structured JSON output | Existing authenticated RSG bridge |
+| `claude_cli` | Fresh Claude Code session with structured JSON output | Existing authenticated RSG bridge |
 
 Use `api_key_env` to choose a different variable (for example, a gateway key).
 The compatible adapter allows unauthenticated loopback inference servers. Remote
@@ -74,7 +76,10 @@ HTTP fixture tests exercise request and response formats. No paid model call is
 needed for the test suite. Live model availability and access must be verified in
 your account; this branch ships no fabricated model scores.
 
-Each episode allows `max_calls` requests and each request caps output tokens.
+Each episode allows `max_calls` requests. HTTP adapters cap output tokens; CLI
+adapters require a null token cap because their wrappers cannot enforce one.
+The [CLI evaluation guide](cli_agent_evaluation.md) records isolation, model
+provenance, effort, per-call deadlines, and provider-specific scaffolding.
 `timeout_s` is a socket timeout for remote HTTP and a process deadline for command
 agents. There are no hidden retries. After three consecutive failed decisions,
 the agent circuit opens for the remainder of that episode. Exhausted budgets and
