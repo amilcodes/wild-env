@@ -1,5 +1,33 @@
 # wild-env
 
+**Frontier agent benchmarking branch.** Put a language model or agent in charge
+of a simulated wildfire incident desk, then compare its dispatch decisions with
+observation-only baselines on the same scenarios and initial seeds. The benchmark
+uses the canonical simulator, delayed fire beliefs, constrained fleets, finite
+service stocks, and a versioned `submit_dispatch` tool.
+
+```bash
+python -m pip install -e '.[dev]'
+aeolus-agent-bench run --suite configs/agents/smoke.yaml --out runs/desk-smoke
+aeolus-agent-bench run --suite configs/agents/frontier.yaml --out runs/desk-frontier
+# Open runs/desk-frontier/report.html in a browser.
+aeolus-agent-bench replay runs/desk-frontier/episode-0000.jsonl
+```
+
+For live models, copy `configs/agents/providers.example.yaml`, set exact model
+IDs and provider credentials in environment variables, and pass `--agents`.
+OpenAI Responses, Anthropic Messages, compatible tool-calling endpoints, and
+external command agents share the same observation/action contract. The default
+commands above run baselines without API credentials or charges.
+
+The retained pilot has **36 baseline episodes / 1,080 dispatch decisions** across
+fleet coordination, delayed reconnaissance, wind restrictions, and scarce reload
+capacity. It contains **no live LLM results or human-operator comparison**.
+Read the [benchmark protocol and run guide](docs/frontier_agent_benchmark.md)
+and [baseline pilot results](docs/frontier_agent_results.md).
+
+## Simulator foundation
+
 wild-env is a research environment for wildfire spread, suppression operations,
 and multi-agent resource allocation. It combines a higher-fidelity incident
 simulator with a fixed-shape PyTorch surrogate for large-batch reinforcement

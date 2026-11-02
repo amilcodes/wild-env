@@ -39,6 +39,17 @@ def test_seeded_heuristic_rollout_is_reproducible() -> None:
     assert np.array_equal(first.state.belief.intensity_mean, second.state.belief.intensity_mean)
 
 
+def test_nonterminal_escape_still_honors_episode_horizon() -> None:
+    sim = AeolusSimulator(small_config(horizon_min=6, terminate_on_escape=False))
+    sim.state.truth.phase[0, 0] = 1
+    sim.state.minute = 6
+    sim._update_terminal_state()
+    assert sim.state.escaped and sim.state.truncated
+    assert not sim.state.terminated
+    sim.decision_step(no_aerial_action(sim))
+    assert sim.state.minute == 6
+
+
 def test_observation_is_not_a_truth_state_alias() -> None:
     sim = AeolusSimulator(small_config())
     sim.reset(91)
