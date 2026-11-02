@@ -1,0 +1,10 @@
+agents:
+  - name: hold
+    provider: baseline
+    model: hold
+  - name: external-greedy-fixture
+    provider: command
+    model: example-greedy-v1
+    command: [python, examples/desk_agent.py]
+    timeout_s: 10
+    max_calls: 30

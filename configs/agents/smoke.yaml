@@ -1,0 +1,26 @@
+schema_version: 1
+suite_id: wildfire-desk-smoke-v1
+split: development
+description: Small canonical-simulator integration check; not a capability ranking.
+scenario:
+  scenario_id: desk-smoke
+  title: Incident desk smoke test
+  width: 32
+  height: 32
+  cell_size_m: 60.0
+  horizon_min: 12
+  decision_interval_min: 3
+  max_tasks: 24
+  wind_speed_m_s: 4.0
+  spotting_rate: 0.0
+  terminate_on_escape: false
+cases:
+  - id: initial-attack
+    capability: dispatch
+    seeds: [17, 29]
+    overrides: {}
+  - id: delayed-recon
+    capability: partial-observability
+    seeds: [43, 71]
+    overrides:
+      observation_delay_min: 9

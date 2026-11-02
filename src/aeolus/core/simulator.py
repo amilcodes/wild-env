@@ -1019,7 +1019,8 @@ class AeolusSimulator:
             self.state.contained = True
             self.state.terminated = True
             self.state.event("contained")
-        elif self.state.minute >= self.config.horizon_min:
+        # Nonterminal escape must not suppress the horizon while boundary cells burn.
+        if not self.state.terminated and self.state.minute >= self.config.horizon_min:
             self.state.truncated = True
 
     def _weighted_loss(self) -> float:

@@ -46,9 +46,18 @@ class AeolusParallelEnv(ParallelEnv):
             raise KeyError(agent)
         return self._action_space
 
+    @staticmethod
+    def _binary_observations(observations):
+        # Gymnasium Discrete.sample(mask=...) requires int8; the simulator keeps
+        # bool masks for tensor/indexing consumers. Convert only at this adapter.
+        for observation in observations.values():
+            for key in ("action_mask", "task_valid"):
+                observation[key] = observation[key].astype(np.int8)
+        return observations
+
     def reset(self, seed: int | None = None, options: dict[str, Any] | None = None):
         del options
-        observations = self.sim.reset(seed)
+        observations = self._binary_observations(self.sim.reset(seed))
         self.agents = self.possible_agents[:]
         infos = {
             agent: {"scenario_seed": self.sim.config.seed if seed is None else seed} for agent in self.agents
@@ -63,6 +72,7 @@ class AeolusParallelEnv(ParallelEnv):
         if missing:
             raise ValueError(f"missing action(s) for active agents: {sorted(missing)}")
         observations, reward, terminated, truncated, infos = self.sim.decision_step(actions)
+        observations = self._binary_observations(observations)
         rewards = {agent: reward for agent in self.agents}
         terminations = {agent: terminated for agent in self.agents}
         truncations = {agent: truncated for agent in self.agents}

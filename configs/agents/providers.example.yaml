@@ -1,0 +1,32 @@
+# Copy this file, replace model IDs with exact versions available to your account,
+# and remove providers you do not intend to run. Credentials stay in environment variables.
+agents:
+  - name: hold
+    provider: baseline
+    model: hold
+  - name: greedy
+    provider: baseline
+    model: greedy
+  - name: openai-candidate
+    provider: openai
+    model: REPLACE_WITH_EXACT_OPENAI_MODEL_ID
+    api_key_env: OPENAI_API_KEY
+    max_output_tokens: 4096
+    max_calls: 30
+    timeout_s: 120
+    # reasoning_effort: high
+  - name: anthropic-candidate
+    provider: anthropic
+    model: REPLACE_WITH_EXACT_ANTHROPIC_MODEL_ID
+    api_key_env: ANTHROPIC_API_KEY
+    max_output_tokens: 4096
+    max_calls: 30
+    timeout_s: 120
+  - name: gateway-candidate
+    provider: compatible
+    model: REPLACE_WITH_EXACT_GATEWAY_MODEL_ID
+    base_url: https://openrouter.ai/api/v1
+    api_key_env: OPENROUTER_API_KEY
+    max_output_tokens: 4096
+    max_calls: 30
+    timeout_s: 120
