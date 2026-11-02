@@ -13,13 +13,12 @@ from aeolus.agents.adapters import BASELINES, AgentSpec
 from aeolus.agents.benchmark import load_suite, replay_trace, run_benchmark
 from aeolus.agents.contract import DISPATCH_SCHEMA, PROTOCOL_VERSION, SYSTEM_PROMPT, canonical_json
 from aeolus.agents.desk import IncidentDesk
-from aeolus.agents.report import render_report
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Wildfire incident desk: benchmark LLMs and agents")
     commands = parser.add_subparsers(dest="command", required=True)
-    run = commands.add_parser("run", help="execute matched-seed episodes and write an audit report")
+    run = commands.add_parser("run", help="execute matched-seed episodes and write JSON/JSONL results")
     run.add_argument("--suite", required=True)
     run.add_argument("--agents", help="YAML file with an agents list; default runs hold, nearest, greedy")
     run.add_argument(
@@ -31,9 +30,6 @@ def main() -> None:
     inspect.add_argument("--seed", type=int, help="defaults to first configured seed")
     replay = commands.add_parser("replay", help="verify a transcript by re-executing it without a model")
     replay.add_argument("trace", type=Path)
-    report = commands.add_parser("report", help="regenerate a self-contained HTML report")
-    report.add_argument("run_dir", type=Path)
-    report.add_argument("--out", type=Path)
     commands.add_parser("schema", help="print the versioned prompt and submit_dispatch schema")
     args = parser.parse_args()
     try:
@@ -48,13 +44,12 @@ def main() -> None:
             result = run_benchmark(
                 args.suite, specs, args.out, progress=lambda msg: print(msg, file=sys.stderr)
             )
-            report_path = render_report(args.out)
             print(
                 json.dumps(
                     {
                         "complete": result["complete"],
                         "episodes": len(result["records"]),
-                        "report": str(report_path.resolve()),
+                        "summary": str((args.out / "summary.json").resolve()),
                         "leaderboard": result["leaderboard"],
                     },
                     indent=2,
@@ -73,8 +68,6 @@ def main() -> None:
             print(canonical_json(IncidentDesk(case.scenario, seed).observation()))
         elif args.command == "replay":
             print(json.dumps(replay_trace(args.trace), indent=2))
-        elif args.command == "report":
-            print(render_report(args.run_dir, args.out).resolve())
         else:
             print(
                 json.dumps(

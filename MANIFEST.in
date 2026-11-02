@@ -1,7 +1,7 @@
 include LICENSE
 include Makefile
 recursive-include configs *.yaml
-recursive-include deploy Dockerfile *.sbatch
+recursive-include deploy Dockerfile *.sbatch *.sh
 recursive-include docs *.md
 recursive-include native CMakeLists.txt *.hpp *.cpp
 recursive-include requirements *.lock
