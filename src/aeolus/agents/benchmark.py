@@ -9,6 +9,7 @@ import platform
 import subprocess
 import time
 from collections.abc import Callable
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import asdict, dataclass
 from datetime import datetime, timezone
 from pathlib import Path
@@ -193,6 +194,7 @@ def run_episode(case: Case, seed: int, spec: AgentSpec, adapter: Any, trace_path
                 "usage": reply.usage if reply else None,
                 "response_id": reply.response_id if reply else None,
                 "model": reply.model if reply else None,
+                "adapter_metadata": reply.metadata if reply else None,
                 "metrics": desk.metrics(),
             }
             trace.write(canonical_json(entry) + "\n")
@@ -252,7 +254,7 @@ def summarize(records: list[dict[str, Any]], specs: list[AgentSpec], baseline: s
                 "calls_with_unknown_usage": sum(row["calls_with_unknown_usage"] for row in rows),
             }
         )
-        if spec.name != baseline and baseline_rows:
+        if spec.name != baseline and any((row["case_id"], row["seed"]) in baseline_rows for row in rows):
             comparison = paired_policy_summary(
                 records,
                 candidate_policy=spec.name,
@@ -277,8 +279,15 @@ def summarize(records: list[dict[str, Any]], specs: list[AgentSpec], baseline: s
 
 
 def run_benchmark(
-    suite_path: str | Path, specs: list[AgentSpec], out: Path, *, progress: Callable[[str], None] = print
+    suite_path: str | Path,
+    specs: list[AgentSpec],
+    out: Path,
+    *,
+    progress: Callable[[str], None] = print,
+    workers: int = 1,
 ) -> dict[str, Any]:
+    if type(workers) is not int or not 1 <= workers <= 8:
+        raise ValueError("workers must be an integer from 1 to 8")
     raw, cases = load_suite(suite_path)
     names = [spec.name for spec in specs]
     if len(names) != len(set(names)):
@@ -301,42 +310,51 @@ def run_benchmark(
         "prompt_sha256": digest(SYSTEM_PROMPT),
         "dispatch_schema": DISPATCH_SCHEMA,
         "agents": [spec.public_dict() for spec in specs],
+        "adapter_runtime": {
+            name: adapter.cli.identity if adapter.cli is not None else None
+            for name, adapter in adapters.items()
+        },
         "created_at": datetime.now(timezone.utc).isoformat(),
         "expected_episodes": sum(len(case.seeds) for case in cases) * len(specs),
+        "episode_workers": workers,
         "limitations": [
             "Public synthetic benchmark; no human operator comparator or real-world efficacy claim.",
             "Same initial seed is paired; policy-dependent RNG consumption can diverge after dispatch.",
             "Bootstrap intervals describe these scenario clusters, not broad frontier-model capability.",
             "Failures advance with hold; failed runs remain visible but are ineligible for ranking.",
             "Resource costs and asset-weighted loss are simulator units, not dollars or lives.",
-            "Remote timeouts are socket timeouts; max_calls and output tokens bound request count/size.",
+            "HTTP timeouts are socket timeouts; CLI timeouts are wall-clock subprocess limits.",
+            "CLI output-token caps are unavailable (null); calls and wall time are bounded.",
         ],
     }
     write_json(out / "manifest.json", manifest)
-    records = []
-    for case in cases:
-        for seed in case.seeds:
-            for spec in specs:
-                progress(
-                    f"[{len(records) + 1}/{manifest['expected_episodes']}] "
-                    f"{spec.name} / {case.case_id} / {seed}"
-                )
-                record = run_episode(
-                    case, seed, spec, adapters[spec.name], out / f"episode-{len(records):04d}.jsonl"
-                )
-                records.append(record)
-                # A partial summary is useful after interruption; never silently presented as complete.
-                summary = {
-                    "schema_version": 1,
-                    "suite_id": raw["suite_id"],
-                    "suite_sha256": digest(raw),
-                    "split": raw["split"],
-                    "complete": len(records) == manifest["expected_episodes"],
-                    "expected_episodes": manifest["expected_episodes"],
-                    "records": records,
-                    **summarize(records, specs, hold_specs[0].name),
-                }
-                write_json(out / "summary.json", summary)
+    jobs = [(case, seed, spec) for case in cases for seed in case.seeds for spec in specs]
+    completed: dict[int, dict[str, Any]] = {}
+
+    def execute(index: int) -> dict[str, Any]:
+        case, seed, spec = jobs[index]
+        progress(f"[start {index + 1}/{len(jobs)}] {spec.name} / {case.case_id} / {seed}")
+        return run_episode(case, seed, spec, adapters[spec.name], out / f"episode-{index:04d}.jsonl")
+
+    # Episode state and CLI sessions are independent. Only this main thread writes the summary.
+    with ThreadPoolExecutor(max_workers=workers) as executor:
+        futures = {executor.submit(execute, index): index for index in range(len(jobs))}
+        for future in as_completed(futures):
+            index = futures[future]
+            completed[index] = future.result()
+            records = [completed[key] for key in sorted(completed)]
+            progress(f"[complete {len(records)}/{len(jobs)}] {completed[index]['policy']}")
+            summary = {
+                "schema_version": 1,
+                "suite_id": raw["suite_id"],
+                "suite_sha256": digest(raw),
+                "split": raw["split"],
+                "complete": len(records) == manifest["expected_episodes"],
+                "expected_episodes": manifest["expected_episodes"],
+                "records": records,
+                **summarize(records, specs, hold_specs[0].name),
+            }
+            write_json(out / "summary.json", summary)
     return summary
 
 

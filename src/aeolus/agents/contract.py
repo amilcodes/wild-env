@@ -6,7 +6,7 @@ import hashlib
 import json
 from typing import Any
 
-PROTOCOL_VERSION = "wildfire-desk-v1"
+PROTOCOL_VERSION = "wildfire-desk-v1.1"
 SYSTEM_PROMPT = """You command a simulated wildfire initial-attack desk.
 Minimize final asset-weighted fire loss, then resource operating cost and exposure.
 This is a research simulator, not operational guidance. You receive only delayed
@@ -27,6 +27,23 @@ Dispatch advances the simulation by decision_interval_min. The simulator handles
 travel, payload delivery, return, queues, reload, and safety gates. A forecast or
 proposal never changes the incident until dispatch is submitted. Terminal scores
 are reserved for evaluation and will not be shown during the episode.
+
+Task semantics: OBSERVE sends the sensor to collect a noisy local measurement;
+delivery is delayed by observation_delay_min. WATER drops water on the target.
+RETARDANT drops a line across the wind; REINFORCE and AERIAL_LINE use the listed
+heading (AERIAL_LINE also supports water aircraft). LINE sends a ground crew to
+construct a line over time. SERVICE sends an aircraft to the listed site to
+refill compatible payload and/or refuel, subject to stocks, queues and opening
+hours. With service_sites present, an aircraft becomes AVAILABLE at its mission
+target after a drop or observation: choose SERVICE explicitly when it needs
+refilling. With no service_sites, return and reload happen automatically.
+Only AVAILABLE resources accept a new nonzero task; busy resources continue
+with task 0. travel_min is a geometric estimate, excluding dispatch latency and
+service time. legal_tasks already enforces current feasibility and reserve gates.
+Observation ages mean time since delivery to belief, not time since capture;
+measurements are older by the configured delivery delay (except initial belief).
+Coordinates are grid column x and row y. Sector asset values are static totals;
+heuristic_value ranks belief-derived candidate tasks and is not an outcome oracle.
 """
 
 DISPATCH_SCHEMA: dict[str, Any] = {

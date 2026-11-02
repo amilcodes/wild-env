@@ -108,3 +108,26 @@ def test_shipped_suites_are_valid():
         if ".example." not in path.name:
             _, cases = load_suite(path)
             assert cases
+
+
+def test_parallel_episodes_match_serial_metrics_and_stable_trace_order(tmp_path):
+    suite, _ = small_suite(tmp_path)
+    specs = [AgentSpec("hold"), AgentSpec("greedy", model="greedy")]
+    serial = run_benchmark(suite, specs, tmp_path / "serial", progress=lambda _: None)
+    parallel = run_benchmark(suite, specs, tmp_path / "parallel", progress=lambda _: None, workers=2)
+    for a, b in zip(serial["records"], parallel["records"]):
+        for key in ("policy", "seed", "loss_growth", "burned_area_ha", "decisions", "trace", "eligible"):
+            assert a[key] == b[key]
+        assert replay_trace(tmp_path / "parallel" / b["trace"])["verified"]
+
+
+def test_partial_summary_waits_for_a_matching_baseline(tmp_path):
+    from aeolus.agents.benchmark import summarize
+
+    suite, _ = small_suite(tmp_path)
+    specs = [AgentSpec("hold"), AgentSpec("greedy", model="greedy")]
+    full = run_benchmark(suite, specs, tmp_path / "full", progress=lambda _: None)
+    hold, candidate = full["records"]
+    candidate = {**candidate, "case_id": "other-case"}
+    partial = summarize([hold, candidate], specs, "hold")
+    assert partial["comparisons"] == []

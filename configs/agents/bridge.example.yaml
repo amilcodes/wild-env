@@ -1,0 +1,38 @@
+# Requires the existing authenticated RSG CLI clients/tunnels on the execution host.
+# Set RSG_CODEX_BRIDGE and RSG_CLAUDE_BRIDGE locally; never put tokens in YAML.
+# CLI wrappers have no enforceable output-token limit, so it is explicitly null.
+agents:
+  - name: hold
+    provider: baseline
+    model: hold
+  - name: nearest
+    provider: baseline
+    model: nearest
+  - name: greedy
+    provider: baseline
+    model: greedy
+  - name: sol-high
+    provider: codex_cli
+    model: gpt-6.1-sol
+    command: [codex]
+    reasoning_effort: high
+    max_output_tokens: null
+    max_calls: 30
+    timeout_s: 240
+  - name: terra-high
+    provider: codex_cli
+    model: gpt-6.1-terra
+    command: [codex]
+    reasoning_effort: high
+    max_output_tokens: null
+    max_calls: 30
+    timeout_s: 240
+# Add this entry only after a real development request succeeds with the Claude login:
+#  - name: opus-high
+#    provider: claude_cli
+#    model: claude-opus-5-5
+#    command: [claude]
+#    reasoning_effort: high
+#    max_output_tokens: null
+#    max_calls: 30
+#    timeout_s: 240
