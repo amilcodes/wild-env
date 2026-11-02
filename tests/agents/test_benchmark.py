@@ -10,7 +10,6 @@ import yaml
 from aeolus.agents.adapters import AgentAdapter, AgentReply, AgentSpec
 from aeolus.agents.benchmark import Case, load_suite, replay_trace, run_benchmark, run_episode
 from aeolus.agents.contract import canonical_json
-from aeolus.agents.report import render_report
 from aeolus.config import ScenarioConfig
 
 
@@ -42,7 +41,7 @@ def test_complete_run_replays_and_refuses_overwrite(tmp_path):
     manifest = json.loads((out / "manifest.json").read_text())
     assert manifest["source"]["source_sha256"]
     assert manifest["prompt_sha256"]
-    assert render_report(out).is_file()
+    assert not list(out.glob("*.html"))
     with pytest.raises(ValueError, match="already exists"):
         run_benchmark(suite, specs, out)
 
@@ -102,17 +101,6 @@ def test_invalid_suite_rejected(tmp_path, mutation):
     suite.write_text(yaml.safe_dump(raw))
     with pytest.raises((ValueError, TypeError)):
         load_suite(suite)
-
-
-def test_report_escapes_agent_supplied_html(tmp_path):
-    suite, _ = small_suite(tmp_path)
-    out = tmp_path / "run"
-    run_benchmark(
-        suite, [AgentSpec("</script><img src=x onerror=alert(1)>")], out, progress=lambda message: None
-    )
-    report = render_report(out).read_text()
-    assert "</script><img" not in report
-    assert "\\u003c/script\\u003e" in report
 
 
 def test_shipped_suites_are_valid():

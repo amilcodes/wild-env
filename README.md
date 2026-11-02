@@ -6,11 +6,15 @@ observation-only baselines on the same scenarios and initial seeds. The benchmar
 uses the canonical simulator, delayed fire beliefs, constrained fleets, finite
 service stocks, and a versioned `submit_dispatch` tool.
 
+Run experiments on the existing EC2 host using the
+[remote execution recipe](docs/ec2_agent_benchmarks.md). The commands below run
+in its dedicated checkout.
+
 ```bash
 python -m pip install -e '.[dev]'
 aeolus-agent-bench run --suite configs/agents/smoke.yaml --out runs/desk-smoke
 aeolus-agent-bench run --suite configs/agents/frontier.yaml --out runs/desk-frontier
-# Open runs/desk-frontier/report.html in a browser.
+# Results: runs/desk-frontier/summary.json and episode-*.jsonl.
 aeolus-agent-bench replay runs/desk-frontier/episode-0000.jsonl
 ```
 

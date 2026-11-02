@@ -83,7 +83,7 @@ aeolus-agent-bench = "aeolus.agent_cli:main"
 where = ["src"]
 
 [tool.setuptools.package-data]
-aeolus = ["resources/*.npz", "agents/*.html"]
+aeolus = ["resources/*.npz"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
