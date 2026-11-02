@@ -36,7 +36,7 @@ The configuration was not retuned in response to these scores.
 ```bash
 python -m pip install -e '.[dev]'
 aeolus-agent-bench run --suite configs/agents/frontier.yaml --out runs/reproduce-desk-v1
-# Open runs/reproduce-desk-v1/report.html.
+# Read runs/reproduce-desk-v1/summary.json.
 for trace in runs/reproduce-desk-v1/episode-*.jsonl; do
   aeolus-agent-bench replay "$trace"
 done
@@ -48,8 +48,7 @@ The [manifest](../results/agent_benchmark/baseline_manifest.json) pins the suite
 prompt, source fingerprint, originating Git commit, and numerical dependencies.
 Timing and trace checksums can vary between reruns because latency is recorded;
 observations, dispatches, and simulator metrics replay deterministically in the
-same numerical environment. Full JSONL logs and the offline HTML report are
-regenerated into ignored `runs/` directories.
+same numerical environment. Full JSONL logs are regenerated into ignored `runs/` directories.
 
 Two compatibility problems found during execution were fixed before the retained
 pilot: nonterminal escape could override the configured horizon, and the

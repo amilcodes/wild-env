@@ -10,7 +10,8 @@ performance.
 
 ## Run it
 
-From the repository root with Python 3.10–3.12:
+Run benchmarks on EC2, following [the remote recipe](ec2_agent_benchmarks.md).
+From that checkout with Python 3.10–3.12:
 
 ```bash
 python -m venv .venv
@@ -31,12 +32,11 @@ aeolus-agent-bench schema
 aeolus-agent-bench replay runs/desk-frontier/episode-0002.jsonl
 ```
 
-Open `runs/desk-frontier/report.html` directly in a browser. It works offline and
-contains the outcome table, paired effects, and an episode/decision inspector.
+Results are plain JSON and JSONL files. `summary.json` contains the outcome
+table and paired effects; episode files contain the decision-level evidence.
 Existing output directories are rejected to protect previous runs. Interrupted
 runs retain flushed JSONL traces and a summary explicitly marked incomplete;
-start a fresh directory to rerun. `report RUN_DIR` regenerates an interrupted
-run's report from its completed episodes.
+start a fresh directory to rerun. No dashboard or HTML report is generated.
 
 ## Live model adapters
 
@@ -155,12 +155,12 @@ Primary loss growth is final minus initial canonical `weighted_loss`. This proxy
 weights consumed-fuel loss and active intensity by static asset value. It is in
 simulator units, not dollars, hectares, lives, or a calibrated damage estimate.
 The secondary outcomes are burned area in hectares, resource cost, exposure,
-escape/containment flags, and reliability. The report sorts eligible agents by
+escape/containment flags, and reliability. The summary sorts eligible agents by
 mean loss growth. It also reports each matched pair's reduction:
 
 `100 × (hold_loss_growth − candidate_loss_growth) / hold_loss_growth`
 
-The report averages these per-pair percentages; it is not a percentage computed
+The summary averages these per-pair percentages; it is not a percentage computed
 from pooled totals. Pairs whose hold growth is nonpositive have undefined relative
 reductions and are omitted from that percentage only; `normalized_pairs` exposes
 the denominator. Absolute paired effects use the repository's existing
@@ -183,7 +183,6 @@ included in the standard comparison.
   reliability, reported usage, and trace checksums.
 - `episode-NNNN.jsonl`: exact agent packet and its checksum, response/tool payload,
   receipt, latency, usage, response ID/model, evaluator-only metrics, and final result.
-- `report.html`: self-contained offline audit view. Agent text is HTML escaped.
 
 Replay reconstructs the scenario and seed, re-executes recorded actions, and
 compares every observation hash, receipt, intermediate metric, and terminal score.
