@@ -1,0 +1,283 @@
+{
+  "schema_version": 1,
+  "suite_sha256": "0d1a08a68dfc56b3f121da8d75fbbdb453fb4a548479f6a0bd94b1c31730005e",
+  "source": {
+    "source_runs": {
+      "codex": {
+        "run_name": "ec2-frontier-live-v1",
+        "source": {
+          "source_sha256": "e5d1114cd711e0c1e7cf87982d46a9e4e242b33c59173ad3fe288e6079dd5753",
+          "python": "3.11.18",
+          "numpy": "2.4.6",
+          "platform": "Linux",
+          "dependencies": {
+            "numpy": "2.4.6",
+            "scipy": "1.17.1",
+            "PyYAML": "6.0.3",
+            "gymnasium": "1.4.0",
+            "pettingzoo": "1.27.0",
+            "torch": "2.15.0+cpu"
+          },
+          "git_commit": "6e2cb62762194821d3a42c921a1c0afff7098115",
+          "git_dirty": false
+        },
+        "exit_code": 0,
+        "manifest_sha256": "beef0f9ae76224a6bea3cc421dbabcb7f0a652464e9920c5adc64952815a3bc4",
+        "summary_sha256": "f27f14166abbfc5682143433c4244f7e1c380e17c192b50056c3f36241193a17",
+        "episodes": 60
+      },
+      "opus": {
+        "run_name": "ec2-opus-live-v1",
+        "source": {
+          "source_sha256": "89d259ebc03f1e1830b26e1324eb0f444baad45c073124ecff48010ee9dcf24e",
+          "python": "3.11.18",
+          "numpy": "2.4.6",
+          "platform": "Linux",
+          "dependencies": {
+            "numpy": "2.4.6",
+            "scipy": "1.17.1",
+            "PyYAML": "6.0.3",
+            "gymnasium": "1.4.0",
+            "pettingzoo": "1.27.0",
+            "torch": "2.15.0+cpu"
+          },
+          "git_commit": "91b4930ca52b711c8e42eb0d3aee2b48bd6b5d47",
+          "git_dirty": false
+        },
+        "exit_code": 2,
+        "manifest_sha256": "fa90f30a1c8624053f16fe52c4d5576d5b029d77802028ee9a6b746c0d803f0c",
+        "summary_sha256": "88d707741755101b99d31243b55830d730f5dbd6cb6f5902962c1df56b856443",
+        "episodes": 24
+      }
+    },
+    "environment_reference_commit": "6e2cb62762194821d3a42c921a1c0afff7098115",
+    "source_changes_from_reference": {
+      "codex": [],
+      "opus": [
+        "src/aeolus/agents/cli_adapters.py",
+        "tests/agents/test_cli_adapters.py"
+      ]
+    },
+    "environment_contract_and_scoring_unchanged": true
+  },
+  "protocol": "wildfire-desk-v1.1",
+  "episodes": 72,
+  "conditions": 12,
+  "decisions": 2160,
+  "all_episodes_eligible": false,
+  "all_traces_checksum_verified": true,
+  "all_traces_replay_verified": true,
+  "same_initial_observations_for_all_policies": true,
+  "same_case_seed_scenarios": true,
+  "all_cli_model_identities_verified": true,
+  "identity_basis": "Codex session turn_context; Claude init/assistant events. Not provider-signed snapshots. Claude effort is requested, not independently attested.",
+  "disallowed_tool_events": 0,
+  "baseline_reference_episodes_checked": 36,
+  "baseline_reference_episodes_matching": 36,
+  "baseline_metric_drift": [],
+  "policies": {
+    "hold": {
+      "decisions": 360,
+      "valid_decisions": 360,
+      "model_identity_verified": 0,
+      "codex_effort_verified": 0,
+      "non_hold_decisions": 0,
+      "nonempty_memory": 0,
+      "disallowed_tools": 0,
+      "model_rounds": 0,
+      "cached_input_tokens": 0,
+      "unknown_usage_calls": 0,
+      "input_tokens_reported": 0,
+      "output_tokens_reported": 0,
+      "task_assignments": {
+        "HOLD": 1800
+      },
+      "failures": {},
+      "usage_by_model": {},
+      "mean_latency_s": 0.00046360026462934913,
+      "median_latency_s": 0.00048490893095731735,
+      "p95_latency_s": 0.0005531390197575092
+    },
+    "nearest": {
+      "decisions": 360,
+      "valid_decisions": 360,
+      "model_identity_verified": 0,
+      "codex_effort_verified": 0,
+      "non_hold_decisions": 360,
+      "nonempty_memory": 0,
+      "disallowed_tools": 0,
+      "model_rounds": 0,
+      "cached_input_tokens": 0,
+      "unknown_usage_calls": 0,
+      "input_tokens_reported": 0,
+      "output_tokens_reported": 0,
+      "task_assignments": {
+        "LINE": 12,
+        "AERIAL_LINE": 105,
+        "OBSERVE": 360,
+        "REINFORCE": 59,
+        "HOLD": 1080,
+        "SERVICE": 168,
+        "WATER": 15,
+        "RETARDANT": 1
+      },
+      "failures": {},
+      "usage_by_model": {},
+      "mean_latency_s": 0.0004475517819325129,
+      "median_latency_s": 0.00046359351836144924,
+      "p95_latency_s": 0.0005368390120565891
+    },
+    "greedy": {
+      "decisions": 360,
+      "valid_decisions": 360,
+      "model_identity_verified": 0,
+      "codex_effort_verified": 0,
+      "non_hold_decisions": 360,
+      "nonempty_memory": 0,
+      "disallowed_tools": 0,
+      "model_rounds": 0,
+      "cached_input_tokens": 0,
+      "unknown_usage_calls": 0,
+      "input_tokens_reported": 0,
+      "output_tokens_reported": 0,
+      "task_assignments": {
+        "LINE": 15,
+        "WATER": 70,
+        "AERIAL_LINE": 62,
+        "OBSERVE": 360,
+        "REINFORCE": 60,
+        "HOLD": 1047,
+        "SERVICE": 186
+      },
+      "failures": {},
+      "usage_by_model": {},
+      "mean_latency_s": 0.00045235479418705734,
+      "median_latency_s": 0.0004715438699349761,
+      "p95_latency_s": 0.0005370150320231915
+    },
+    "sol-high": {
+      "decisions": 360,
+      "valid_decisions": 360,
+      "model_identity_verified": 360,
+      "codex_effort_verified": 360,
+      "non_hold_decisions": 305,
+      "nonempty_memory": 348,
+      "disallowed_tools": 0,
+      "model_rounds": 360,
+      "cached_input_tokens": 4570880,
+      "unknown_usage_calls": 0,
+      "input_tokens_reported": 7866110,
+      "output_tokens_reported": 166803,
+      "task_assignments": {
+        "LINE": 13,
+        "WATER": 131,
+        "OBSERVE": 285,
+        "REINFORCE": 48,
+        "HOLD": 1115,
+        "SERVICE": 185,
+        "AERIAL_LINE": 12,
+        "RETARDANT": 11
+      },
+      "failures": {},
+      "usage_by_model": {},
+      "mean_latency_s": 17.04572165670688,
+      "median_latency_s": 16.288495395099744,
+      "p95_latency_s": 25.14738090103492
+    },
+    "terra-high": {
+      "decisions": 360,
+      "valid_decisions": 360,
+      "model_identity_verified": 360,
+      "codex_effort_verified": 360,
+      "non_hold_decisions": 331,
+      "nonempty_memory": 341,
+      "disallowed_tools": 0,
+      "model_rounds": 360,
+      "cached_input_tokens": 5771520,
+      "unknown_usage_calls": 0,
+      "input_tokens_reported": 7843876,
+      "output_tokens_reported": 79059,
+      "task_assignments": {
+        "LINE": 13,
+        "WATER": 123,
+        "OBSERVE": 305,
+        "REINFORCE": 30,
+        "HOLD": 1123,
+        "SERVICE": 172,
+        "RETARDANT": 30,
+        "AERIAL_LINE": 4
+      },
+      "failures": {},
+      "usage_by_model": {},
+      "mean_latency_s": 7.047129167714673,
+      "median_latency_s": 6.65491295105312,
+      "p95_latency_s": 9.666210191091523
+    },
+    "opus-high": {
+      "decisions": 360,
+      "valid_decisions": 358,
+      "model_identity_verified": 360,
+      "codex_effort_verified": 0,
+      "non_hold_decisions": 355,
+      "nonempty_memory": 348,
+      "disallowed_tools": 0,
+      "model_rounds": 726,
+      "cached_input_tokens": 664831,
+      "unknown_usage_calls": 0,
+      "input_tokens_reported": 3367379,
+      "output_tokens_reported": 375426,
+      "task_assignments": {
+        "LINE": 13,
+        "WATER": 96,
+        "OBSERVE": 353,
+        "REINFORCE": 54,
+        "HOLD": 1069,
+        "SERVICE": 177,
+        "AERIAL_LINE": 32,
+        "RETARDANT": 6
+      },
+      "failures": {
+        "assign every resource exactly once": 2
+      },
+      "usage_by_model": {
+        "claude-haiku-4-5-20251001": {
+          "cacheCreationInputTokens": 0,
+          "cacheReadInputTokens": 0,
+          "inputTokens": 2157802,
+          "outputTokens": 6093
+        },
+        "claude-opus-5-5": {
+          "cacheCreationInputTokens": 2701820,
+          "cacheReadInputTokens": 664831,
+          "inputTokens": 728,
+          "outputTokens": 375426
+        }
+      },
+      "mean_latency_s": 10.612030912794095,
+      "median_latency_s": 10.0466279364191,
+      "p95_latency_s": 15.921898348955438
+    }
+  },
+  "failures": [
+    {
+      "policy": "opus-high",
+      "case_id": "initial-attack",
+      "seed": 211,
+      "decision_id": "973349644fa0724a:5",
+      "error": "assign every resource exactly once",
+      "trace": "opus-episode-0003.jsonl",
+      "adapter_error": null
+    },
+    {
+      "policy": "opus-high",
+      "case_id": "wind-restrictions",
+      "seed": 907,
+      "decision_id": "58eada75d9c0a3c4:2",
+      "error": "assign every resource exactly once",
+      "trace": "opus-episode-0017.jsonl",
+      "adapter_error": null
+    }
+  ],
+  "analysis_script_sha256": "17881e4aa61050aa6e0b189fddda2aff69365096e1ad18b27551d7e9add5bfa6",
+  "interpretation": "Synthetic incident-desk control benchmark. Validated execution and observation boundaries do not establish operational wildfire validity or broad frontier capability."
+}

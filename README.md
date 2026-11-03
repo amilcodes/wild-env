@@ -29,11 +29,14 @@ inference bridges. See the [CLI evaluation guide](docs/cli_agent_evaluation.md)
 and `configs/agents/bridge.example.yaml`. Simulation and scoring stay on EC2;
 the logged-in host relays isolated, structured model decisions.
 
-The retained pilot has **36 baseline episodes / 1,080 dispatch decisions** across
-fleet coordination, delayed reconnaissance, wind restrictions, and scarce reload
-capacity. It contains **no live LLM results or human-operator comparison**.
-Read the [benchmark protocol and run guide](docs/frontier_agent_benchmark.md)
-and [baseline pilot results](docs/frontier_agent_results.md).
+The executed frontier pilot has **72 unique episodes / 2,160 dispatch decisions**,
+including **1,080 real model requests** to GPT-6.1 Sol, GPT-6.1 Terra, and Claude
+Opus 5.5 through the authenticated bridges. Every trace replayed successfully.
+No model showed a clear improvement over greedy in this small synthetic pilot;
+Opus's two invalid dispatches are retained. Read the
+[live results](docs/frontier_live_results.md),
+[benchmark protocol](docs/frontier_agent_benchmark.md), and the earlier
+[36-episode baseline reference](docs/frontier_agent_results.md).
 
 ## Simulator foundation
 
