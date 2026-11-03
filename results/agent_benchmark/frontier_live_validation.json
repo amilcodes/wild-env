@@ -1,0 +1,39 @@
+{
+  "sol_terra": {
+    "source_commit": "6e2cb62762194821d3a42c921a1c0afff7098115",
+    "passed": 201,
+    "skipped": 1,
+    "warnings": 15,
+    "ci": "https://github.com/amilcodes/wild-env/actions/runs/41543203317"
+  },
+  "opus": {
+    "source_commit": "91b4930ca52b711c8e42eb0d3aee2b48bd6b5d47",
+    "passed": 202,
+    "skipped": 1,
+    "warnings": 15,
+    "ci": "https://github.com/amilcodes/wild-env/actions/runs/41545557702"
+  },
+  "collector": {
+    "source_commit": "f8a56571a6f00424c79abcfefe093faf8af4ebef",
+    "ci": "https://github.com/amilcodes/wild-env/actions/runs/41547165045",
+    "combined_development_episodes": 24,
+    "combined_development_decisions": 96,
+    "negative_checks": [
+      {
+        "test": "protocol_mismatch",
+        "rejected": true,
+        "reason": "opus: different protocol"
+      },
+      {
+        "test": "trace_tampering",
+        "rejected": true,
+        "reason": "opus/episode-0000.jsonl: checksum or replay failure"
+      },
+      {
+        "test": "baseline_metric_mismatch",
+        "rejected": true,
+        "reason": "cannot deduplicate differing or stochastic episode ('hold', 'initial-attack', 17)"
+      }
+    ]
+  }
+}
