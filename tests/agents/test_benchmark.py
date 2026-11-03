@@ -10,6 +10,7 @@ import yaml
 from aeolus.agents.adapters import AgentAdapter, AgentReply, AgentSpec
 from aeolus.agents.benchmark import Case, load_suite, replay_trace, run_benchmark, run_episode
 from aeolus.agents.contract import canonical_json
+from aeolus.agents.operations_benchmark import load_suite as load_operations_suite
 from aeolus.config import ScenarioConfig
 
 
@@ -106,8 +107,14 @@ def test_invalid_suite_rejected(tmp_path, mutation):
 def test_shipped_suites_are_valid():
     for path in Path("configs/agents").glob("*.yaml"):
         if ".example." not in path.name:
-            _, cases = load_suite(path)
-            assert cases
+            raw = yaml.safe_load(path.read_text())
+            if "agents" in raw:
+                assert set(raw) == {"agents"}
+                assert [AgentSpec(**spec) for spec in raw["agents"]]
+            else:
+                loader = load_operations_suite if raw.get("schema_version") == 2 else load_suite
+                _, cases = loader(path)
+                assert cases
 
 
 def test_parallel_episodes_match_serial_metrics_and_stable_trace_order(tmp_path):
