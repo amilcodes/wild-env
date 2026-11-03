@@ -21,5 +21,7 @@ status=0
 "$python_bin" -m aeolus.operations_cli run "${args[@]}" > "$job_root/progress.txt" 2>&1 || status=$?
 if [[ $status != 0 && $status != 2 ]]; then exit "$status"; fi
 "$python_bin" -m aeolus.operations_cli analyze "$job_root/benchmark" > "$job_root/analysis.json" 2>&1
+"$python_bin" tools/audit_operations_results.py "$job_root" > "$job_root/audit-log.txt" 2>&1
+"$python_bin" tools/validate_operations_states.py "$job_root" > "$job_root/state-verification-log.txt" 2>&1
 printf 'Finished: %s\n' "$job_root"
 exit "$status"
