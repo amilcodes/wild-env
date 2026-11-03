@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import csv
 import hashlib
+import itertools
 import json
 import statistics
 from collections import Counter, defaultdict
@@ -156,6 +157,43 @@ def audit(root):
         for p, s in specs.items()
         if s["provider"] == "codex_cli"
     )
+    sensitivity = []
+    for left, right in itertools.combinations(sorted(specs), 2):
+        lhs = {t["instance_sha256"]: t for t in task_rows if t["policy"] == left}
+        rhs = {t["instance_sha256"]: t for t in task_rows if t["policy"] == right}
+        assert lhs.keys() == rhs.keys()
+        differences = [rhs[k]["mean_regret_pct"] - lhs[k]["mean_regret_pct"] for k in lhs]
+        families = sorted({t["family"] for t in lhs.values()})
+        family_means = {
+            f: statistics.mean(
+                rhs[k]["mean_regret_pct"] - lhs[k]["mean_regret_pct"] for k in lhs if lhs[k]["family"] == f
+            )
+            for f in families
+        }
+        repeated = [
+            statistics.mean(rhs[k]["repeat_means"][r] - lhs[k]["repeat_means"][r] for k in lhs)
+            for r in range(manifest["suite"]["repeats"])
+        ]
+        omitted = {
+            f: statistics.mean(
+                rhs[k]["mean_regret_pct"] - lhs[k]["mean_regret_pct"] for k in lhs if lhs[k]["family"] != f
+            )
+            for f in families
+            if len(families) > 1
+        }
+        sensitivity.append(
+            {
+                "left": left,
+                "right": right,
+                "positive_favors_left": True,
+                "instance_wins_left": sum(x > 1e-8 for x in differences),
+                "instance_wins_right": sum(x < -1e-8 for x in differences),
+                "instance_ties": sum(abs(x) <= 1e-8 for x in differences),
+                "repeat_advantages_left": repeated,
+                "family_advantages_left": family_means,
+                "leave_one_family_out_advantages_left": omitted,
+            }
+        )
     result = {
         "protocol": manifest["protocol"],
         "source": manifest["source"],
@@ -179,6 +217,13 @@ def audit(root):
     }
     write_json(root / "validity-audit.json", result)
     write_json(root / "instance-scores.json", task_rows)
+    write_json(
+        root / "sensitivity.json",
+        {
+            "note": "Descriptive stability checks only; the frozen paired tests determine separation.",
+            "model_pairs": sensitivity,
+        },
+    )
     write_json(root / "decision-errors.json", sorted(mistakes, key=lambda r: -r["normalized_regret_points"]))
     with (root / "instance-scores.csv").open("w", newline="") as stream:
         writer = csv.DictWriter(
