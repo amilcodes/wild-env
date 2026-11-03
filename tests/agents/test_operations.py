@@ -2,6 +2,8 @@ import json
 from dataclasses import replace
 
 import pytest
+
+from aeolus.agents.contract import canonical_json
 from aeolus.agents.operations import (
     Instance,
     Job,
@@ -14,8 +16,6 @@ from aeolus.agents.operations import (
     payoff,
     with_forecast,
 )
-
-from aeolus.agents.contract import canonical_json
 
 
 def play(instance, world, policy):
