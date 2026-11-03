@@ -105,6 +105,7 @@ WILD_ENV_WORKERS=6 nice -n 15 bash deploy/ec2/run_operations_benchmark.sh \
   runs/ops-evaluation configs/agents/operations-evaluation.yaml \
   configs/agents/operations-models.yaml
 
+# These audits run automatically in the recipe above. To rerun them:
 # Audit transport provenance and descriptive repeat/family stability.
 .venv/bin/python tools/audit_operations_results.py runs/ops-evaluation
 
@@ -118,3 +119,23 @@ CSV: complete/partial summaries, reference certificates, every model response,
 exact decision regret, replay verification and paired comparisons. The optimal
 development traces also provide verifiable demonstrations; training gains and
 transfer to other environments have not been established.
+
+## First evaluation: signal and ceiling
+
+The [complete plain results](../results/agent_benchmark/operations_v2_results.txt)
+retain 306 episodes, 2,601 dispatches and 1,836 live model decisions. Normalized
+regret is Sol/Astra 0.000, Opus 1.271, Haiku 1.296, Terra 1.848 and Luna 9.877.
+Myopic and two-step controls score 33.885 and 1.768 respectively. Every comparison
+of Luna with the other models passes the frozen Holm-adjusted test. No frontier
+pair passes it; Sol and Astra are optimal on every instance and repetition.
+
+The eight invalid dispatches are retained. They explain only 0.519 points of
+Luna's 9.877 regret; Opus's four invalid holds cost no additional value. The
+observed gap is predominantly planning quality. All traces replayed and all
+model identities were verified. The independent public-packet verifier matched
+1,899 decision penalties across 775 distinct reached states.
+
+These first two levels provide difficulty-calibration evidence for a harder tier.
+They support a smaller-model gap, while exposing a ceiling for the strongest
+models. The frozen results remain unchanged, and future difficulty refinement
+requires new evaluation instances.

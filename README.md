@@ -42,6 +42,10 @@ The [v2 operations task](docs/operations_benchmark.md) adds exact, information-m
 planning references, explicit deadlines and prerequisites, scarce supplies, and
 forecast acquisition. It scores decision regret and compares smaller models with
 frontier models on separate development and repeated evaluation instances.
+Its [first completed evaluation](results/agent_benchmark/operations_v2_results.txt)
+contains 306 episodes and 1,836 live model decisions. Luna is separated from the
+other five models, but Sol and Astra attain zero regret on all 12 instances.
+This establishes a ceiling in the first two levels, not a frontier ordering.
 
 ## Simulator foundation
 
