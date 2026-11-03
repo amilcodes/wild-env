@@ -1,0 +1,7 @@
+schema_version: 2
+suite_id: wildfire-operations-v2-development
+split: development
+repeats: 1
+cases:
+  - {family: information, seed: 17, level: 2}
+  - {family: compound, seed: 29, level: 2}
