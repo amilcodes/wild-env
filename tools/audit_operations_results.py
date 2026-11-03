@@ -27,6 +27,7 @@ def audit(root):
     replay_by_trace = {x["trace"]: x for x in replays}
     specs = {x["name"]: x for x in manifest["agents"]}
     initial, groups, latencies = defaultdict(set), defaultdict(list), defaultdict(list)
+    regret_parts = defaultdict(list)
     counts, failures, mistakes = defaultdict(Counter), [], []
     auxiliary = defaultdict(lambda: defaultdict(Counter))
     for record in summary["records"]:
@@ -43,6 +44,7 @@ def audit(root):
         initial[identity].add(steps[0]["observation_sha256"])
         groups[(policy, identity)].append(record)
         assert header["agent"] == specs.get(policy)
+        valid_regret, invalid_regret = 0.0, 0.0
         for step in steps:
             obs, receipt = step["observation"], step["receipt"]
             meta, usage = step.get("adapter_metadata") or {}, step.get("usage") or {}
@@ -53,6 +55,10 @@ def audit(root):
             counts[policy]["disallowed_tool_events"] += len(meta.get("tools_used", []))
             counts[policy]["infrastructure_errors"] += int(step["adapter_error"] is not None)
             loss = step["evaluation"]["regret"]
+            if receipt["valid"]:
+                valid_regret += loss
+            else:
+                invalid_regret += loss
             if loss > 1e-8:
                 counts[policy]["decisions_with_positive_regret"] += 1
                 mistakes.append(
@@ -107,6 +113,9 @@ def audit(root):
                 auxiliary[policy][model].update({k: v for k, v in values.items() if v is not None})
             latencies[policy].append(step["latency_s"])
         assert sum(not s["receipt"]["valid"] for s in steps) == record["invalid_decisions"]
+        scale = 100 / record["optimal_expected_reward"]
+        assert abs((valid_regret + invalid_regret) * scale - record["normalized_regret_pct"]) < 1e-8
+        regret_parts[(policy, identity)].append((valid_regret * scale, invalid_regret * scale))
     assert all(len(x) == 1 for x in initial.values())
     task_rows = []
     for (policy, identity), records in sorted(groups.items()):
@@ -141,6 +150,12 @@ def audit(root):
             "worst_instance_regret_pct": float(values.max()),
             "optimal_instances": int(np.sum(values < 1e-8)),
             "mean_repeat_spread_points": statistics.mean(t["repeat_spread_points"] for t in tasks),
+            "valid_decision_regret_points": statistics.mean(
+                statistics.mean(x[0] for x in regret_parts[(policy, t["instance_sha256"])]) for t in tasks
+            ),
+            "invalid_dispatch_regret_points": statistics.mean(
+                statistics.mean(x[1] for x in regret_parts[(policy, t["instance_sha256"])]) for t in tasks
+            ),
             "family_mean_regret_pct": {
                 f: statistics.mean(t["mean_regret_pct"] for t in tasks if t["family"] == f)
                 for f in sorted({t["family"] for t in tasks})

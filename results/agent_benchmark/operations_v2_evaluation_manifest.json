@@ -1,0 +1,2827 @@
+{
+  "schema_version": 2,
+  "protocol": "wildfire-operations-v2",
+  "suite": {
+    "schema_version": 2,
+    "suite_id": "wildfire-operations-v2-evaluation",
+    "split": "evaluation",
+    "repeats": 2,
+    "cases": [
+      {
+        "family": "deadline",
+        "seed": 910140,
+        "level": 1
+      },
+      {
+        "family": "deadline",
+        "seed": 910277,
+        "level": 2
+      },
+      {
+        "family": "prerequisite",
+        "seed": 911149,
+        "level": 1
+      },
+      {
+        "family": "prerequisite",
+        "seed": 911286,
+        "level": 2
+      },
+      {
+        "family": "water",
+        "seed": 912158,
+        "level": 1
+      },
+      {
+        "family": "water",
+        "seed": 912295,
+        "level": 2
+      },
+      {
+        "family": "information",
+        "seed": 913167,
+        "level": 1
+      },
+      {
+        "family": "information",
+        "seed": 913304,
+        "level": 2
+      },
+      {
+        "family": "forecast",
+        "seed": 914176,
+        "level": 1
+      },
+      {
+        "family": "forecast",
+        "seed": 914313,
+        "level": 2
+      },
+      {
+        "family": "compound",
+        "seed": 915185,
+        "level": 1
+      },
+      {
+        "family": "compound",
+        "seed": 915322,
+        "level": 2
+      }
+    ]
+  },
+  "suite_sha256": "f4e26abbcc12c6f97b564dc6f93179b6e7ae081dcf170a91ef1fb348f3e432a9",
+  "system_prompt": "You operate a synthetic wildfire response desk. Maximize final net protected\nasset value: sum the realized value of completed protection jobs, minus the costs\nof every job started. These are abstract planning units, not dollars or lives.\n\nEach decision advances ONE planning tick (10 minutes). Submit exactly one JSON\ndispatch with decision_id, one assignment per resource, rationale, and memory.\nUse only that resource's legal_tasks. Task 0 means hold/continue. Jobs are unique:\ndo not assign the same nonzero job to multiple resources. Joint water use must\nnot exceed remaining water; each job consumes its stated water when STARTED.\nInvalid dispatches hold ALL resources for one tick. There are no free retries.\n\nJobs are nonpreemptive. duration_by_resource includes travel, work and turnaround.\nA job started at tick t with duration d finishes at t+d, earns value if it finishes\nno later than its deadline, and frees the resource at that tick. A prerequisite\nmust already be completed at the START of a job. Jobs with zero value can unlock\nvaluable dependent jobs. Release ticks and deadlines are absolute, not relative.\nResources cannot work on two jobs at once. A large immediate value can block\nseveral better jobs, consume scarce water, or miss a prerequisite chain.\n\nThe forecast has two possible wind corridors, alpha and beta. value_by_forecast\nstates each job's protection value in each corridor; all possible values and the\nprior probabilities are public. The actual corridor is fixed before dispatch and\nis hidden until the scheduled bulletin OR a completed SURVEY, whichever is first.\nThe bulletin/survey result is exact and persists. Before that, plan using the\nstated probabilities; do not pretend to know the actual corridor. Surveying uses\ntime and has a cost. Some tasks require preserving flexibility for later news.\n\nlegal_tasks filters only immediate feasibility; it does NOT choose a good plan or\nreserve supplies for later work. Task IDs and display order carry no priority.\nTerminal reward, the reference planner, and hidden forecast are not available to\nyou. You have only this public packet, the last receipt and up to 2000 characters\nof carried memory. Return a short operational rationale, not a reasoning transcript.\n",
+  "prompt_sha256": "38bb612062594594e6dcd400556b02e2b349e31bc5c6ee15ca410ad9e0c1c041",
+  "dispatch_schema": {
+    "type": "object",
+    "properties": {
+      "decision_id": {
+        "type": "string"
+      },
+      "assignments": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "resource_id": {
+              "type": "string"
+            },
+            "task_id": {
+              "type": "integer"
+            }
+          },
+          "required": [
+            "resource_id",
+            "task_id"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "rationale": {
+        "type": "string",
+        "maxLength": 1000
+      },
+      "memory": {
+        "type": "string",
+        "maxLength": 2000
+      }
+    },
+    "required": [
+      "decision_id",
+      "assignments",
+      "rationale",
+      "memory"
+    ],
+    "additionalProperties": false
+  },
+  "source": {
+    "source_sha256": "c1bf40a3fc98916babb758bc290d58bf7e328256c2685531a53be75a30541a07",
+    "python": "3.11.18",
+    "numpy": "2.4.6",
+    "platform": "Linux",
+    "dependencies": {
+      "numpy": "2.4.6",
+      "scipy": "1.17.1",
+      "PyYAML": "6.0.3",
+      "gymnasium": "1.4.0",
+      "pettingzoo": "1.27.0",
+      "torch": "2.15.0+cpu"
+    },
+    "git_commit": "3c1e73a6d05f7da96aa2c41a3b4f1fb95d74d1ee",
+    "git_dirty": false
+  },
+  "agents": [
+    {
+      "name": "luna-high",
+      "provider": "codex_cli",
+      "model": "gpt-6-luna",
+      "base_url": null,
+      "api_key_env": null,
+      "command": [],
+      "max_output_tokens": null,
+      "timeout_s": 240,
+      "max_calls": 12,
+      "reasoning_effort": "high"
+    },
+    {
+      "name": "haiku-high",
+      "provider": "claude_cli",
+      "model": "claude-haiku-5-5",
+      "base_url": null,
+      "api_key_env": null,
+      "command": [],
+      "max_output_tokens": null,
+      "timeout_s": 240,
+      "max_calls": 12,
+      "reasoning_effort": "high"
+    },
+    {
+      "name": "sol-high",
+      "provider": "codex_cli",
+      "model": "gpt-6.1-sol",
+      "base_url": null,
+      "api_key_env": null,
+      "command": [],
+      "max_output_tokens": null,
+      "timeout_s": 240,
+      "max_calls": 12,
+      "reasoning_effort": "high"
+    },
+    {
+      "name": "terra-high",
+      "provider": "codex_cli",
+      "model": "gpt-6.1-terra",
+      "base_url": null,
+      "api_key_env": null,
+      "command": [],
+      "max_output_tokens": null,
+      "timeout_s": 240,
+      "max_calls": 12,
+      "reasoning_effort": "high"
+    },
+    {
+      "name": "opus-high",
+      "provider": "claude_cli",
+      "model": "claude-opus-5-5",
+      "base_url": null,
+      "api_key_env": null,
+      "command": [],
+      "max_output_tokens": null,
+      "timeout_s": 240,
+      "max_calls": 12,
+      "reasoning_effort": "high"
+    },
+    {
+      "name": "astra-high",
+      "provider": "codex_cli",
+      "model": "gpt-6-astra",
+      "base_url": null,
+      "api_key_env": null,
+      "command": [],
+      "max_output_tokens": null,
+      "timeout_s": 240,
+      "max_calls": 12,
+      "reasoning_effort": "high"
+    }
+  ],
+  "baselines": [
+    "hold",
+    "myopic",
+    "deadline",
+    "two-step",
+    "optimal"
+  ],
+  "adapter_runtime": {
+    "luna-high": {
+      "cli_version": "codex-cli 0.165.0",
+      "transport_prompt": "\nTransport: return exactly one JSON object matching the supplied dispatch schema.\nThat object is the input to submit_dispatch; the harness applies it once and\nadvances time. Do not invoke shell, file, browser, search, MCP or other tools.\nUse only the observation in this request, including its memory. This is a fresh\nstateless decision: no conversation history, repository or external information\nis available. For schema-based structured output, emit the structured answer\ndirectly; do not first repeat it as prose. Return a short operational rationale,\nnot a reasoning transcript. Never invent a task ID or omit a resource.\n",
+      "effective_system_sha256": "18911d0e3882a4a624ef83eb8ebf541c20c6141a0753eba4ad190b7953c5598b",
+      "session_policy": "fresh isolated session for every decision; no resume",
+      "output_token_cap": null,
+      "model_identity": "reported events/header only; absent metadata stays unknown"
+    },
+    "haiku-high": {
+      "cli_version": "2.1.291 (Claude Code)",
+      "transport_prompt": "\nTransport: return exactly one JSON object matching the supplied dispatch schema.\nThat object is the input to submit_dispatch; the harness applies it once and\nadvances time. Do not invoke shell, file, browser, search, MCP or other tools.\nUse only the observation in this request, including its memory. This is a fresh\nstateless decision: no conversation history, repository or external information\nis available. For schema-based structured output, emit the structured answer\ndirectly; do not first repeat it as prose. Return a short operational rationale,\nnot a reasoning transcript. Never invent a task ID or omit a resource.\n",
+      "effective_system_sha256": "18911d0e3882a4a624ef83eb8ebf541c20c6141a0753eba4ad190b7953c5598b",
+      "session_policy": "fresh isolated session for every decision; no resume",
+      "output_token_cap": null,
+      "model_identity": "reported events/header only; absent metadata stays unknown"
+    },
+    "sol-high": {
+      "cli_version": "codex-cli 0.165.0",
+      "transport_prompt": "\nTransport: return exactly one JSON object matching the supplied dispatch schema.\nThat object is the input to submit_dispatch; the harness applies it once and\nadvances time. Do not invoke shell, file, browser, search, MCP or other tools.\nUse only the observation in this request, including its memory. This is a fresh\nstateless decision: no conversation history, repository or external information\nis available. For schema-based structured output, emit the structured answer\ndirectly; do not first repeat it as prose. Return a short operational rationale,\nnot a reasoning transcript. Never invent a task ID or omit a resource.\n",
+      "effective_system_sha256": "18911d0e3882a4a624ef83eb8ebf541c20c6141a0753eba4ad190b7953c5598b",
+      "session_policy": "fresh isolated session for every decision; no resume",
+      "output_token_cap": null,
+      "model_identity": "reported events/header only; absent metadata stays unknown"
+    },
+    "terra-high": {
+      "cli_version": "codex-cli 0.165.0",
+      "transport_prompt": "\nTransport: return exactly one JSON object matching the supplied dispatch schema.\nThat object is the input to submit_dispatch; the harness applies it once and\nadvances time. Do not invoke shell, file, browser, search, MCP or other tools.\nUse only the observation in this request, including its memory. This is a fresh\nstateless decision: no conversation history, repository or external information\nis available. For schema-based structured output, emit the structured answer\ndirectly; do not first repeat it as prose. Return a short operational rationale,\nnot a reasoning transcript. Never invent a task ID or omit a resource.\n",
+      "effective_system_sha256": "18911d0e3882a4a624ef83eb8ebf541c20c6141a0753eba4ad190b7953c5598b",
+      "session_policy": "fresh isolated session for every decision; no resume",
+      "output_token_cap": null,
+      "model_identity": "reported events/header only; absent metadata stays unknown"
+    },
+    "opus-high": {
+      "cli_version": "2.1.291 (Claude Code)",
+      "transport_prompt": "\nTransport: return exactly one JSON object matching the supplied dispatch schema.\nThat object is the input to submit_dispatch; the harness applies it once and\nadvances time. Do not invoke shell, file, browser, search, MCP or other tools.\nUse only the observation in this request, including its memory. This is a fresh\nstateless decision: no conversation history, repository or external information\nis available. For schema-based structured output, emit the structured answer\ndirectly; do not first repeat it as prose. Return a short operational rationale,\nnot a reasoning transcript. Never invent a task ID or omit a resource.\n",
+      "effective_system_sha256": "18911d0e3882a4a624ef83eb8ebf541c20c6141a0753eba4ad190b7953c5598b",
+      "session_policy": "fresh isolated session for every decision; no resume",
+      "output_token_cap": null,
+      "model_identity": "reported events/header only; absent metadata stays unknown"
+    },
+    "astra-high": {
+      "cli_version": "codex-cli 0.165.0",
+      "transport_prompt": "\nTransport: return exactly one JSON object matching the supplied dispatch schema.\nThat object is the input to submit_dispatch; the harness applies it once and\nadvances time. Do not invoke shell, file, browser, search, MCP or other tools.\nUse only the observation in this request, including its memory. This is a fresh\nstateless decision: no conversation history, repository or external information\nis available. For schema-based structured output, emit the structured answer\ndirectly; do not first repeat it as prose. Return a short operational rationale,\nnot a reasoning transcript. Never invent a task ID or omit a resource.\n",
+      "effective_system_sha256": "18911d0e3882a4a624ef83eb8ebf541c20c6141a0753eba4ad190b7953c5598b",
+      "session_policy": "fresh isolated session for every decision; no resume",
+      "output_token_cap": null,
+      "model_identity": "reported events/header only; absent metadata stays unknown"
+    }
+  },
+  "instances": [
+    {
+      "family": "deadline",
+      "seed": 910140,
+      "level": 1,
+      "horizon": 8,
+      "resources": [
+        "team-west",
+        "team-blue"
+      ],
+      "water": 6,
+      "bulletin_tick": 3,
+      "jobs": [
+        {
+          "id": 53,
+          "label": "intake",
+          "kind": "PROTECT",
+          "durations": [
+            0,
+            3
+          ],
+          "release": 0,
+          "deadline": 3,
+          "prerequisites": [],
+          "water": 0,
+          "cost": 1,
+          "values": [
+            35,
+            35
+          ]
+        },
+        {
+          "id": 105,
+          "label": "bridge",
+          "kind": "PROTECT",
+          "durations": [
+            2,
+            1
+          ],
+          "release": 0,
+          "deadline": 2,
+          "prerequisites": [],
+          "water": 0,
+          "cost": 1,
+          "values": [
+            18,
+            18
+          ]
+        },
+        {
+          "id": 123,
+          "label": "village",
+          "kind": "PROTECT",
+          "durations": [
+            0,
+            2
+          ],
+          "release": 4,
+          "deadline": 8,
+          "prerequisites": [],
+          "water": 2,
+          "cost": 1,
+          "values": [
+            59,
+            59
+          ]
+        },
+        {
+          "id": 107,
+          "label": "substation",
+          "kind": "PROTECT",
+          "durations": [
+            3,
+            2
+          ],
+          "release": 2,
+          "deadline": 5,
+          "prerequisites": [],
+          "water": 2,
+          "cost": 1,
+          "values": [
+            38,
+            38
+          ]
+        },
+        {
+          "id": 108,
+          "label": "depot",
+          "kind": "PROTECT",
+          "durations": [
+            0,
+            2
+          ],
+          "release": 1,
+          "deadline": 4,
+          "prerequisites": [],
+          "water": 0,
+          "cost": 1,
+          "values": [
+            32,
+            32
+          ]
+        },
+        {
+          "id": 176,
+          "label": "farm",
+          "kind": "PROTECT",
+          "durations": [
+            2,
+            1
+          ],
+          "release": 4,
+          "deadline": 8,
+          "prerequisites": [],
+          "water": 0,
+          "cost": 1,
+          "values": [
+            14,
+            14
+          ]
+        },
+        {
+          "id": 77,
+          "label": "ranch",
+          "kind": "PROTECT",
+          "durations": [
+            2,
+            0
+          ],
+          "release": 4,
+          "deadline": 8,
+          "prerequisites": [],
+          "water": 2,
+          "cost": 1,
+          "values": [
+            77,
+            77
+          ]
+        },
+        {
+          "id": 167,
+          "label": "clinic",
+          "kind": "PROTECT",
+          "durations": [
+            2,
+            0
+          ],
+          "release": 0,
+          "deadline": 4,
+          "prerequisites": [],
+          "water": 0,
+          "cost": 1,
+          "values": [
+            17,
+            17
+          ]
+        }
+      ],
+      "prior": [
+        0.5,
+        0.5
+      ]
+    },
+    {
+      "family": "deadline",
+      "seed": 910277,
+      "level": 2,
+      "horizon": 9,
+      "resources": [
+        "team-north",
+        "team-blue"
+      ],
+      "water": 6,
+      "bulletin_tick": 3,
+      "jobs": [
+        {
+          "id": 59,
+          "label": "plant",
+          "kind": "PROTECT",
+          "durations": [
+            2,
+            1
+          ],
+          "release": 4,
+          "deadline": 9,
+          "prerequisites": [],
+          "water": 0,
+          "cost": 1,
+          "values": [
+            18,
+            18
+          ]
+        },
+        {
+          "id": 111,
+          "label": "station",
+          "kind": "PROTECT",
+          "durations": [
+            3,
+            2
+          ],
+          "release": 2,
+          "deadline": 5,
+          "prerequisites": [],
+          "water": 2,
+          "cost": 1,
+          "values": [
+            25,
+            25
+          ]
+        },
+        {
+          "id": 105,
+          "label": "bridge",
+          "kind": "PROTECT",
+          "durations": [
+            2,
+            3
+          ],
+          "release": 3,
+          "deadline": 9,
+          "prerequisites": [],
+          "water": 0,
+          "cost": 1,
+          "values": [
+            36,
+            36
+          ]
+        },
+        {
+          "id": 178,
+          "label": "ranch",
+          "kind": "PROTECT",
+          "durations": [
+            0,
+            2
+          ],
+          "release": 5,
+          "deadline": 9,
+          "prerequisites": [],
+          "water": 2,
+          "cost": 1,
+          "values": [
+            70,
+            70
+          ]
+        },
+        {
+          "id": 165,
+          "label": "shelter",
+          "kind": "PROTECT",
+          "durations": [
+            0,
+            4
+          ],
+          "release": 0,
+          "deadline": 4,
+          "prerequisites": [],
+          "water": 0,
+          "cost": 2,
+          "values": [
+            34,
+            34
+          ]
+        },
+        {
+          "id": 99,
+          "label": "village",
+          "kind": "PROTECT",
+          "durations": [
+            2,
+            0
+          ],
+          "release": 0,
+          "deadline": 4,
+          "prerequisites": [],
+          "water": 0,
+          "cost": 1,
+          "values": [
+            24,
+            24
+          ]
+        },
+        {
+          "id": 47,
+          "label": "substation",
+          "kind": "PROTECT",
+          "durations": [
+            2,
+            0
+          ],
+          "release": 5,
+          "deadline": 9,
+          "prerequisites": [],
+          "water": 2,
+          "cost": 1,
+          "values": [
+            63,
+            63
+          ]
+        },
+        {
+          "id": 35,
+          "label": "intake",
+          "kind": "PROTECT",
+          "durations": [
+            2,
+            1
+          ],
+          "release": 4,
+          "deadline": 9,
+          "prerequisites": [
+            137
+          ],
+          "water": 0,
+          "cost": 1,
+          "values": [
+            54,
+            54
+          ]
+        },
+        {
+          "id": 129,
+          "label": "clinic",
+          "kind": "PROTECT",
+          "durations": [
+            3,
+            1
+          ],
+          "release": 0,
+          "deadline": 2,
+          "prerequisites": [],
+          "water": 0,
+          "cost": 1,
+          "values": [
+            27,
+            27
+          ]
+        },
+        {
+          "id": 137,
+          "label": "mill",
+          "kind": "PROTECT",
+          "durations": [
+            1,
+            2
+          ],
+          "release": 2,
+          "deadline": 7,
+          "prerequisites": [],
+          "water": 1,
+          "cost": 1,
+          "values": [
+            22,
+            22
+          ]
+        },
+        {
+          "id": 53,
+          "label": "orchard",
+          "kind": "PROTECT",
+          "durations": [
+            0,
+            2
+          ],
+          "release": 1,
+          "deadline": 5,
+          "prerequisites": [],
+          "water": 0,
+          "cost": 1,
+          "values": [
+            32,
+            32
+          ]
+        }
+      ],
+      "prior": [
+        0.5,
+        0.5
+      ]
+    },
+    {
+      "family": "prerequisite",
+      "seed": 911149,
+      "level": 1,
+      "horizon": 8,
+      "resources": [
+        "team-west",
+        "team-north"
+      ],
+      "water": 6,
+      "bulletin_tick": 3,
+      "jobs": [
+        {
+          "id": 126,
+          "label": "substation",
+          "kind": "PROTECT",
+          "durations": [
+            0,
+            2
+          ],
+          "release": 1,
+          "deadline": 5,
+          "prerequisites": [],
+          "water": 0,
+          "cost": 1,
+          "values": [
+            34,
+            34
+          ]
+        },
+        {
+          "id": 78,
+          "label": "shelter",
+          "kind": "PROTECT",
+          "durations": [
+            0,
+            2
+          ],
+          "release": 4,
+          "deadline": 8,
+          "prerequisites": [
+            35
+          ],
+          "water": 0,
+          "cost": 1,
+          "values": [
+            67,
+            67
+          ]
+        },
+        {
+          "id": 194,
+          "label": "intake",
+          "kind": "PROTECT",
+          "durations": [
+            2,
+            1
+          ],
+          "release": 4,
+          "deadline": 8,
+          "prerequisites": [],
+          "water": 0,
+          "cost": 1,
+          "values": [
+            14,
+            14
+          ]
+        },
+        {
+          "id": 35,
+          "label": "depot",
+          "kind": "ACCESS",
+          "durations": [
+            2,
+            2
+          ],
+          "release": 0,
+          "deadline": 4,
+          "prerequisites": [],
+          "water": 0,
+          "cost": 1,
+          "values": [
+            0,
+            0
+          ]
+        },
+        {
+          "id": 19,
+          "label": "mill",
+          "kind": "PROTECT",
+          "durations": [
+            2,
+            0
+          ],
+          "release": 0,
+          "deadline": 3,
+          "prerequisites": [],
+          "water": 0,
+          "cost": 1,
+          "values": [
+            30,
+            30
+          ]
+        },
+        {
+          "id": 40,
+          "label": "bridge",
+          "kind": "PROTECT",
+          "durations": [
+            3,
+            1
+          ],
+          "release": 0,
+          "deadline": 2,
+          "prerequisites": [],
+          "water": 0,
+          "cost": 1,
+          "values": [
+            23,
+            23
+          ]
+        },
+        {
+          "id": 91,
+          "label": "farm",
+          "kind": "PROTECT",
+          "durations": [
+            0,
+            4
+          ],
+          "release": 0,
+          "deadline": 4,
+          "prerequisites": [],
+          "water": 0,
+          "cost": 3,
+          "values": [
+            24,
+            24
+          ]
+        },
+        {
+          "id": 49,
+          "label": "station",
+          "kind": "PROTECT",
+          "durations": [
+            2,
+            0
+          ],
+          "release": 0,
+          "deadline": 5,
+          "prerequisites": [
+            35
+          ],
+          "water": 0,
+          "cost": 1,
+          "values": [
+            73,
+            73
+          ]
+        }
+      ],
+      "prior": [
+        0.5,
+        0.5
+      ]
+    },
+    {
+      "family": "prerequisite",
+      "seed": 911286,
+      "level": 2,
+      "horizon": 9,
+      "resources": [
+        "team-north",
+        "team-west"
+      ],
+      "water": 6,
+      "bulletin_tick": 3,
+      "jobs": [
+        {
+          "id": 86,
+          "label": "plant",
+          "kind": "PROTECT",
+          "durations": [
+            1,
+            2
+          ],
+          "release": 0,
+          "deadline": 2,
+          "prerequisites": [],
+          "water": 0,
+          "cost": 1,
+          "values": [
+            20,
+            20
+          ]
+        },
+        {
+          "id": 121,
+          "label": "bridge",
+          "kind": "PROTECT",
+          "durations": [
+            0,
+            2
+          ],
+          "release": 0,
+          "deadline": 6,
+          "prerequisites": [
+            104
+          ],
+          "water": 0,
+          "cost": 1,
+          "values": [
+            87,
+            87
+          ]
+        },
+        {
+          "id": 118,
+          "label": "station",
+          "kind": "PROTECT",
+          "durations": [
+            2,
+            1
+          ],
+          "release": 3,
+          "deadline": 7,
+          "prerequisites": [],
+          "water": 1,
+          "cost": 1,
+          "values": [
+            34,
+            34
+          ]
+        },
+        {
+          "id": 71,
+          "label": "school",
+          "kind": "PROTECT",
+          "durations": [
+            1,
+            2
+          ],
+          "release": 4,
+          "deadline": 9,
+          "prerequisites": [],
+          "water": 0,
+          "cost": 1,
+          "values": [
+            18,
+            18
+          ]
+        },
+        {
+          "id": 104,
+          "label": "clinic",
+          "kind": "ACCESS",
+          "durations": [
+            2,
+            2
+          ],
+          "release": 0,
+          "deadline": 4,
+          "prerequisites": [],
+          "water": 0,
+          "cost": 1,
+          "values": [
+            0,
+            0
+          ]
+        },
+        {
+          "id": 179,
+          "label": "substation",
+          "kind": "PROTECT",
+          "durations": [
+            2,
+            0
+          ],
+          "release": 1,
+          "deadline": 4,
+          "prerequisites": [],
+          "water": 0,
+          "cost": 1,
+          "values": [
+            37,
+            37
+          ]
+        },
+        {
+          "id": 151,
+          "label": "intake",
+          "kind": "PROTECT",
+          "durations": [
+            4,
+            0
+          ],
+          "release": 0,
+          "deadline": 4,
+          "prerequisites": [],
+          "water": 0,
+          "cost": 3,
+          "values": [
+            31,
+            31
+          ]
+        },
+        {
+          "id": 62,
+          "label": "shelter",
+          "kind": "PROTECT",
+          "durations": [
+            3,
+            2
+          ],
+          "release": 3,
+          "deadline": 9,
+          "prerequisites": [],
+          "water": 0,
+          "cost": 1,
+          "values": [
+            36,
+            36
+          ]
+        },
+        {
+          "id": 149,
+          "label": "ranch",
+          "kind": "PROTECT",
+          "durations": [
+            0,
+            2
+          ],
+          "release": 0,
+          "deadline": 4,
+          "prerequisites": [],
+          "water": 0,
+          "cost": 1,
+          "values": [
+            24,
+            24
+          ]
+        },
+        {
+          "id": 93,
+          "label": "orchard",
+          "kind": "PROTECT",
+          "durations": [
+            1,
+            2
+          ],
+          "release": 4,
+          "deadline": 9,
+          "prerequisites": [
+            118
+          ],
+          "water": 0,
+          "cost": 1,
+          "values": [
+            54,
+            54
+          ]
+        },
+        {
+          "id": 115,
+          "label": "depot",
+          "kind": "PROTECT",
+          "durations": [
+            2,
+            0
+          ],
+          "release": 3,
+          "deadline": 9,
+          "prerequisites": [
+            104
+          ],
+          "water": 0,
+          "cost": 1,
+          "values": [
+            43,
+            43
+          ]
+        }
+      ],
+      "prior": [
+        0.5,
+        0.5
+      ]
+    },
+    {
+      "family": "water",
+      "seed": 912158,
+      "level": 1,
+      "horizon": 8,
+      "resources": [
+        "team-red",
+        "team-west"
+      ],
+      "water": 4,
+      "bulletin_tick": 3,
+      "jobs": [
+        {
+          "id": 82,
+          "label": "village",
+          "kind": "PROTECT",
+          "durations": [
+            3,
+            2
+          ],
+          "release": 4,
+          "deadline": 8,
+          "prerequisites": [],
+          "water": 3,
+          "cost": 1,
+          "values": [
+            80,
+            80
+          ]
+        },
+        {
+          "id": 48,
+          "label": "shelter",
+          "kind": "PROTECT",
+          "durations": [
+            2,
+            0
+          ],
+          "release": 5,
+          "deadline": 8,
+          "prerequisites": [],
+          "water": 2,
+          "cost": 1,
+          "values": [
+            52,
+            52
+          ]
+        },
+        {
+          "id": 97,
+          "label": "school",
+          "kind": "PROTECT",
+          "durations": [
+            2,
+            0
+          ],
+          "release": 0,
+          "deadline": 3,
+          "prerequisites": [],
+          "water": 0,
+          "cost": 1,
+          "values": [
+            20,
+            20
+          ]
+        },
+        {
+          "id": 18,
+          "label": "bridge",
+          "kind": "PROTECT",
+          "durations": [
+            2,
+            1
+          ],
+          "release": 0,
+          "deadline": 2,
+          "prerequisites": [],
+          "water": 0,
+          "cost": 1,
+          "values": [
+            22,
+            22
+          ]
+        },
+        {
+          "id": 110,
+          "label": "relay",
+          "kind": "PROTECT",
+          "durations": [
+            0,
+            2
+          ],
+          "release": 4,
+          "deadline": 8,
+          "prerequisites": [],
+          "water": 2,
+          "cost": 1,
+          "values": [
+            63,
+            63
+          ]
+        },
+        {
+          "id": 92,
+          "label": "intake",
+          "kind": "PROTECT",
+          "durations": [
+            0,
+            2
+          ],
+          "release": 1,
+          "deadline": 5,
+          "prerequisites": [],
+          "water": 0,
+          "cost": 1,
+          "values": [
+            35,
+            35
+          ]
+        },
+        {
+          "id": 176,
+          "label": "farm",
+          "kind": "PROTECT",
+          "durations": [
+            3,
+            2
+          ],
+          "release": 2,
+          "deadline": 5,
+          "prerequisites": [],
+          "water": 2,
+          "cost": 1,
+          "values": [
+            57,
+            57
+          ]
+        },
+        {
+          "id": 188,
+          "label": "tower",
+          "kind": "PROTECT",
+          "durations": [
+            0,
+            3
+          ],
+          "release": 0,
+          "deadline": 3,
+          "prerequisites": [],
+          "water": 0,
+          "cost": 3,
+          "values": [
+            51,
+            51
+          ]
+        },
+        {
+          "id": 169,
+          "label": "orchard",
+          "kind": "PROTECT",
+          "durations": [
+            2,
+            2
+          ],
+          "release": 0,
+          "deadline": 5,
+          "prerequisites": [],
+          "water": 2,
+          "cost": 1,
+          "values": [
+            32,
+            32
+          ]
+        }
+      ],
+      "prior": [
+        0.5,
+        0.5
+      ]
+    },
+    {
+      "family": "water",
+      "seed": 912295,
+      "level": 2,
+      "horizon": 9,
+      "resources": [
+        "team-west",
+        "team-red"
+      ],
+      "water": 4,
+      "bulletin_tick": 3,
+      "jobs": [
+        {
+          "id": 157,
+          "label": "depot",
+          "kind": "PROTECT",
+          "durations": [
+            1,
+            3
+          ],
+          "release": 0,
+          "deadline": 2,
+          "prerequisites": [],
+          "water": 0,
+          "cost": 1,
+          "values": [
+            24,
+            24
+          ]
+        },
+        {
+          "id": 39,
+          "label": "intake",
+          "kind": "PROTECT",
+          "durations": [
+            2,
+            0
+          ],
+          "release": 4,
+          "deadline": 9,
+          "prerequisites": [],
+          "water": 2,
+          "cost": 1,
+          "values": [
+            71,
+            71
+          ]
+        },
+        {
+          "id": 55,
+          "label": "ranch",
+          "kind": "PROTECT",
+          "durations": [
+            0,
+            2
+          ],
+          "release": 3,
+          "deadline": 9,
+          "prerequisites": [],
+          "water": 2,
+          "cost": 1,
+          "values": [
+            73,
+            73
+          ]
+        },
+        {
+          "id": 106,
+          "label": "shelter",
+          "kind": "PROTECT",
+          "durations": [
+            2,
+            3
+          ],
+          "release": 2,
+          "deadline": 5,
+          "prerequisites": [],
+          "water": 2,
+          "cost": 1,
+          "values": [
+            54,
+            54
+          ]
+        },
+        {
+          "id": 24,
+          "label": "substation",
+          "kind": "PROTECT",
+          "durations": [
+            3,
+            2
+          ],
+          "release": 3,
+          "deadline": 9,
+          "prerequisites": [],
+          "water": 0,
+          "cost": 1,
+          "values": [
+            26,
+            26
+          ]
+        },
+        {
+          "id": 91,
+          "label": "tower",
+          "kind": "PROTECT",
+          "durations": [
+            2,
+            2
+          ],
+          "release": 0,
+          "deadline": 5,
+          "prerequisites": [],
+          "water": 2,
+          "cost": 1,
+          "values": [
+            26,
+            26
+          ]
+        },
+        {
+          "id": 83,
+          "label": "plant",
+          "kind": "PROTECT",
+          "durations": [
+            1,
+            2
+          ],
+          "release": 4,
+          "deadline": 9,
+          "prerequisites": [
+            34
+          ],
+          "water": 0,
+          "cost": 1,
+          "values": [
+            39,
+            39
+          ]
+        },
+        {
+          "id": 191,
+          "label": "clinic",
+          "kind": "PROTECT",
+          "durations": [
+            2,
+            0
+          ],
+          "release": 1,
+          "deadline": 5,
+          "prerequisites": [],
+          "water": 0,
+          "cost": 1,
+          "values": [
+            23,
+            23
+          ]
+        },
+        {
+          "id": 154,
+          "label": "orchard",
+          "kind": "PROTECT",
+          "durations": [
+            2,
+            3
+          ],
+          "release": 4,
+          "deadline": 9,
+          "prerequisites": [],
+          "water": 3,
+          "cost": 1,
+          "values": [
+            65,
+            65
+          ]
+        },
+        {
+          "id": 89,
+          "label": "station",
+          "kind": "PROTECT",
+          "durations": [
+            4,
+            0
+          ],
+          "release": 0,
+          "deadline": 4,
+          "prerequisites": [],
+          "water": 0,
+          "cost": 2,
+          "values": [
+            24,
+            24
+          ]
+        },
+        {
+          "id": 116,
+          "label": "farm",
+          "kind": "PROTECT",
+          "durations": [
+            0,
+            2
+          ],
+          "release": 0,
+          "deadline": 4,
+          "prerequisites": [],
+          "water": 0,
+          "cost": 1,
+          "values": [
+            21,
+            21
+          ]
+        },
+        {
+          "id": 34,
+          "label": "village",
+          "kind": "PROTECT",
+          "durations": [
+            2,
+            1
+          ],
+          "release": 3,
+          "deadline": 7,
+          "prerequisites": [],
+          "water": 1,
+          "cost": 1,
+          "values": [
+            32,
+            32
+          ]
+        }
+      ],
+      "prior": [
+        0.5,
+        0.5
+      ]
+    },
+    {
+      "family": "information",
+      "seed": 913167,
+      "level": 1,
+      "horizon": 8,
+      "resources": [
+        "team-west",
+        "team-blue"
+      ],
+      "water": 2,
+      "bulletin_tick": 4,
+      "jobs": [
+        {
+          "id": 144,
+          "label": "plant",
+          "kind": "PROTECT",
+          "durations": [
+            3,
+            0
+          ],
+          "release": 1,
+          "deadline": 5,
+          "prerequisites": [],
+          "water": 2,
+          "cost": 1,
+          "values": [
+            0,
+            75
+          ]
+        },
+        {
+          "id": 102,
+          "label": "intake",
+          "kind": "PROTECT",
+          "durations": [
+            0,
+            3
+          ],
+          "release": 1,
+          "deadline": 5,
+          "prerequisites": [],
+          "water": 2,
+          "cost": 1,
+          "values": [
+            75,
+            0
+          ]
+        },
+        {
+          "id": 29,
+          "label": "mill",
+          "kind": "PROTECT",
+          "durations": [
+            2,
+            0
+          ],
+          "release": 0,
+          "deadline": 4,
+          "prerequisites": [],
+          "water": 0,
+          "cost": 1,
+          "values": [
+            17,
+            17
+          ]
+        },
+        {
+          "id": 120,
+          "label": "orchard",
+          "kind": "PROTECT",
+          "durations": [
+            0,
+            3
+          ],
+          "release": 0,
+          "deadline": 3,
+          "prerequisites": [],
+          "water": 0,
+          "cost": 2,
+          "values": [
+            58,
+            58
+          ]
+        },
+        {
+          "id": 76,
+          "label": "ranch",
+          "kind": "PROTECT",
+          "durations": [
+            0,
+            2
+          ],
+          "release": 1,
+          "deadline": 5,
+          "prerequisites": [],
+          "water": 0,
+          "cost": 1,
+          "values": [
+            28,
+            28
+          ]
+        },
+        {
+          "id": 66,
+          "label": "tower",
+          "kind": "PROTECT",
+          "durations": [
+            2,
+            1
+          ],
+          "release": 4,
+          "deadline": 8,
+          "prerequisites": [],
+          "water": 0,
+          "cost": 1,
+          "values": [
+            15,
+            15
+          ]
+        },
+        {
+          "id": 135,
+          "label": "village",
+          "kind": "SURVEY",
+          "durations": [
+            1,
+            1
+          ],
+          "release": 0,
+          "deadline": 2,
+          "prerequisites": [],
+          "water": 0,
+          "cost": 3,
+          "values": [
+            0,
+            0
+          ]
+        },
+        {
+          "id": 51,
+          "label": "depot",
+          "kind": "PROTECT",
+          "durations": [
+            2,
+            1
+          ],
+          "release": 0,
+          "deadline": 2,
+          "prerequisites": [],
+          "water": 0,
+          "cost": 1,
+          "values": [
+            29,
+            29
+          ]
+        }
+      ],
+      "prior": [
+        0.5,
+        0.5
+      ]
+    },
+    {
+      "family": "information",
+      "seed": 913304,
+      "level": 2,
+      "horizon": 9,
+      "resources": [
+        "team-north",
+        "team-blue"
+      ],
+      "water": 2,
+      "bulletin_tick": 4,
+      "jobs": [
+        {
+          "id": 193,
+          "label": "village",
+          "kind": "SURVEY",
+          "durations": [
+            1,
+            1
+          ],
+          "release": 0,
+          "deadline": 2,
+          "prerequisites": [],
+          "water": 0,
+          "cost": 3,
+          "values": [
+            0,
+            0
+          ]
+        },
+        {
+          "id": 32,
+          "label": "shelter",
+          "kind": "PROTECT",
+          "durations": [
+            0,
+            3
+          ],
+          "release": 1,
+          "deadline": 5,
+          "prerequisites": [],
+          "water": 2,
+          "cost": 1,
+          "values": [
+            0,
+            95
+          ]
+        },
+        {
+          "id": 131,
+          "label": "substation",
+          "kind": "PROTECT",
+          "durations": [
+            4,
+            0
+          ],
+          "release": 0,
+          "deadline": 4,
+          "prerequisites": [],
+          "water": 0,
+          "cost": 3,
+          "values": [
+            50,
+            50
+          ]
+        },
+        {
+          "id": 179,
+          "label": "plant",
+          "kind": "PROTECT",
+          "durations": [
+            3,
+            2
+          ],
+          "release": 3,
+          "deadline": 9,
+          "prerequisites": [],
+          "water": 0,
+          "cost": 1,
+          "values": [
+            38,
+            38
+          ]
+        },
+        {
+          "id": 150,
+          "label": "clinic",
+          "kind": "PROTECT",
+          "durations": [
+            3,
+            0
+          ],
+          "release": 1,
+          "deadline": 5,
+          "prerequisites": [],
+          "water": 2,
+          "cost": 1,
+          "values": [
+            95,
+            0
+          ]
+        },
+        {
+          "id": 96,
+          "label": "farm",
+          "kind": "PROTECT",
+          "durations": [
+            2,
+            1
+          ],
+          "release": 2,
+          "deadline": 7,
+          "prerequisites": [],
+          "water": 1,
+          "cost": 1,
+          "values": [
+            33,
+            33
+          ]
+        },
+        {
+          "id": 100,
+          "label": "orchard",
+          "kind": "PROTECT",
+          "durations": [
+            1,
+            2
+          ],
+          "release": 4,
+          "deadline": 9,
+          "prerequisites": [],
+          "water": 0,
+          "cost": 1,
+          "values": [
+            19,
+            19
+          ]
+        },
+        {
+          "id": 151,
+          "label": "intake",
+          "kind": "PROTECT",
+          "durations": [
+            1,
+            2
+          ],
+          "release": 0,
+          "deadline": 2,
+          "prerequisites": [],
+          "water": 0,
+          "cost": 1,
+          "values": [
+            29,
+            29
+          ]
+        },
+        {
+          "id": 116,
+          "label": "tower",
+          "kind": "PROTECT",
+          "durations": [
+            0,
+            2
+          ],
+          "release": 0,
+          "deadline": 3,
+          "prerequisites": [],
+          "water": 0,
+          "cost": 1,
+          "values": [
+            30,
+            30
+          ]
+        },
+        {
+          "id": 171,
+          "label": "bridge",
+          "kind": "PROTECT",
+          "durations": [
+            1,
+            2
+          ],
+          "release": 4,
+          "deadline": 9,
+          "prerequisites": [
+            96
+          ],
+          "water": 0,
+          "cost": 1,
+          "values": [
+            57,
+            57
+          ]
+        },
+        {
+          "id": 67,
+          "label": "relay",
+          "kind": "PROTECT",
+          "durations": [
+            2,
+            0
+          ],
+          "release": 1,
+          "deadline": 4,
+          "prerequisites": [],
+          "water": 0,
+          "cost": 1,
+          "values": [
+            24,
+            24
+          ]
+        }
+      ],
+      "prior": [
+        0.5,
+        0.5
+      ]
+    },
+    {
+      "family": "forecast",
+      "seed": 914176,
+      "level": 1,
+      "horizon": 8,
+      "resources": [
+        "team-west",
+        "team-north"
+      ],
+      "water": 2,
+      "bulletin_tick": 3,
+      "jobs": [
+        {
+          "id": 11,
+          "label": "ranch",
+          "kind": "PROTECT",
+          "durations": [
+            2,
+            1
+          ],
+          "release": 4,
+          "deadline": 8,
+          "prerequisites": [],
+          "water": 0,
+          "cost": 1,
+          "values": [
+            13,
+            13
+          ]
+        },
+        {
+          "id": 29,
+          "label": "shelter",
+          "kind": "PROTECT",
+          "durations": [
+            0,
+            3
+          ],
+          "release": 0,
+          "deadline": 3,
+          "prerequisites": [],
+          "water": 0,
+          "cost": 3,
+          "values": [
+            55,
+            55
+          ]
+        },
+        {
+          "id": 18,
+          "label": "school",
+          "kind": "PROTECT",
+          "durations": [
+            3,
+            1
+          ],
+          "release": 0,
+          "deadline": 2,
+          "prerequisites": [],
+          "water": 0,
+          "cost": 1,
+          "values": [
+            29,
+            29
+          ]
+        },
+        {
+          "id": 177,
+          "label": "bridge",
+          "kind": "PROTECT",
+          "durations": [
+            0,
+            2
+          ],
+          "release": 1,
+          "deadline": 5,
+          "prerequisites": [],
+          "water": 0,
+          "cost": 1,
+          "values": [
+            19,
+            19
+          ]
+        },
+        {
+          "id": 70,
+          "label": "intake",
+          "kind": "SURVEY",
+          "durations": [
+            1,
+            1
+          ],
+          "release": 0,
+          "deadline": 2,
+          "prerequisites": [],
+          "water": 0,
+          "cost": 3,
+          "values": [
+            0,
+            0
+          ]
+        },
+        {
+          "id": 161,
+          "label": "village",
+          "kind": "PROTECT",
+          "durations": [
+            2,
+            0
+          ],
+          "release": 0,
+          "deadline": 3,
+          "prerequisites": [],
+          "water": 0,
+          "cost": 1,
+          "values": [
+            26,
+            26
+          ]
+        },
+        {
+          "id": 154,
+          "label": "substation",
+          "kind": "PROTECT",
+          "durations": [
+            0,
+            3
+          ],
+          "release": 1,
+          "deadline": 7,
+          "prerequisites": [],
+          "water": 2,
+          "cost": 1,
+          "values": [
+            0,
+            65
+          ]
+        },
+        {
+          "id": 85,
+          "label": "mill",
+          "kind": "PROTECT",
+          "durations": [
+            3,
+            0
+          ],
+          "release": 1,
+          "deadline": 7,
+          "prerequisites": [],
+          "water": 2,
+          "cost": 1,
+          "values": [
+            65,
+            0
+          ]
+        }
+      ],
+      "prior": [
+        0.5,
+        0.5
+      ]
+    },
+    {
+      "family": "forecast",
+      "seed": 914313,
+      "level": 2,
+      "horizon": 9,
+      "resources": [
+        "team-north",
+        "team-blue"
+      ],
+      "water": 2,
+      "bulletin_tick": 3,
+      "jobs": [
+        {
+          "id": 147,
+          "label": "mill",
+          "kind": "PROTECT",
+          "durations": [
+            2,
+            1
+          ],
+          "release": 2,
+          "deadline": 7,
+          "prerequisites": [],
+          "water": 1,
+          "cost": 1,
+          "values": [
+            38,
+            38
+          ]
+        },
+        {
+          "id": 77,
+          "label": "farm",
+          "kind": "SURVEY",
+          "durations": [
+            1,
+            1
+          ],
+          "release": 0,
+          "deadline": 2,
+          "prerequisites": [],
+          "water": 0,
+          "cost": 3,
+          "values": [
+            0,
+            0
+          ]
+        },
+        {
+          "id": 161,
+          "label": "relay",
+          "kind": "PROTECT",
+          "durations": [
+            2,
+            0
+          ],
+          "release": 1,
+          "deadline": 4,
+          "prerequisites": [],
+          "water": 0,
+          "cost": 1,
+          "values": [
+            35,
+            35
+          ]
+        },
+        {
+          "id": 181,
+          "label": "tower",
+          "kind": "PROTECT",
+          "durations": [
+            1,
+            2
+          ],
+          "release": 4,
+          "deadline": 9,
+          "prerequisites": [
+            147
+          ],
+          "water": 0,
+          "cost": 1,
+          "values": [
+            36,
+            36
+          ]
+        },
+        {
+          "id": 98,
+          "label": "bridge",
+          "kind": "PROTECT",
+          "durations": [
+            3,
+            0
+          ],
+          "release": 0,
+          "deadline": 3,
+          "prerequisites": [],
+          "water": 0,
+          "cost": 3,
+          "values": [
+            46,
+            46
+          ]
+        },
+        {
+          "id": 107,
+          "label": "depot",
+          "kind": "PROTECT",
+          "durations": [
+            1,
+            2
+          ],
+          "release": 4,
+          "deadline": 9,
+          "prerequisites": [],
+          "water": 0,
+          "cost": 1,
+          "values": [
+            12,
+            12
+          ]
+        },
+        {
+          "id": 191,
+          "label": "village",
+          "kind": "PROTECT",
+          "durations": [
+            0,
+            2
+          ],
+          "release": 0,
+          "deadline": 3,
+          "prerequisites": [],
+          "water": 0,
+          "cost": 1,
+          "values": [
+            22,
+            22
+          ]
+        },
+        {
+          "id": 170,
+          "label": "station",
+          "kind": "PROTECT",
+          "durations": [
+            1,
+            3
+          ],
+          "release": 0,
+          "deadline": 2,
+          "prerequisites": [],
+          "water": 0,
+          "cost": 1,
+          "values": [
+            18,
+            18
+          ]
+        },
+        {
+          "id": 65,
+          "label": "school",
+          "kind": "PROTECT",
+          "durations": [
+            3,
+            0
+          ],
+          "release": 1,
+          "deadline": 7,
+          "prerequisites": [],
+          "water": 2,
+          "cost": 1,
+          "values": [
+            60,
+            0
+          ]
+        },
+        {
+          "id": 14,
+          "label": "orchard",
+          "kind": "PROTECT",
+          "durations": [
+            3,
+            2
+          ],
+          "release": 3,
+          "deadline": 9,
+          "prerequisites": [],
+          "water": 0,
+          "cost": 1,
+          "values": [
+            24,
+            24
+          ]
+        },
+        {
+          "id": 35,
+          "label": "plant",
+          "kind": "PROTECT",
+          "durations": [
+            0,
+            3
+          ],
+          "release": 1,
+          "deadline": 7,
+          "prerequisites": [],
+          "water": 2,
+          "cost": 1,
+          "values": [
+            0,
+            60
+          ]
+        }
+      ],
+      "prior": [
+        0.5,
+        0.5
+      ]
+    },
+    {
+      "family": "compound",
+      "seed": 915185,
+      "level": 1,
+      "horizon": 8,
+      "resources": [
+        "team-blue",
+        "team-north"
+      ],
+      "water": 3,
+      "bulletin_tick": 4,
+      "jobs": [
+        {
+          "id": 87,
+          "label": "clinic",
+          "kind": "PROTECT",
+          "durations": [
+            2,
+            3
+          ],
+          "release": 4,
+          "deadline": 8,
+          "prerequisites": [],
+          "water": 3,
+          "cost": 1,
+          "values": [
+            75,
+            75
+          ]
+        },
+        {
+          "id": 123,
+          "label": "ranch",
+          "kind": "PROTECT",
+          "durations": [
+            2,
+            0
+          ],
+          "release": 1,
+          "deadline": 4,
+          "prerequisites": [],
+          "water": 0,
+          "cost": 1,
+          "values": [
+            21,
+            21
+          ]
+        },
+        {
+          "id": 191,
+          "label": "shelter",
+          "kind": "PROTECT",
+          "durations": [
+            1,
+            3
+          ],
+          "release": 0,
+          "deadline": 2,
+          "prerequisites": [],
+          "water": 0,
+          "cost": 1,
+          "values": [
+            27,
+            27
+          ]
+        },
+        {
+          "id": 45,
+          "label": "intake",
+          "kind": "PROTECT",
+          "durations": [
+            2,
+            2
+          ],
+          "release": 1,
+          "deadline": 6,
+          "prerequisites": [],
+          "water": 2,
+          "cost": 1,
+          "values": [
+            0,
+            60
+          ]
+        },
+        {
+          "id": 160,
+          "label": "depot",
+          "kind": "PROTECT",
+          "durations": [
+            0,
+            2
+          ],
+          "release": 0,
+          "deadline": 5,
+          "prerequisites": [
+            46
+          ],
+          "water": 0,
+          "cost": 1,
+          "values": [
+            59,
+            59
+          ]
+        },
+        {
+          "id": 137,
+          "label": "substation",
+          "kind": "PROTECT",
+          "durations": [
+            2,
+            0
+          ],
+          "release": 4,
+          "deadline": 8,
+          "prerequisites": [
+            46
+          ],
+          "water": 0,
+          "cost": 1,
+          "values": [
+            61,
+            61
+          ]
+        },
+        {
+          "id": 147,
+          "label": "bridge",
+          "kind": "PROTECT",
+          "durations": [
+            2,
+            2
+          ],
+          "release": 1,
+          "deadline": 6,
+          "prerequisites": [],
+          "water": 2,
+          "cost": 1,
+          "values": [
+            60,
+            0
+          ]
+        },
+        {
+          "id": 127,
+          "label": "station",
+          "kind": "PROTECT",
+          "durations": [
+            0,
+            2
+          ],
+          "release": 0,
+          "deadline": 4,
+          "prerequisites": [],
+          "water": 0,
+          "cost": 1,
+          "values": [
+            26,
+            26
+          ]
+        },
+        {
+          "id": 31,
+          "label": "farm",
+          "kind": "PROTECT",
+          "durations": [
+            2,
+            2
+          ],
+          "release": 0,
+          "deadline": 5,
+          "prerequisites": [],
+          "water": 2,
+          "cost": 1,
+          "values": [
+            30,
+            30
+          ]
+        },
+        {
+          "id": 81,
+          "label": "relay",
+          "kind": "SURVEY",
+          "durations": [
+            1,
+            1
+          ],
+          "release": 0,
+          "deadline": 3,
+          "prerequisites": [],
+          "water": 0,
+          "cost": 3,
+          "values": [
+            0,
+            0
+          ]
+        },
+        {
+          "id": 56,
+          "label": "plant",
+          "kind": "PROTECT",
+          "durations": [
+            3,
+            0
+          ],
+          "release": 0,
+          "deadline": 3,
+          "prerequisites": [],
+          "water": 0,
+          "cost": 3,
+          "values": [
+            56,
+            56
+          ]
+        },
+        {
+          "id": 46,
+          "label": "tower",
+          "kind": "ACCESS",
+          "durations": [
+            1,
+            2
+          ],
+          "release": 0,
+          "deadline": 4,
+          "prerequisites": [],
+          "water": 0,
+          "cost": 1,
+          "values": [
+            0,
+            0
+          ]
+        }
+      ],
+      "prior": [
+        0.5,
+        0.5
+      ]
+    },
+    {
+      "family": "compound",
+      "seed": 915322,
+      "level": 2,
+      "horizon": 9,
+      "resources": [
+        "team-north",
+        "team-red"
+      ],
+      "water": 4,
+      "bulletin_tick": 4,
+      "jobs": [
+        {
+          "id": 125,
+          "label": "substation",
+          "kind": "PROTECT",
+          "durations": [
+            2,
+            1
+          ],
+          "release": 4,
+          "deadline": 9,
+          "prerequisites": [
+            184
+          ],
+          "water": 0,
+          "cost": 1,
+          "values": [
+            60,
+            60
+          ]
+        },
+        {
+          "id": 138,
+          "label": "depot",
+          "kind": "PROTECT",
+          "durations": [
+            2,
+            2
+          ],
+          "release": 1,
+          "deadline": 6,
+          "prerequisites": [],
+          "water": 2,
+          "cost": 1,
+          "values": [
+            80,
+            0
+          ]
+        },
+        {
+          "id": 63,
+          "label": "mill",
+          "kind": "PROTECT",
+          "durations": [
+            2,
+            2
+          ],
+          "release": 1,
+          "deadline": 6,
+          "prerequisites": [],
+          "water": 2,
+          "cost": 1,
+          "values": [
+            0,
+            80
+          ]
+        },
+        {
+          "id": 184,
+          "label": "school",
+          "kind": "PROTECT",
+          "durations": [
+            1,
+            2
+          ],
+          "release": 2,
+          "deadline": 7,
+          "prerequisites": [],
+          "water": 1,
+          "cost": 1,
+          "values": [
+            35,
+            35
+          ]
+        },
+        {
+          "id": 178,
+          "label": "station",
+          "kind": "PROTECT",
+          "durations": [
+            3,
+            1
+          ],
+          "release": 0,
+          "deadline": 2,
+          "prerequisites": [],
+          "water": 0,
+          "cost": 1,
+          "values": [
+            20,
+            20
+          ]
+        },
+        {
+          "id": 196,
+          "label": "ranch",
+          "kind": "ACCESS",
+          "durations": [
+            2,
+            2
+          ],
+          "release": 0,
+          "deadline": 4,
+          "prerequisites": [],
+          "water": 0,
+          "cost": 1,
+          "values": [
+            0,
+            0
+          ]
+        },
+        {
+          "id": 89,
+          "label": "village",
+          "kind": "PROTECT",
+          "durations": [
+            2,
+            0
+          ],
+          "release": 0,
+          "deadline": 3,
+          "prerequisites": [],
+          "water": 0,
+          "cost": 1,
+          "values": [
+            29,
+            29
+          ]
+        },
+        {
+          "id": 38,
+          "label": "clinic",
+          "kind": "PROTECT",
+          "durations": [
+            0,
+            2
+          ],
+          "release": 3,
+          "deadline": 9,
+          "prerequisites": [
+            196
+          ],
+          "water": 0,
+          "cost": 1,
+          "values": [
+            63,
+            63
+          ]
+        },
+        {
+          "id": 62,
+          "label": "orchard",
+          "kind": "PROTECT",
+          "durations": [
+            2,
+            0
+          ],
+          "release": 0,
+          "deadline": 7,
+          "prerequisites": [
+            196
+          ],
+          "water": 0,
+          "cost": 1,
+          "values": [
+            64,
+            64
+          ]
+        },
+        {
+          "id": 109,
+          "label": "tower",
+          "kind": "PROTECT",
+          "durations": [
+            2,
+            3
+          ],
+          "release": 3,
+          "deadline": 9,
+          "prerequisites": [],
+          "water": 0,
+          "cost": 1,
+          "values": [
+            40,
+            40
+          ]
+        },
+        {
+          "id": 170,
+          "label": "relay",
+          "kind": "PROTECT",
+          "durations": [
+            0,
+            3
+          ],
+          "release": 0,
+          "deadline": 3,
+          "prerequisites": [],
+          "water": 0,
+          "cost": 2,
+          "values": [
+            31,
+            31
+          ]
+        },
+        {
+          "id": 185,
+          "label": "bridge",
+          "kind": "PROTECT",
+          "durations": [
+            0,
+            2
+          ],
+          "release": 1,
+          "deadline": 4,
+          "prerequisites": [],
+          "water": 0,
+          "cost": 1,
+          "values": [
+            32,
+            32
+          ]
+        },
+        {
+          "id": 83,
+          "label": "intake",
+          "kind": "PROTECT",
+          "durations": [
+            2,
+            2
+          ],
+          "release": 0,
+          "deadline": 5,
+          "prerequisites": [],
+          "water": 2,
+          "cost": 1,
+          "values": [
+            40,
+            40
+          ]
+        },
+        {
+          "id": 97,
+          "label": "farm",
+          "kind": "SURVEY",
+          "durations": [
+            1,
+            1
+          ],
+          "release": 0,
+          "deadline": 3,
+          "prerequisites": [],
+          "water": 0,
+          "cost": 3,
+          "values": [
+            0,
+            0
+          ]
+        },
+        {
+          "id": 121,
+          "label": "plant",
+          "kind": "PROTECT",
+          "durations": [
+            3,
+            2
+          ],
+          "release": 4,
+          "deadline": 9,
+          "prerequisites": [],
+          "water": 3,
+          "cost": 1,
+          "values": [
+            100,
+            100
+          ]
+        }
+      ],
+      "prior": [
+        0.5,
+        0.5
+      ]
+    }
+  ],
+  "certificates": [
+    {
+      "instance_sha256": "8d46fc581cbbc84ed1d956dbf0966b81772ce49dfef95cd245a957a6f8c789b2",
+      "optimal_expected_reward": 251.0,
+      "states_solved": 2957,
+      "exact": true
+    },
+    {
+      "instance_sha256": "7c85d8114addd79548ec590426ffbecf5d2d63ec36ee9d6b0265bbdd88e3c45d",
+      "optimal_expected_reward": 337.0,
+      "states_solved": 22365,
+      "exact": true
+    },
+    {
+      "instance_sha256": "275421c40dcaab44878bfe6addcdb1f8c83a270410257fc8ecd84e8c6213f312",
+      "optimal_expected_reward": 234.0,
+      "states_solved": 1522,
+      "exact": true
+    },
+    {
+      "instance_sha256": "d23d06c377938098f8afd97982e2e644789f5cf29ed22dabedeb218badff3e5f",
+      "optimal_expected_reward": 343.0,
+      "states_solved": 20563,
+      "exact": true
+    },
+    {
+      "instance_sha256": "435fd5dbb4a291bff3b1a766bc4b11845d7fe3497cee13009b4f88c99ec8abc0",
+      "optimal_expected_reward": 221.0,
+      "states_solved": 2299,
+      "exact": true
+    },
+    {
+      "instance_sha256": "87323598355019309bbabb512517c748000d4cbe98bbe5b8f2c19d7e4a9dd766",
+      "optimal_expected_reward": 232.0,
+      "states_solved": 15496,
+      "exact": true
+    },
+    {
+      "instance_sha256": "45e9181db7c21fa40eaed024eac3dc8165ffcc0acb1bfe7762571cd00ce2b250",
+      "optimal_expected_reward": 161.5,
+      "states_solved": 1801,
+      "exact": true
+    },
+    {
+      "instance_sha256": "453af1f2e672a320a6702ca044cc5d0bcb8cb95480138ae2016eec569e8738f9",
+      "optimal_expected_reward": 223.0,
+      "states_solved": 11532,
+      "exact": true
+    },
+    {
+      "instance_sha256": "38cc66e843ca3133768574357676834e250fcae2779c3a233dddec28d93a1b62",
+      "optimal_expected_reward": 162.0,
+      "states_solved": 2533,
+      "exact": true
+    },
+    {
+      "instance_sha256": "a092b71ba70a5c3d74d60b1886c802a352c0701307b0e5c20104aaaae71bbbc7",
+      "optimal_expected_reward": 178.0,
+      "states_solved": 13289,
+      "exact": true
+    },
+    {
+      "instance_sha256": "e86d3fa0ad50e3d007a0a7362f137a70a2fa4655291ac3669b4212aa40402d92",
+      "optimal_expected_reward": 262.0,
+      "states_solved": 8976,
+      "exact": true
+    },
+    {
+      "instance_sha256": "82aad57ceae8e14569d66ee4fd8d456765eab1f4ce8d404c62a25beb50b485aa",
+      "optimal_expected_reward": 433.0,
+      "states_solved": 112963,
+      "exact": true
+    }
+  ],
+  "expected_episodes": 306,
+  "workers": 6,
+  "created_at": "2026-11-03T00:43:53.452446+00:00",
+  "primary_metric": "Normalized Bellman regret, equally weighted per instance; lower is better.",
+  "failure_rule": "Invalid actions hold for one tick and remain scored. Infrastructure/identity errors make comparisons ineligible.",
+  "limitations": [
+    "Synthetic scheduling abstraction, without continuous fire physics or expert-calibrated loss.",
+    "The optimum uses public forecast belief, without the hidden world before reveal.",
+    "Repeated samples are not independent instances; provider scaffolding differs.",
+    "No output-token cap is exposed by CLI adapters."
+  ]
+}

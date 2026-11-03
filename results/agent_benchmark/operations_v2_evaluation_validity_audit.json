@@ -1,0 +1,502 @@
+{
+  "protocol": "wildfire-operations-v2",
+  "source": {
+    "source_sha256": "c1bf40a3fc98916babb758bc290d58bf7e328256c2685531a53be75a30541a07",
+    "python": "3.11.18",
+    "numpy": "2.4.6",
+    "platform": "Linux",
+    "dependencies": {
+      "numpy": "2.4.6",
+      "scipy": "1.17.1",
+      "PyYAML": "6.0.3",
+      "gymnasium": "1.4.0",
+      "pettingzoo": "1.27.0",
+      "torch": "2.15.0+cpu"
+    },
+    "git_commit": "3c1e73a6d05f7da96aa2c41a3b4f1fb95d74d1ee",
+    "git_dirty": false
+  },
+  "suite_sha256": "f4e26abbcc12c6f97b564dc6f93179b6e7ae081dcf170a91ef1fb348f3e432a9",
+  "episodes": 306,
+  "all_model_identities_verified": true,
+  "all_effective_prompts_verified": true,
+  "all_codex_efforts_verified": true,
+  "claude_effort_note": "Requested high effort; CLI events do not independently attest effective effort.",
+  "identical_initial_observations_across_policies_worlds_repeats": true,
+  "all_replays_and_trace_checksums_verified": true,
+  "all_episodes_eligible": true,
+  "policies": {
+    "hold": {
+      "decisions": 153,
+      "invalid_dispatches": 0,
+      "disallowed_tool_events": 0,
+      "infrastructure_errors": 0,
+      "decisions_with_positive_regret": 98
+    },
+    "myopic": {
+      "decisions": 153,
+      "invalid_dispatches": 0,
+      "disallowed_tool_events": 0,
+      "infrastructure_errors": 0,
+      "decisions_with_positive_regret": 32
+    },
+    "deadline": {
+      "decisions": 153,
+      "invalid_dispatches": 0,
+      "disallowed_tool_events": 0,
+      "infrastructure_errors": 0,
+      "decisions_with_positive_regret": 29
+    },
+    "two-step": {
+      "decisions": 153,
+      "invalid_dispatches": 0,
+      "disallowed_tool_events": 0,
+      "infrastructure_errors": 0,
+      "decisions_with_positive_regret": 6
+    },
+    "optimal": {
+      "decisions": 153,
+      "invalid_dispatches": 0,
+      "disallowed_tool_events": 0,
+      "infrastructure_errors": 0
+    },
+    "luna-high": {
+      "decisions": 306,
+      "invalid_dispatches": 4,
+      "disallowed_tool_events": 0,
+      "infrastructure_errors": 0,
+      "live_calls": 306,
+      "effort_verified": 306,
+      "model_identity_verified": 306,
+      "prompt_verified": 306,
+      "unknown_usage_calls": 0,
+      "input_tokens": 5593998,
+      "output_tokens": 140613,
+      "cached_input_tokens": 4657920,
+      "model_rounds": 306,
+      "decisions_with_positive_regret": 40
+    },
+    "haiku-high": {
+      "decisions": 306,
+      "invalid_dispatches": 0,
+      "disallowed_tool_events": 0,
+      "infrastructure_errors": 0,
+      "live_calls": 306,
+      "model_identity_verified": 306,
+      "prompt_verified": 306,
+      "unknown_usage_calls": 0,
+      "input_tokens": 1340744,
+      "output_tokens": 683743,
+      "cached_input_tokens": 597273,
+      "model_rounds": 640,
+      "decisions_with_positive_regret": 11
+    },
+    "sol-high": {
+      "decisions": 306,
+      "invalid_dispatches": 0,
+      "disallowed_tool_events": 0,
+      "infrastructure_errors": 0,
+      "live_calls": 306,
+      "effort_verified": 306,
+      "model_identity_verified": 306,
+      "prompt_verified": 306,
+      "unknown_usage_calls": 0,
+      "input_tokens": 5780012,
+      "output_tokens": 90591,
+      "cached_input_tokens": 4498432,
+      "model_rounds": 306
+    },
+    "terra-high": {
+      "decisions": 306,
+      "invalid_dispatches": 0,
+      "disallowed_tool_events": 0,
+      "infrastructure_errors": 0,
+      "decisions_with_positive_regret": 13,
+      "live_calls": 306,
+      "effort_verified": 306,
+      "model_identity_verified": 306,
+      "prompt_verified": 306,
+      "unknown_usage_calls": 0,
+      "input_tokens": 5721868,
+      "output_tokens": 47875,
+      "cached_input_tokens": 4931712,
+      "model_rounds": 306
+    },
+    "opus-high": {
+      "decisions": 306,
+      "invalid_dispatches": 4,
+      "disallowed_tool_events": 0,
+      "infrastructure_errors": 0,
+      "decisions_with_positive_regret": 8,
+      "live_calls": 306,
+      "model_identity_verified": 306,
+      "prompt_verified": 306,
+      "unknown_usage_calls": 0,
+      "input_tokens": 1244901,
+      "output_tokens": 210942,
+      "cached_input_tokens": 544243,
+      "model_rounds": 520
+    },
+    "astra-high": {
+      "decisions": 306,
+      "invalid_dispatches": 0,
+      "disallowed_tool_events": 0,
+      "infrastructure_errors": 0,
+      "live_calls": 306,
+      "effort_verified": 306,
+      "model_identity_verified": 306,
+      "prompt_verified": 306,
+      "unknown_usage_calls": 0,
+      "input_tokens": 5739226,
+      "output_tokens": 67570,
+      "cached_input_tokens": 4365696,
+      "model_rounds": 306
+    }
+  },
+  "auxiliary_model_usage": {
+    "haiku-high": {
+      "claude-haiku-4-5-20251001": {
+        "cacheCreationInputTokens": 0,
+        "cacheReadInputTokens": 0,
+        "inputTokens": 673834,
+        "outputTokens": 4681
+      },
+      "claude-haiku-5-5": {
+        "cacheCreationInputTokens": 742821,
+        "cacheReadInputTokens": 597273,
+        "inputTokens": 650,
+        "outputTokens": 683743
+      }
+    },
+    "opus-high": {
+      "claude-haiku-4-5-20251001": {
+        "cacheCreationInputTokens": 0,
+        "cacheReadInputTokens": 0,
+        "inputTokens": 665674,
+        "outputTokens": 4629
+      },
+      "claude-opus-5-5": {
+        "cacheCreationInputTokens": 700032,
+        "cacheReadInputTokens": 544243,
+        "inputTokens": 626,
+        "outputTokens": 210942
+      }
+    }
+  },
+  "failures": [
+    {
+      "policy": "luna-high",
+      "trace": "episode-0022.jsonl",
+      "tick": 5,
+      "error": "task_id is not legal for this resource",
+      "adapter_error": null
+    },
+    {
+      "policy": "luna-high",
+      "trace": "episode-0022.jsonl",
+      "tick": 6,
+      "error": "joint dispatch exceeds available water",
+      "adapter_error": null
+    },
+    {
+      "policy": "opus-high",
+      "trace": "episode-0048.jsonl",
+      "tick": 2,
+      "error": "task_id is not legal for this resource",
+      "adapter_error": null
+    },
+    {
+      "policy": "opus-high",
+      "trace": "episode-0064.jsonl",
+      "tick": 8,
+      "error": "assign every resource exactly once",
+      "adapter_error": null
+    },
+    {
+      "policy": "opus-high",
+      "trace": "episode-0162.jsonl",
+      "tick": 7,
+      "error": "assign every resource exactly once",
+      "adapter_error": null
+    },
+    {
+      "policy": "opus-high",
+      "trace": "episode-0196.jsonl",
+      "tick": 4,
+      "error": "task_id is not legal for this resource",
+      "adapter_error": null
+    },
+    {
+      "policy": "luna-high",
+      "trace": "episode-0216.jsonl",
+      "tick": 3,
+      "error": "task_id is not legal for this resource",
+      "adapter_error": null
+    },
+    {
+      "policy": "luna-high",
+      "trace": "episode-0216.jsonl",
+      "tick": 4,
+      "error": "joint dispatch exceeds available water",
+      "adapter_error": null
+    }
+  ],
+  "dispersion": [
+    {
+      "policy": "astra-high",
+      "mean_regret_pct": 0.0,
+      "instance_bootstrap_ci95": [
+        0.0,
+        0.0
+      ],
+      "median_instance_regret_pct": 0.0,
+      "worst_instance_regret_pct": 0.0,
+      "optimal_instances": 12,
+      "mean_repeat_spread_points": 0.0,
+      "valid_decision_regret_points": 0.0,
+      "invalid_dispatch_regret_points": 0.0,
+      "family_mean_regret_pct": {
+        "compound": 0.0,
+        "deadline": 0.0,
+        "forecast": 0.0,
+        "information": 0.0,
+        "prerequisite": 0.0,
+        "water": 0.0
+      },
+      "latency_median_s": 10.86862231604755,
+      "latency_p95_s": 27.525141434103716
+    },
+    {
+      "policy": "optimal",
+      "mean_regret_pct": 0.0,
+      "instance_bootstrap_ci95": [
+        0.0,
+        0.0
+      ],
+      "median_instance_regret_pct": 0.0,
+      "worst_instance_regret_pct": 0.0,
+      "optimal_instances": 12,
+      "mean_repeat_spread_points": 0.0,
+      "valid_decision_regret_points": 0.0,
+      "invalid_dispatch_regret_points": 0.0,
+      "family_mean_regret_pct": {
+        "compound": 0.0,
+        "deadline": 0.0,
+        "forecast": 0.0,
+        "information": 0.0,
+        "prerequisite": 0.0,
+        "water": 0.0
+      }
+    },
+    {
+      "policy": "sol-high",
+      "mean_regret_pct": 0.0,
+      "instance_bootstrap_ci95": [
+        0.0,
+        0.0
+      ],
+      "median_instance_regret_pct": 0.0,
+      "worst_instance_regret_pct": 0.0,
+      "optimal_instances": 12,
+      "mean_repeat_spread_points": 0.0,
+      "valid_decision_regret_points": 0.0,
+      "invalid_dispatch_regret_points": 0.0,
+      "family_mean_regret_pct": {
+        "compound": 0.0,
+        "deadline": 0.0,
+        "forecast": 0.0,
+        "information": 0.0,
+        "prerequisite": 0.0,
+        "water": 0.0
+      },
+      "latency_median_s": 10.48819553712383,
+      "latency_p95_s": 31.258423831081018
+    },
+    {
+      "policy": "opus-high",
+      "mean_regret_pct": 1.2705046651271463,
+      "instance_bootstrap_ci95": [
+        0.29880478087649404,
+        2.4858673966700553
+      ],
+      "median_instance_regret_pct": 0.0,
+      "worst_instance_regret_pct": 5.539358600583091,
+      "optimal_instances": 8,
+      "mean_repeat_spread_points": 1.0529138127290554,
+      "valid_decision_regret_points": 1.270504665127146,
+      "invalid_dispatch_regret_points": 0.0,
+      "family_mean_regret_pct": {
+        "compound": 1.9053117782909932,
+        "deadline": 0.5976095617529881,
+        "forecast": 0.0,
+        "information": 0.0,
+        "prerequisite": 5.1201066507188955,
+        "water": 0.0
+      },
+      "latency_median_s": 6.431829315028153,
+      "latency_p95_s": 17.507877181109507
+    },
+    {
+      "policy": "haiku-high",
+      "mean_regret_pct": 1.2962250592157485,
+      "instance_bootstrap_ci95": [
+        0.18726591760299627,
+        2.6361858709180033
+      ],
+      "median_instance_regret_pct": 0.0,
+      "worst_instance_regret_pct": 6.812933025404156,
+      "optimal_instances": 8,
+      "mean_repeat_spread_points": 1.1491416803195094,
+      "valid_decision_regret_points": 1.2962250592157485,
+      "invalid_dispatch_regret_points": 0.0,
+      "family_mean_regret_pct": {
+        "compound": 3.406466512702078,
+        "deadline": 0.0,
+        "forecast": 1.1235955056179776,
+        "information": 0.8968609865470852,
+        "prerequisite": 2.3504273504273505,
+        "water": 0.0
+      },
+      "latency_median_s": 7.6613714745035395,
+      "latency_p95_s": 36.76104489527643
+    },
+    {
+      "policy": "two-step",
+      "mean_regret_pct": 1.768029800145009,
+      "instance_bootstrap_ci95": [
+        0.19920318725099603,
+        3.513720848455806
+      ],
+      "median_instance_regret_pct": 0.0,
+      "worst_instance_regret_pct": 8.01526717557252,
+      "optimal_instances": 8,
+      "mean_repeat_spread_points": 0.0,
+      "valid_decision_regret_points": 1.768029800145009,
+      "invalid_dispatch_regret_points": 0.0,
+      "family_mean_regret_pct": {
+        "compound": 7.2408899388255215,
+        "deadline": 0.5976095617529881,
+        "forecast": 0.0,
+        "information": 0.0,
+        "prerequisite": 2.7696793002915454,
+        "water": 0.0
+      }
+    },
+    {
+      "policy": "terra-high",
+      "mean_regret_pct": 1.8477339842320888,
+      "instance_bootstrap_ci95": [
+        0.7304394755185105,
+        3.1018792903862265
+      ],
+      "median_instance_regret_pct": 1.1020938666857236,
+      "worst_instance_regret_pct": 6.5610859728506785,
+      "optimal_instances": 5,
+      "mean_repeat_spread_points": 2.8780418228488234,
+      "valid_decision_regret_points": 1.847733984232089,
+      "invalid_dispatch_regret_points": 0.0,
+      "family_mean_regret_pct": {
+        "compound": 2.1651270207852193,
+        "deadline": 0.5976095617529881,
+        "forecast": 0.7724719101123596,
+        "information": 2.594267586666482,
+        "prerequisite": 1.6763848396501457,
+        "water": 3.2805429864253393
+      },
+      "latency_median_s": 5.7562791319796816,
+      "latency_p95_s": 10.694086901494302
+    },
+    {
+      "policy": "luna-high",
+      "mean_regret_pct": 9.876634383769504,
+      "instance_bootstrap_ci95": [
+        6.900302606736422,
+        13.962750940320309
+      ],
+      "median_instance_regret_pct": 6.947798566271798,
+      "worst_instance_regret_pct": 28.448275862068964,
+      "optimal_instances": 0,
+      "mean_repeat_spread_points": 6.708168939910516,
+      "valid_decision_regret_points": 9.35734654994161,
+      "invalid_dispatch_regret_points": 0.5192878338278931,
+      "family_mean_regret_pct": {
+        "compound": 7.8045942562981505,
+        "deadline": 10.976568503434333,
+        "forecast": 5.8329865445970315,
+        "information": 10.755216648849768,
+        "prerequisite": 6.159515088086517,
+        "water": 17.730925261351224
+      },
+      "latency_median_s": 6.767687626881525,
+      "latency_p95_s": 17.353136797668412
+    },
+    {
+      "policy": "deadline",
+      "mean_regret_pct": 26.17932696358467,
+      "instance_bootstrap_ci95": [
+        13.900046823965903,
+        39.13557620835402
+      ],
+      "median_instance_regret_pct": 17.844406594722624,
+      "worst_instance_regret_pct": 59.815242494226325,
+      "optimal_instances": 2,
+      "mean_repeat_spread_points": 0.0,
+      "valid_decision_regret_points": 26.17932696358467,
+      "invalid_dispatch_regret_points": 0.0,
+      "family_mean_regret_pct": {
+        "compound": 59.48777391886889,
+        "deadline": 10.605648622128696,
+        "forecast": 9.50027743098904,
+        "information": 10.426008968609866,
+        "prerequisite": 48.95280456504946,
+        "water": 18.103448275862068
+      }
+    },
+    {
+      "policy": "myopic",
+      "mean_regret_pct": 33.88516982312312,
+      "instance_bootstrap_ci95": [
+        21.825216992811487,
+        45.661878955206134
+      ],
+      "median_instance_regret_pct": 35.97675144328288,
+      "worst_instance_regret_pct": 68.59122401847576,
+      "optimal_instances": 1,
+      "mean_repeat_spread_points": 0.0,
+      "valid_decision_regret_points": 33.88516982312312,
+      "invalid_dispatch_regret_points": 0.0,
+      "family_mean_regret_pct": {
+        "compound": 65.21164254358902,
+        "deadline": 7.274167425254472,
+        "forecast": 20.21604938271605,
+        "information": 26.84578433686432,
+        "prerequisite": 47.78662380703197,
+        "water": 35.97675144328288
+      }
+    },
+    {
+      "policy": "hold",
+      "mean_regret_pct": 100.0,
+      "instance_bootstrap_ci95": [
+        100.0,
+        100.0
+      ],
+      "median_instance_regret_pct": 100.0,
+      "worst_instance_regret_pct": 100.0,
+      "optimal_instances": 0,
+      "mean_repeat_spread_points": 0.0,
+      "valid_decision_regret_points": 100.0,
+      "invalid_dispatch_regret_points": 0.0,
+      "family_mean_regret_pct": {
+        "compound": 100.0,
+        "deadline": 100.0,
+        "forecast": 100.0,
+        "information": 100.0,
+        "prerequisite": 100.0,
+        "water": 100.0
+      }
+    }
+  ],
+  "analysis_script_sha256": "ec5e016fd8627c8da1b0952e3716a9efe96d6ed18344c628ec0df6128df611c4",
+  "inference_note": "Descriptive intervals; use the frozen paired Holm tests for model separation."
+}

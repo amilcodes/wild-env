@@ -1,0 +1,97 @@
+WILD-ENV OPERATIONS V2 — REAL MODEL EVALUATION
+
+Scope: synthetic sequential response planning with deadlines, prerequisites,
+shared water, nonpreemptive teams, and information acquisition under a hidden forecast.
+Models use a structured dispatch interface; browser, shell, and external tools are disallowed.
+This is a separate operational abstraction. It does not establish wildfire realism.
+The original fire simulator and v1.1 evidence remain available unchanged.
+
+Evaluation: 12 generated instances across six known families,
+two size/complexity settings, both forecast outcomes where relevant, and two model repetitions.
+306 episodes; 2601 dispatches; 1836 real model calls.
+Development (excluded from rankings): 44 episodes, 216 model calls.
+
+Primary score: cumulative exact Bellman regret / initial information-matched
+optimal expected reward, multiplied by 100. Lower is better; zero is optimal
+and holding throughout scores 100. Values are not clipped. Each instance has
+equal weight after collapsing worlds and repetitions; the independent sample size is 12.
+
+Policy          Mean regret   Instance-bootstrap 95% CI   Invalid   Optimal instances/12
+astra-high           0.000   [  0.000,   0.000]         0          12/12
+optimal              0.000   [  0.000,   0.000]         0          12/12
+sol-high             0.000   [  0.000,   0.000]         0          12/12
+opus-high            1.271   [  0.299,   2.486]         4           8/12
+haiku-high           1.296   [  0.187,   2.636]         0           8/12
+two-step             1.768   [  0.199,   3.514]         0           8/12
+terra-high           1.848   [  0.730,   3.102]         0           5/12
+luna-high            9.877   [  6.900,  13.963]         4           0/12
+deadline            26.179   [ 13.900,  39.136]         0           2/12
+myopic              33.885   [ 21.825,  45.662]         0           1/12
+hold               100.000   [100.000, 100.000]         0           0/12
+
+PAIRED EVIDENCE
+Paired sign-flip tests, with Holm correction over all 15 model pairs.
+A separation also requires the paired bootstrap 95% interval to exclude zero.
+Supported model pairs: 5/15. Supported frontier pairs: 0/6.
+astra-high better than luna-high: 9.877 regret points; Holm p=0.007324.
+haiku-high better than luna-high: 8.580 regret points; Holm p=0.010742.
+opus-high better than luna-high: 8.606 regret points; Holm p=0.007324.
+sol-high better than luna-high: 9.877 regret points; Holm p=0.007324.
+terra-high better than luna-high: 8.029 regret points; Holm p=0.007324.
+The observed frontier ordering remains unresolved on this sample.
+
+ALL MODEL PAIRS (positive advantage favors the left model)
+Left / right: mean advantage; paired 95% interval; Holm-adjusted p
+astra-high / haiku-high: 1.296; [0.187, 2.636]; 1.000000
+astra-high / luna-high: 9.877; [6.900, 13.963]; 0.007324
+astra-high / opus-high: 1.271; [0.299, 2.486]; 1.000000
+astra-high / sol-high: 0.000; [0.000, 0.000]; 1.000000
+astra-high / terra-high: 1.848; [0.730, 3.102]; 0.156250
+haiku-high / luna-high: 8.580; [5.003, 13.058]; 0.010742
+haiku-high / opus-high: -0.026; [-1.060, 1.234]; 1.000000
+haiku-high / sol-high: -1.296; [-2.636, -0.187]; 1.000000
+haiku-high / terra-high: 0.552; [-1.031, 2.237]; 1.000000
+luna-high / opus-high: -8.606; [-13.116, -4.967]; 0.007324
+luna-high / sol-high: -9.877; [-13.963, -6.900]; 0.007324
+luna-high / terra-high: -8.029; [-12.663, -4.435]; 0.007324
+opus-high / sol-high: -1.271; [-2.486, -0.299]; 1.000000
+opus-high / terra-high: 0.577; [-0.892, 2.122]; 1.000000
+sol-high / terra-high: 1.848; [0.730, 3.102]; 0.156250
+
+ERROR TYPE AND REPEAT STABILITY
+Policy: valid-planning regret + invalid-dispatch regret; mean absolute repeat gap (points).
+astra-high: 0.000 + 0.000; 0.000
+sol-high: 0.000 + 0.000; 0.000
+opus-high: 1.271 + 0.000; 1.053
+haiku-high: 1.296 + 0.000; 1.149
+terra-high: 1.848 + 0.000; 2.878
+luna-high: 9.357 + 0.519; 6.708
+
+VALIDATION AND REUSE
+All episode traces replayed; checksums, effective prompts, model identities, and
+identical initial observations across policies/worlds/repetitions verified.
+No disallowed tool events or infrastructure errors. Invalid model actions remain scored.
+Every initial full-information optimum passed an independent MIP check.
+An independent solver using public packets checked 1899 evaluation decision penalties
+across 775 unique reached states. Maximum numeric disagreement: 5.68e-14.
+Conditional pre-revelation decisions use the information-matched Bellman reference
+and analytical information tests; the fully informed MIP cannot certify those decisions.
+Repository tests: 218 passed, one skipped. Lint and CI passed.
+The archive includes task generation configuration, public decision traces, exact
+per-decision feedback, verified development demonstrations, provenance, and sensitivity checks.
+
+LIMITS
+Held-out seeds within six known synthetic families; no demonstrated training gain,
+cross-domain transfer, expert-calibrated wildfire loss, or broad frontier ranking.
+All models requested high effort, with equal decision opportunities. Provider CLI
+scaffolding differs, effort is not compute-matched, and output tokens are not capped.
+Claude effort is requested rather than independently attested by CLI events.
+Repeated calls and forecast worlds are not counted as additional independent tasks.
+
+PROVENANCE
+Frozen evaluation commit: 3c1e73a6d05f7da96aa2c41a3b4f1fb95d74d1ee
+Runtime source SHA256: c1bf40a3fc98916babb758bc290d58bf7e328256c2685531a53be75a30541a07
+Suite SHA256: f4e26abbcc12c6f97b564dc6f93179b6e7ae081dcf170a91ef1fb348f3e432a9
+Evaluation started (UTC): 2026-11-03T00:43:53.452446+00:00
+Branch: https://github.com/amilcodes/wild-env/tree/codex/frontier-agent-benchmark
+Archive SHA256: c9f44cb46aa4b45082fd91cd2a9a6067107f8e8c49418c2a739de56146eb3452

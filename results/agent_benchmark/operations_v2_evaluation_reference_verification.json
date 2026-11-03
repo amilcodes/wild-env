@@ -1,0 +1,194 @@
+[
+  {
+    "instance_sha256": "8d46fc581cbbc84ed1d956dbf0966b81772ce49dfef95cd245a957a6f8c789b2",
+    "family": "deadline",
+    "level": 1,
+    "optimal_expected_reward": 251.0,
+    "full_information_mip": [
+      251.0,
+      251.0
+    ],
+    "optimal_policy_realized_rewards": [
+      251,
+      251
+    ],
+    "verified": true,
+    "states": 3007
+  },
+  {
+    "instance_sha256": "7c85d8114addd79548ec590426ffbecf5d2d63ec36ee9d6b0265bbdd88e3c45d",
+    "family": "deadline",
+    "level": 2,
+    "optimal_expected_reward": 337.0,
+    "full_information_mip": [
+      337.0,
+      337.0
+    ],
+    "optimal_policy_realized_rewards": [
+      337,
+      337
+    ],
+    "verified": true,
+    "states": 22409
+  },
+  {
+    "instance_sha256": "275421c40dcaab44878bfe6addcdb1f8c83a270410257fc8ecd84e8c6213f312",
+    "family": "prerequisite",
+    "level": 1,
+    "optimal_expected_reward": 234.0,
+    "full_information_mip": [
+      234.0,
+      234.0
+    ],
+    "optimal_policy_realized_rewards": [
+      234,
+      234
+    ],
+    "verified": true,
+    "states": 1612
+  },
+  {
+    "instance_sha256": "d23d06c377938098f8afd97982e2e644789f5cf29ed22dabedeb218badff3e5f",
+    "family": "prerequisite",
+    "level": 2,
+    "optimal_expected_reward": 343.0,
+    "full_information_mip": [
+      343.0,
+      343.0
+    ],
+    "optimal_policy_realized_rewards": [
+      343,
+      343
+    ],
+    "verified": true,
+    "states": 20661
+  },
+  {
+    "instance_sha256": "435fd5dbb4a291bff3b1a766bc4b11845d7fe3497cee13009b4f88c99ec8abc0",
+    "family": "water",
+    "level": 1,
+    "optimal_expected_reward": 221.0,
+    "full_information_mip": [
+      221.0,
+      221.0
+    ],
+    "optimal_policy_realized_rewards": [
+      221,
+      221
+    ],
+    "verified": true,
+    "states": 2397
+  },
+  {
+    "instance_sha256": "87323598355019309bbabb512517c748000d4cbe98bbe5b8f2c19d7e4a9dd766",
+    "family": "water",
+    "level": 2,
+    "optimal_expected_reward": 232.0,
+    "full_information_mip": [
+      232.0,
+      232.0
+    ],
+    "optimal_policy_realized_rewards": [
+      232,
+      232
+    ],
+    "verified": true,
+    "states": 15586
+  },
+  {
+    "instance_sha256": "45e9181db7c21fa40eaed024eac3dc8165ffcc0acb1bfe7762571cd00ce2b250",
+    "family": "information",
+    "level": 1,
+    "optimal_expected_reward": 161.5,
+    "full_information_mip": [
+      141.0,
+      199.0
+    ],
+    "optimal_policy_realized_rewards": [
+      124,
+      199
+    ],
+    "verified": true,
+    "states": 1987
+  },
+  {
+    "instance_sha256": "453af1f2e672a320a6702ca044cc5d0bcb8cb95480138ae2016eec569e8738f9",
+    "family": "information",
+    "level": 2,
+    "optimal_expected_reward": 223.0,
+    "full_information_mip": [
+      223.0,
+      229.0
+    ],
+    "optimal_policy_realized_rewards": [
+      223,
+      223
+    ],
+    "verified": true,
+    "states": 11732
+  },
+  {
+    "instance_sha256": "38cc66e843ca3133768574357676834e250fcae2779c3a233dddec28d93a1b62",
+    "family": "forecast",
+    "level": 1,
+    "optimal_expected_reward": 162.0,
+    "full_information_mip": [
+      171.0,
+      153.0
+    ],
+    "optimal_policy_realized_rewards": [
+      171,
+      153
+    ],
+    "verified": true,
+    "states": 2599
+  },
+  {
+    "instance_sha256": "a092b71ba70a5c3d74d60b1886c802a352c0701307b0e5c20104aaaae71bbbc7",
+    "family": "forecast",
+    "level": 2,
+    "optimal_expected_reward": 178.0,
+    "full_information_mip": [
+      178.0,
+      178.0
+    ],
+    "optimal_policy_realized_rewards": [
+      178,
+      178
+    ],
+    "verified": true,
+    "states": 13355
+  },
+  {
+    "instance_sha256": "e86d3fa0ad50e3d007a0a7362f137a70a2fa4655291ac3669b4212aa40402d92",
+    "family": "compound",
+    "level": 1,
+    "optimal_expected_reward": 262.0,
+    "full_information_mip": [
+      262.0,
+      262.0
+    ],
+    "optimal_policy_realized_rewards": [
+      262,
+      262
+    ],
+    "verified": true,
+    "states": 9858
+  },
+  {
+    "instance_sha256": "82aad57ceae8e14569d66ee4fd8d456765eab1f4ce8d404c62a25beb50b485aa",
+    "family": "compound",
+    "level": 2,
+    "optimal_expected_reward": 433.0,
+    "full_information_mip": [
+      433.0,
+      433.0
+    ],
+    "optimal_policy_realized_rewards": [
+      433,
+      433
+    ],
+    "verified": true,
+    "states": 114257
+  }
+]

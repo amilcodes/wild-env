@@ -1,0 +1,425 @@
+{
+  "note": "Descriptive stability checks only; the frozen paired tests determine separation.",
+  "model_pairs": [
+    {
+      "left": "astra-high",
+      "right": "haiku-high",
+      "positive_favors_left": true,
+      "instance_wins_left": 4,
+      "instance_wins_right": 0,
+      "instance_ties": 8,
+      "repeat_advantages_left": [
+        0.7216542190559939,
+        1.8707958993755034
+      ],
+      "family_advantages_left": {
+        "compound": 3.406466512702078,
+        "deadline": 0.0,
+        "forecast": 1.1235955056179776,
+        "information": 0.8968609865470852,
+        "prerequisite": 2.3504273504273505,
+        "water": 0.0
+      },
+      "leave_one_family_out_advantages_left": {
+        "compound": 0.8741767685184827,
+        "deadline": 1.5554700710588982,
+        "forecast": 1.3307509699353028,
+        "information": 1.3760978737494813,
+        "prerequisite": 1.0853846009734283,
+        "water": 1.5554700710588982
+      }
+    },
+    {
+      "left": "astra-high",
+      "right": "luna-high",
+      "positive_favors_left": true,
+      "instance_wins_left": 12,
+      "instance_wins_right": 0,
+      "instance_ties": 0,
+      "repeat_advantages_left": [
+        10.846595319792742,
+        8.906673447746266
+      ],
+      "family_advantages_left": {
+        "compound": 7.8045942562981505,
+        "deadline": 10.976568503434333,
+        "forecast": 5.8329865445970315,
+        "information": 10.755216648849768,
+        "prerequisite": 6.159515088086517,
+        "water": 17.730925261351224
+      },
+      "leave_one_family_out_advantages_left": {
+        "compound": 10.291042409263776,
+        "deadline": 9.656647559836538,
+        "forecast": 10.685363951603998,
+        "information": 9.700917930753452,
+        "prerequisite": 10.6200582429061,
+        "water": 8.30577620825316
+      }
+    },
+    {
+      "left": "astra-high",
+      "right": "opus-high",
+      "positive_favors_left": true,
+      "instance_wins_left": 4,
+      "instance_wins_right": 0,
+      "instance_ties": 8,
+      "repeat_advantages_left": [
+        1.5275235422384021,
+        1.0134857880158903
+      ],
+      "family_advantages_left": {
+        "compound": 1.9053117782909932,
+        "deadline": 0.5976095617529881,
+        "forecast": 0.0,
+        "information": 0.0,
+        "prerequisite": 5.1201066507188955,
+        "water": 0.0
+      },
+      "leave_one_family_out_advantages_left": {
+        "compound": 1.1435432424943768,
+        "deadline": 1.4050836858019777,
+        "forecast": 1.5246055981525755,
+        "information": 1.5246055981525755,
+        "prerequisite": 0.5005842680087963,
+        "water": 1.5246055981525755
+      }
+    },
+    {
+      "left": "astra-high",
+      "right": "sol-high",
+      "positive_favors_left": true,
+      "instance_wins_left": 0,
+      "instance_wins_right": 0,
+      "instance_ties": 12,
+      "repeat_advantages_left": [
+        0.0,
+        0.0
+      ],
+      "family_advantages_left": {
+        "compound": 0.0,
+        "deadline": 0.0,
+        "forecast": 0.0,
+        "information": 0.0,
+        "prerequisite": 0.0,
+        "water": 0.0
+      },
+      "leave_one_family_out_advantages_left": {
+        "compound": 0.0,
+        "deadline": 0.0,
+        "forecast": 0.0,
+        "information": 0.0,
+        "prerequisite": 0.0,
+        "water": 0.0
+      }
+    },
+    {
+      "left": "astra-high",
+      "right": "terra-high",
+      "positive_favors_left": true,
+      "instance_wins_left": 7,
+      "instance_wins_right": 0,
+      "instance_ties": 5,
+      "repeat_advantages_left": [
+        0.8817973813942306,
+        2.8136705870699474
+      ],
+      "family_advantages_left": {
+        "compound": 2.1651270207852193,
+        "deadline": 0.5976095617529881,
+        "forecast": 0.7724719101123596,
+        "information": 2.594267586666482,
+        "prerequisite": 1.6763848396501457,
+        "water": 3.2805429864253393
+      },
+      "leave_one_family_out_advantages_left": {
+        "compound": 1.7842553769214629,
+        "deadline": 2.097758868727909,
+        "forecast": 2.062786399056035,
+        "information": 1.6984272637452105,
+        "prerequisite": 1.8820038131484775,
+        "water": 1.561172183793439
+      }
+    },
+    {
+      "left": "haiku-high",
+      "right": "luna-high",
+      "positive_favors_left": true,
+      "instance_wins_left": 11,
+      "instance_wins_right": 1,
+      "instance_ties": 0,
+      "repeat_advantages_left": [
+        10.124941100736748,
+        7.035877548370763
+      ],
+      "family_advantages_left": {
+        "compound": 4.398127743596072,
+        "deadline": 10.976568503434333,
+        "forecast": 4.709391038979054,
+        "information": 9.858355662302683,
+        "prerequisite": 3.8090877376591665,
+        "water": 17.730925261351224
+      },
+      "leave_one_family_out_advantages_left": {
+        "compound": 9.416865640745293,
+        "deadline": 8.10117748877764,
+        "forecast": 9.354612981668696,
+        "information": 8.32482005700397,
+        "prerequisite": 9.534673641932674,
+        "water": 6.750306137194261
+      }
+    },
+    {
+      "left": "haiku-high",
+      "right": "opus-high",
+      "positive_favors_left": true,
+      "instance_wins_left": 2,
+      "instance_wins_right": 3,
+      "instance_ties": 7,
+      "repeat_advantages_left": [
+        0.8058693231824081,
+        -0.857310111359613
+      ],
+      "family_advantages_left": {
+        "compound": -1.501154734411085,
+        "deadline": 0.5976095617529881,
+        "forecast": -1.1235955056179776,
+        "information": -0.8968609865470852,
+        "prerequisite": 2.7696793002915454,
+        "water": 0.0
+      },
+      "leave_one_family_out_advantages_left": {
+        "compound": 0.26936647397589414,
+        "deadline": -0.15038638525692047,
+        "forecast": 0.19385462821727267,
+        "information": 0.14850772440309418,
+        "prerequisite": -0.584800332964632,
+        "water": -0.03086447290632286
+      }
+    },
+    {
+      "left": "haiku-high",
+      "right": "sol-high",
+      "positive_favors_left": true,
+      "instance_wins_left": 0,
+      "instance_wins_right": 4,
+      "instance_ties": 8,
+      "repeat_advantages_left": [
+        -0.7216542190559939,
+        -1.8707958993755034
+      ],
+      "family_advantages_left": {
+        "compound": -3.406466512702078,
+        "deadline": 0.0,
+        "forecast": -1.1235955056179776,
+        "information": -0.8968609865470852,
+        "prerequisite": -2.3504273504273505,
+        "water": 0.0
+      },
+      "leave_one_family_out_advantages_left": {
+        "compound": -0.8741767685184827,
+        "deadline": -1.5554700710588982,
+        "forecast": -1.3307509699353028,
+        "information": -1.3760978737494813,
+        "prerequisite": -1.0853846009734283,
+        "water": -1.5554700710588982
+      }
+    },
+    {
+      "left": "haiku-high",
+      "right": "terra-high",
+      "positive_favors_left": true,
+      "instance_wins_left": 4,
+      "instance_wins_right": 4,
+      "instance_ties": 4,
+      "repeat_advantages_left": [
+        0.16014316233823672,
+        0.942874687694444
+      ],
+      "family_advantages_left": {
+        "compound": -1.2413394919168588,
+        "deadline": 0.5976095617529881,
+        "forecast": -0.351123595505618,
+        "information": 1.6974066001193964,
+        "prerequisite": -0.6740425107772048,
+        "water": 3.2805429864253393
+      },
+      "leave_one_family_out_advantages_left": {
+        "compound": 0.9100786084029802,
+        "deadline": 0.5422887976690108,
+        "forecast": 0.732035429120732,
+        "information": 0.32232938999572913,
+        "prerequisite": 0.7966192121750494,
+        "water": 0.005702112734540599
+      }
+    },
+    {
+      "left": "luna-high",
+      "right": "opus-high",
+      "positive_favors_left": true,
+      "instance_wins_left": 0,
+      "instance_wins_right": 12,
+      "instance_ties": 0,
+      "repeat_advantages_left": [
+        -9.31907177755434,
+        -7.893187659730375
+      ],
+      "family_advantages_left": {
+        "compound": -5.899282478007157,
+        "deadline": -10.378958941681345,
+        "forecast": -5.8329865445970315,
+        "information": -10.755216648849768,
+        "prerequisite": -1.0394084373676211,
+        "water": -17.730925261351224
+      },
+      "leave_one_family_out_advantages_left": {
+        "compound": -9.147499166769398,
+        "deadline": -8.251563874034561,
+        "forecast": -9.160758353451424,
+        "information": -8.176312332600876,
+        "prerequisite": -10.119473974897305,
+        "water": -6.781170610100585
+      }
+    },
+    {
+      "left": "luna-high",
+      "right": "sol-high",
+      "positive_favors_left": true,
+      "instance_wins_left": 0,
+      "instance_wins_right": 12,
+      "instance_ties": 0,
+      "repeat_advantages_left": [
+        -10.846595319792742,
+        -8.906673447746266
+      ],
+      "family_advantages_left": {
+        "compound": -7.8045942562981505,
+        "deadline": -10.976568503434333,
+        "forecast": -5.8329865445970315,
+        "information": -10.755216648849768,
+        "prerequisite": -6.159515088086517,
+        "water": -17.730925261351224
+      },
+      "leave_one_family_out_advantages_left": {
+        "compound": -10.291042409263776,
+        "deadline": -9.656647559836538,
+        "forecast": -10.685363951603998,
+        "information": -9.700917930753452,
+        "prerequisite": -10.6200582429061,
+        "water": -8.30577620825316
+      }
+    },
+    {
+      "left": "luna-high",
+      "right": "terra-high",
+      "positive_favors_left": true,
+      "instance_wins_left": 0,
+      "instance_wins_right": 12,
+      "instance_ties": 0,
+      "repeat_advantages_left": [
+        -9.964797938398512,
+        -6.093002860676319
+      ],
+      "family_advantages_left": {
+        "compound": -5.639467235512931,
+        "deadline": -10.378958941681345,
+        "forecast": -5.060514634484672,
+        "information": -8.160949062183287,
+        "prerequisite": -4.483130248436371,
+        "water": -14.450382274925886
+      },
+      "leave_one_family_out_advantages_left": {
+        "compound": -8.506787032342313,
+        "deadline": -7.5588886911086295,
+        "forecast": -8.622577552547964,
+        "information": -8.00249066700824,
+        "prerequisite": -8.738054429757623,
+        "water": -6.744604024459721
+      }
+    },
+    {
+      "left": "opus-high",
+      "right": "sol-high",
+      "positive_favors_left": true,
+      "instance_wins_left": 0,
+      "instance_wins_right": 4,
+      "instance_ties": 8,
+      "repeat_advantages_left": [
+        -1.5275235422384021,
+        -1.0134857880158903
+      ],
+      "family_advantages_left": {
+        "compound": -1.9053117782909932,
+        "deadline": -0.5976095617529881,
+        "forecast": 0.0,
+        "information": 0.0,
+        "prerequisite": -5.1201066507188955,
+        "water": 0.0
+      },
+      "leave_one_family_out_advantages_left": {
+        "compound": -1.1435432424943768,
+        "deadline": -1.4050836858019777,
+        "forecast": -1.5246055981525755,
+        "information": -1.5246055981525755,
+        "prerequisite": -0.5005842680087963,
+        "water": -1.5246055981525755
+      }
+    },
+    {
+      "left": "opus-high",
+      "right": "terra-high",
+      "positive_favors_left": true,
+      "instance_wins_left": 5,
+      "instance_wins_right": 2,
+      "instance_ties": 5,
+      "repeat_advantages_left": [
+        -0.6457261608441713,
+        1.800184799054057
+      ],
+      "family_advantages_left": {
+        "compound": 0.25981524249422616,
+        "deadline": 0.0,
+        "forecast": 0.7724719101123596,
+        "information": 2.594267586666482,
+        "prerequisite": -3.44372181106875,
+        "water": 3.2805429864253393
+      },
+      "leave_one_family_out_advantages_left": {
+        "compound": 0.6407121344270861,
+        "deadline": 0.6926751829259313,
+        "forecast": 0.5381808009034594,
+        "information": 0.17382166559263496,
+        "prerequisite": 1.3814195451396813,
+        "water": 0.03656658564086346
+      }
+    },
+    {
+      "left": "sol-high",
+      "right": "terra-high",
+      "positive_favors_left": true,
+      "instance_wins_left": 7,
+      "instance_wins_right": 0,
+      "instance_ties": 5,
+      "repeat_advantages_left": [
+        0.8817973813942306,
+        2.8136705870699474
+      ],
+      "family_advantages_left": {
+        "compound": 2.1651270207852193,
+        "deadline": 0.5976095617529881,
+        "forecast": 0.7724719101123596,
+        "information": 2.594267586666482,
+        "prerequisite": 1.6763848396501457,
+        "water": 3.2805429864253393
+      },
+      "leave_one_family_out_advantages_left": {
+        "compound": 1.7842553769214629,
+        "deadline": 2.097758868727909,
+        "forecast": 2.062786399056035,
+        "information": 1.6984272637452105,
+        "prerequisite": 1.8820038131484775,
+        "water": 1.561172183793439
+      }
+    }
+  ]
+}
