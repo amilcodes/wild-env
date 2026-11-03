@@ -169,10 +169,10 @@ def decode_cli(provider: str, stdout: str, stderr: str, returncode: int) -> Agen
 
 
 class CliAdapter:
-    def __init__(self, spec: AgentSpec):
+    def __init__(self, spec: AgentSpec, *, system_prompt: str = SYSTEM_PROMPT):
         self.spec = spec
         self.command = list(spec.command) or ["codex" if spec.provider == "codex_cli" else "claude"]
-        self.system = SYSTEM_PROMPT + CLI_INSTRUCTION
+        self.system = system_prompt + CLI_INSTRUCTION
         out, _, code = self._execute(self.command + ["--version"], b"", timeout=30)
         if code:
             raise ValueError(f"{spec.name}: CLI/bridge version probe failed")

@@ -38,6 +38,11 @@ Opus's two invalid dispatches are retained. Read the
 [benchmark protocol](docs/frontier_agent_benchmark.md), and the earlier
 [36-episode baseline reference](docs/frontier_agent_results.md).
 
+The [v2 operations task](docs/operations_benchmark.md) adds exact, information-matched
+planning references, explicit deadlines and prerequisites, scarce supplies, and
+forecast acquisition. It scores decision regret and compares smaller models with
+frontier models on separate development and repeated evaluation instances.
+
 ## Simulator foundation
 
 wild-env is a research environment for wildfire spread, suppression operations,
