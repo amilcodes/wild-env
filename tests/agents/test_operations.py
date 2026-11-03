@@ -1,9 +1,10 @@
 import json
 from dataclasses import replace
+from pathlib import Path
 
 import pytest
 
-from aeolus.agents.contract import canonical_json
+from aeolus.agents.contract import canonical_json, digest
 from aeolus.agents.operations import (
     Instance,
     Job,
@@ -132,6 +133,28 @@ def test_solver_budget_fails_instead_of_claiming_optimality():
     instance = generate("compound", 17)
     with pytest.raises(RuntimeError, match="state budget"):
         Planner(instance, max_states=2).value(initial_state(instance))
+
+
+def test_challenge_extension_preserves_every_frozen_level_one_and_two_instance():
+    manifest = json.loads(Path("results/agent_benchmark/operations_v2_evaluation_manifest.json").read_text())
+    for original in manifest["instances"]:
+        assert generate(original["family"], original["seed"], original["level"]).identity == digest(original)
+
+
+def test_challenge_has_a_deeper_dependency_join_and_preserves_hidden_forecast_boundary():
+    instance = generate("compound", 2042, 3)
+    jobs = {j.id: j for j in instance.jobs}
+
+    def depth(task):
+        return 1 + max((depth(p) for p in jobs[task].prerequisites), default=0)
+
+    assert len(jobs) == 16 and max(depth(j) for j in jobs) == 4
+    assert any(len(j.prerequisites) == 2 for j in jobs.values())
+    assert canonical_json(OperationsDesk(instance, 0).observation()) == canonical_json(
+        OperationsDesk(instance, 1).observation()
+    )
+    with pytest.raises(ValueError, match="only the compound"):
+        generate("deadline", 2042, 3)
 
 
 def test_run_replays_and_rejects_edited_summary(tmp_path):

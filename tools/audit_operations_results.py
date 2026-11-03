@@ -131,7 +131,9 @@ def audit(root):
                 "level": records[0]["level"],
                 "seed": records[0]["seed"],
                 "mean_regret_pct": statistics.mean(means),
-                "repeat_spread_points": max(means) - min(means),
+                "repeat_spread_points": max(means) - min(means)
+                if len(means) > 1 or policy not in specs
+                else None,
                 "repeat_means": means,
                 "episodes": len(records),
             }
@@ -139,6 +141,7 @@ def audit(root):
     dispersion = []
     for policy in sorted(counts):
         tasks = [t for t in task_rows if t["policy"] == policy]
+        measured_spreads = [t["repeat_spread_points"] for t in tasks if t["repeat_spread_points"] is not None]
         values = np.array([t["mean_regret_pct"] for t in tasks])
         rng = np.random.default_rng(0)
         boot = values[rng.integers(0, len(values), (10000, len(values)))].mean(axis=1)
@@ -149,7 +152,7 @@ def audit(root):
             "median_instance_regret_pct": float(np.median(values)),
             "worst_instance_regret_pct": float(values.max()),
             "optimal_instances": int(np.sum(values < 1e-8)),
-            "mean_repeat_spread_points": statistics.mean(t["repeat_spread_points"] for t in tasks),
+            "mean_repeat_spread_points": statistics.mean(measured_spreads) if measured_spreads else None,
             "valid_decision_regret_points": statistics.mean(
                 statistics.mean(x[0] for x in regret_parts[(policy, t["instance_sha256"])]) for t in tasks
             ),
@@ -214,6 +217,7 @@ def audit(root):
         "source": manifest["source"],
         "suite_sha256": manifest["suite_sha256"],
         "episodes": len(summary["records"]),
+        "model_repetitions_per_world": manifest["suite"]["repeats"],
         "all_model_identities_verified": verified,
         "all_effective_prompts_verified": prompts,
         "all_codex_efforts_verified": effort,

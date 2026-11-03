@@ -139,3 +139,27 @@ These first two levels provide difficulty-calibration evidence for a harder tier
 They support a smaller-model gap, while exposing a ceiling for the strongest
 models. The frozen results remain unchanged, and future difficulty refinement
 requires new evaluation instances.
+
+## Joint-constraint challenge tier
+
+Level 3 is a narrower stress distribution: 16 jobs, two heterogeneous teams and
+nine decisions. A valuable job has a dependency join after three sequential access
+setups. Competing deadlines, shared water and conditional protection values make
+resource placement and information timing consequential. The observation, dispatch
+contract and regret definition remain unchanged.
+
+`tools/select_operations_challenge.py` takes the first qualifying seeds in ascending
+order. Selection uses no model outcomes. The two-step controller must lose at least
+8% of optimal value; removing the deep endpoint must lose at least 5%; removing
+surveys and delaying the forecast to the end must lose at least 5%. Exact reference
+solving must fit within 350,000 states including fully informed roots. Every accepted
+case still undergoes the independent MIP checks before model requests.
+
+The two-step controller is therefore a difficulty-selection control. Its challenge
+score is conditional on that selection, and must not be presented as performance
+on an unfiltered task distribution. The challenge uses one joint-constraint family,
+not a new sample of six unrelated operational capabilities. Development seeds are
+separate from the next evaluation, planned as 24 generated instances with one fresh
+rollout per forecast world and model. Single repetitions do not estimate repeat
+stability; uncertainty is assessed across instances. The first evaluation remains
+the evidence for the ceiling that motivated this refinement.

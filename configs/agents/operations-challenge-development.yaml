@@ -1,0 +1,11 @@
+schema_version: 2
+suite_id: operations-challenge-development
+split: development
+repeats: 1
+cases:
+- family: compound
+  seed: 2042
+  level: 3
+- family: compound
+  seed: 2043
+  level: 3

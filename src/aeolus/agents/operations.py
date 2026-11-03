@@ -391,8 +391,12 @@ def instance_from_dict(raw):
 
 def generate(family: str, seed: int, level: int = 1) -> Instance:
     """Versioned templates vary labels, values and schedules without inspecting model outcomes."""
-    if family not in FAMILIES or level not in (1, 2):
+    if family not in FAMILIES or level not in (1, 2, 3):
         raise ValueError("unknown family or level")
+    if level == 3:
+        from aeolus.agents.operations_challenge import generate_challenge
+
+        return generate_challenge(family, seed)
     rng = random.Random(seed)
     horizon = 7 + level
     resource_names = tuple(rng.sample(["team-north", "team-west", "team-red", "team-blue"], 2))

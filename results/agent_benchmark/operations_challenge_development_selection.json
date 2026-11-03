@@ -1,0 +1,75 @@
+{
+  "created_at": "2026-11-03T01:57:59.575504+00:00",
+  "split": "development",
+  "source": {
+    "source_sha256": "2aba65045a5639d9dfce05aa2403b3dab44d0f0395cb3be9032c11eb8e995868",
+    "python": "3.11.18",
+    "numpy": "2.4.6",
+    "platform": "Linux",
+    "dependencies": {
+      "numpy": "2.4.6",
+      "scipy": "1.17.1",
+      "PyYAML": "6.0.3",
+      "gymnasium": "1.4.0",
+      "pettingzoo": "1.27.0",
+      "torch": "2.15.0+cpu"
+    },
+    "git_commit": "6a370251e2255a06c738fbc38c7b4958865383e3",
+    "git_dirty": true
+  },
+  "start_seed": 2041,
+  "requested_instances": 2,
+  "criteria": {
+    "two_step_regret_min_pct": 8.0,
+    "deep_chain_value_min_pct": 5.0,
+    "information_value_min_pct": 5.0,
+    "max_reference_states": 350000
+  },
+  "candidates": [
+    {
+      "family": "compound",
+      "seed": 2041,
+      "level": 3,
+      "instance_sha256": "6f137bf20cbe0818118ec6560f08810d93679a1fd55977c6d4079c7f92cd64ec",
+      "optimal_expected_reward": 536.5,
+      "states": 82905,
+      "two_step_regret_pct": 5.591798695246971,
+      "deep_chain_value_pct": 25.16309412861137,
+      "information_value_pct": 8.853681267474371,
+      "perfect_information_value_pct": 0.0,
+      "accepted": false
+    },
+    {
+      "family": "compound",
+      "seed": 2042,
+      "level": 3,
+      "instance_sha256": "004187596fcd42340e52bfe39379d3fcfc6d4498f3b928c4c424178b4b39cd17",
+      "optimal_expected_reward": 512.0,
+      "states": 86072,
+      "two_step_regret_pct": 18.75,
+      "deep_chain_value_pct": 18.75,
+      "information_value_pct": 15.4296875,
+      "perfect_information_value_pct": 0.9765625,
+      "accepted": true
+    },
+    {
+      "family": "compound",
+      "seed": 2043,
+      "level": 3,
+      "instance_sha256": "81e2c904b78a8d44128105f1c1238bea7847abc43fca493ad4717836f9dd9623",
+      "optimal_expected_reward": 467.0,
+      "states": 64989,
+      "two_step_regret_pct": 20.556745182012847,
+      "deep_chain_value_pct": 19.48608137044968,
+      "information_value_pct": 9.207708779443255,
+      "perfect_information_value_pct": 0.0,
+      "accepted": true
+    }
+  ],
+  "complete": true,
+  "selection_rule": "First qualifying seeds in ascending order; no model scores or requests are used.",
+  "scope": "Compound stress distribution; two-step is a selection control, not an independent baseline.",
+  "script_sha256": "c358d642e69b1149e69e1ef81c284e6e3091528d6f8012ea5ff1b457aee93005",
+  "selected_instances": 2,
+  "suite_sha256_bytes": "4b3fe33ab5424db8c6bfe1e133f62019aef92454a6c2cd998e584b50fd9340ba"
+}
