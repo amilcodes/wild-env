@@ -10,12 +10,12 @@ import warnings
 from pathlib import Path
 
 import numpy as np
-from aeolus.agents.operations import OperationsDesk, Planner, dispatch, initial_state, payoff, with_forecast
-from aeolus.agents.operations_benchmark import load_suite
 from scipy.optimize import Bounds, LinearConstraint, milp
 from scipy.sparse import lil_matrix
 
 from aeolus.agents.benchmark import write_json
+from aeolus.agents.operations import OperationsDesk, Planner, dispatch, initial_state, payoff, with_forecast
+from aeolus.agents.operations_benchmark import load_suite
 
 
 def mip_value(instance, world):
