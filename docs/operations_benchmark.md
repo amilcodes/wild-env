@@ -57,6 +57,13 @@ water. Replaying the adaptive reference policy in both forecast worlds verifies
 the information-matched expected value. Every planned instance is checked before
 any evaluation model request. Checks do not select instances using model scores.
 
+A second MIP verifier reconstructs reached scheduling problems directly from
+public observation packets, without calling the environment transition or Bellman
+planner. It checks decision values and regret after forecast revelation, and
+throughout instances where forecast outcomes have identical values. Conditional
+pre-revelation decisions remain covered by the Bellman and analytical information
+tests; the fully informed MIP is not presented as a substitute for those tests.
+
 ## Frozen evaluation and inference
 
 Development seeds and evaluation seeds are separate. The evaluation fixes six
@@ -97,6 +104,13 @@ WILD_ENV_WORKERS=6 nice -n 15 bash deploy/ec2/run_operations_benchmark.sh \
 WILD_ENV_WORKERS=6 nice -n 15 bash deploy/ec2/run_operations_benchmark.sh \
   runs/ops-evaluation configs/agents/operations-evaluation.yaml \
   configs/agents/operations-models.yaml
+
+# Audit transport provenance and descriptive repeat/family stability.
+.venv/bin/python tools/audit_operations_results.py runs/ops-evaluation
+
+# Independently verify reached-state values from public packets.
+OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 nice -n 15 .venv/bin/python \
+  tools/validate_operations_states.py runs/ops-evaluation
 ```
 
 Launch long jobs with the detached EC2 recipe. Outputs are plain JSON, JSONL and
