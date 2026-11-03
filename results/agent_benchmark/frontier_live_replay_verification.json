@@ -1,0 +1,434 @@
+[
+  {
+    "trace": "codex-episode-0000.jsonl",
+    "verified": true,
+    "decisions": 30,
+    "source_run": "codex"
+  },
+  {
+    "trace": "codex-episode-0001.jsonl",
+    "verified": true,
+    "decisions": 30,
+    "source_run": "codex"
+  },
+  {
+    "trace": "codex-episode-0002.jsonl",
+    "verified": true,
+    "decisions": 30,
+    "source_run": "codex"
+  },
+  {
+    "trace": "codex-episode-0003.jsonl",
+    "verified": true,
+    "decisions": 30,
+    "source_run": "codex"
+  },
+  {
+    "trace": "codex-episode-0004.jsonl",
+    "verified": true,
+    "decisions": 30,
+    "source_run": "codex"
+  },
+  {
+    "trace": "codex-episode-0005.jsonl",
+    "verified": true,
+    "decisions": 30,
+    "source_run": "codex"
+  },
+  {
+    "trace": "codex-episode-0006.jsonl",
+    "verified": true,
+    "decisions": 30,
+    "source_run": "codex"
+  },
+  {
+    "trace": "codex-episode-0007.jsonl",
+    "verified": true,
+    "decisions": 30,
+    "source_run": "codex"
+  },
+  {
+    "trace": "codex-episode-0008.jsonl",
+    "verified": true,
+    "decisions": 30,
+    "source_run": "codex"
+  },
+  {
+    "trace": "codex-episode-0009.jsonl",
+    "verified": true,
+    "decisions": 30,
+    "source_run": "codex"
+  },
+  {
+    "trace": "codex-episode-0010.jsonl",
+    "verified": true,
+    "decisions": 30,
+    "source_run": "codex"
+  },
+  {
+    "trace": "codex-episode-0011.jsonl",
+    "verified": true,
+    "decisions": 30,
+    "source_run": "codex"
+  },
+  {
+    "trace": "codex-episode-0012.jsonl",
+    "verified": true,
+    "decisions": 30,
+    "source_run": "codex"
+  },
+  {
+    "trace": "codex-episode-0013.jsonl",
+    "verified": true,
+    "decisions": 30,
+    "source_run": "codex"
+  },
+  {
+    "trace": "codex-episode-0014.jsonl",
+    "verified": true,
+    "decisions": 30,
+    "source_run": "codex"
+  },
+  {
+    "trace": "codex-episode-0015.jsonl",
+    "verified": true,
+    "decisions": 30,
+    "source_run": "codex"
+  },
+  {
+    "trace": "codex-episode-0016.jsonl",
+    "verified": true,
+    "decisions": 30,
+    "source_run": "codex"
+  },
+  {
+    "trace": "codex-episode-0017.jsonl",
+    "verified": true,
+    "decisions": 30,
+    "source_run": "codex"
+  },
+  {
+    "trace": "codex-episode-0018.jsonl",
+    "verified": true,
+    "decisions": 30,
+    "source_run": "codex"
+  },
+  {
+    "trace": "codex-episode-0019.jsonl",
+    "verified": true,
+    "decisions": 30,
+    "source_run": "codex"
+  },
+  {
+    "trace": "codex-episode-0020.jsonl",
+    "verified": true,
+    "decisions": 30,
+    "source_run": "codex"
+  },
+  {
+    "trace": "codex-episode-0021.jsonl",
+    "verified": true,
+    "decisions": 30,
+    "source_run": "codex"
+  },
+  {
+    "trace": "codex-episode-0022.jsonl",
+    "verified": true,
+    "decisions": 30,
+    "source_run": "codex"
+  },
+  {
+    "trace": "codex-episode-0023.jsonl",
+    "verified": true,
+    "decisions": 30,
+    "source_run": "codex"
+  },
+  {
+    "trace": "codex-episode-0024.jsonl",
+    "verified": true,
+    "decisions": 30,
+    "source_run": "codex"
+  },
+  {
+    "trace": "codex-episode-0025.jsonl",
+    "verified": true,
+    "decisions": 30,
+    "source_run": "codex"
+  },
+  {
+    "trace": "codex-episode-0026.jsonl",
+    "verified": true,
+    "decisions": 30,
+    "source_run": "codex"
+  },
+  {
+    "trace": "codex-episode-0027.jsonl",
+    "verified": true,
+    "decisions": 30,
+    "source_run": "codex"
+  },
+  {
+    "trace": "codex-episode-0028.jsonl",
+    "verified": true,
+    "decisions": 30,
+    "source_run": "codex"
+  },
+  {
+    "trace": "codex-episode-0029.jsonl",
+    "verified": true,
+    "decisions": 30,
+    "source_run": "codex"
+  },
+  {
+    "trace": "codex-episode-0030.jsonl",
+    "verified": true,
+    "decisions": 30,
+    "source_run": "codex"
+  },
+  {
+    "trace": "codex-episode-0031.jsonl",
+    "verified": true,
+    "decisions": 30,
+    "source_run": "codex"
+  },
+  {
+    "trace": "codex-episode-0032.jsonl",
+    "verified": true,
+    "decisions": 30,
+    "source_run": "codex"
+  },
+  {
+    "trace": "codex-episode-0033.jsonl",
+    "verified": true,
+    "decisions": 30,
+    "source_run": "codex"
+  },
+  {
+    "trace": "codex-episode-0034.jsonl",
+    "verified": true,
+    "decisions": 30,
+    "source_run": "codex"
+  },
+  {
+    "trace": "codex-episode-0035.jsonl",
+    "verified": true,
+    "decisions": 30,
+    "source_run": "codex"
+  },
+  {
+    "trace": "codex-episode-0036.jsonl",
+    "verified": true,
+    "decisions": 30,
+    "source_run": "codex"
+  },
+  {
+    "trace": "codex-episode-0037.jsonl",
+    "verified": true,
+    "decisions": 30,
+    "source_run": "codex"
+  },
+  {
+    "trace": "codex-episode-0038.jsonl",
+    "verified": true,
+    "decisions": 30,
+    "source_run": "codex"
+  },
+  {
+    "trace": "codex-episode-0039.jsonl",
+    "verified": true,
+    "decisions": 30,
+    "source_run": "codex"
+  },
+  {
+    "trace": "codex-episode-0040.jsonl",
+    "verified": true,
+    "decisions": 30,
+    "source_run": "codex"
+  },
+  {
+    "trace": "codex-episode-0041.jsonl",
+    "verified": true,
+    "decisions": 30,
+    "source_run": "codex"
+  },
+  {
+    "trace": "codex-episode-0042.jsonl",
+    "verified": true,
+    "decisions": 30,
+    "source_run": "codex"
+  },
+  {
+    "trace": "codex-episode-0043.jsonl",
+    "verified": true,
+    "decisions": 30,
+    "source_run": "codex"
+  },
+  {
+    "trace": "codex-episode-0044.jsonl",
+    "verified": true,
+    "decisions": 30,
+    "source_run": "codex"
+  },
+  {
+    "trace": "codex-episode-0045.jsonl",
+    "verified": true,
+    "decisions": 30,
+    "source_run": "codex"
+  },
+  {
+    "trace": "codex-episode-0046.jsonl",
+    "verified": true,
+    "decisions": 30,
+    "source_run": "codex"
+  },
+  {
+    "trace": "codex-episode-0047.jsonl",
+    "verified": true,
+    "decisions": 30,
+    "source_run": "codex"
+  },
+  {
+    "trace": "codex-episode-0048.jsonl",
+    "verified": true,
+    "decisions": 30,
+    "source_run": "codex"
+  },
+  {
+    "trace": "codex-episode-0049.jsonl",
+    "verified": true,
+    "decisions": 30,
+    "source_run": "codex"
+  },
+  {
+    "trace": "codex-episode-0050.jsonl",
+    "verified": true,
+    "decisions": 30,
+    "source_run": "codex"
+  },
+  {
+    "trace": "codex-episode-0051.jsonl",
+    "verified": true,
+    "decisions": 30,
+    "source_run": "codex"
+  },
+  {
+    "trace": "codex-episode-0052.jsonl",
+    "verified": true,
+    "decisions": 30,
+    "source_run": "codex"
+  },
+  {
+    "trace": "codex-episode-0053.jsonl",
+    "verified": true,
+    "decisions": 30,
+    "source_run": "codex"
+  },
+  {
+    "trace": "codex-episode-0054.jsonl",
+    "verified": true,
+    "decisions": 30,
+    "source_run": "codex"
+  },
+  {
+    "trace": "codex-episode-0055.jsonl",
+    "verified": true,
+    "decisions": 30,
+    "source_run": "codex"
+  },
+  {
+    "trace": "codex-episode-0056.jsonl",
+    "verified": true,
+    "decisions": 30,
+    "source_run": "codex"
+  },
+  {
+    "trace": "codex-episode-0057.jsonl",
+    "verified": true,
+    "decisions": 30,
+    "source_run": "codex"
+  },
+  {
+    "trace": "codex-episode-0058.jsonl",
+    "verified": true,
+    "decisions": 30,
+    "source_run": "codex"
+  },
+  {
+    "trace": "codex-episode-0059.jsonl",
+    "verified": true,
+    "decisions": 30,
+    "source_run": "codex"
+  },
+  {
+    "trace": "opus-episode-0001.jsonl",
+    "verified": true,
+    "decisions": 30,
+    "source_run": "opus"
+  },
+  {
+    "trace": "opus-episode-0003.jsonl",
+    "verified": true,
+    "decisions": 30,
+    "source_run": "opus"
+  },
+  {
+    "trace": "opus-episode-0005.jsonl",
+    "verified": true,
+    "decisions": 30,
+    "source_run": "opus"
+  },
+  {
+    "trace": "opus-episode-0007.jsonl",
+    "verified": true,
+    "decisions": 30,
+    "source_run": "opus"
+  },
+  {
+    "trace": "opus-episode-0009.jsonl",
+    "verified": true,
+    "decisions": 30,
+    "source_run": "opus"
+  },
+  {
+    "trace": "opus-episode-0011.jsonl",
+    "verified": true,
+    "decisions": 30,
+    "source_run": "opus"
+  },
+  {
+    "trace": "opus-episode-0013.jsonl",
+    "verified": true,
+    "decisions": 30,
+    "source_run": "opus"
+  },
+  {
+    "trace": "opus-episode-0015.jsonl",
+    "verified": true,
+    "decisions": 30,
+    "source_run": "opus"
+  },
+  {
+    "trace": "opus-episode-0017.jsonl",
+    "verified": true,
+    "decisions": 30,
+    "source_run": "opus"
+  },
+  {
+    "trace": "opus-episode-0019.jsonl",
+    "verified": true,
+    "decisions": 30,
+    "source_run": "opus"
+  },
+  {
+    "trace": "opus-episode-0021.jsonl",
+    "verified": true,
+    "decisions": 30,
+    "source_run": "opus"
+  },
+  {
+    "trace": "opus-episode-0023.jsonl",
+    "verified": true,
+    "decisions": 30,
+    "source_run": "opus"
+  }
+]

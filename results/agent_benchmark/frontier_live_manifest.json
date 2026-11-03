@@ -1,0 +1,592 @@
+{
+  "schema_version": 1,
+  "protocol": "wildfire-desk-v1.1",
+  "suite": {
+    "schema_version": 1,
+    "suite_id": "wildfire-desk-frontier-v1",
+    "split": "evaluation",
+    "description": "Public synthetic pilot across four operational challenges. No human comparator or historical skill claim.",
+    "scenario": {
+      "scenario_id": "desk-frontier",
+      "title": "Frontier incident desk",
+      "width": 40,
+      "height": 40,
+      "cell_size_m": 80.0,
+      "horizon_min": 90,
+      "decision_interval_min": 3,
+      "max_tasks": 32,
+      "observation_delay_min": 3,
+      "wind_speed_m_s": 5.0,
+      "wind_direction_deg": 25.0,
+      "wind_variability": 0.2,
+      "spotting_rate": 0.005,
+      "ground_arrival_min": 15,
+      "terminate_on_escape": false,
+      "service_sites": [
+        {
+          "site_id": "airbase",
+          "kind": "airport",
+          "x": 5,
+          "y": 33,
+          "services": [
+            "water",
+            "retardant",
+            "fuel"
+          ],
+          "service_mode": "land",
+          "bays": 2,
+          "approach_capacity": 3,
+          "refill_rate_l_min": 1800.0,
+          "fixed_turnaround_min": 3.0,
+          "available_volume_l": 150000.0
+        },
+        {
+          "site_id": "reservoir",
+          "kind": "dip_site",
+          "x": 31,
+          "y": 27,
+          "services": [
+            "water"
+          ],
+          "service_mode": "hover_fill",
+          "bays": 1,
+          "approach_capacity": 2,
+          "refill_rate_l_min": 3500.0,
+          "available_volume_l": 80000.0,
+          "minimum_depth_m": 2.0
+        }
+      ],
+      "resources": [
+        {
+          "resource_id": "tanker",
+          "kind": "retardant",
+          "cruise_speed_m_s": 65.0,
+          "payload_l": 6000.0,
+          "reload_min": 9,
+          "dispatch_latency_min": 2,
+          "endurance_min": 150,
+          "home_site_id": "airbase",
+          "max_operating_wind_m_s": 18.0
+        },
+        {
+          "resource_id": "helicopter-1",
+          "kind": "water",
+          "cruise_speed_m_s": 45.0,
+          "payload_l": 2200.0,
+          "reload_min": 5,
+          "dispatch_latency_min": 1,
+          "endurance_min": 95,
+          "reserve_endurance_min": 18.0,
+          "home_site_id": "airbase",
+          "service_modes": [
+            "land",
+            "hover_fill"
+          ],
+          "max_operating_wind_m_s": 12.0
+        },
+        {
+          "resource_id": "helicopter-2",
+          "kind": "water",
+          "cruise_speed_m_s": 45.0,
+          "payload_l": 2200.0,
+          "reload_min": 5,
+          "dispatch_latency_min": 1,
+          "endurance_min": 95,
+          "reserve_endurance_min": 18.0,
+          "home_site_id": "airbase",
+          "service_modes": [
+            "land",
+            "hover_fill"
+          ],
+          "max_operating_wind_m_s": 12.0
+        },
+        {
+          "resource_id": "scout",
+          "kind": "sensor",
+          "cruise_speed_m_s": 38.0,
+          "payload_l": 0.0,
+          "reload_min": 0,
+          "dispatch_latency_min": 1,
+          "endurance_min": 110,
+          "home_site_id": "airbase",
+          "max_operating_wind_m_s": 20.0
+        },
+        {
+          "resource_id": "crew",
+          "kind": "crew",
+          "cruise_speed_m_s": 1.3,
+          "payload_l": 0.0,
+          "reload_min": 0,
+          "dispatch_latency_min": 15,
+          "endurance_min": 600,
+          "line_production_m_min": 6.0,
+          "line_length_m": 500.0,
+          "max_operating_wind_m_s": 30.0
+        }
+      ]
+    },
+    "cases": [
+      {
+        "id": "initial-attack",
+        "capability": "heterogeneous-fleet-coordination",
+        "seeds": [
+          101,
+          211,
+          307
+        ],
+        "overrides": {}
+      },
+      {
+        "id": "delayed-recon",
+        "capability": "information-gathering-and-memory",
+        "seeds": [
+          401,
+          503,
+          601
+        ],
+        "overrides": {
+          "observation_delay_min": 12,
+          "wind_speed_m_s": 7.0
+        }
+      },
+      {
+        "id": "wind-restrictions",
+        "capability": "constraint-aware-planning",
+        "seeds": [
+          701,
+          809,
+          907
+        ],
+        "overrides": {
+          "wind_speed_m_s": 14.0,
+          "wind_direction_deg": 60.0,
+          "relative_humidity_pct": 16.0
+        }
+      },
+      {
+        "id": "scarce-reload",
+        "capability": "long-horizon-logistics",
+        "seeds": [
+          1009,
+          1103,
+          1201
+        ],
+        "overrides": {
+          "service_sites": [
+            {
+              "site_id": "airbase",
+              "kind": "airport",
+              "x": 5,
+              "y": 33,
+              "services": [
+                "water",
+                "retardant",
+                "fuel"
+              ],
+              "service_mode": "land",
+              "bays": 1,
+              "approach_capacity": 2,
+              "refill_rate_l_min": 900.0,
+              "fixed_turnaround_min": 6.0,
+              "available_volume_l": 12000.0
+            },
+            {
+              "site_id": "reservoir",
+              "kind": "dip_site",
+              "x": 31,
+              "y": 27,
+              "services": [
+                "water"
+              ],
+              "service_mode": "hover_fill",
+              "bays": 1,
+              "approach_capacity": 1,
+              "refill_rate_l_min": 2200.0,
+              "available_volume_l": 8800.0,
+              "close_minute": 45,
+              "minimum_depth_m": 2.0
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "suite_sha256": "0d1a08a68dfc56b3f121da8d75fbbdb453fb4a548479f6a0bd94b1c31730005e",
+  "source": {
+    "source_runs": {
+      "codex": {
+        "run_name": "ec2-frontier-live-v1",
+        "source": {
+          "source_sha256": "e5d1114cd711e0c1e7cf87982d46a9e4e242b33c59173ad3fe288e6079dd5753",
+          "python": "3.11.18",
+          "numpy": "2.4.6",
+          "platform": "Linux",
+          "dependencies": {
+            "numpy": "2.4.6",
+            "scipy": "1.17.1",
+            "PyYAML": "6.0.3",
+            "gymnasium": "1.4.0",
+            "pettingzoo": "1.27.0",
+            "torch": "2.15.0+cpu"
+          },
+          "git_commit": "6e2cb62762194821d3a42c921a1c0afff7098115",
+          "git_dirty": false
+        },
+        "exit_code": 0,
+        "manifest_sha256": "beef0f9ae76224a6bea3cc421dbabcb7f0a652464e9920c5adc64952815a3bc4",
+        "summary_sha256": "f27f14166abbfc5682143433c4244f7e1c380e17c192b50056c3f36241193a17",
+        "episodes": 60
+      },
+      "opus": {
+        "run_name": "ec2-opus-live-v1",
+        "source": {
+          "source_sha256": "89d259ebc03f1e1830b26e1324eb0f444baad45c073124ecff48010ee9dcf24e",
+          "python": "3.11.18",
+          "numpy": "2.4.6",
+          "platform": "Linux",
+          "dependencies": {
+            "numpy": "2.4.6",
+            "scipy": "1.17.1",
+            "PyYAML": "6.0.3",
+            "gymnasium": "1.4.0",
+            "pettingzoo": "1.27.0",
+            "torch": "2.15.0+cpu"
+          },
+          "git_commit": "91b4930ca52b711c8e42eb0d3aee2b48bd6b5d47",
+          "git_dirty": false
+        },
+        "exit_code": 2,
+        "manifest_sha256": "fa90f30a1c8624053f16fe52c4d5576d5b029d77802028ee9a6b746c0d803f0c",
+        "summary_sha256": "88d707741755101b99d31243b55830d730f5dbd6cb6f5902962c1df56b856443",
+        "episodes": 24
+      }
+    },
+    "environment_reference_commit": "6e2cb62762194821d3a42c921a1c0afff7098115",
+    "source_changes_from_reference": {
+      "codex": [],
+      "opus": [
+        "src/aeolus/agents/cli_adapters.py",
+        "tests/agents/test_cli_adapters.py"
+      ]
+    },
+    "environment_contract_and_scoring_unchanged": true
+  },
+  "system_prompt": "You command a simulated wildfire initial-attack desk.\nMinimize final asset-weighted fire loss, then resource operating cost and exposure.\nThis is a research simulator, not operational guidance. You receive only delayed\nfire belief, static mapped assets, current weather, resource telemetry, service\nstocks, and feasible tasks. Unknown cells are not evidence of no fire. Task value\nis a heuristic, not a prediction or ground-truth reward. No future weather or\nhidden fire state is available. Reconnaissance can improve subsequent observations.\n\nCall submit_dispatch exactly once per decision. Include the current decision_id\nand one assignment per resource, using a task_id from that resource's legal_tasks.\nTask IDs change every decision. Task 0 means hold/continue the current mission;\nit does not cancel a flight. Respect each nonzero task's shared capacity. Invalid,\nstale, or incomplete submissions cause the entire fleet to hold for one interval.\nThere are no free retries. A short operational rationale is optional (use an empty\nstring if unnecessary). Put any information to retain in memory (at most 2000\ncharacters). Only memory and the last dispatch receipt persist between decisions.\nDispatch advances the simulation by decision_interval_min. The simulator handles\ntravel, payload delivery, return, queues, reload, and safety gates. A forecast or\nproposal never changes the incident until dispatch is submitted. Terminal scores\nare reserved for evaluation and will not be shown during the episode.\n\nTask semantics: OBSERVE sends the sensor to collect a noisy local measurement;\ndelivery is delayed by observation_delay_min. WATER drops water on the target.\nRETARDANT drops a line across the wind; REINFORCE and AERIAL_LINE use the listed\nheading (AERIAL_LINE also supports water aircraft). LINE sends a ground crew to\nconstruct a line over time. SERVICE sends an aircraft to the listed site to\nrefill compatible payload and/or refuel, subject to stocks, queues and opening\nhours. With service_sites present, an aircraft becomes AVAILABLE at its mission\ntarget after a drop or observation: choose SERVICE explicitly when it needs\nrefilling. With no service_sites, return and reload happen automatically.\nOnly AVAILABLE resources accept a new nonzero task; busy resources continue\nwith task 0. travel_min is a geometric estimate, excluding dispatch latency and\nservice time. legal_tasks already enforces current feasibility and reserve gates.\nObservation ages mean time since delivery to belief, not time since capture;\nmeasurements are older by the configured delivery delay (except initial belief).\nCoordinates are grid column x and row y. Sector asset values are static totals;\nheuristic_value ranks belief-derived candidate tasks and is not an outcome oracle.\n",
+  "prompt_sha256": "4af604b8d4c190e1fdb1f08e91cf50c986aa23a686777d8f253850cad328da96",
+  "dispatch_schema": {
+    "type": "object",
+    "properties": {
+      "decision_id": {
+        "type": "string"
+      },
+      "assignments": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "resource_id": {
+              "type": "string"
+            },
+            "task_id": {
+              "type": "integer"
+            }
+          },
+          "required": [
+            "resource_id",
+            "task_id"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "rationale": {
+        "type": "string",
+        "maxLength": 1000
+      },
+      "memory": {
+        "type": "string",
+        "maxLength": 2000
+      }
+    },
+    "required": [
+      "decision_id",
+      "assignments",
+      "rationale",
+      "memory"
+    ],
+    "additionalProperties": false
+  },
+  "agents": [
+    {
+      "name": "hold",
+      "provider": "baseline",
+      "model": "hold",
+      "base_url": null,
+      "api_key_env": null,
+      "command": [],
+      "max_output_tokens": 2048,
+      "timeout_s": 60.0,
+      "max_calls": 128,
+      "reasoning_effort": null
+    },
+    {
+      "name": "nearest",
+      "provider": "baseline",
+      "model": "nearest",
+      "base_url": null,
+      "api_key_env": null,
+      "command": [],
+      "max_output_tokens": 2048,
+      "timeout_s": 60.0,
+      "max_calls": 128,
+      "reasoning_effort": null
+    },
+    {
+      "name": "greedy",
+      "provider": "baseline",
+      "model": "greedy",
+      "base_url": null,
+      "api_key_env": null,
+      "command": [],
+      "max_output_tokens": 2048,
+      "timeout_s": 60.0,
+      "max_calls": 128,
+      "reasoning_effort": null
+    },
+    {
+      "name": "sol-high",
+      "provider": "codex_cli",
+      "model": "gpt-6.1-sol",
+      "base_url": null,
+      "api_key_env": null,
+      "command": [
+        "codex"
+      ],
+      "max_output_tokens": null,
+      "timeout_s": 240,
+      "max_calls": 30,
+      "reasoning_effort": "high"
+    },
+    {
+      "name": "terra-high",
+      "provider": "codex_cli",
+      "model": "gpt-6.1-terra",
+      "base_url": null,
+      "api_key_env": null,
+      "command": [
+        "codex"
+      ],
+      "max_output_tokens": null,
+      "timeout_s": 240,
+      "max_calls": 30,
+      "reasoning_effort": "high"
+    },
+    {
+      "name": "opus-high",
+      "provider": "claude_cli",
+      "model": "claude-opus-5-5",
+      "base_url": null,
+      "api_key_env": null,
+      "command": [
+        "claude"
+      ],
+      "max_output_tokens": null,
+      "timeout_s": 240,
+      "max_calls": 30,
+      "reasoning_effort": "high"
+    }
+  ],
+  "adapter_runtime": {
+    "hold": null,
+    "nearest": null,
+    "greedy": null,
+    "sol-high": {
+      "cli_version": "codex-cli 0.165.0",
+      "transport_prompt": "\nTransport: return exactly one JSON object matching the supplied dispatch schema.\nThat object is the input to submit_dispatch; the harness applies it once and\nadvances time. Do not invoke shell, file, browser, search, MCP or other tools.\nUse only the observation in this request, including its memory. This is a fresh\nstateless decision: no conversation history, repository or external information\nis available. For schema-based structured output, emit the structured answer\ndirectly; do not first repeat it as prose. Return a short operational rationale,\nnot a reasoning transcript. Never invent a task ID or omit a resource.\n",
+      "effective_system_sha256": "4c5a2761ecdf61a0c91b91e4310e3396a1a434764435394fcab6329427589667",
+      "session_policy": "fresh isolated session for every decision; no resume",
+      "output_token_cap": null,
+      "model_identity": "reported events/header only; absent metadata stays unknown"
+    },
+    "terra-high": {
+      "cli_version": "codex-cli 0.165.0",
+      "transport_prompt": "\nTransport: return exactly one JSON object matching the supplied dispatch schema.\nThat object is the input to submit_dispatch; the harness applies it once and\nadvances time. Do not invoke shell, file, browser, search, MCP or other tools.\nUse only the observation in this request, including its memory. This is a fresh\nstateless decision: no conversation history, repository or external information\nis available. For schema-based structured output, emit the structured answer\ndirectly; do not first repeat it as prose. Return a short operational rationale,\nnot a reasoning transcript. Never invent a task ID or omit a resource.\n",
+      "effective_system_sha256": "4c5a2761ecdf61a0c91b91e4310e3396a1a434764435394fcab6329427589667",
+      "session_policy": "fresh isolated session for every decision; no resume",
+      "output_token_cap": null,
+      "model_identity": "reported events/header only; absent metadata stays unknown"
+    },
+    "opus-high": {
+      "cli_version": "2.1.291 (Claude Code)",
+      "transport_prompt": "\nTransport: return exactly one JSON object matching the supplied dispatch schema.\nThat object is the input to submit_dispatch; the harness applies it once and\nadvances time. Do not invoke shell, file, browser, search, MCP or other tools.\nUse only the observation in this request, including its memory. This is a fresh\nstateless decision: no conversation history, repository or external information\nis available. For schema-based structured output, emit the structured answer\ndirectly; do not first repeat it as prose. Return a short operational rationale,\nnot a reasoning transcript. Never invent a task ID or omit a resource.\n",
+      "effective_system_sha256": "4c5a2761ecdf61a0c91b91e4310e3396a1a434764435394fcab6329427589667",
+      "session_policy": "fresh isolated session for every decision; no resume",
+      "output_token_cap": null,
+      "model_identity": "reported events/header only; absent metadata stays unknown"
+    }
+  },
+  "created_at": "2026-11-03T00:01:29.363594+00:00",
+  "expected_episodes": 72,
+  "episode_workers": null,
+  "limitations": [
+    "Public synthetic benchmark; no human operator comparator or real-world efficacy claim.",
+    "Same initial seed is paired; policy-dependent RNG consumption can diverge after dispatch.",
+    "Bootstrap intervals describe these scenario clusters, not broad frontier-model capability.",
+    "Failures advance with hold; failed runs remain visible but are ineligible for ranking.",
+    "Resource costs and asset-weighted loss are simulator units, not dollars or lives.",
+    "HTTP timeouts are socket timeouts; CLI timeouts are wall-clock subprocess limits.",
+    "CLI output-token caps are unavailable (null); calls and wall time are bounded."
+  ],
+  "artifact_kind": "combined_completed_runs",
+  "aggregation": {
+    "trace_bytes_unchanged": true,
+    "all_unique_episodes_retained": true,
+    "duplicate_baselines": [
+      {
+        "key": [
+          "hold",
+          "initial-attack",
+          101
+        ],
+        "retained_source": "codex",
+        "duplicate_source": "opus",
+        "duplicate_trace": "episode-0000.jsonl",
+        "duplicate_trace_sha256": "2ae8c5e7c280c5afcd414dfcbd35fdd1f48ed33fdabc73c4ba01769c11cf1006",
+        "all_metrics_and_observations_match": true
+      },
+      {
+        "key": [
+          "hold",
+          "initial-attack",
+          211
+        ],
+        "retained_source": "codex",
+        "duplicate_source": "opus",
+        "duplicate_trace": "episode-0002.jsonl",
+        "duplicate_trace_sha256": "4cc6632eb6ba2dffaf2150834458d3ca9e2db1be1df4fff9e26d66927a177b90",
+        "all_metrics_and_observations_match": true
+      },
+      {
+        "key": [
+          "hold",
+          "initial-attack",
+          307
+        ],
+        "retained_source": "codex",
+        "duplicate_source": "opus",
+        "duplicate_trace": "episode-0004.jsonl",
+        "duplicate_trace_sha256": "eb0a4a397af3dd8fcc82c3983a84e9e0b317e20f867893489945dc300ffee905",
+        "all_metrics_and_observations_match": true
+      },
+      {
+        "key": [
+          "hold",
+          "delayed-recon",
+          401
+        ],
+        "retained_source": "codex",
+        "duplicate_source": "opus",
+        "duplicate_trace": "episode-0006.jsonl",
+        "duplicate_trace_sha256": "67c46a0f89ae480aebee906f620e3d3346caeb2ebc1e667117c161accdc205f3",
+        "all_metrics_and_observations_match": true
+      },
+      {
+        "key": [
+          "hold",
+          "delayed-recon",
+          503
+        ],
+        "retained_source": "codex",
+        "duplicate_source": "opus",
+        "duplicate_trace": "episode-0008.jsonl",
+        "duplicate_trace_sha256": "b81e7c5dc1a1c83e0b2f90b0cb5c36c9c0a2a0072ee181a27906084faf923809",
+        "all_metrics_and_observations_match": true
+      },
+      {
+        "key": [
+          "hold",
+          "delayed-recon",
+          601
+        ],
+        "retained_source": "codex",
+        "duplicate_source": "opus",
+        "duplicate_trace": "episode-0010.jsonl",
+        "duplicate_trace_sha256": "077338c65777723d4882b4e476bf558b12eadddf12c99b68b3f2b8c23557c574",
+        "all_metrics_and_observations_match": true
+      },
+      {
+        "key": [
+          "hold",
+          "wind-restrictions",
+          701
+        ],
+        "retained_source": "codex",
+        "duplicate_source": "opus",
+        "duplicate_trace": "episode-0012.jsonl",
+        "duplicate_trace_sha256": "b8819e916c9ce522c7a4c47971feec53eadaa1bf5dd0f6350a0df3116e9ebc45",
+        "all_metrics_and_observations_match": true
+      },
+      {
+        "key": [
+          "hold",
+          "wind-restrictions",
+          809
+        ],
+        "retained_source": "codex",
+        "duplicate_source": "opus",
+        "duplicate_trace": "episode-0014.jsonl",
+        "duplicate_trace_sha256": "554b1804c77f2e292b372c73477f4c0f8dcf43eae7bd2ec0d121c15bb75a4d61",
+        "all_metrics_and_observations_match": true
+      },
+      {
+        "key": [
+          "hold",
+          "wind-restrictions",
+          907
+        ],
+        "retained_source": "codex",
+        "duplicate_source": "opus",
+        "duplicate_trace": "episode-0016.jsonl",
+        "duplicate_trace_sha256": "cdd273853a45f00b73b57168d2bea2fcc2bcdff9edc6a5f626ebcb79c44eb70c",
+        "all_metrics_and_observations_match": true
+      },
+      {
+        "key": [
+          "hold",
+          "scarce-reload",
+          1009
+        ],
+        "retained_source": "codex",
+        "duplicate_source": "opus",
+        "duplicate_trace": "episode-0018.jsonl",
+        "duplicate_trace_sha256": "11d8a7b8af6cb2bd61c54265d0b2374dc93ba2a41600a9e6f0071eb6a3777e69",
+        "all_metrics_and_observations_match": true
+      },
+      {
+        "key": [
+          "hold",
+          "scarce-reload",
+          1103
+        ],
+        "retained_source": "codex",
+        "duplicate_source": "opus",
+        "duplicate_trace": "episode-0020.jsonl",
+        "duplicate_trace_sha256": "8845ac9d4bf864cae2ea1bdca52a4742a661f701338347981413529fd254e701",
+        "all_metrics_and_observations_match": true
+      },
+      {
+        "key": [
+          "hold",
+          "scarce-reload",
+          1201
+        ],
+        "retained_source": "codex",
+        "duplicate_source": "opus",
+        "duplicate_trace": "episode-0022.jsonl",
+        "duplicate_trace_sha256": "34fe823f83491a08a40e0d90aa59e9ce97506a43dd3c89c85232464067d00133",
+        "all_metrics_and_observations_match": true
+      }
+    ],
+    "replays": "Original source runners replayed each trace; copied trace bytes were checksum-verified.",
+    "collector_sha256": "4fa911e84ca867aeadbcfe59443f8abbe78d231a12419ba871151ec479c564c2"
+  }
+}

@@ -1,5 +1,9 @@
 # Wildfire Desk v1: baseline pilot
 
+This is the original baseline reference. The later
+[v1.1 live-agent comparison](frontier_live_results.md) evaluates three real models
+against these baselines and verifies that their reference metrics are unchanged.
+
 This is an executed synthetic baseline pilot, not a frontier-model leaderboard.
 No provider API keys were available for this run. Native model adapters were
 validated against local HTTP fixtures, and the command-agent path was executed
