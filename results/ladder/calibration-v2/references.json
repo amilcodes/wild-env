@@ -1,0 +1,2588 @@
+{
+  "t5-s0": {
+    "baselines": {
+      "deadline": {
+        "expected_value": 273.79999999999995,
+        "score": 33.51285189718482
+      },
+      "greedy": {
+        "expected_value": 273.79999999999995,
+        "score": 33.51285189718482
+      },
+      "hold": {
+        "expected_value": 0.0,
+        "score": 0.0
+      },
+      "search": {
+        "expected_value": 592.2,
+        "score": 72.48470012239902
+      }
+    },
+    "clairvoyant": 827.2,
+    "instance_sha256": "8dc51420693612df980f1cce43ddcdcc3c325825d5f4bd7043da87a61d115635",
+    "open_loop": 748.6000000000006,
+    "optimal_plan": {
+      "plan": [
+        {
+          "branch": "both",
+          "job": 747,
+          "resource": "crew-1",
+          "start": 0
+        },
+        {
+          "branch": "both",
+          "job": 619,
+          "resource": "crew-2",
+          "start": 0
+        },
+        {
+          "branch": "both",
+          "job": 757,
+          "resource": "dozer-1",
+          "start": 0
+        },
+        {
+          "branch": "both",
+          "job": 539,
+          "resource": "heli-1",
+          "start": 0
+        },
+        {
+          "branch": "alpha",
+          "job": 326,
+          "resource": "heli-1",
+          "start": 2
+        },
+        {
+          "branch": "beta",
+          "job": 326,
+          "resource": "heli-1",
+          "start": 2
+        },
+        {
+          "branch": "beta",
+          "job": 876,
+          "resource": "crew-1",
+          "start": 3
+        },
+        {
+          "branch": "alpha",
+          "job": 228,
+          "resource": "crew-2",
+          "start": 3
+        },
+        {
+          "branch": "beta",
+          "job": 228,
+          "resource": "crew-2",
+          "start": 3
+        },
+        {
+          "branch": "alpha",
+          "job": 696,
+          "resource": "dozer-1",
+          "start": 3
+        },
+        {
+          "branch": "beta",
+          "job": 842,
+          "resource": "dozer-1",
+          "start": 3
+        },
+        {
+          "branch": "alpha",
+          "job": 847,
+          "resource": "engine-1",
+          "start": 3
+        },
+        {
+          "branch": "beta",
+          "job": 349,
+          "resource": "engine-1",
+          "start": 3
+        },
+        {
+          "branch": "alpha",
+          "job": 876,
+          "resource": "crew-1",
+          "start": 4
+        },
+        {
+          "branch": "beta",
+          "job": 380,
+          "resource": "heli-1",
+          "start": 4
+        },
+        {
+          "branch": "alpha",
+          "job": 205,
+          "resource": "crew-2",
+          "start": 6
+        },
+        {
+          "branch": "alpha",
+          "job": 816,
+          "resource": "heli-1",
+          "start": 6
+        },
+        {
+          "branch": "alpha",
+          "job": 578,
+          "resource": "engine-1",
+          "start": 6
+        },
+        {
+          "branch": "beta",
+          "job": 578,
+          "resource": "engine-1",
+          "start": 6
+        },
+        {
+          "branch": "beta",
+          "job": 478,
+          "resource": "crew-2",
+          "start": 7
+        },
+        {
+          "branch": "beta",
+          "job": 668,
+          "resource": "heli-1",
+          "start": 7
+        },
+        {
+          "branch": "beta",
+          "job": 286,
+          "resource": "crew-1",
+          "start": 8
+        },
+        {
+          "branch": "alpha",
+          "job": 668,
+          "resource": "heli-1",
+          "start": 8
+        },
+        {
+          "branch": "alpha",
+          "job": 870,
+          "resource": "crew-1",
+          "start": 9
+        },
+        {
+          "branch": "beta",
+          "job": 161,
+          "resource": "heli-1",
+          "start": 9
+        },
+        {
+          "branch": "alpha",
+          "job": 394,
+          "resource": "dozer-1",
+          "start": 10
+        },
+        {
+          "branch": "alpha",
+          "job": 227,
+          "resource": "heli-1",
+          "start": 10
+        },
+        {
+          "branch": "alpha",
+          "job": 741,
+          "resource": "crew-1",
+          "start": 12
+        },
+        {
+          "branch": "alpha",
+          "job": 119,
+          "resource": "heli-1",
+          "start": 12
+        },
+        {
+          "branch": "beta",
+          "job": 298,
+          "resource": "crew-1",
+          "start": 13
+        },
+        {
+          "branch": "beta",
+          "job": 450,
+          "resource": "heli-1",
+          "start": 14
+        },
+        {
+          "branch": "alpha",
+          "job": 450,
+          "resource": "engine-1",
+          "start": 14
+        },
+        {
+          "branch": "alpha",
+          "job": 733,
+          "resource": "heli-1",
+          "start": 18
+        },
+        {
+          "branch": "beta",
+          "job": 733,
+          "resource": "heli-1",
+          "start": 18
+        }
+      ],
+      "rationale": ""
+    },
+    "optimum": 817.0000000000001,
+    "optimum_detail": {
+      "constraints": 1368,
+      "mode": "information",
+      "reveal_tick": 2,
+      "seconds": 0.559,
+      "value": 817.0000000000001,
+      "variables": 1326
+    },
+    "seed": 0,
+    "tier": 5
+  },
+  "t5-s1": {
+    "baselines": {
+      "deadline": {
+        "expected_value": 390.79999999999995,
+        "score": 40.38024385203554
+      },
+      "greedy": {
+        "expected_value": 390.79999999999995,
+        "score": 40.38024385203554
+      },
+      "hold": {
+        "expected_value": 0.0,
+        "score": 0.0
+      },
+      "search": {
+        "expected_value": 932.6,
+        "score": 96.36288489357305
+      }
+    },
+    "clairvoyant": 980.6,
+    "instance_sha256": "23c51d8b2d7efd6be683a82ec3104eb9062da630425dc6de01469330b59f69b0",
+    "open_loop": 954.4,
+    "optimal_plan": {
+      "plan": [
+        {
+          "branch": "both",
+          "job": 982,
+          "resource": "heli-1",
+          "start": 0
+        },
+        {
+          "branch": "both",
+          "job": 227,
+          "resource": "crew-1",
+          "start": 0
+        },
+        {
+          "branch": "both",
+          "job": 298,
+          "resource": "dozer-1",
+          "start": 0
+        },
+        {
+          "branch": "both",
+          "job": 971,
+          "resource": "engine-1",
+          "start": 1
+        },
+        {
+          "branch": "both",
+          "job": 221,
+          "resource": "dozer-1",
+          "start": 2
+        },
+        {
+          "branch": "both",
+          "job": 530,
+          "resource": "heli-1",
+          "start": 4
+        },
+        {
+          "branch": "both",
+          "job": 514,
+          "resource": "crew-1",
+          "start": 4
+        },
+        {
+          "branch": "both",
+          "job": 152,
+          "resource": "engine-2",
+          "start": 5
+        },
+        {
+          "branch": "both",
+          "job": 415,
+          "resource": "dozer-1",
+          "start": 6
+        },
+        {
+          "branch": "both",
+          "job": 827,
+          "resource": "engine-1",
+          "start": 6
+        },
+        {
+          "branch": "both",
+          "job": 783,
+          "resource": "heli-1",
+          "start": 8
+        },
+        {
+          "branch": "both",
+          "job": 184,
+          "resource": "crew-1",
+          "start": 8
+        },
+        {
+          "branch": "both",
+          "job": 960,
+          "resource": "engine-2",
+          "start": 8
+        },
+        {
+          "branch": "alpha",
+          "job": 262,
+          "resource": "dozer-1",
+          "start": 10
+        },
+        {
+          "branch": "alpha",
+          "job": 769,
+          "resource": "engine-1",
+          "start": 10
+        },
+        {
+          "branch": "beta",
+          "job": 769,
+          "resource": "engine-1",
+          "start": 10
+        },
+        {
+          "branch": "beta",
+          "job": 850,
+          "resource": "dozer-1",
+          "start": 11
+        },
+        {
+          "branch": "beta",
+          "job": 678,
+          "resource": "engine-1",
+          "start": 13
+        },
+        {
+          "branch": "alpha",
+          "job": 678,
+          "resource": "engine-2",
+          "start": 13
+        },
+        {
+          "branch": "alpha",
+          "job": 567,
+          "resource": "crew-1",
+          "start": 14
+        },
+        {
+          "branch": "alpha",
+          "job": 219,
+          "resource": "dozer-1",
+          "start": 14
+        },
+        {
+          "branch": "alpha",
+          "job": 751,
+          "resource": "heli-1",
+          "start": 15
+        },
+        {
+          "branch": "beta",
+          "job": 751,
+          "resource": "heli-1",
+          "start": 15
+        },
+        {
+          "branch": "beta",
+          "job": 690,
+          "resource": "crew-1",
+          "start": 15
+        },
+        {
+          "branch": "alpha",
+          "job": 493,
+          "resource": "engine-1",
+          "start": 17
+        },
+        {
+          "branch": "beta",
+          "job": 493,
+          "resource": "engine-1",
+          "start": 17
+        },
+        {
+          "branch": "alpha",
+          "job": 839,
+          "resource": "heli-1",
+          "start": 18
+        },
+        {
+          "branch": "beta",
+          "job": 839,
+          "resource": "heli-1",
+          "start": 18
+        }
+      ],
+      "rationale": ""
+    },
+    "optimum": 967.8,
+    "optimum_detail": {
+      "constraints": 1308,
+      "mode": "information",
+      "reveal_tick": 9,
+      "seconds": 0.386,
+      "value": 967.8,
+      "variables": 1216
+    },
+    "seed": 1,
+    "tier": 5
+  },
+  "t6-s0": {
+    "baselines": {
+      "deadline": {
+        "expected_value": 804.5999999999999,
+        "score": 67.30801405387314
+      },
+      "greedy": {
+        "expected_value": 806.5999999999999,
+        "score": 67.47532206792701
+      },
+      "hold": {
+        "expected_value": 0.0,
+        "score": 0.0
+      },
+      "search": {
+        "expected_value": 1074.0,
+        "score": 89.84440354692985
+      }
+    },
+    "clairvoyant": 1198.4,
+    "instance_sha256": "b980798f56da6cbe3ce0b9c670c745d5762362040e4cb1d465d718d17ca0ecab",
+    "open_loop": 1138.8000000000125,
+    "optimal_plan": {
+      "plan": [
+        {
+          "branch": "both",
+          "job": 742,
+          "resource": "heli-1",
+          "start": 0
+        },
+        {
+          "branch": "both",
+          "job": 325,
+          "resource": "crew-1",
+          "start": 0
+        },
+        {
+          "branch": "both",
+          "job": 254,
+          "resource": "dozer-1",
+          "start": 0
+        },
+        {
+          "branch": "alpha",
+          "job": 497,
+          "resource": "heli-1",
+          "start": 2
+        },
+        {
+          "branch": "alpha",
+          "job": 546,
+          "resource": "engine-1",
+          "start": 2
+        },
+        {
+          "branch": "beta",
+          "job": 586,
+          "resource": "engine-1",
+          "start": 2
+        },
+        {
+          "branch": "alpha",
+          "job": 327,
+          "resource": "dozer-2",
+          "start": 2
+        },
+        {
+          "branch": "beta",
+          "job": 756,
+          "resource": "dozer-2",
+          "start": 2
+        },
+        {
+          "branch": "beta",
+          "job": 497,
+          "resource": "heli-1",
+          "start": 3
+        },
+        {
+          "branch": "alpha",
+          "job": 471,
+          "resource": "dozer-1",
+          "start": 3
+        },
+        {
+          "branch": "beta",
+          "job": 471,
+          "resource": "dozer-1",
+          "start": 4
+        },
+        {
+          "branch": "alpha",
+          "job": 656,
+          "resource": "engine-1",
+          "start": 5
+        },
+        {
+          "branch": "beta",
+          "job": 637,
+          "resource": "engine-1",
+          "start": 5
+        },
+        {
+          "branch": "alpha",
+          "job": 947,
+          "resource": "crew-1",
+          "start": 5
+        },
+        {
+          "branch": "beta",
+          "job": 656,
+          "resource": "crew-1",
+          "start": 5
+        },
+        {
+          "branch": "alpha",
+          "job": 146,
+          "resource": "dozer-1",
+          "start": 6
+        },
+        {
+          "branch": "alpha",
+          "job": 119,
+          "resource": "dozer-2",
+          "start": 6
+        },
+        {
+          "branch": "alpha",
+          "job": 482,
+          "resource": "dozer-1",
+          "start": 8
+        },
+        {
+          "branch": "beta",
+          "job": 482,
+          "resource": "dozer-1",
+          "start": 8
+        },
+        {
+          "branch": "alpha",
+          "job": 417,
+          "resource": "heli-2",
+          "start": 9
+        },
+        {
+          "branch": "beta",
+          "job": 593,
+          "resource": "engine-1",
+          "start": 9
+        },
+        {
+          "branch": "alpha",
+          "job": 556,
+          "resource": "crew-1",
+          "start": 9
+        },
+        {
+          "branch": "beta",
+          "job": 241,
+          "resource": "dozer-2",
+          "start": 9
+        },
+        {
+          "branch": "alpha",
+          "job": 164,
+          "resource": "heli-1",
+          "start": 10
+        },
+        {
+          "branch": "alpha",
+          "job": 942,
+          "resource": "engine-1",
+          "start": 10
+        },
+        {
+          "branch": "alpha",
+          "job": 579,
+          "resource": "dozer-2",
+          "start": 10
+        },
+        {
+          "branch": "alpha",
+          "job": 519,
+          "resource": "heli-2",
+          "start": 11
+        },
+        {
+          "branch": "beta",
+          "job": 300,
+          "resource": "crew-1",
+          "start": 11
+        },
+        {
+          "branch": "alpha",
+          "job": 756,
+          "resource": "dozer-1",
+          "start": 11
+        },
+        {
+          "branch": "beta",
+          "job": 146,
+          "resource": "dozer-1",
+          "start": 11
+        },
+        {
+          "branch": "alpha",
+          "job": 300,
+          "resource": "dozer-2",
+          "start": 11
+        },
+        {
+          "branch": "alpha",
+          "job": 216,
+          "resource": "heli-1",
+          "start": 12
+        },
+        {
+          "branch": "beta",
+          "job": 216,
+          "resource": "heli-1",
+          "start": 12
+        },
+        {
+          "branch": "beta",
+          "job": 212,
+          "resource": "dozer-1",
+          "start": 13
+        },
+        {
+          "branch": "alpha",
+          "job": 455,
+          "resource": "dozer-1",
+          "start": 14
+        },
+        {
+          "branch": "alpha",
+          "job": 212,
+          "resource": "dozer-2",
+          "start": 15
+        },
+        {
+          "branch": "beta",
+          "job": 455,
+          "resource": "dozer-2",
+          "start": 15
+        },
+        {
+          "branch": "beta",
+          "job": 237,
+          "resource": "crew-1",
+          "start": 17
+        },
+        {
+          "branch": "alpha",
+          "job": 237,
+          "resource": "dozer-1",
+          "start": 17
+        },
+        {
+          "branch": "beta",
+          "job": 288,
+          "resource": "heli-1",
+          "start": 19
+        },
+        {
+          "branch": "alpha",
+          "job": 200,
+          "resource": "dozer-1",
+          "start": 20
+        },
+        {
+          "branch": "beta",
+          "job": 200,
+          "resource": "dozer-1",
+          "start": 20
+        }
+      ],
+      "rationale": ""
+    },
+    "optimum": 1195.4000000000005,
+    "optimum_detail": {
+      "constraints": 1882,
+      "mode": "information",
+      "reveal_tick": 2,
+      "seconds": 0.994,
+      "value": 1195.4000000000005,
+      "variables": 1850
+    },
+    "seed": 0,
+    "tier": 6
+  },
+  "t6-s1": {
+    "baselines": {
+      "deadline": {
+        "expected_value": 605.0,
+        "score": 55.37757437070937
+      },
+      "greedy": {
+        "expected_value": 605.0,
+        "score": 55.37757437070937
+      },
+      "hold": {
+        "expected_value": 0.0,
+        "score": 0.0
+      },
+      "search": {
+        "expected_value": 877.5,
+        "score": 80.3203661327231
+      }
+    },
+    "clairvoyant": 1108.5,
+    "instance_sha256": "241a3cde15311a6b884eaad9464dff0526894b8482775e129356f5c7b29d6fea",
+    "open_loop": 1057.5000000000007,
+    "optimal_plan": {
+      "plan": [
+        {
+          "branch": "both",
+          "job": 817,
+          "resource": "crew-1",
+          "start": 0
+        },
+        {
+          "branch": "both",
+          "job": 425,
+          "resource": "engine-1",
+          "start": 0
+        },
+        {
+          "branch": "both",
+          "job": 691,
+          "resource": "heli-2",
+          "start": 0
+        },
+        {
+          "branch": "both",
+          "job": 292,
+          "resource": "engine-2",
+          "start": 0
+        },
+        {
+          "branch": "both",
+          "job": 175,
+          "resource": "dozer-1",
+          "start": 0
+        },
+        {
+          "branch": "both",
+          "job": 448,
+          "resource": "engine-1",
+          "start": 3
+        },
+        {
+          "branch": "both",
+          "job": 200,
+          "resource": "engine-2",
+          "start": 3
+        },
+        {
+          "branch": "both",
+          "job": 835,
+          "resource": "dozer-1",
+          "start": 3
+        },
+        {
+          "branch": "both",
+          "job": 563,
+          "resource": "crew-1",
+          "start": 4
+        },
+        {
+          "branch": "both",
+          "job": 471,
+          "resource": "dozer-1",
+          "start": 5
+        },
+        {
+          "branch": "both",
+          "job": 430,
+          "resource": "engine-2",
+          "start": 6
+        },
+        {
+          "branch": "both",
+          "job": 706,
+          "resource": "crew-1",
+          "start": 8
+        },
+        {
+          "branch": "both",
+          "job": 372,
+          "resource": "engine-1",
+          "start": 8
+        },
+        {
+          "branch": "both",
+          "job": 334,
+          "resource": "heli-2",
+          "start": 9
+        },
+        {
+          "branch": "both",
+          "job": 304,
+          "resource": "dozer-1",
+          "start": 9
+        },
+        {
+          "branch": "beta",
+          "job": 925,
+          "resource": "engine-2",
+          "start": 10
+        },
+        {
+          "branch": "alpha",
+          "job": 245,
+          "resource": "heli-1",
+          "start": 11
+        },
+        {
+          "branch": "alpha",
+          "job": 842,
+          "resource": "crew-1",
+          "start": 11
+        },
+        {
+          "branch": "beta",
+          "job": 416,
+          "resource": "crew-1",
+          "start": 11
+        },
+        {
+          "branch": "beta",
+          "job": 913,
+          "resource": "engine-1",
+          "start": 11
+        },
+        {
+          "branch": "alpha",
+          "job": 262,
+          "resource": "dozer-1",
+          "start": 11
+        },
+        {
+          "branch": "beta",
+          "job": 842,
+          "resource": "dozer-1",
+          "start": 11
+        },
+        {
+          "branch": "alpha",
+          "job": 416,
+          "resource": "engine-2",
+          "start": 12
+        },
+        {
+          "branch": "alpha",
+          "job": 395,
+          "resource": "engine-1",
+          "start": 13
+        },
+        {
+          "branch": "alpha",
+          "job": 768,
+          "resource": "crew-1",
+          "start": 14
+        },
+        {
+          "branch": "beta",
+          "job": 768,
+          "resource": "crew-1",
+          "start": 14
+        },
+        {
+          "branch": "alpha",
+          "job": 241,
+          "resource": "dozer-1",
+          "start": 16
+        },
+        {
+          "branch": "beta",
+          "job": 241,
+          "resource": "dozer-1",
+          "start": 16
+        },
+        {
+          "branch": "alpha",
+          "job": 658,
+          "resource": "engine-1",
+          "start": 17
+        },
+        {
+          "branch": "beta",
+          "job": 658,
+          "resource": "engine-1",
+          "start": 17
+        },
+        {
+          "branch": "alpha",
+          "job": 398,
+          "resource": "engine-2",
+          "start": 18
+        },
+        {
+          "branch": "beta",
+          "job": 398,
+          "resource": "engine-2",
+          "start": 18
+        },
+        {
+          "branch": "alpha",
+          "job": 527,
+          "resource": "dozer-1",
+          "start": 19
+        },
+        {
+          "branch": "beta",
+          "job": 527,
+          "resource": "dozer-1",
+          "start": 19
+        }
+      ],
+      "rationale": ""
+    },
+    "optimum": 1092.5000000000002,
+    "optimum_detail": {
+      "constraints": 1738,
+      "mode": "information",
+      "reveal_tick": 10,
+      "seconds": 0.713,
+      "value": 1092.5000000000002,
+      "variables": 1574
+    },
+    "seed": 1,
+    "tier": 6
+  },
+  "t7-s0": {
+    "baselines": {
+      "deadline": {
+        "expected_value": 805.0,
+        "score": 71.69576059850372
+      },
+      "greedy": {
+        "expected_value": 805.0,
+        "score": 71.69576059850372
+      },
+      "hold": {
+        "expected_value": 0.0,
+        "score": 0.0
+      },
+      "search": {
+        "expected_value": 1027.0,
+        "score": 91.46775917349483
+      }
+    },
+    "clairvoyant": 1127.8,
+    "instance_sha256": "3d1f9a7079d0ca12ab9f2560788947333e4ae203ef4f974ebbe711a8a239f884",
+    "open_loop": 1104.8,
+    "optimal_plan": {
+      "plan": [
+        {
+          "branch": "both",
+          "job": 778,
+          "resource": "dozer-1",
+          "start": 0
+        },
+        {
+          "branch": "both",
+          "job": 994,
+          "resource": "engine-1",
+          "start": 0
+        },
+        {
+          "branch": "both",
+          "job": 780,
+          "resource": "engine-2",
+          "start": 0
+        },
+        {
+          "branch": "both",
+          "job": 146,
+          "resource": "crew-1",
+          "start": 0
+        },
+        {
+          "branch": "both",
+          "job": 392,
+          "resource": "dozer-2",
+          "start": 0
+        },
+        {
+          "branch": "both",
+          "job": 871,
+          "resource": "heli-1",
+          "start": 0
+        },
+        {
+          "branch": "both",
+          "job": 698,
+          "resource": "dozer-2",
+          "start": 1
+        },
+        {
+          "branch": "both",
+          "job": 498,
+          "resource": "heli-1",
+          "start": 2
+        },
+        {
+          "branch": "both",
+          "job": 239,
+          "resource": "heli-2",
+          "start": 3
+        },
+        {
+          "branch": "alpha",
+          "job": 319,
+          "resource": "dozer-1",
+          "start": 4
+        },
+        {
+          "branch": "beta",
+          "job": 564,
+          "resource": "dozer-1",
+          "start": 4
+        },
+        {
+          "branch": "alpha",
+          "job": 596,
+          "resource": "engine-2",
+          "start": 4
+        },
+        {
+          "branch": "beta",
+          "job": 596,
+          "resource": "engine-2",
+          "start": 4
+        },
+        {
+          "branch": "alpha",
+          "job": 341,
+          "resource": "dozer-2",
+          "start": 4
+        },
+        {
+          "branch": "beta",
+          "job": 341,
+          "resource": "dozer-2",
+          "start": 4
+        },
+        {
+          "branch": "alpha",
+          "job": 836,
+          "resource": "heli-2",
+          "start": 5
+        },
+        {
+          "branch": "beta",
+          "job": 836,
+          "resource": "heli-2",
+          "start": 5
+        },
+        {
+          "branch": "alpha",
+          "job": 140,
+          "resource": "engine-1",
+          "start": 6
+        },
+        {
+          "branch": "beta",
+          "job": 587,
+          "resource": "crew-1",
+          "start": 7
+        },
+        {
+          "branch": "beta",
+          "job": 521,
+          "resource": "dozer-2",
+          "start": 7
+        },
+        {
+          "branch": "beta",
+          "job": 367,
+          "resource": "heli-1",
+          "start": 7
+        },
+        {
+          "branch": "alpha",
+          "job": 367,
+          "resource": "heli-2",
+          "start": 7
+        },
+        {
+          "branch": "alpha",
+          "job": 521,
+          "resource": "dozer-1",
+          "start": 8
+        },
+        {
+          "branch": "beta",
+          "job": 894,
+          "resource": "engine-2",
+          "start": 8
+        },
+        {
+          "branch": "alpha",
+          "job": 286,
+          "resource": "dozer-2",
+          "start": 8
+        },
+        {
+          "branch": "alpha",
+          "job": 171,
+          "resource": "heli-1",
+          "start": 8
+        },
+        {
+          "branch": "alpha",
+          "job": 867,
+          "resource": "engine-2",
+          "start": 9
+        },
+        {
+          "branch": "alpha",
+          "job": 564,
+          "resource": "crew-1",
+          "start": 9
+        },
+        {
+          "branch": "alpha",
+          "job": 894,
+          "resource": "engine-1",
+          "start": 10
+        },
+        {
+          "branch": "beta",
+          "job": 867,
+          "resource": "engine-1",
+          "start": 10
+        },
+        {
+          "branch": "beta",
+          "job": 171,
+          "resource": "heli-2",
+          "start": 10
+        },
+        {
+          "branch": "beta",
+          "job": 263,
+          "resource": "dozer-1",
+          "start": 11
+        },
+        {
+          "branch": "alpha",
+          "job": 263,
+          "resource": "dozer-1",
+          "start": 13
+        },
+        {
+          "branch": "beta",
+          "job": 865,
+          "resource": "crew-1",
+          "start": 13
+        },
+        {
+          "branch": "alpha",
+          "job": 485,
+          "resource": "heli-2",
+          "start": 13
+        },
+        {
+          "branch": "beta",
+          "job": 407,
+          "resource": "engine-1",
+          "start": 14
+        },
+        {
+          "branch": "alpha",
+          "job": 865,
+          "resource": "crew-1",
+          "start": 14
+        },
+        {
+          "branch": "alpha",
+          "job": 686,
+          "resource": "dozer-2",
+          "start": 14
+        },
+        {
+          "branch": "beta",
+          "job": 686,
+          "resource": "dozer-2",
+          "start": 14
+        },
+        {
+          "branch": "alpha",
+          "job": 407,
+          "resource": "engine-1",
+          "start": 15
+        },
+        {
+          "branch": "alpha",
+          "job": 749,
+          "resource": "engine-2",
+          "start": 15
+        },
+        {
+          "branch": "beta",
+          "job": 749,
+          "resource": "engine-2",
+          "start": 15
+        },
+        {
+          "branch": "beta",
+          "job": 558,
+          "resource": "crew-1",
+          "start": 17
+        },
+        {
+          "branch": "beta",
+          "job": 993,
+          "resource": "heli-1",
+          "start": 17
+        },
+        {
+          "branch": "alpha",
+          "job": 943,
+          "resource": "crew-1",
+          "start": 18
+        },
+        {
+          "branch": "alpha",
+          "job": 363,
+          "resource": "engine-1",
+          "start": 19
+        },
+        {
+          "branch": "beta",
+          "job": 363,
+          "resource": "engine-1",
+          "start": 19
+        },
+        {
+          "branch": "alpha",
+          "job": 993,
+          "resource": "heli-2",
+          "start": 20
+        },
+        {
+          "branch": "beta",
+          "job": 605,
+          "resource": "heli-2",
+          "start": 20
+        }
+      ],
+      "rationale": ""
+    },
+    "optimum": 1122.8000000000002,
+    "optimum_detail": {
+      "constraints": 2506,
+      "mode": "information",
+      "reveal_tick": 4,
+      "seconds": 4.477,
+      "value": 1122.8000000000002,
+      "variables": 2434
+    },
+    "seed": 0,
+    "tier": 7
+  },
+  "t7-s1": {
+    "baselines": {
+      "deadline": {
+        "expected_value": 936.9,
+        "score": 62.539216340698154
+      },
+      "greedy": {
+        "expected_value": 936.9,
+        "score": 62.539216340698154
+      },
+      "hold": {
+        "expected_value": 0.0,
+        "score": 0.0
+      },
+      "search": {
+        "expected_value": 1323.8,
+        "score": 88.36526266604356
+      }
+    },
+    "clairvoyant": 1502.1,
+    "instance_sha256": "dc738902c93cb50a7943d0039d71567c5eb84a85820e623511ee945a399562a4",
+    "open_loop": 1460.3999999999999,
+    "optimal_plan": {
+      "plan": [
+        {
+          "branch": "both",
+          "job": 892,
+          "resource": "dozer-1",
+          "start": 0
+        },
+        {
+          "branch": "both",
+          "job": 838,
+          "resource": "engine-1",
+          "start": 0
+        },
+        {
+          "branch": "both",
+          "job": 386,
+          "resource": "heli-1",
+          "start": 0
+        },
+        {
+          "branch": "both",
+          "job": 504,
+          "resource": "crew-1",
+          "start": 0
+        },
+        {
+          "branch": "beta",
+          "job": 930,
+          "resource": "heli-1",
+          "start": 1
+        },
+        {
+          "branch": "alpha",
+          "job": 922,
+          "resource": "dozer-2",
+          "start": 1
+        },
+        {
+          "branch": "alpha",
+          "job": 308,
+          "resource": "engine-2",
+          "start": 1
+        },
+        {
+          "branch": "beta",
+          "job": 544,
+          "resource": "engine-2",
+          "start": 1
+        },
+        {
+          "branch": "beta",
+          "job": 922,
+          "resource": "dozer-2",
+          "start": 2
+        },
+        {
+          "branch": "alpha",
+          "job": 792,
+          "resource": "heli-2",
+          "start": 2
+        },
+        {
+          "branch": "alpha",
+          "job": 101,
+          "resource": "engine-1",
+          "start": 3
+        },
+        {
+          "branch": "beta",
+          "job": 101,
+          "resource": "engine-1",
+          "start": 3
+        },
+        {
+          "branch": "alpha",
+          "job": 284,
+          "resource": "crew-1",
+          "start": 3
+        },
+        {
+          "branch": "beta",
+          "job": 284,
+          "resource": "crew-1",
+          "start": 3
+        },
+        {
+          "branch": "alpha",
+          "job": 457,
+          "resource": "engine-2",
+          "start": 4
+        },
+        {
+          "branch": "beta",
+          "job": 457,
+          "resource": "engine-2",
+          "start": 4
+        },
+        {
+          "branch": "alpha",
+          "job": 609,
+          "resource": "dozer-2",
+          "start": 5
+        },
+        {
+          "branch": "alpha",
+          "job": 311,
+          "resource": "heli-2",
+          "start": 5
+        },
+        {
+          "branch": "alpha",
+          "job": 186,
+          "resource": "dozer-1",
+          "start": 6
+        },
+        {
+          "branch": "beta",
+          "job": 186,
+          "resource": "dozer-1",
+          "start": 6
+        },
+        {
+          "branch": "alpha",
+          "job": 335,
+          "resource": "heli-1",
+          "start": 6
+        },
+        {
+          "branch": "beta",
+          "job": 609,
+          "resource": "dozer-2",
+          "start": 6
+        },
+        {
+          "branch": "beta",
+          "job": 566,
+          "resource": "engine-1",
+          "start": 7
+        },
+        {
+          "branch": "alpha",
+          "job": 744,
+          "resource": "engine-2",
+          "start": 7
+        },
+        {
+          "branch": "alpha",
+          "job": 840,
+          "resource": "engine-1",
+          "start": 8
+        },
+        {
+          "branch": "alpha",
+          "job": 214,
+          "resource": "crew-1",
+          "start": 8
+        },
+        {
+          "branch": "beta",
+          "job": 214,
+          "resource": "crew-1",
+          "start": 8
+        },
+        {
+          "branch": "beta",
+          "job": 840,
+          "resource": "engine-2",
+          "start": 8
+        },
+        {
+          "branch": "beta",
+          "job": 572,
+          "resource": "heli-1",
+          "start": 10
+        },
+        {
+          "branch": "alpha",
+          "job": 409,
+          "resource": "heli-2",
+          "start": 10
+        },
+        {
+          "branch": "beta",
+          "job": 409,
+          "resource": "heli-2",
+          "start": 10
+        },
+        {
+          "branch": "alpha",
+          "job": 803,
+          "resource": "dozer-1",
+          "start": 11
+        },
+        {
+          "branch": "beta",
+          "job": 803,
+          "resource": "dozer-1",
+          "start": 11
+        },
+        {
+          "branch": "alpha",
+          "job": 572,
+          "resource": "heli-1",
+          "start": 11
+        },
+        {
+          "branch": "alpha",
+          "job": 647,
+          "resource": "engine-2",
+          "start": 11
+        },
+        {
+          "branch": "beta",
+          "job": 647,
+          "resource": "engine-2",
+          "start": 11
+        },
+        {
+          "branch": "alpha",
+          "job": 889,
+          "resource": "engine-1",
+          "start": 12
+        },
+        {
+          "branch": "beta",
+          "job": 889,
+          "resource": "engine-1",
+          "start": 12
+        },
+        {
+          "branch": "beta",
+          "job": 258,
+          "resource": "heli-1",
+          "start": 12
+        },
+        {
+          "branch": "alpha",
+          "job": 179,
+          "resource": "heli-1",
+          "start": 14
+        },
+        {
+          "branch": "beta",
+          "job": 179,
+          "resource": "heli-1",
+          "start": 14
+        },
+        {
+          "branch": "beta",
+          "job": 427,
+          "resource": "heli-2",
+          "start": 14
+        },
+        {
+          "branch": "beta",
+          "job": 226,
+          "resource": "dozer-1",
+          "start": 16
+        },
+        {
+          "branch": "beta",
+          "job": 613,
+          "resource": "heli-1",
+          "start": 17
+        },
+        {
+          "branch": "alpha",
+          "job": 499,
+          "resource": "dozer-1",
+          "start": 18
+        },
+        {
+          "branch": "alpha",
+          "job": 226,
+          "resource": "crew-1",
+          "start": 18
+        },
+        {
+          "branch": "beta",
+          "job": 499,
+          "resource": "dozer-2",
+          "start": 18
+        },
+        {
+          "branch": "alpha",
+          "job": 821,
+          "resource": "engine-2",
+          "start": 18
+        },
+        {
+          "branch": "alpha",
+          "job": 269,
+          "resource": "engine-2",
+          "start": 21
+        },
+        {
+          "branch": "beta",
+          "job": 269,
+          "resource": "engine-2",
+          "start": 21
+        },
+        {
+          "branch": "alpha",
+          "job": 853,
+          "resource": "heli-2",
+          "start": 22
+        }
+      ],
+      "rationale": ""
+    },
+    "optimum": 1498.1000000000015,
+    "optimum_detail": {
+      "constraints": 2600,
+      "mode": "information",
+      "reveal_tick": 1,
+      "seconds": 11.443,
+      "value": 1498.1000000000015,
+      "variables": 2648
+    },
+    "seed": 1,
+    "tier": 7
+  },
+  "t8-s0": {
+    "baselines": {
+      "deadline": {
+        "expected_value": 976.0,
+        "score": 53.18801089918256
+      },
+      "greedy": {
+        "expected_value": 963.0,
+        "score": 52.479564032697546
+      },
+      "hold": {
+        "expected_value": 0.0,
+        "score": 0.0
+      },
+      "search": {
+        "expected_value": 1603.0,
+        "score": 87.35694822888283
+      }
+    },
+    "clairvoyant": 1838.000000002569,
+    "instance_sha256": "933a694f9a95686b870da79737653e0e855605d6d92ee838f0a97ff7a83ffa8c",
+    "open_loop": 1807.5000000000025,
+    "optimal_plan": {
+      "plan": [
+        {
+          "branch": "both",
+          "job": 611,
+          "resource": "engine-1",
+          "start": 0
+        },
+        {
+          "branch": "both",
+          "job": 876,
+          "resource": "engine-2",
+          "start": 0
+        },
+        {
+          "branch": "both",
+          "job": 978,
+          "resource": "crew-1",
+          "start": 0
+        },
+        {
+          "branch": "both",
+          "job": 206,
+          "resource": "dozer-2",
+          "start": 0
+        },
+        {
+          "branch": "both",
+          "job": 937,
+          "resource": "dozer-3",
+          "start": 0
+        },
+        {
+          "branch": "both",
+          "job": 823,
+          "resource": "heli-1",
+          "start": 0
+        },
+        {
+          "branch": "both",
+          "job": 573,
+          "resource": "heli-2",
+          "start": 0
+        },
+        {
+          "branch": "beta",
+          "job": 800,
+          "resource": "dozer-1",
+          "start": 1
+        },
+        {
+          "branch": "alpha",
+          "job": 728,
+          "resource": "heli-2",
+          "start": 1
+        },
+        {
+          "branch": "beta",
+          "job": 728,
+          "resource": "heli-2",
+          "start": 1
+        },
+        {
+          "branch": "alpha",
+          "job": 844,
+          "resource": "dozer-1",
+          "start": 2
+        },
+        {
+          "branch": "alpha",
+          "job": 988,
+          "resource": "dozer-2",
+          "start": 2
+        },
+        {
+          "branch": "beta",
+          "job": 988,
+          "resource": "dozer-2",
+          "start": 2
+        },
+        {
+          "branch": "beta",
+          "job": 732,
+          "resource": "engine-2",
+          "start": 3
+        },
+        {
+          "branch": "beta",
+          "job": 402,
+          "resource": "dozer-1",
+          "start": 3
+        },
+        {
+          "branch": "alpha",
+          "job": 247,
+          "resource": "crew-1",
+          "start": 3
+        },
+        {
+          "branch": "beta",
+          "job": 247,
+          "resource": "crew-1",
+          "start": 3
+        },
+        {
+          "branch": "alpha",
+          "job": 967,
+          "resource": "engine-1",
+          "start": 4
+        },
+        {
+          "branch": "beta",
+          "job": 844,
+          "resource": "dozer-2",
+          "start": 4
+        },
+        {
+          "branch": "beta",
+          "job": 368,
+          "resource": "engine-1",
+          "start": 5
+        },
+        {
+          "branch": "alpha",
+          "job": 368,
+          "resource": "engine-2",
+          "start": 5
+        },
+        {
+          "branch": "alpha",
+          "job": 398,
+          "resource": "dozer-1",
+          "start": 5
+        },
+        {
+          "branch": "beta",
+          "job": 398,
+          "resource": "dozer-1",
+          "start": 5
+        },
+        {
+          "branch": "alpha",
+          "job": 422,
+          "resource": "dozer-3",
+          "start": 5
+        },
+        {
+          "branch": "alpha",
+          "job": 924,
+          "resource": "crew-1",
+          "start": 6
+        },
+        {
+          "branch": "beta",
+          "job": 946,
+          "resource": "crew-1",
+          "start": 6
+        },
+        {
+          "branch": "alpha",
+          "job": 210,
+          "resource": "dozer-2",
+          "start": 6
+        },
+        {
+          "branch": "beta",
+          "job": 415,
+          "resource": "dozer-2",
+          "start": 6
+        },
+        {
+          "branch": "alpha",
+          "job": 167,
+          "resource": "engine-1",
+          "start": 7
+        },
+        {
+          "branch": "beta",
+          "job": 924,
+          "resource": "engine-2",
+          "start": 7
+        },
+        {
+          "branch": "beta",
+          "job": 868,
+          "resource": "dozer-3",
+          "start": 7
+        },
+        {
+          "branch": "beta",
+          "job": 167,
+          "resource": "engine-1",
+          "start": 8
+        },
+        {
+          "branch": "alpha",
+          "job": 299,
+          "resource": "engine-2",
+          "start": 8
+        },
+        {
+          "branch": "beta",
+          "job": 243,
+          "resource": "dozer-2",
+          "start": 8
+        },
+        {
+          "branch": "alpha",
+          "job": 659,
+          "resource": "heli-1",
+          "start": 8
+        },
+        {
+          "branch": "alpha",
+          "job": 426,
+          "resource": "dozer-1",
+          "start": 9
+        },
+        {
+          "branch": "beta",
+          "job": 422,
+          "resource": "dozer-1",
+          "start": 9
+        },
+        {
+          "branch": "beta",
+          "job": 888,
+          "resource": "crew-1",
+          "start": 9
+        },
+        {
+          "branch": "alpha",
+          "job": 615,
+          "resource": "dozer-2",
+          "start": 9
+        },
+        {
+          "branch": "alpha",
+          "job": 243,
+          "resource": "dozer-3",
+          "start": 9
+        },
+        {
+          "branch": "beta",
+          "job": 659,
+          "resource": "heli-1",
+          "start": 9
+        },
+        {
+          "branch": "beta",
+          "job": 515,
+          "resource": "engine-2",
+          "start": 10
+        },
+        {
+          "branch": "beta",
+          "job": 287,
+          "resource": "dozer-2",
+          "start": 10
+        },
+        {
+          "branch": "alpha",
+          "job": 427,
+          "resource": "dozer-1",
+          "start": 11
+        },
+        {
+          "branch": "alpha",
+          "job": 946,
+          "resource": "crew-1",
+          "start": 11
+        },
+        {
+          "branch": "alpha",
+          "job": 515,
+          "resource": "engine-1",
+          "start": 12
+        },
+        {
+          "branch": "beta",
+          "job": 192,
+          "resource": "engine-1",
+          "start": 12
+        },
+        {
+          "branch": "beta",
+          "job": 427,
+          "resource": "dozer-2",
+          "start": 12
+        },
+        {
+          "branch": "beta",
+          "job": 737,
+          "resource": "engine-2",
+          "start": 13
+        },
+        {
+          "branch": "beta",
+          "job": 426,
+          "resource": "dozer-1",
+          "start": 13
+        },
+        {
+          "branch": "alpha",
+          "job": 868,
+          "resource": "dozer-2",
+          "start": 13
+        },
+        {
+          "branch": "alpha",
+          "job": 581,
+          "resource": "heli-1",
+          "start": 13
+        },
+        {
+          "branch": "beta",
+          "job": 581,
+          "resource": "heli-2",
+          "start": 13
+        },
+        {
+          "branch": "beta",
+          "job": 615,
+          "resource": "dozer-3",
+          "start": 14
+        },
+        {
+          "branch": "alpha",
+          "job": 435,
+          "resource": "engine-1",
+          "start": 15
+        },
+        {
+          "branch": "alpha",
+          "job": 302,
+          "resource": "dozer-1",
+          "start": 15
+        },
+        {
+          "branch": "beta",
+          "job": 302,
+          "resource": "crew-1",
+          "start": 15
+        },
+        {
+          "branch": "alpha",
+          "job": 842,
+          "resource": "heli-1",
+          "start": 15
+        },
+        {
+          "branch": "beta",
+          "job": 424,
+          "resource": "heli-2",
+          "start": 15
+        },
+        {
+          "branch": "alpha",
+          "job": 102,
+          "resource": "engine-2",
+          "start": 16
+        },
+        {
+          "branch": "beta",
+          "job": 435,
+          "resource": "engine-2",
+          "start": 16
+        },
+        {
+          "branch": "beta",
+          "job": 731,
+          "resource": "heli-1",
+          "start": 16
+        },
+        {
+          "branch": "beta",
+          "job": 635,
+          "resource": "dozer-3",
+          "start": 17
+        },
+        {
+          "branch": "alpha",
+          "job": 731,
+          "resource": "heli-1",
+          "start": 17
+        },
+        {
+          "branch": "beta",
+          "job": 859,
+          "resource": "dozer-2",
+          "start": 18
+        },
+        {
+          "branch": "beta",
+          "job": 462,
+          "resource": "heli-1",
+          "start": 19
+        },
+        {
+          "branch": "alpha",
+          "job": 136,
+          "resource": "heli-1",
+          "start": 20
+        },
+        {
+          "branch": "beta",
+          "job": 136,
+          "resource": "heli-1",
+          "start": 21
+        },
+        {
+          "branch": "alpha",
+          "job": 661,
+          "resource": "engine-1",
+          "start": 22
+        },
+        {
+          "branch": "alpha",
+          "job": 463,
+          "resource": "crew-1",
+          "start": 22
+        },
+        {
+          "branch": "beta",
+          "job": 661,
+          "resource": "crew-1",
+          "start": 22
+        },
+        {
+          "branch": "beta",
+          "job": 463,
+          "resource": "engine-2",
+          "start": 23
+        },
+        {
+          "branch": "beta",
+          "job": 129,
+          "resource": "heli-1",
+          "start": 23
+        },
+        {
+          "branch": "alpha",
+          "job": 907,
+          "resource": "heli-1",
+          "start": 24
+        }
+      ],
+      "rationale": ""
+    },
+    "optimum": 1835.0,
+    "optimum_detail": {
+      "constraints": 3182,
+      "mode": "information",
+      "reveal_tick": 1,
+      "seconds": 38.366,
+      "value": 1835.0,
+      "variables": 3436
+    },
+    "seed": 0,
+    "tier": 8
+  },
+  "t8-s1": {
+    "baselines": {
+      "deadline": {
+        "expected_value": 1119.8,
+        "score": 74.76298571237827
+      },
+      "greedy": {
+        "expected_value": 1093.8,
+        "score": 73.02710642275349
+      },
+      "hold": {
+        "expected_value": 0.0,
+        "score": 0.0
+      },
+      "search": {
+        "expected_value": 1353.6,
+        "score": 90.37254640138885
+      }
+    },
+    "clairvoyant": 1518.200000000052,
+    "instance_sha256": "3aec41da171597de99a38e0cdbd6ed2a98e03d042be8006c5587089cac33b9c1",
+    "open_loop": 1457.6,
+    "optimal_plan": {
+      "plan": [
+        {
+          "branch": "both",
+          "job": 402,
+          "resource": "heli-1",
+          "start": 0
+        },
+        {
+          "branch": "both",
+          "job": 449,
+          "resource": "dozer-1",
+          "start": 0
+        },
+        {
+          "branch": "both",
+          "job": 246,
+          "resource": "crew-1",
+          "start": 0
+        },
+        {
+          "branch": "both",
+          "job": 870,
+          "resource": "dozer-2",
+          "start": 0
+        },
+        {
+          "branch": "beta",
+          "job": 471,
+          "resource": "engine-2",
+          "start": 2
+        },
+        {
+          "branch": "alpha",
+          "job": 675,
+          "resource": "dozer-2",
+          "start": 2
+        },
+        {
+          "branch": "beta",
+          "job": 675,
+          "resource": "dozer-2",
+          "start": 2
+        },
+        {
+          "branch": "alpha",
+          "job": 471,
+          "resource": "engine-1",
+          "start": 3
+        },
+        {
+          "branch": "alpha",
+          "job": 869,
+          "resource": "dozer-1",
+          "start": 4
+        },
+        {
+          "branch": "beta",
+          "job": 869,
+          "resource": "dozer-1",
+          "start": 4
+        },
+        {
+          "branch": "beta",
+          "job": 573,
+          "resource": "crew-1",
+          "start": 4
+        },
+        {
+          "branch": "alpha",
+          "job": 265,
+          "resource": "crew-1",
+          "start": 5
+        },
+        {
+          "branch": "alpha",
+          "job": 922,
+          "resource": "engine-1",
+          "start": 6
+        },
+        {
+          "branch": "beta",
+          "job": 265,
+          "resource": "engine-1",
+          "start": 6
+        },
+        {
+          "branch": "alpha",
+          "job": 406,
+          "resource": "engine-2",
+          "start": 6
+        },
+        {
+          "branch": "beta",
+          "job": 922,
+          "resource": "engine-2",
+          "start": 6
+        },
+        {
+          "branch": "alpha",
+          "job": 700,
+          "resource": "dozer-2",
+          "start": 6
+        },
+        {
+          "branch": "beta",
+          "job": 405,
+          "resource": "dozer-2",
+          "start": 6
+        },
+        {
+          "branch": "beta",
+          "job": 617,
+          "resource": "heli-2",
+          "start": 6
+        },
+        {
+          "branch": "alpha",
+          "job": 611,
+          "resource": "heli-1",
+          "start": 8
+        },
+        {
+          "branch": "alpha",
+          "job": 271,
+          "resource": "dozer-1",
+          "start": 8
+        },
+        {
+          "branch": "beta",
+          "job": 271,
+          "resource": "dozer-1",
+          "start": 8
+        },
+        {
+          "branch": "beta",
+          "job": 400,
+          "resource": "crew-1",
+          "start": 8
+        },
+        {
+          "branch": "beta",
+          "job": 681,
+          "resource": "heli-3",
+          "start": 8
+        },
+        {
+          "branch": "alpha",
+          "job": 366,
+          "resource": "engine-1",
+          "start": 9
+        },
+        {
+          "branch": "alpha",
+          "job": 530,
+          "resource": "engine-2",
+          "start": 9
+        },
+        {
+          "branch": "beta",
+          "job": 530,
+          "resource": "engine-2",
+          "start": 9
+        },
+        {
+          "branch": "alpha",
+          "job": 681,
+          "resource": "heli-2",
+          "start": 9
+        },
+        {
+          "branch": "beta",
+          "job": 611,
+          "resource": "heli-1",
+          "start": 10
+        },
+        {
+          "branch": "beta",
+          "job": 261,
+          "resource": "engine-1",
+          "start": 10
+        },
+        {
+          "branch": "alpha",
+          "job": 702,
+          "resource": "dozer-2",
+          "start": 10
+        },
+        {
+          "branch": "beta",
+          "job": 367,
+          "resource": "dozer-2",
+          "start": 10
+        },
+        {
+          "branch": "beta",
+          "job": 742,
+          "resource": "heli-2",
+          "start": 10
+        },
+        {
+          "branch": "beta",
+          "job": 292,
+          "resource": "heli-3",
+          "start": 10
+        },
+        {
+          "branch": "alpha",
+          "job": 508,
+          "resource": "dozer-1",
+          "start": 12
+        },
+        {
+          "branch": "beta",
+          "job": 306,
+          "resource": "dozer-1",
+          "start": 12
+        },
+        {
+          "branch": "alpha",
+          "job": 753,
+          "resource": "crew-1",
+          "start": 12
+        },
+        {
+          "branch": "beta",
+          "job": 753,
+          "resource": "crew-1",
+          "start": 12
+        },
+        {
+          "branch": "alpha",
+          "job": 427,
+          "resource": "engine-1",
+          "start": 12
+        },
+        {
+          "branch": "beta",
+          "job": 427,
+          "resource": "engine-2",
+          "start": 12
+        },
+        {
+          "branch": "beta",
+          "job": 508,
+          "resource": "dozer-2",
+          "start": 12
+        },
+        {
+          "branch": "beta",
+          "job": 598,
+          "resource": "engine-1",
+          "start": 13
+        },
+        {
+          "branch": "alpha",
+          "job": 655,
+          "resource": "engine-2",
+          "start": 13
+        },
+        {
+          "branch": "alpha",
+          "job": 292,
+          "resource": "heli-1",
+          "start": 14
+        },
+        {
+          "branch": "alpha",
+          "job": 367,
+          "resource": "dozer-2",
+          "start": 14
+        },
+        {
+          "branch": "beta",
+          "job": 749,
+          "resource": "dozer-1",
+          "start": 15
+        },
+        {
+          "branch": "alpha",
+          "job": 925,
+          "resource": "engine-1",
+          "start": 15
+        },
+        {
+          "branch": "beta",
+          "job": 601,
+          "resource": "engine-2",
+          "start": 15
+        },
+        {
+          "branch": "alpha",
+          "job": 601,
+          "resource": "engine-2",
+          "start": 16
+        },
+        {
+          "branch": "alpha",
+          "job": 170,
+          "resource": "dozer-2",
+          "start": 16
+        },
+        {
+          "branch": "beta",
+          "job": 170,
+          "resource": "dozer-2",
+          "start": 16
+        },
+        {
+          "branch": "beta",
+          "job": 581,
+          "resource": "heli-3",
+          "start": 17
+        },
+        {
+          "branch": "alpha",
+          "job": 236,
+          "resource": "crew-1",
+          "start": 18
+        },
+        {
+          "branch": "alpha",
+          "job": 541,
+          "resource": "heli-2",
+          "start": 18
+        },
+        {
+          "branch": "alpha",
+          "job": 472,
+          "resource": "dozer-1",
+          "start": 19
+        },
+        {
+          "branch": "beta",
+          "job": 472,
+          "resource": "dozer-1",
+          "start": 19
+        },
+        {
+          "branch": "beta",
+          "job": 236,
+          "resource": "engine-1",
+          "start": 19
+        },
+        {
+          "branch": "alpha",
+          "job": 491,
+          "resource": "engine-1",
+          "start": 20
+        },
+        {
+          "branch": "beta",
+          "job": 541,
+          "resource": "heli-3",
+          "start": 20
+        },
+        {
+          "branch": "alpha",
+          "job": 130,
+          "resource": "dozer-1",
+          "start": 21
+        },
+        {
+          "branch": "beta",
+          "job": 711,
+          "resource": "dozer-1",
+          "start": 21
+        },
+        {
+          "branch": "alpha",
+          "job": 329,
+          "resource": "crew-1",
+          "start": 21
+        },
+        {
+          "branch": "beta",
+          "job": 329,
+          "resource": "crew-1",
+          "start": 21
+        },
+        {
+          "branch": "alpha",
+          "job": 711,
+          "resource": "dozer-2",
+          "start": 21
+        },
+        {
+          "branch": "beta",
+          "job": 130,
+          "resource": "dozer-2",
+          "start": 21
+        },
+        {
+          "branch": "beta",
+          "job": 491,
+          "resource": "engine-1",
+          "start": 22
+        },
+        {
+          "branch": "alpha",
+          "job": 174,
+          "resource": "engine-1",
+          "start": 23
+        }
+      ],
+      "rationale": ""
+    },
+    "optimum": 1497.7999999999977,
+    "optimum_detail": {
+      "constraints": 3734,
+      "mode": "information",
+      "reveal_tick": 2,
+      "seconds": 8.682,
+      "value": 1497.7999999999977,
+      "variables": 3616
+    },
+    "seed": 1,
+    "tier": 8
+  }
+}

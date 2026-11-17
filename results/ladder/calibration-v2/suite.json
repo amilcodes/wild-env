@@ -1,0 +1,58 @@
+{
+  "instances": {
+    "t5-s0": {
+      "seed": 0,
+      "sha256": "8dc51420693612df980f1cce43ddcdcc3c325825d5f4bd7043da87a61d115635",
+      "tier": 5
+    },
+    "t5-s1": {
+      "seed": 1,
+      "sha256": "23c51d8b2d7efd6be683a82ec3104eb9062da630425dc6de01469330b59f69b0",
+      "tier": 5
+    },
+    "t6-s0": {
+      "seed": 0,
+      "sha256": "b980798f56da6cbe3ce0b9c670c745d5762362040e4cb1d465d718d17ca0ecab",
+      "tier": 6
+    },
+    "t6-s1": {
+      "seed": 1,
+      "sha256": "241a3cde15311a6b884eaad9464dff0526894b8482775e129356f5c7b29d6fea",
+      "tier": 6
+    },
+    "t7-s0": {
+      "seed": 0,
+      "sha256": "3d1f9a7079d0ca12ab9f2560788947333e4ae203ef4f974ebbe711a8a239f884",
+      "tier": 7
+    },
+    "t7-s1": {
+      "seed": 1,
+      "sha256": "dc738902c93cb50a7943d0039d71567c5eb84a85820e623511ee945a399562a4",
+      "tier": 7
+    },
+    "t8-s0": {
+      "seed": 0,
+      "sha256": "933a694f9a95686b870da79737653e0e855605d6d92ee838f0a97ff7a83ffa8c",
+      "tier": 8
+    },
+    "t8-s1": {
+      "seed": 1,
+      "sha256": "3aec41da171597de99a38e0cdbd6ed2a98e03d042be8006c5587089cac33b9c1",
+      "tier": 8
+    }
+  },
+  "protocol": "wildfire-ops-v3",
+  "suite": {
+    "repeats": 1,
+    "schema_version": 3,
+    "seed_offset": 0,
+    "split": "development",
+    "suite_id": "ladder-calibration-v2",
+    "tiers": {
+      "5": 2,
+      "6": 2,
+      "7": 2,
+      "8": 2
+    }
+  }
+}

@@ -12,3 +12,7 @@
   dashboards, HTML reports, or presentation interfaces unless explicitly requested.
 - Preserve the separation of public agent observations and evaluator-only state.
   Do not label fixture/baseline output as live frontier-model results.
+- Exception: the ops ladder (`aeolus-ladder`, `src/aeolus/ladder`) runs on the logged-in
+  machine. Its exact reference needs seconds per instance and inference goes through the
+  local `claude`/`codex` CLIs. Keep `nice` and single-threaded BLAS for long runs.
+

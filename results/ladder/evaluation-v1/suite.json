@@ -1,0 +1,197 @@
+{
+  "generator_version": 3,
+  "instances": {
+    "t2-s100000": {
+      "seed": 100000,
+      "sha256": "61a530e088b32da2bdf7683f473fd677e6ce36820953525a3066eb10c9e97bc6",
+      "tier": 2
+    },
+    "t2-s100001": {
+      "seed": 100001,
+      "sha256": "c3a280c1c9f5ba93ae5fbb9134c760861b7fce4e31f23762ffe1246aa2da2814",
+      "tier": 2
+    },
+    "t2-s100002": {
+      "seed": 100002,
+      "sha256": "7c9986f840aa5b41bf5895c35bd494964750fbe3106b0771f0bbb119515df594",
+      "tier": 2
+    },
+    "t3-s100000": {
+      "seed": 100000,
+      "sha256": "ddc773402ff2fc63a4310ff1e4b38052a6099f10983a1f9207868de9a36b8090",
+      "tier": 3
+    },
+    "t3-s100001": {
+      "seed": 100001,
+      "sha256": "2e6650f1ce5d83781e9dafc7a165c45e4938ba858148cc492f66eca729e5cfe4",
+      "tier": 3
+    },
+    "t3-s100002": {
+      "seed": 100002,
+      "sha256": "8e376d96f6bc023f1dc5e55a5595d2b561af788563a558137545664f1cc70c5e",
+      "tier": 3
+    },
+    "t3-s100003": {
+      "seed": 100003,
+      "sha256": "d46d0f875850cf8e018d9683fdaac88d441eca8a7e5b5950b7ef9a1f4f40388e",
+      "tier": 3
+    },
+    "t3-s100004": {
+      "seed": 100004,
+      "sha256": "090b8c1eecd7687ef9df77a5e94f2427fe19044892a4a896bcd4d1eca69aeb89",
+      "tier": 3
+    },
+    "t4-s100000": {
+      "seed": 100000,
+      "sha256": "7c76e96495b2023d2b32d5cb687d8e03732fcffba727968026ee10e0d6d13b3f",
+      "tier": 4
+    },
+    "t4-s100001": {
+      "seed": 100001,
+      "sha256": "b1f97053896e1e58d913eb37f86b354ed935cbe8b4905ee021eacbf9175d113f",
+      "tier": 4
+    },
+    "t4-s100002": {
+      "seed": 100002,
+      "sha256": "0203644c1a7542d144baeb21f562a15ad8bec1b951f5f7412d7b8265bbeabe20",
+      "tier": 4
+    },
+    "t4-s100003": {
+      "seed": 100003,
+      "sha256": "60bb41759be0448d98d081f702c9187f56e91adb779d87979fe64dd508c6d4aa",
+      "tier": 4
+    },
+    "t4-s100004": {
+      "seed": 100004,
+      "sha256": "697af54e15a941962294a9c3a22f6933ddd7d52675e8d9599ce0ff77b649913b",
+      "tier": 4
+    },
+    "t5-s100000": {
+      "seed": 100000,
+      "sha256": "72491ef82bb02195adfd7e2fca653afb8939604c9fa8bbb630c9b8a825bee69b",
+      "tier": 5
+    },
+    "t5-s100001": {
+      "seed": 100001,
+      "sha256": "f4483d5675572ecb97813ed5cd37767357c8ff7e8488ce12cc0e9a998b65ef95",
+      "tier": 5
+    },
+    "t5-s100002": {
+      "seed": 100002,
+      "sha256": "2a6db76caa1c62d8a7a5bf0fea7ae876d24bd6f085311cac4cb9617a8c5d6175",
+      "tier": 5
+    },
+    "t5-s100003": {
+      "seed": 100003,
+      "sha256": "124d36dd40357b1a42d4ad6ec86b2bcd0a2b77f8271befeb337ff3787056a93e",
+      "tier": 5
+    },
+    "t5-s100004": {
+      "seed": 100004,
+      "sha256": "556ea63b3e1db69f8c26f84f0bbc5931824545f120d759bc929d5bcbfaaec6f9",
+      "tier": 5
+    },
+    "t6-s100000": {
+      "seed": 100000,
+      "sha256": "c30dc6e84adac3619735f280528da92a7a67cbbdabe9da8e6867c1db1a30a375",
+      "tier": 6
+    },
+    "t6-s100001": {
+      "seed": 100001,
+      "sha256": "61ee925df1918105b71b9d0c7807dd01e6ace194c011f9711c07b36860539bcd",
+      "tier": 6
+    },
+    "t6-s100002": {
+      "seed": 100002,
+      "sha256": "6a324112ac9e22575acf30751181716ef5a76530d0a73ac0ee00dc7643f85e9f",
+      "tier": 6
+    },
+    "t6-s100003": {
+      "seed": 100003,
+      "sha256": "7d02292401ed7175cd476fc3caf38c29d5672d4d61f3a85bdf06827ab4e88710",
+      "tier": 6
+    },
+    "t6-s100004": {
+      "seed": 100004,
+      "sha256": "7b9b7a4bb601839d7acb93994fffee7912ad67484bbc20155f5173b1544e985f",
+      "tier": 6
+    },
+    "t6-s100005": {
+      "seed": 100005,
+      "sha256": "a968e6629416a580af351c394ed7116d8e613457bf749b295036a29449f42d63",
+      "tier": 6
+    },
+    "t7-s100000": {
+      "seed": 100000,
+      "sha256": "8cef8edd066270604e09f85b80f4428916b29713600cd4bb0351912dbdad7f6b",
+      "tier": 7
+    },
+    "t7-s100001": {
+      "seed": 100001,
+      "sha256": "40a05b168af0e0841f26e569c2fc0ed1a7c08ecf425f24f0a111c2346acae30a",
+      "tier": 7
+    },
+    "t7-s100002": {
+      "seed": 100002,
+      "sha256": "95fc8e13cc389d532da408e69eaf18733ba560e31fb2a896df1136b14801d9a8",
+      "tier": 7
+    },
+    "t7-s100003": {
+      "seed": 100003,
+      "sha256": "f0d39a38f73e3dcfee44f4c32bbfb662befc379eb4a941d28c50243bd018f0ca",
+      "tier": 7
+    },
+    "t7-s100004": {
+      "seed": 100004,
+      "sha256": "49bd887a85f11160070a6937d39e5fc39c408c0492cc36d7ba781a38d881613f",
+      "tier": 7
+    },
+    "t7-s100005": {
+      "seed": 100005,
+      "sha256": "69a92dbbe97e325f63f1f6c93f7aed5f3c9feb7a00ed4044ade30dcabbdaf299",
+      "tier": 7
+    },
+    "t8-s100000": {
+      "seed": 100000,
+      "sha256": "daf793baced65b0c13aee158650720d1f484f3981d3b04bd041f162e23525c21",
+      "tier": 8
+    },
+    "t8-s100001": {
+      "seed": 100001,
+      "sha256": "cc1ac5dd2e9b326eaba04371f1520da6b81f70c8b7f0d9272dfce8b5135c9284",
+      "tier": 8
+    },
+    "t8-s100002": {
+      "seed": 100002,
+      "sha256": "a3da7132c54552685199c78ed966554caf70aed93d38d0f16080d59fa346b5ab",
+      "tier": 8
+    },
+    "t8-s100003": {
+      "seed": 100003,
+      "sha256": "7bcf3c2a8b58812cc892e842bc8c5699ccd4c6e68e03c5725488991caee7aa06",
+      "tier": 8
+    }
+  },
+  "protocol": "wildfire-ops-v3",
+  "provenance": {
+    "git_commit": "48fce8771a5f6d860f1da51704068cb2285a52df",
+    "git_dirty": true,
+    "ladder_source_sha256": "c02c742627efd16a2e82feee768264bc65e3cd61f5cc9febf609f3d9c1c99ff0"
+  },
+  "suite": {
+    "repeats": 1,
+    "schema_version": 3,
+    "seed_offset": 100000,
+    "split": "evaluation",
+    "suite_id": "ladder-evaluation-v1",
+    "tiers": {
+      "2": 3,
+      "3": 5,
+      "4": 5,
+      "5": 5,
+      "6": 6,
+      "7": 6,
+      "8": 4
+    }
+  }
+}

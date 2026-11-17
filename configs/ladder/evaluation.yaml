@@ -1,0 +1,9 @@
+# Frozen evaluation suite for wildfire-ops-v3 (generator v3).
+# Evaluation seeds start at 100000 and were never used for calibration (development seeds 0-999).
+# Tiers 2-5: windows regime; tiers 6-8: capacity-bound packing regime.
+schema_version: 3
+suite_id: ladder-evaluation-v1
+split: evaluation
+seed_offset: 100000
+tiers: {2: 3, 3: 5, 4: 5, 5: 5, 6: 6, 7: 6, 8: 4}
+repeats: 1

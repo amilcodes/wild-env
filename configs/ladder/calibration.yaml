@@ -1,0 +1,7 @@
+# Difficulty calibration only. Seeds 0-999 are development seeds and never appear in evaluation.
+schema_version: 3
+suite_id: ladder-calibration-v1
+split: development
+seed_offset: 0
+tiers: {3: 2, 4: 2, 5: 2, 6: 2}
+repeats: 1
