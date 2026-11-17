@@ -8,7 +8,7 @@ Use Python 3.10 or 3.11 from the repository root:
 python3 -m venv .venv
 . .venv/bin/activate
 python -m pip install --upgrade pip
-python -m pip install -e '.[geo,render,dev]'
+python -m pip install -e '.[geo,met,render,dev]'
 ruff check src tests tools
 pytest -q
 ```
@@ -25,9 +25,9 @@ cmake --build build/native --parallel
 ctest --test-dir build/native --output-on-failure
 ```
 
-The reviewed GitHub Actions definition is stored at
-`docs/ci/github-actions-ci.yml`. Copy it to `.github/workflows/ci.yml` when the
-repository credential used for that change has GitHub's `workflow` scope.
+GitHub Actions runs the Python suite, native smoke tests, and the agent-desk
+smoke/replay check from `.github/workflows/ci.yml`. The reviewed copy is retained
+at `docs/ci/github-actions-ci.yml`. Install the `met` extra for the HRRR tests.
 
 ## Research changes
 

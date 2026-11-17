@@ -1,0 +1,7 @@
+# Development calibration of generator v2 (spread release windows). Seeds 0-999 are development only.
+schema_version: 3
+suite_id: ladder-calibration-v2
+split: development
+seed_offset: 0
+tiers: {5: 2, 6: 2, 7: 2, 8: 2}
+repeats: 1

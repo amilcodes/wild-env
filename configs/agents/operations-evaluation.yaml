@@ -1,0 +1,17 @@
+schema_version: 2
+suite_id: wildfire-operations-v2-evaluation
+split: evaluation
+repeats: 2
+cases:
+  - {family: deadline, seed: 910140, level: 1}
+  - {family: deadline, seed: 910277, level: 2}
+  - {family: prerequisite, seed: 911149, level: 1}
+  - {family: prerequisite, seed: 911286, level: 2}
+  - {family: water, seed: 912158, level: 1}
+  - {family: water, seed: 912295, level: 2}
+  - {family: information, seed: 913167, level: 1}
+  - {family: information, seed: 913304, level: 2}
+  - {family: forecast, seed: 914176, level: 1}
+  - {family: forecast, seed: 914313, level: 2}
+  - {family: compound, seed: 915185, level: 1}
+  - {family: compound, seed: 915322, level: 2}

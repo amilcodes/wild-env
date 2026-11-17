@@ -1,0 +1,12 @@
+# Model panel. `tier` is a descriptive label only; it is never used in scoring.
+# CLI providers use the locally logged-in Claude Code / Codex subscriptions.
+# Every model gets the same prompt, schema, effort request and timeout.
+models:
+  - {name: haiku-5.5,   provider: claude_cli, model: claude-haiku-5-5,  effort: high, timeout_s: 2400, tier: small}
+  - {name: sonnet-5.5,  provider: claude_cli, model: claude-sonnet-5-5, effort: high, timeout_s: 2400, tier: mid}
+  - {name: opus-5.5,    provider: claude_cli, model: claude-opus-5-5,   effort: high, timeout_s: 2400, tier: frontier}
+  - {name: fable-5.2,   provider: claude_cli, model: claude-fable-5-2,  effort: high, timeout_s: 2400, tier: frontier}
+  - {name: gpt-6-luna,  provider: codex_cli,  model: gpt-6-luna,        effort: high, timeout_s: 2400, tier: small}
+  - {name: gpt-6.1-terra, provider: codex_cli, model: gpt-6.1-terra,    effort: high, timeout_s: 2400, tier: mid}
+  - {name: gpt-6.1-sol, provider: codex_cli,  model: gpt-6.1-sol,       effort: high, timeout_s: 2400, tier: frontier}
+  - {name: gpt-6-astra, provider: codex_cli,  model: gpt-6-astra,       effort: high, timeout_s: 2400, tier: frontier}

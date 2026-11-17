@@ -1,0 +1,603 @@
+{
+  "generated_utc": "2026-11-17T05:36:55.138909+00:00",
+  "instances": 8,
+  "leaderboard": [
+    {
+      "by_tier": {
+        "5": 101.28552866183394,
+        "6": 100.85774645676463,
+        "7": 100.35616007802966,
+        "8": 100.76274266751903
+      },
+      "ci95": [
+        100.5047699624775,
+        101.11705430719763
+      ],
+      "complete": true,
+      "instances": 8,
+      "kind": "reference",
+      "label": null,
+      "mean_score": 100.81554446603681,
+      "policy": "reference:clairvoyant",
+      "solved": 8
+    },
+    {
+      "by_tier": {
+        "5": 100.0,
+        "6": 99.9749037978919,
+        "7": 99.99999999999994,
+        "8": 99.93323541193759
+      },
+      "calls": 8,
+      "ci95": [
+        99.95406960491474,
+        99.99999999999999
+      ],
+      "complete": true,
+      "failed_calls": 0,
+      "instances": 8,
+      "kind": "model",
+      "label": "frontier",
+      "mean_latency_s": 221.425,
+      "mean_output_tokens": 22695.0,
+      "mean_score": 99.97703480245735,
+      "parse_errors": 0,
+      "policy": "fable-5.2",
+      "solved": 6,
+      "violations_per_call": 0.0
+    },
+    {
+      "by_tier": {
+        "5": 99.8966728662947,
+        "6": 99.99999999999997,
+        "7": 99.99999999999994,
+        "8": 99.83786756452614
+      },
+      "calls": 8,
+      "ci95": [
+        99.9006525094416,
+        99.96661770596876
+      ],
+      "complete": true,
+      "failed_calls": 0,
+      "instances": 8,
+      "kind": "model",
+      "label": "frontier",
+      "mean_latency_s": 331.7674999999999,
+      "mean_output_tokens": 9299.125,
+      "mean_score": 99.93363510770519,
+      "parse_errors": 0,
+      "policy": "gpt-6-astra",
+      "solved": 5,
+      "violations_per_call": 0.0
+    },
+    {
+      "by_tier": {
+        "5": 99.27164109035544,
+        "6": 96.3615560640732,
+        "7": 99.99999999999994,
+        "8": 99.57270663640013
+      },
+      "calls": 8,
+      "ci95": [
+        97.78504162282553,
+        99.81791027258885
+      ],
+      "complete": true,
+      "failed_calls": 0,
+      "instances": 8,
+      "kind": "model",
+      "label": "frontier",
+      "mean_latency_s": 355.04749999999996,
+      "mean_output_tokens": 12641.125,
+      "mean_score": 98.80147594770719,
+      "parse_errors": 0,
+      "policy": "gpt-6.1-sol",
+      "solved": 4,
+      "violations_per_call": 0.0
+    },
+    {
+      "by_tier": {
+        "5": 96.3835503203141,
+        "6": 98.70255889376091,
+        "7": 99.94656216601348,
+        "8": 99.81116172930115
+      },
+      "calls": 8,
+      "ci95": [
+        97.61585763607827,
+        99.80605891861656
+      ],
+      "complete": true,
+      "failed_calls": 0,
+      "instances": 8,
+      "kind": "model",
+      "label": "frontier",
+      "mean_latency_s": 156.82625000000002,
+      "mean_output_tokens": 17182.75,
+      "mean_score": 98.7109582773474,
+      "parse_errors": 0,
+      "policy": "opus-5.5",
+      "solved": 2,
+      "violations_per_call": 0.0
+    },
+    {
+      "by_tier": {
+        "5": 95.12166169254654,
+        "6": 96.03076093752266,
+        "7": 97.94017202694954,
+        "8": 97.90871297885414
+      },
+      "ci95": [
+        95.61455263691198,
+        97.88610118102447
+      ],
+      "complete": true,
+      "instances": 8,
+      "kind": "reference",
+      "label": null,
+      "mean_score": 96.75032690896822,
+      "policy": "reference:open_loop",
+      "solved": 0
+    },
+    {
+      "by_tier": {
+        "5": 96.16922429778651,
+        "6": 94.87035160334291,
+        "7": 98.97151520770859,
+        "8": 94.54785638373164
+      },
+      "calls": 8,
+      "ci95": [
+        94.99590974176988,
+        97.28356400451496
+      ],
+      "complete": true,
+      "failed_calls": 0,
+      "instances": 8,
+      "kind": "model",
+      "label": "small",
+      "mean_latency_s": 211.3025,
+      "mean_output_tokens": 51010.25,
+      "mean_score": 96.13973687314241,
+      "parse_errors": 0,
+      "policy": "haiku-5.5",
+      "solved": 0,
+      "violations_per_call": 0.0
+    },
+    {
+      "by_tier": {
+        "5": 84.42379250798604,
+        "6": 85.08238483982647,
+        "7": 89.9165109197692,
+        "8": 88.86474731513584
+      },
+      "ci95": [
+        82.89658112250679,
+        91.24713666885198
+      ],
+      "complete": true,
+      "instances": 8,
+      "kind": "baseline",
+      "label": null,
+      "mean_score": 87.07185889567938,
+      "policy": "baseline:search",
+      "solved": 0
+    },
+    {
+      "by_tier": {
+        "5": 36.946547874610175,
+        "6": 61.34279421229125,
+        "7": 67.11748846960094,
+        "8": 63.97549830578041
+      },
+      "ci95": [
+        52.6457183373392,
+        62.0454460938022
+      ],
+      "complete": true,
+      "instances": 8,
+      "kind": "baseline",
+      "label": null,
+      "mean_score": 57.345582215570694,
+      "policy": "baseline:deadline",
+      "solved": 0
+    },
+    {
+      "by_tier": {
+        "5": 36.946547874610175,
+        "6": 61.42644821931819,
+        "7": 67.11748846960094,
+        "8": 62.753335227725515
+      },
+      "ci95": [
+        52.48952012247467,
+        61.63238977315274
+      ],
+      "complete": true,
+      "instances": 8,
+      "kind": "baseline",
+      "label": null,
+      "mean_score": 57.060954947813705,
+      "policy": "baseline:greedy",
+      "solved": 0
+    },
+    {
+      "by_tier": {
+        "5": 0.0,
+        "6": 0.0,
+        "7": 0.0,
+        "8": 0.0
+      },
+      "ci95": [
+        0.0,
+        0.0
+      ],
+      "complete": true,
+      "instances": 8,
+      "kind": "baseline",
+      "label": null,
+      "mean_score": 0.0,
+      "policy": "baseline:hold",
+      "solved": 0
+    }
+  ],
+  "models": {
+    "fable-5.2": {
+      "command": [],
+      "effort": "high",
+      "model": "claude-fable-5-2",
+      "name": "fable-5.2",
+      "provider": "claude_cli",
+      "tier": "frontier",
+      "timeout_s": 1200
+    },
+    "gpt-6-astra": {
+      "command": [],
+      "effort": "high",
+      "model": "gpt-6-astra",
+      "name": "gpt-6-astra",
+      "provider": "codex_cli",
+      "tier": "frontier",
+      "timeout_s": 1200
+    },
+    "gpt-6.1-sol": {
+      "command": [],
+      "effort": "high",
+      "model": "gpt-6.1-sol",
+      "name": "gpt-6.1-sol",
+      "provider": "codex_cli",
+      "tier": "frontier",
+      "timeout_s": 1200
+    },
+    "haiku-5.5": {
+      "command": [],
+      "effort": "high",
+      "model": "claude-haiku-5-5",
+      "name": "haiku-5.5",
+      "provider": "claude_cli",
+      "tier": "small",
+      "timeout_s": 1200
+    },
+    "opus-5.5": {
+      "command": [],
+      "effort": "high",
+      "model": "claude-opus-5-5",
+      "name": "opus-5.5",
+      "provider": "claude_cli",
+      "tier": "frontier",
+      "timeout_s": 1200
+    }
+  },
+  "models_vs_baselines": [
+    {
+      "ci95": [
+        -16.52797570944543,
+        -6.7502230538906165
+      ],
+      "instances": 8,
+      "left": "baseline:search",
+      "left_better_instances": 1,
+      "mean_difference": -11.639099381668021,
+      "p_holm": 0.015625,
+      "p_raw": 0.015625,
+      "right": "opus-5.5",
+      "right_better_instances": 7,
+      "separated": true
+    },
+    {
+      "ci95": [
+        -46.69760385981753,
+        -36.60240279924987
+      ],
+      "instances": 8,
+      "left": "baseline:greedy",
+      "left_better_instances": 0,
+      "mean_difference": -41.6500033295337,
+      "p_holm": 0.0078125,
+      "p_raw": 0.0078125,
+      "right": "opus-5.5",
+      "right_better_instances": 8,
+      "separated": true
+    },
+    {
+      "ci95": [
+        -17.08672773047759,
+        -8.723624083078352
+      ],
+      "instances": 8,
+      "left": "baseline:search",
+      "left_better_instances": 0,
+      "mean_difference": -12.905175906777972,
+      "p_holm": 0.0078125,
+      "p_raw": 0.0078125,
+      "right": "fable-5.2",
+      "right_better_instances": 8,
+      "separated": true
+    },
+    {
+      "ci95": [
+        -47.50420582699827,
+        -38.32795388228904
+      ],
+      "instances": 8,
+      "left": "baseline:greedy",
+      "left_better_instances": 0,
+      "mean_difference": -42.91607985464365,
+      "p_holm": 0.0078125,
+      "p_raw": 0.0078125,
+      "right": "fable-5.2",
+      "right_better_instances": 8,
+      "separated": true
+    },
+    {
+      "ci95": [
+        -12.216272259095476,
+        -5.9194836958305785
+      ],
+      "instances": 8,
+      "left": "baseline:search",
+      "left_better_instances": 0,
+      "mean_difference": -9.067877977463027,
+      "p_holm": 0.0078125,
+      "p_raw": 0.0078125,
+      "right": "haiku-5.5",
+      "right_better_instances": 8,
+      "separated": true
+    },
+    {
+      "ci95": [
+        -42.80379276480462,
+        -35.3537710858528
+      ],
+      "instances": 8,
+      "left": "baseline:greedy",
+      "left_better_instances": 0,
+      "mean_difference": -39.078781925328705,
+      "p_holm": 0.0078125,
+      "p_raw": 0.0078125,
+      "right": "haiku-5.5",
+      "right_better_instances": 8,
+      "separated": true
+    },
+    {
+      "ci95": [
+        -15.283667884203217,
+        -8.17556621985238
+      ],
+      "instances": 8,
+      "left": "baseline:search",
+      "left_better_instances": 0,
+      "mean_difference": -11.729617052027798,
+      "p_holm": 0.0078125,
+      "p_raw": 0.0078125,
+      "right": "gpt-6.1-sol",
+      "right_better_instances": 8,
+      "separated": true
+    },
+    {
+      "ci95": [
+        -45.777390591630414,
+        -37.703651408156546
+      ],
+      "instances": 8,
+      "left": "baseline:greedy",
+      "left_better_instances": 0,
+      "mean_difference": -41.74052099989348,
+      "p_holm": 0.0078125,
+      "p_raw": 0.0078125,
+      "right": "gpt-6.1-sol",
+      "right_better_instances": 8,
+      "separated": true
+    },
+    {
+      "ci95": [
+        -17.06288576862473,
+        -8.660666655426878
+      ],
+      "instances": 8,
+      "left": "baseline:search",
+      "left_better_instances": 0,
+      "mean_difference": -12.861776212025804,
+      "p_holm": 0.0078125,
+      "p_raw": 0.0078125,
+      "right": "gpt-6-astra",
+      "right_better_instances": 8,
+      "separated": true
+    },
+    {
+      "ci95": [
+        -47.462795953819565,
+        -38.282564365963395
+      ],
+      "instances": 8,
+      "left": "baseline:greedy",
+      "left_better_instances": 0,
+      "mean_difference": -42.87268015989148,
+      "p_holm": 0.0078125,
+      "p_raw": 0.0078125,
+      "right": "gpt-6-astra",
+      "right_better_instances": 8,
+      "separated": true
+    }
+  ],
+  "pairwise_models": [
+    {
+      "ci95": [
+        -0.006274050527020236,
+        0.09307344003135576
+      ],
+      "instances": 8,
+      "left": "fable-5.2",
+      "left_better_instances": 2,
+      "mean_difference": 0.04339969475216776,
+      "p_holm": 1.0,
+      "p_raw": 0.5,
+      "right": "gpt-6-astra",
+      "right_better_instances": 1,
+      "separated": false
+    },
+    {
+      "ci95": [
+        0.16024579979457698,
+        2.19087190970577
+      ],
+      "instances": 8,
+      "left": "fable-5.2",
+      "left_better_instances": 4,
+      "mean_difference": 1.1755588547501734,
+      "p_holm": 0.625,
+      "p_raw": 0.125,
+      "right": "gpt-6.1-sol",
+      "right_better_instances": 1,
+      "separated": false
+    },
+    {
+      "ci95": [
+        2.678669980827779,
+        4.99592587780211
+      ],
+      "instances": 8,
+      "left": "fable-5.2",
+      "left_better_instances": 8,
+      "mean_difference": 3.8372979293149445,
+      "p_holm": 0.078125,
+      "p_raw": 0.0078125,
+      "right": "haiku-5.5",
+      "right_better_instances": 0,
+      "separated": false
+    },
+    {
+      "ci95": [
+        0.16517618934479295,
+        2.3707829054250986
+      ],
+      "instances": 8,
+      "left": "fable-5.2",
+      "left_better_instances": 6,
+      "mean_difference": 1.2660765251099502,
+      "p_holm": 0.25,
+      "p_raw": 0.03125,
+      "right": "opus-5.5",
+      "right_better_instances": 0,
+      "separated": false
+    },
+    {
+      "ci95": [
+        0.09728837214310282,
+        2.1670299478529085
+      ],
+      "instances": 8,
+      "left": "gpt-6-astra",
+      "left_better_instances": 4,
+      "mean_difference": 1.1321591599980056,
+      "p_holm": 0.625,
+      "p_raw": 0.1875,
+      "right": "gpt-6.1-sol",
+      "right_better_instances": 1,
+      "separated": false
+    },
+    {
+      "ci95": [
+        2.6242393197638982,
+        4.963557149361655
+      ],
+      "instances": 8,
+      "left": "gpt-6-astra",
+      "left_better_instances": 8,
+      "mean_difference": 3.7938982345627768,
+      "p_holm": 0.078125,
+      "p_raw": 0.0078125,
+      "right": "haiku-5.5",
+      "right_better_instances": 0,
+      "separated": false
+    },
+    {
+      "ci95": [
+        0.15388232854597206,
+        2.2914713321695928
+      ],
+      "instances": 8,
+      "left": "gpt-6-astra",
+      "left_better_instances": 5,
+      "mean_difference": 1.2226768303577824,
+      "p_holm": 0.4375,
+      "p_raw": 0.0625,
+      "right": "opus-5.5",
+      "right_better_instances": 0,
+      "separated": false
+    },
+    {
+      "ci95": [
+        1.0973770252802701,
+        4.226101123849272
+      ],
+      "instances": 8,
+      "left": "gpt-6.1-sol",
+      "left_better_instances": 6,
+      "mean_difference": 2.661739074564771,
+      "p_holm": 0.4375,
+      "p_raw": 0.0625,
+      "right": "haiku-5.5",
+      "right_better_instances": 2,
+      "separated": false
+    },
+    {
+      "ci95": [
+        -1.6321198886736052,
+        1.8131552293931588
+      ],
+      "instances": 8,
+      "left": "gpt-6.1-sol",
+      "left_better_instances": 4,
+      "mean_difference": 0.09051767035977676,
+      "p_holm": 1.0,
+      "p_raw": 0.890625,
+      "right": "opus-5.5",
+      "right_better_instances": 3,
+      "separated": false
+    },
+    {
+      "ci95": [
+        -4.61679626956702,
+        -0.5256465388429685
+      ],
+      "instances": 8,
+      "left": "haiku-5.5",
+      "left_better_instances": 1,
+      "mean_difference": -2.5712214042049943,
+      "p_holm": 0.625,
+      "p_raw": 0.1484375,
+      "right": "opus-5.5",
+      "right_better_instances": 7,
+      "separated": false
+    }
+  ],
+  "protocol": "wildfire-ops-v3",
+  "tiers": {
+    "5": 2,
+    "6": 2,
+    "7": 2,
+    "8": 2
+  }
+}

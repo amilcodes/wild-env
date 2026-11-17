@@ -1,5 +1,96 @@
 # wild-env
 
+wild-env is a wildfire-operations research environment with two layers:
+
+1. **The ops ladder** (`wildfire-ops-v3`): a planning benchmark and Gymnasium RL
+   environment where every instance has a **proven optimum**. It is the primary
+   way to evaluate language models and agents here.
+2. **The simulator foundation**: a higher-fidelity fire-spread and suppression
+   simulator, a GPU tensor surrogate for MARL, historical incident import and a
+   replay viewer (described below).
+
+## The ops ladder
+
+A model acts as planning section chief for a synthetic incident. It gets one public
+packet (teams, jobs with per-team durations, windows, prerequisites, water, start
+costs and forecast-dependent values) and returns one contingent incident action plan:
+shared actions plus branches for each forecast world, which may only start once the
+forecast is known. The plan is executed exactly in both worlds and scored as a
+percentage of the **information-matched optimum**, solved by a two-world MIP and
+checked against an independent Bellman planner.
+
+Difficulty climbs one ladder. Tiers 1–5 grow the problem (2→5 teams, 8→31 jobs, deeper
+access chains, scarce water, survey-or-wait decisions). Tiers 6–8 make it
+capacity-bound (48→92 jobs, 97% team utilization in the optimum): a generalized
+assignment problem where only exact packing earns the last points.
+
+### Results (evaluation v1, 34 held-out instances, 8 models)
+
+![Ladder scores overall and by tier for eight models](docs/assets/ladder/ladder-scores.png)
+
+| Policy | Overall | 95% CI | Windows (T2–5) | Packing (T6–8) | Solved |
+| --- | ---: | --- | ---: | ---: | ---: |
+| Claude Fable 5.2 | **99.6** | 99.4–99.8 | 99.8 | 99.4 | 18/34 |
+| GPT-6.1 Sol | **99.4** | 99.2–99.6 | 99.9 | 98.8 | 18/34 |
+| GPT-6 Astra | **99.2** | 98.9–99.5 | 99.9 | 98.5 | 17/34 |
+| Claude Opus 5.5 | **98.8** | 98.3–99.2 | 99.7 | 97.7 | 12/34 |
+| Claude Sonnet 5.5 | 95.3 | 94.4–96.2 | 98.4 | 91.8 | 5/34 |
+| GPT-6.1 Terra | 93.9 | 93.0–94.8 | 97.2 | 90.3 | 4/34 |
+| Claude Haiku 5.5 | 92.2 | 90.5–93.7 | 97.5 | 86.1 | 6/34 |
+| GPT-6 Luna | 79.5 | 76.2–82.7 | 85.8 | 72.4 | 2/34 |
+| *search baseline (256 samples)* | 89.0 | 87.0–90.9 | 87.6 | 90.7 | 2/34 |
+| *greedy baseline* | 72.9 | 69.2–76.5 | 58.3 | 89.3 | 1/34 |
+
+Score is the percent of the proven optimum, one call per model per instance, high
+effort, no tools. **All 16 frontier-versus-rest pairs separate** (paired sign-flip test,
+Holm over 28 pairs, p = 0.0014; each frontier model is better on 28–32 of 34 instances
+and worse on at most one). 21 of 28 pairs separate overall: Sonnet > Haiku, everyone
+> Luna, and Fable > Opus (17 better, 2 worse). Fable, Sol and Astra are not separated
+from each other (0.2–0.4 points).
+
+The packing tiers carry the separation. There, only the four frontier models beat a
+256-sample randomized search (90.7); Sonnet and Terra roughly tie it, and Haiku and
+Luna fall below plain greedy. Every plan from every model was parsed; skipped entries
+are rare (Luna about 1 per plan, others ≤ 0.24), so losses are planning quality, not
+format. Full report: [`results/ladder/evaluation-v1/report.txt`](results/ladder/evaluation-v1/report.txt).
+
+
+```bash
+pip install -e '.[dev]'
+aeolus-ladder show --tier 6 --seed 100000 --system          # the exact model input
+aeolus-ladder run --suite configs/ladder/evaluation.yaml --out runs/ladder/refs   # references + baselines
+aeolus-ladder run --suite configs/ladder/evaluation.yaml \
+  --models configs/ladder/models.yaml --out runs/ladder/eval --workers 8      # models (resumable)
+```
+
+```python
+from aeolus.ladder.env import LadderEnv      # Gymnasium, action masks, exact normalizer
+from aeolus.ladder import generate, solve
+env = LadderEnv(tiers=(1, 2, 3)); obs, info = env.reset(seed=0)
+optimum = solve(env.instance).value
+```
+
+Protocol, verification, calibration history and limits:
+[`docs/ladder_benchmark.md`](docs/ladder_benchmark.md). Raw evidence:
+[`results/ladder/`](results/ladder/).
+
+### Earlier agent lanes (archived)
+
+These remain runnable and their evidence is unchanged. They are superseded as
+model benchmarks by the ladder:
+
+- **Desk v1** ([protocol](docs/frontier_agent_benchmark.md),
+  [results](docs/frontier_live_results.md)): per-tick dispatch on the canonical
+  simulator. No model clearly beat greedy, and per-episode noise was high.
+  Runs on EC2 ([recipe](docs/ec2_agent_benchmarks.md), [CLI bridges](docs/cli_agent_evaluation.md)).
+- **Operations v2** ([protocol](docs/operations_benchmark.md),
+  [results](results/agent_benchmark/operations_v2_results.txt)): exact per-decision
+  regret on small instances (2 teams, ≤11 jobs). Luna separated from the rest; Sol and
+  Astra reached zero regret everywhere, so frontier models could not be ordered. The
+  ladder keeps v2's dynamics (and its Bellman planner as a cross-check) and scales them.
+
+## Simulator foundation
+
 wild-env is a research environment for wildfire spread, suppression operations,
 and multi-agent resource allocation. It combines a higher-fidelity incident
 simulator with a fixed-shape PyTorch surrogate for large-batch reinforcement
@@ -197,6 +288,7 @@ operational predictive skill. Exact protocols and retained artifacts are in
 
 | Version | Main addition |
 | --- | --- |
+| 0.8 | Ops ladder (`wildfire-ops-v3`): tiered planning benchmark and Gymnasium env with exact two-world MIP optimum |
 | 0.7 | Replay schema 2, native Qt/VTK inspection, deterministic 2D/3D/video export |
 | 0.6 | Tensor operations and fire-coupled MARL environments, entity-attention MAPPO, service-site logistics |
 | 0.5 | Volume-conserving suppression, line production and breach, two-perimeter coupled-state initialization |
@@ -224,6 +316,7 @@ The full gap register and compute/non-compute closure plan are in
 
 | Area | Location |
 | --- | --- |
+| Ops ladder: generator, plan executor, exact MIP, RL env, model runner | `src/aeolus/ladder` |
 | Fire, truth/belief and suppression mechanics | `src/aeolus/core` |
 | Incident, fuel, weather and progression data | `src/aeolus/data` |
 | PettingZoo, RLlib and tensor environments | `src/aeolus/envs` |
@@ -233,6 +326,7 @@ The full gap register and compute/non-compute closure plan are in
 
 Start with:
 
+- [`docs/ladder_benchmark.md`](docs/ladder_benchmark.md) — the ops ladder benchmark and RL environment.
 - [`docs/architecture.md`](docs/architecture.md) — state, information and execution boundaries.
 - [`docs/fire_behavior.md`](docs/fire_behavior.md) — equations, numerical methods and validation limits.
 - [`docs/tensor_incident_environment.md`](docs/tensor_incident_environment.md) — surrogate contract and measured throughput.

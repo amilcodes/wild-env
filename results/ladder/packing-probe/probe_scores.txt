@@ -1,0 +1,24 @@
+R4T14-100 jobs 46 greedy 87.7
+R4T14-101 jobs 43 greedy 96.1
+R5T18-100 jobs 60 greedy 88.9
+R5T18-101 jobs 62 greedy 93.4
+R4T14-100  opus   score  93.03 skips  0 err None lat 163s out 16989
+R4T14-100  fable  score 100.00 skips  0 err None lat 276s out 28122
+R4T14-100  sol    score  99.93 skips  0 err None lat 523s out 15770
+R4T14-100  astra  score  99.93 skips  0 err None lat 212s out 6310
+R4T14-100  haiku  score  88.78 skips  0 err None lat 226s out 53296
+R4T14-101  opus   score  99.10 skips  0 err None lat 226s out 23566
+R4T14-101  fable  score 100.00 skips  0 err None lat 259s out 25760
+R4T14-101  sol    score 100.00 skips  0 err None lat 361s out 15245
+R4T14-101  astra  score  99.15 skips  0 err None lat 365s out 9767
+R4T14-101  haiku  score  97.04 skips  0 err None lat 272s out 67343
+R5T18-100  opus   score  97.14 skips  0 err None lat 160s out 17168
+R5T18-100  fable  score  98.35 skips  0 err None lat 401s out 41213
+R5T18-100  sol    score  98.22 skips  0 err None lat 840s out 32218
+R5T18-100  astra  score  99.70 skips  0 err None lat 739s out 20651
+R5T18-100  haiku  score  89.17 skips  0 err None lat 136s out 33577
+R5T18-101  opus   score  99.45 skips  0 err None lat 116s out 12527
+R5T18-101  fable  score 100.00 skips  0 err None lat 182s out 18961
+R5T18-101  sol    score 100.00 skips  0 err None lat 626s out 18370
+R5T18-101  astra  score 100.00 skips  0 err None lat 281s out 8537
+R5T18-101  haiku  score  91.92 skips  0 err None lat 227s out 55795

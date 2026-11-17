@@ -1,0 +1,12 @@
+{
+  "protocol": "wildfire-operations-v2",
+  "episodes": 306,
+  "decisions": 2601,
+  "live_model_requests": 1836,
+  "all_replays_verified": true,
+  "all_trace_checksums_verified": true,
+  "invalid_decisions": 8,
+  "infrastructure_errors": 0,
+  "independent_instances": 12,
+  "inference_note": "Intervals resample generated instances, collapsing worlds and repeated calls. Paired sign-flip tests assume exchangeability; Holm correction covers model pairs. The small number of families limits generalization."
+}

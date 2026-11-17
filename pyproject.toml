@@ -77,6 +77,8 @@ aeolus-view = "aeolus.viewer_cli:main"
 aeolus-benchmark = "aeolus.benchmark_cli:main"
 aeolus-fire = "aeolus.fire_cli:main"
 aeolus-study = "aeolus.study_cli:main"
+aeolus-agent-bench = "aeolus.agent_cli:main"
+aeolus-ladder = "aeolus.ladder.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

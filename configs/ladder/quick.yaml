@@ -1,0 +1,7 @@
+# One development instance per tier: a cheap end-to-end check of a new model or adapter.
+schema_version: 3
+suite_id: ladder-quick
+split: development
+seed_offset: 500
+tiers: {1: 1, 2: 1, 3: 1, 4: 1, 5: 1, 6: 1, 7: 1, 8: 1}
+repeats: 1

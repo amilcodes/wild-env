@@ -1,0 +1,47 @@
+{
+  "kind": "rsg-cli-reverse-tunnel",
+  "simulation_host": "EC2 CPU",
+  "inference_transport_host": "logged-in Mac; remote model inference",
+  "loopback_only": true,
+  "rsg_original_ports_untouched": true,
+  "numerical_threads": 1,
+  "nice": 15,
+  "bridge_source_revision": "8be104e8f5aca957911c1e97c867b30c3041962c",
+  "bridge_sha256": {
+    "claude_bridge.py": "858b299e03391d8cd69ea6a5442c7e84958f74741dd30be308aa5fa75630f7fa",
+    "codex_bridge.py": "9bf633e8035acce1538a90a488e67bf609e4f10bafd96393e9220d3442986539"
+  },
+  "codex_provenance_sha256": "6de57d4c035a993c92085cb73ba49e3fb1d48e9604f02f1ed7c0a612f9530d85",
+  "claude_preflight": {
+    "auth_status": "logged_in",
+    "inference": "authentication_failed",
+    "detail": "OAuth session expired and could not be refreshed",
+    "counted_as_model_score": false,
+    "resolution": "User completed claude auth login; authenticated Opus development requests succeeded before full evaluation."
+  },
+  "episode_workers_by_run": {
+    "ec2-frontier-live-v1": 4,
+    "ec2-opus-live-v1": 2
+  },
+  "maximum_concurrent_inference_requests": 6,
+  "development_runs": [
+    "ec2-bridge-development-v1",
+    "ec2-opus-development-v1"
+  ],
+  "evaluation_runs": [
+    "ec2-frontier-live-v1",
+    "ec2-opus-live-v1"
+  ],
+  "cli_versions": {
+    "codex": "0.165.0",
+    "claude": "2.1.291"
+  },
+  "model_configuration": {
+    "sol-high": "gpt-6.1-sol / high",
+    "terra-high": "gpt-6.1-terra / high",
+    "opus-high": "claude-opus-5-5 / high"
+  },
+  "auxiliary_usage": "Claude CLI auxiliary Haiku usage retained separately from the Opus init/assistant model identity.",
+  "task_bridge_stopped_after_models_finished": true,
+  "shutdown_verified_at": "2026-11-03T00:03:12.685874+00:00"
+}
